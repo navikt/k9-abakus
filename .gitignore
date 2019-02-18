@@ -1,17 +1,33 @@
-target/
-pom.xml.tag
-pom.xml.releaseBackup
-pom.xml.versionsBackup
-pom.xml.next
-release.properties
-dependency-reduced-pom.xml
-buildNumber.properties
-.mvn/timing.properties
-# https://github.com/takari/maven-wrapper#usage-without-binary-jar
-.mvn/wrapper/maven-wrapper.jar
-
-# Eclipse m2e generated files
-# Eclipse Core
+.settings
+.wtpmodules
+target
 .project
-# JDT-specific (Eclipse Java Development Tools)
 .classpath
+outdated-dependencies.txt
+bin
+*.iml
+.idea
+_*.sh
+*.local
+*.localz
+es.properties
+es-local.properties
+es.properties.backup
+*.zip
+*.versionsBackup
+*.log
+es-local.properties
+*.db
+mqjms.log*
+maven-eclipse.xml
+.externalToolBuilders
+dep.txt
+/docs/asciidoc/index.html
+.eslint-loader-cache
+.mvn/maven.config
+.mvn/jvm.config
+.flattened*
+*.patch
+/.mvn/
+/logback.xml
+.temp*.txt
