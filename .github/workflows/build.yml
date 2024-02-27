@@ -27,7 +27,7 @@ jobs:
       id-token: write
     uses: navikt/fp-gha-workflows/.github/workflows/build-app-postgres.yml@main
     with:
-      postgres-user: fpabakus_unit
+      postgres-user: k9_abakus_unit
       build-image: ${{ github.ref_name == 'master' }} # default: true
       push-image: ${{ github.ref_name == 'master' }} # default: false
     secrets: inherit
@@ -51,6 +51,7 @@ jobs:
         uses: navikt/fp-gha-workflows/.github/actions/build-maven-application@main # ratchet:exclude
         with:
           skip-tests: 'true'
+          sonar: 'false'
       - name: Login to GitHub Packages Docker Registry
         uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
         with:
@@ -83,8 +84,8 @@ jobs:
       - uses: navikt/github-app-token-generator@v1
         id: get-token
         with:
-          private-key: ${{ secrets.FP_PRIVATE_KEY }} # Erstatt med K9SAKSBEHANDLING_PRIVATE_KEY
-          app-id: ${{ secrets.FP_APP_ID }} # Erstatt med K9SAKSBEHANDLING_APP_ID
+          private-key: ${{ secrets.K9SAKSBEHANDLING_PRIVATE_KEY }}
+          app-id: ${{ secrets.K9SAKSBEHANDLING_APP_ID }}
       - name: Trigger verdikjede test
         shell: bash
         run: |
@@ -107,54 +108,18 @@ jobs:
     uses: navikt/fp-gha-workflows/.github/workflows/release-drafter.yml@main
     secrets: inherit
 
-  fpsak-tester:
-    name: Fpsak tester
-    permissions:
-      contents: read
-      id-token: write
-    if: github.ref_name == 'master'
-    needs: build-app
-    uses: navikt/fp-autotest/.github/workflows/autotest.yml@master
-    with:
-      build-version: ${{ needs.build-app.outputs.build-version }}
-      test-suite: fpsak
-    secrets: inherit
-
-  verdikjede-tester:
-    name: Verdikjedetester
-    permissions:
-      contents: read
-      id-token: write
-    if: github.ref_name == 'master'
-    needs: build-app
-    uses: navikt/fp-autotest/.github/workflows/autotest.yml@master
-    with:
-      build-version: ${{ needs.build-app.outputs.build-version }}
-      test-suite: verdikjede
-    secrets: inherit
-
-  notify:
-    name: Notify
-    if: github.ref_name == 'master' && (success() || failure()) && !contains(needs.*.result, 'skipped')
-    needs: [build-app, fpsak-tester, verdikjede-tester]
-    uses: navikt/fp-autotest/.github/workflows/report-and-notify.yml@master
-    with:
-      fpsak: ${{ needs.fpsak-tester.outputs.resultat }}
-      verdikjede: ${{ needs.verdikjede-tester.outputs.resultat }}
-      build-version: ${{ needs.build-app.outputs.build-version }}
-    secrets: inherit
-
   deploy-dev:
     name: Deploy dev
     permissions:
       id-token: write
     if: github.ref_name == 'master'
-    needs: [build-app, fpsak-tester, verdikjede-tester]
+    needs: [build-app]
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
       gar: true
       image: ${{ needs.build-app.outputs.build-version }}
       cluster: dev-fss
+      namespace: k9saksbehandling
     secrets: inherit
 
   deploy-prod:
@@ -162,12 +127,13 @@ jobs:
     permissions:
       id-token: write
     if: github.ref_name == 'master'
-    needs: [build-app, fpsak-tester, verdikjede-tester, deploy-dev]
+    needs: [build-app]
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
       gar: true
       image: ${{ needs.build-app.outputs.build-version }}
       cluster: prod-fss
+      namespace: k9saksbehandling
     secrets: inherit
 
 
