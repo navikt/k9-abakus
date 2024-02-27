@@ -25,7 +25,7 @@ public class VedtakConsumer implements LiveAndReadinessAware, Controllable {
 
     private static final Logger LOG = LoggerFactory.getLogger(VedtakConsumer.class);
 
-    private static final String APPLICATION_ID = "fpabakus"; // Hold konstant pga offset commit
+    private static final String APPLICATION_ID = "k9-abakus"; // Hold konstant pga offset commit
 
     private KafkaStreams stream;
     private String topic;
