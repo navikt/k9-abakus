@@ -1,6 +1,6 @@
 CREATE DATABASE k9_abakus_unit;
 CREATE USER k9_abakus_unit WITH PASSWORD 'k9_abakus_unit';
-GRANT ALL ON DATABASE k9_abakus_unit TO k9abakus_unit;
+GRANT ALL ON DATABASE k9_abakus_unit TO k9_abakus_unit;
 ALTER DATABASE k9_abakus_unit SET timezone TO 'Europe/Oslo';
 ALTER DATABASE k9_abakus_unit OWNER TO k9_abakus_unit;
 
