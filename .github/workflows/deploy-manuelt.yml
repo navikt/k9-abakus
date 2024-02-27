@@ -21,7 +21,8 @@ jobs:
       id-token: write
     uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
     with:
-      gar: true
-      image: ${{ inputs.image }}
+      gar: false
+      image: ghcr.io/${{ github.repository }}:${{ inputs.image }}
       cluster: ${{ inputs.environment }}-fss
+      namespace: k9saksbehandling
     secrets: inherit

@@ -27,9 +27,9 @@ services:
     environment:
       TZ: "UTC"
       PGTZ: "UTC"
-      POSTGRES_PASSWORD: "fpabakus_unit"
-      POSTGRES_USER: "fpabakus_unit"
-      POSTGRES_DB: fpabakus_unit
+      POSTGRES_PASSWORD: "k9_abakus_unit"
+      POSTGRES_USER: "k9_abakus_unit"
+      POSTGRES_DB: k9_abakus_unit
 
 # Persist database information after your VM shuts down (just these two lines!)
 volumes:

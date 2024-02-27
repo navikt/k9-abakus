@@ -17,9 +17,9 @@
 			  "previewLimit": 50,
 			  "server": "localhost",
 			  "port": 5432,
-			  "database": "fpabakus_unit",
-			  "username": "fpabakus_unit",
-			  "password": "fpabakus_unit"
+			  "database": "k9_abakus_unit",
+			  "username": "k9_abakus_unit",
+			  "password": "k9_abakus_unit"
 			}
 		  ],
 		  "files.eol": "\n",
