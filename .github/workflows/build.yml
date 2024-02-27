@@ -3,31 +3,31 @@ name: Bygg og deploy
 on:
   push:
     branches:
-      - '**'
+      - master
     paths-ignore:
       - '**.md'
       - '**.MD'
       - '.gitignore'
-      - '.editorconfig'
-      - '.java-version'
-      - '.gitattributes'
       - 'LICENSE'
       - 'CODEOWNERS'
-      - 'docs/**'
+      - 'dokumentasjon/**'
       - 'lokalutvikling/**'
-      - '.devcontainer/**'
-      - '.github/*.yml'
 
+  schedule:
+    - cron: '0 4 * * 1'
+
+env:
+  IMAGE_BASE_CR: ghcr.io/${{ github.repository }}
 jobs:
-  build-app:
-    name: Build
+  build:
     permissions:
       contents: read
+      issues: write
       packages: write
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: index.docker.io/library/postgres@sha256:302de9d3235dbab5e89a87f889663116259eb7bce4aaeaaa6a1117daaa9a4750 # ratchet:postgres:16
+        image: postgres:15
         env:
           POSTGRES_USER: k9_abakus_unit
           POSTGRES_PASSWORD: k9_abakus_unit
@@ -36,59 +36,84 @@ jobs:
           - 5432:5432
         # needed because the postgres container does not provide a healthcheck
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
-    env:
-      TZ: "Europe/Oslo"
+
     steps:
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # ratchet:actions/checkout@v4
-      - name: Setup java and maven
-        uses: navikt/fp-gha-workflows/.github/actions/setup-java-and-maven@main # ratchet:exclude
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
-          github-token: ${{ (github.actor != 'dependabot[bot]' && secrets.READER_TOKEN) || secrets.GITHUB_TOKEN }}
-      - name: Maven install and test
-        id: build-and-test
-        uses: navikt/fp-gha-workflows/.github/actions/build-maven-application@main # ratchet:exclude
-      - name: Login to GitHub Packages Docker Registry
-        if: github.ref_name == 'master'
-        uses: docker/login-action@343f7c4344506bcbf9b4de18042ae17996df046d
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Generer tag
+        run: |
+          echo "TAG=$(expr $(date +%Y%m%d%H%M%S))-$(echo $GITHUB_SHA | cut -c1-7)" >> $GITHUB_ENV
+
+      - name: Build artifacts & deploy
+        shell: bash
+        run: |
+          echo "Building artifacts $(echo $GITHUB_SHA | cut -c1-7)"
+          mvn verify --quiet -e --settings .github/.m2/settings.xml --batch-mode -DtrimStackTrace=false --file pom.xml -Drevision= -Dchangelist= -Dsha1=$TAG -Dfile.encoding=UTF-8
+        env:
+          TZ: "Europe/Oslo"
+          GITHUB_TOKEN: ${{ secrets.READER_TOKEN }}
+          GH_ACCESS_TOKEN: ${{ secrets.READER_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          DATASOURCE_HOST: localhost
+          DATASOURCE_PORT: ${{ job.services.postgres.ports[5432] }} # get randomly assigned published port
+
+      - name: Bygg og push docker-image
+        run: |
+          docker build --pull --tag ${IMAGE_BASE_CR}:${TAG} --tag ${IMAGE_BASE_CR}:latest .
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login --username "x-access-token" --password-stdin ghcr.io
+          docker push ${IMAGE_BASE_CR}:${TAG}
+          docker push ${IMAGE_BASE_CR}:latest
+
+      - name: Lukk gamle issues
+        uses: actions/github-script@v7
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set up QEMU
-        if: github.ref_name == 'master'
-        uses: docker/setup-qemu-action@68827325e0b33c7199eb31dd4e31fbe9023e06e3 # ratchet:docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        if: github.ref_name == 'master'
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # ratchet:docker/setup-buildx-action@v2
-      - name: Docker meta
-        if: github.ref_name == 'master'
-        uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # ratchet:docker/metadata-action@v4
-        id: meta
-        with:
-          images: ghcr.io/${{ github.repository }}
-          tags: type=raw,value=latest,enable={{is_default_branch}}
-      - name: Bygg og push docker image
-        if: github.ref_name == 'master'
-        uses: docker/build-push-action@4a13e500e55cf31b7a5d59a38ab2040ab0f42f56 # ratchet:docker/build-push-action@v4
-        id: build_push
-        with:
-          context: "."
-          file: "Dockerfile"
-          platforms: "linux/amd64"
-          pull: true
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: ['deployment']
+            }).then(response => {
+              response.data.forEach(issue => {
+                github.rest.issues.update({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: issue.number,
+                  state: 'closed'
+                });
+              });
+            });
+
+      -  name: Opprett deployment issue
+         id: createdeployissue
+         if: success()
+         uses: actions/github-script@v7
+         with:
+           github-token: ${{secrets.GITHUB_TOKEN}}
+           script: |
+               github.rest.issues.create( {
+                 owner: context.issue.owner,
+                 repo: context.issue.repo,
+                 labels: ['deployment'],
+                 title: 'Deploy av ${{ env.TAG }}',
+                 body: '${{ github.sha }}'})
+               .then(response => {
+                       core.setOutput('number', response.data.number);
+                });
+
       - uses: navikt/github-app-token-generator@v1
-        if: github.ref_name == 'master'
         id: get-token
         with:
-          private-key: ${{ secrets.K9SAKSBEHANDLING_PRIVATE_KEY }}
-          app-id: ${{ secrets.K9SAKSBEHANDLING_APP_ID }}
-      - name: Trigger verdikjede test
-        if: github.ref_name == 'master'
+          private-key: ${{ secrets.FP_PRIVATE_KEY }}
+          app-id: ${{ secrets.FP_APP_ID }}
+
+      - name: Trigger k9 verdikjede test
         shell: bash
         run: |
           curl -XPOST -u "x-access-token:${{ steps.get-token.outputs.token }}" \
@@ -97,46 +122,7 @@ jobs:
           -d '{"ref":"master",
                   "inputs":{
                       "trigger": "${{ github.repository }}",
-                      "version": "latest"
+                      "version": "${{ env.TAG }}",
+                      "issue_number": "${{ steps.createdeployissue.outputs.number }}"
                   }}'
-
-  release-drafter:
-    name: Update
-    if: github.ref_name == 'master'
-    needs: build-app
-    permissions:
-      contents: write
-      pull-requests: read
-    uses: navikt/fp-gha-workflows/.github/workflows/release-drafter.yml@main
-    secrets: inherit
-
-  deploy-dev:
-    name: Deploy dev
-    permissions:
-      id-token: write
-    if: github.ref_name == 'master'
-    needs: [build-app]
-    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
-    with:
-      gar: false
-      image: ghcr.io/${{ github.repository }}:${{ needs.build-app.outputs.build-version }}
-      cluster: dev-fss
-      namespace: k9saksbehandling
-    secrets: inherit
-
-  deploy-prod:
-    name: Deploy prod
-    permissions:
-      id-token: write
-    if: github.ref_name == 'master'
-    needs: [build-app]
-    uses: navikt/fp-gha-workflows/.github/workflows/deploy.yml@main
-    with:
-      gar: false
-      image: ghcr.io/${{ github.repository }}:${{ needs.build-app.outputs.build-version }}
-      cluster: prod-fss
-      namespace: k9saksbehandling
-    secrets: inherit
-
-
 
