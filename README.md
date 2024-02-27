@@ -1,4 +1,4 @@
-k9-ABAKUS
+K9-ABAKUS
 ================
 [![Bygg og deploy](https://github.com/navikt/k9-abakus/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/navikt/k9-abakus/actions/workflows/build.yml)
 [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=navikt_fp-abakus&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=navikt_fp-abakus)
@@ -47,9 +47,7 @@ Det er mulig å kalle tjenesten med bruk av følgende tokens
 
 - Azure CC
 - Azure OBO med følgende rettigheter:
-    - fpsak-saksbehandler
-    - fpsak-veileder
     - k9-saksbehandler
     - k9-veileder
-    - abakus-drift
+    - k9-drift
 - STS (fases ut)
