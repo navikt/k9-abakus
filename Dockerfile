@@ -1,6 +1,6 @@
 FROM ghcr.io/navikt/fp-baseimages/java:21
 
-LABEL org.opencontainers.image.source=https://github.com/navikt/fp-abakus
+LABEL org.opencontainers.image.source=https://github.com/navikt/k9-abakus
 ENV TZ=Europe/Oslo
 
 RUN mkdir lib

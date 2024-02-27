@@ -4,7 +4,7 @@
 	"name": "Java",
 	"dockerComposeFile": "docker-compose.yml",
  	"service": "app",
-  	"workspaceFolder": "/fp-abakus",
+  	"workspaceFolder": "/k9-abakus",
 
 	// Set *default* container specific settings.json values on container create.
 	"settings": {

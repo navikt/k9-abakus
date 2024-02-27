@@ -1,15 +1,15 @@
 K9-ABAKUS
 ================
 [![Bygg og deploy](https://github.com/navikt/k9-abakus/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/navikt/k9-abakus/actions/workflows/build.yml)
-[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=navikt_fp-abakus&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=navikt_fp-abakus)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=navikt_fp-abakus&metric=coverage)](https://sonarcloud.io/summary/new_code?id=navikt_fp-abakus)
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-abakus&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=navikt_k9-abakus)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-abakus&metric=coverage)](https://sonarcloud.io/summary/new_code?id=navikt_k9-abakus)
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=navikt_fp-abakus&metric=alert_status)](https://sonarcloud.io/dashboard?id=navikt_fp-abakus)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=navikt_fp-abakus&metric=bugs)](https://sonarcloud.io/dashboard?id=navikt_fp-abakus)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=navikt_fp-abakus&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=navikt_fp-abakus)
-[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=navikt_fp-abakus&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=navikt_fp-abakus)
-[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=navikt_fp-abakus&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=navikt_fp-abakus)
-[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=navikt_fp-abakus&metric=sqale_index)](https://sonarcloud.io/dashboard?id=navikt_fp-abakus)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-abakus&metric=alert_status)](https://sonarcloud.io/dashboard?id=navikt_k9-abakus)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-abakus&metric=bugs)](https://sonarcloud.io/dashboard?id=navikt_k9-abakus)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-abakus&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=navikt_k9-abakus)
+[![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-abakus&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=navikt_k9-abakus)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-abakus&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=navikt_k9-abakus)
+[![Technical Debt](https://sonarcloud.io/api/project_badges/measure?project=navikt_k9-abakus&metric=sqale_index)](https://sonarcloud.io/dashboard?id=navikt_k9-abakus)
 
 ### Abakus kontrakt
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/navikt/k9-abakus)](https://github.com/navikt/k9-abakus/releases)
