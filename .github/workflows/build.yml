@@ -25,6 +25,19 @@ jobs:
       contents: read
       packages: write
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: index.docker.io/library/postgres@sha256:302de9d3235dbab5e89a87f889663116259eb7bce4aaeaaa6a1117daaa9a4750 # ratchet:postgres:16
+        env:
+          POSTGRES_USER: k9_abakus_unit
+          POSTGRES_PASSWORD: k9_abakus_unit
+          POSTGRES_DB: k9_abakus_unit
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      TZ: "Europe/Oslo"
     steps:
       - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # ratchet:actions/checkout@v4
       - name: Setup java and maven
