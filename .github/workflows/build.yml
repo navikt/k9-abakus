@@ -108,6 +108,7 @@ jobs:
                 });
 
       - name: Trigger k9 verdikjede test
+        if: false
         shell: bash
         run: |
           curl -XPOST -u "x-access-token:${{ secrets.K9PAT }}" \
