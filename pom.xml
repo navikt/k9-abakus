@@ -11,7 +11,7 @@
     </parent>
 
 	<groupId>no.nav.foreldrepenger.abakus</groupId>
-	<artifactId>fpabakus</artifactId>
+	<artifactId>k9-abakus</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Abakus :: Root</name>
@@ -30,8 +30,8 @@
 	<properties>
 
         <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
-        <sonar.projectName>fp-abakus</sonar.projectName>
-        <sonar.projectKey>navikt_fp-abakus</sonar.projectKey>
+        <sonar.projectName>k9-abakus</sonar.projectName>
+        <sonar.projectKey>navikt_k9-abakus</sonar.projectKey>
 
         <kontrakt.java.version>21</kontrakt.java.version>
 
@@ -205,14 +205,14 @@
         <repository>
             <id>github</id>
             <name>GitHub Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/navikt/fp-abakus/</url>
+            <url>https://maven.pkg.github.com/navikt/k9-abakus/</url>
         </repository>
     </repositories>
 
 	<scm>
-		<connection>scm:git:https://github.com/navikt/fp-abakus.git</connection>
-		<developerConnection>scm:git:https://github.com/navikt/fp-abakus.git</developerConnection>
-		<url>https://github.com/navikt/fp-abakus</url>
+		<connection>scm:git:https://github.com/navikt/k9-abakus.git</connection>
+		<developerConnection>scm:git:https://github.com/navikt/k9-abakus.git</developerConnection>
+		<url>https://github.com/navikt/k9-abakus</url>
 		<tag>HEAD</tag>
 	</scm>
 
@@ -220,7 +220,7 @@
 		<repository>
 			<id>github</id>
 			<name>Github navikt Maven Packages</name>
-			<url>https://maven.pkg.github.com/navikt/fp-abakus</url>
+			<url>https://maven.pkg.github.com/navikt/k9-abakus</url>
 		</repository>
 	</distributionManagement>
 </project>
