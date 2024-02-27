@@ -35,7 +35,6 @@ jobs:
         id: build-and-test
         uses: navikt/fp-gha-workflows/.github/actions/build-maven-application@main # ratchet:exclude
         with:
-          skip-tests: 'true'
           sonar: 'false'
       - name: Login to GitHub Packages Docker Registry
         if: github.ref_name == 'master'
