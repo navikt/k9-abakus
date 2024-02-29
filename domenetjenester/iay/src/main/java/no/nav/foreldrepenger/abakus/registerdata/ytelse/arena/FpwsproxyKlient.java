@@ -23,7 +23,7 @@ import no.nav.vedtak.felles.integrasjon.rest.RestRequest;
 import no.nav.vedtak.felles.integrasjon.rest.TokenFlow;
 
 @ApplicationScoped
-@RestClientConfig(tokenConfig = TokenFlow.AZUREAD_CC, endpointProperty = "fpwsproxy.override.url", application = FpApplication.FPWSPROXY)
+@RestClientConfig(tokenConfig = TokenFlow.AZUREAD_CC, endpointProperty = "fpwsproxy.override.url", scopesProperty = "fpwsproxy.scopes")
 public class FpwsproxyKlient {
 
     private static final Logger LOG = LoggerFactory.getLogger(FpwsproxyKlient.class);
