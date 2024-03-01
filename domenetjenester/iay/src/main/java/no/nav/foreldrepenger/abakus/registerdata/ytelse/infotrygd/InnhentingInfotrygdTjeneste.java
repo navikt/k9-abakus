@@ -10,7 +10,10 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.Orgnummer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -173,7 +176,7 @@ public class InnhentingInfotrygdTjeneste {
             arbeidsforhold.inntektsperiode() == null ? InntektPeriodeType.UDEFINERT : InntektPeriodeReverse.reverseMap(
                 arbeidsforhold.inntektsperiode().kode().name(), LOG);
         BigDecimal inntekt = arbeidsforhold.inntekt() != null ? new BigDecimal(arbeidsforhold.inntekt()) : null;
-        return new InfotrygdYtelseArbeid(arbeidsforhold.orgnr().orgnr(), inntekt, inntektPeriode, arbeidsforhold.refusjon(),
+        return new InfotrygdYtelseArbeid(Optional.ofNullable(arbeidsforhold.orgnr()).map(Orgnummer::orgnr).orElse(null), inntekt, inntektPeriode, arbeidsforhold.refusjon(),
             arbeidsforhold.refusjonTom());
     }
 
