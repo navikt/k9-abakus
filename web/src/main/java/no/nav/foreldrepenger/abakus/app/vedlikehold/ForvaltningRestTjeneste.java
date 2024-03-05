@@ -2,7 +2,7 @@ package no.nav.foreldrepenger.abakus.app.vedlikehold;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.DRIFT;
-import static no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.GRUNNLAG;
+import static no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.FAGSAK;
 
 import java.util.List;
 import java.util.function.Function;
@@ -85,7 +85,7 @@ public class ForvaltningRestTjeneste {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Operation(description = "Setter oppgitt opptjening til å være varig endring", tags = "FORVALTNING", responses = {@ApiResponse(responseCode = "200", description = "Forekomster av utgått aktørid erstattet.")})
-    @BeskyttetRessurs(actionType = ActionType.UPDATE, resource = GRUNNLAG)
+    @BeskyttetRessurs(actionType = ActionType.UPDATE, resource = FAGSAK)
     public Response setVarigEndring(@TilpassetAbacAttributt(supplierClass = ForvaltningRestTjeneste.AbacDataSupplier.class) @NotNull @Valid VarigEndringRequest request) {
         var oppgittOpptjeningEksternReferanse = request.getEksternReferanse().toUuidReferanse();
         var org = new OrgNummer(request.getOrgnummer());
@@ -109,7 +109,7 @@ public class ForvaltningRestTjeneste {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Operation(description = "Fjerner angitt inntektsmelding/journalpost fra grunnlag", tags = "FORVALTNING", responses = {@ApiResponse(responseCode = "200", description = "Inntektsmelding eliminert.")})
-    @BeskyttetRessurs(actionType = ActionType.UPDATE, resource = GRUNNLAG)
+    @BeskyttetRessurs(actionType = ActionType.UPDATE, resource = FAGSAK)
     public Response eliminerInntektsmelding(@TilpassetAbacAttributt(supplierClass = ForvaltningRestTjeneste.AbacDataSupplier.class) @NotNull @Valid EliminerInntektsmeldingRequest request) {
         var koblingReferanse = new KoblingReferanse(request.getEksternReferanse().toUuidReferanse());
         var journalpost = new JournalpostId(request.getJournalpostId());
