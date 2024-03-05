@@ -20,7 +20,7 @@ import no.nav.vedtak.sikkerhet.abac.pipdata.PipFagsakStatus;
 public class PdpRequestBuilderImpl implements PdpRequestBuilder {
 
     private static final Cluster CLUSTER = Environment.current().getCluster();
-    private static final String ABAC_DOMAIN = "duplo";
+    private static final String ABAC_DOMAIN = "k9";
     private static final List<String> INTERNAL_CLUSTER_NAMESPACE = List.of(CLUSTER.clusterName() + ":k9saksbehandling",
         CLUSTER.clusterName() + ":teamforeldrepenger");
 
@@ -35,8 +35,8 @@ public class PdpRequestBuilderImpl implements PdpRequestBuilder {
             .leggTilAktørIdSet(dataAttributter.getVerdier(StandardAbacAttributtType.AKTØR_ID))
             .leggTilFødselsnumre(dataAttributter.getVerdier(StandardAbacAttributtType.FNR))
             // TODO: Hente fra pip-tjenesten? arv fra tidligere... men nå er 2 pips aktuelle ....
-            .leggTilRessurs(DuploDataKeys.FAGSAK_STATUS, PipFagsakStatus.UNDER_BEHANDLING)
-            .leggTilRessurs(DuploDataKeys.BEHANDLING_STATUS, PipBehandlingStatus.UTREDES)
+            .leggTilRessurs(k9DataKeys.FAGSAK_STATUS, PipFagsakStatus.UNDER_BEHANDLING)
+            .leggTilRessurs(k9DataKeys.BEHANDLING_STATUS, PipBehandlingStatus.UTREDES)
             .build();
     }
 
