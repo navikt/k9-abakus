@@ -12,11 +12,6 @@
     "cpu": "500m",
     "mem": "1024Mi"
   },
-  "groups": [
-    "466d0df7-22ba-4c68-b848-73478cfd0486",
-    "be11a922-59a2-4afa-b5ad-b9e9bd445268",
-    "1509dc91-a955-4e72-b64c-2f049e37c0c6"
-  ],
   "AZURE_IAC_RULES": [
     {
       "app": "k9-sak",
