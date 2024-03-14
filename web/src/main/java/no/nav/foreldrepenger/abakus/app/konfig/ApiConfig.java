@@ -52,7 +52,8 @@ public class ApiConfig extends Application {
         var oasConfig = new SwaggerConfiguration().id(ID_PREFIX + ApiConfig.class.getName())
             .openAPI(oas)
             .prettyPrint(true)
-            .resourceClasses(getClasses().stream().map(Class::getName).collect(Collectors.toSet()))
+            .scannerClass("io.swagger.v3.jaxrs2.integration.JaxrsAnnotationScanner")
+            .resourcePackages(Set.of("no.nav.folketrygdloven"))
             .ignoredRoutes(Set.of("/api/ytelse/v1/hent-vedtatte/for-ident/k9", "/api/ytelse/v1/hent-vedtatte-og-historiske/for-ident/k9",
                 "/api/ytelse/v1/hent-vedtatte/for-ident"));
 
