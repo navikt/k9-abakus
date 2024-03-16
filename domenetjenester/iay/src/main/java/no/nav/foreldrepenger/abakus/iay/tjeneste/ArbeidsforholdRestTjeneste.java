@@ -8,6 +8,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -19,13 +25,6 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.abakus.iaygrunnlag.ArbeidsforholdReferanse;
 import no.nav.abakus.iaygrunnlag.Periode;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
@@ -92,7 +91,7 @@ public class ArbeidsforholdRestTjeneste {
         LocalDate tom = Objects.equals(fom, periode.getTom()) ? fom.plusDays(1) // enkel dato søk
             : periode.getTom(); // periode søk
         LOG.info("ABAKUS arbeidstaker - sjekk consumers for ytelse {}", ytelse);
-        var arbeidstakersArbeidsforhold = dtoTjeneste.mapFor(aktørId, fom, tom, ytelse);
+        var arbeidstakersArbeidsforhold = dtoTjeneste.mapFor(aktørId, fom, tom);
         final Response response = Response.ok(arbeidstakersArbeidsforhold).build();
         return response;
     }

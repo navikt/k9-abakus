@@ -92,7 +92,7 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         LOG.info("Henter lignet inntekt for sak=[{}, {}] med behandling='{}'", kobling.getSaksnummer(), kobling.getYtelseType(),
             kobling.getKoblingReferanse());
 
-        var map = sigrunTjeneste.beregnetSkatt(kobling.getAktørId(), new FnrSupplier(kobling.getAktørId(), kobling.getYtelseType())::tilPersonIdent,
+        var map = sigrunTjeneste.beregnetSkatt(kobling.getAktørId(), new FnrSupplier(kobling.getAktørId())::tilPersonIdent,
             kobling.getOpplysningsperiodeSkattegrunnlag());
         var aktørInntektBuilder = inntektArbeidYtelseAggregatBuilder.getAktørInntektBuilder(kobling.getAktørId());
 
@@ -117,16 +117,13 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
     private class FnrSupplier {
 
         private final AktørId aktørId;
-        private final YtelseType ytelseType;
-
-        public FnrSupplier(AktørId aktørId, YtelseType ytelseType) {
+        public FnrSupplier(AktørId aktørId) {
             this.aktørId = aktørId;
-            this.ytelseType = ytelseType;
         }
 
         private PersonIdent tilPersonIdent() {
             try {
-                return aktørConsumer.hentIdentForAktør(this.aktørId, this.ytelseType).orElse(null);
+                return aktørConsumer.hentIdentForAktør(this.aktørId).orElse(null);
             } catch (Exception e) {
                 return null;
             }
@@ -160,12 +157,12 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         return grunnlagBuilder;
     }
 
-    private PersonIdent getFnrFraAktørId(AktørId aktørId, YtelseType ytelse) {
-        return aktørConsumer.hentIdentForAktør(aktørId, ytelse).orElseThrow();
+    private PersonIdent getFnrFraAktørId(AktørId aktørId) {
+        return aktørConsumer.hentIdentForAktør(aktørId).orElseThrow();
     }
 
     private void innhentYtelser(Kobling kobling, InntektArbeidYtelseAggregatBuilder builder) {
-        ytelseRegisterInnhenting.byggYtelser(kobling, kobling.getAktørId(), getFnrFraAktørId(kobling.getAktørId(), kobling.getYtelseType()),
+        ytelseRegisterInnhenting.byggYtelser(kobling, kobling.getAktørId(), getFnrFraAktørId(kobling.getAktørId()),
             kobling.getOpplysningsperiode(), builder, skalInnhenteYtelseGrunnlag(kobling));
     }
 
@@ -177,13 +174,12 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
 
     private void leggTilInntekter(AktørId aktørId,
                                   InntektArbeidYtelseAggregatBuilder builder,
-                                  InntektsInformasjon inntektsInformasjon,
-                                  YtelseType ytelse) {
+                                  InntektsInformasjon inntektsInformasjon) {
         var aktørInntektBuilder = builder.getAktørInntektBuilder(aktørId);
         InntektskildeType kilde = inntektsInformasjon.getKilde();
         aktørInntektBuilder.fjernInntekterFraKilde(kilde);
 
-        Map<String, Arbeidsgiver> arbeidsgivereLookup = lagArbeidsgiverLookup(inntektsInformasjon, ytelse);
+        Map<String, Arbeidsgiver> arbeidsgivereLookup = lagArbeidsgiverLookup(inntektsInformasjon);
 
         mapLønnsinntekter(inntektsInformasjon, aktørInntektBuilder, arbeidsgivereLookup);
         builder.leggTilAktørInntekt(aktørInntektBuilder);
@@ -194,12 +190,12 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         }
     }
 
-    private Map<String, Arbeidsgiver> lagArbeidsgiverLookup(InntektsInformasjon inntektsInformasjon, YtelseType ytelse) {
+    private Map<String, Arbeidsgiver> lagArbeidsgiverLookup(InntektsInformasjon inntektsInformasjon) {
         Map<String, Set<YearMonth>> alleArbeidsgivereMedMåneder = inntektsInformasjon.getMånedsinntekterUtenomYtelser()
             .stream()
             .collect(Collectors.groupingBy(Månedsinntekt::getArbeidsgiver, Collectors.mapping(Månedsinntekt::getMåned, Collectors.toSet())));
         Map<String, Arbeidsgiver> arbeidsgivereLookup = new HashMap<>();
-        alleArbeidsgivereMedMåneder.forEach((agString, måneder) -> Optional.ofNullable(finnArbeidsgiverForInntektsData(agString, måneder, ytelse))
+        alleArbeidsgivereMedMåneder.forEach((agString, måneder) -> Optional.ofNullable(finnArbeidsgiverForInntektsData(agString, måneder))
             .ifPresent(ag -> arbeidsgivereLookup.put(agString, ag)));
         return arbeidsgivereLookup;
     }
@@ -246,7 +242,7 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         builder.leggTilAktørArbeid(aktørArbeidBuilder);
     }
 
-    private Arbeidsgiver finnArbeidsgiverForInntektsData(String arbeidsgiverString, Set<YearMonth> inntekterForMåneder, YtelseType ytelse) {
+    private Arbeidsgiver finnArbeidsgiverForInntektsData(String arbeidsgiverString, Set<YearMonth> inntekterForMåneder) {
 
         if (OrganisasjonsNummerValidator.erGyldig(arbeidsgiverString)) {
             boolean orgledd = virksomhetTjeneste.sjekkOmOrganisasjonErOrgledd(arbeidsgiverString);
@@ -259,7 +255,7 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
             }
         } else {
             if (PersonIdent.erGyldigFnr(arbeidsgiverString)) {
-                var arbeidsgiverAktørId = aktørConsumer.hentAktørForIdent(new PersonIdent(arbeidsgiverString), ytelse)
+                var arbeidsgiverAktørId = aktørConsumer.hentAktørForIdent(new PersonIdent(arbeidsgiverString))
                     .orElseThrow(() -> new TekniskException("FP-464378",
                         "Feil ved oppslag av aktørID for en arbeidgiver som er en privatperson registrert med fnr/dnr"));
                 return Arbeidsgiver.person(arbeidsgiverAktørId);
@@ -310,13 +306,13 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
                 aktørArbeidBuilder.tilbakestillYrkesaktiviteter();
                 // Hvis/Når AAREG en gang i framtiden gir frilans som del av default arbeidsforholdtype - så kan følgende kuttes
                 Map<ArbeidsforholdIdentifikator, List<Arbeidsforhold>> arbeidsforholdFrilans = innhentingSamletTjeneste.getArbeidsforholdFrilans(
-                    aktørId, getFnrFraAktørId(aktørId, kobling.getYtelseType()), opplysningsPeriode);
+                    aktørId, getFnrFraAktørId(aktørId), opplysningsPeriode);
                 arbeidsforholdFrilans.entrySet()
                     .forEach(forholdet -> oversettArbeidsforholdTilYrkesaktivitet(kobling, builder, forholdet, aktørArbeidBuilder));
                 arbeidsforholdList.addAll(arbeidsforholdFrilans.keySet());
             }
             Map<ArbeidsforholdIdentifikator, List<Arbeidsforhold>> arbeidsforhold = innhentingSamletTjeneste.getArbeidsforhold(aktørId,
-                getFnrFraAktørId(aktørId, kobling.getYtelseType()), opplysningsPeriode);
+                getFnrFraAktørId(aktørId), opplysningsPeriode);
             arbeidsforhold.entrySet().forEach(forholdet -> oversettArbeidsforholdTilYrkesaktivitet(kobling, builder, forholdet, aktørArbeidBuilder));
             arbeidsforholdList.addAll(arbeidsforhold.keySet());
         }
@@ -344,12 +340,8 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         var inntektsInformasjon = innhentingSamletTjeneste.getInntektsInformasjon(aktørId, opplysningsPeriode, inntektsKilde,
             kobling.getYtelseType());
 
-        // En slags ytelse som er utbetalt fra NAV til bruker som LØNN ...
-        if (innhentingSamletTjeneste.skalInnhenteLønnskompensasjon(kobling, inntektsKilde)) {
-            inntektsInformasjon.leggTilMånedsinntekter(innhentingSamletTjeneste.getLønnskompensasjon(aktørId, opplysningsPeriode));
-        }
         if (informasjonsElementer.contains(registerdataElement)) {
-            leggTilInntekter(aktørId, builder, inntektsInformasjon, kobling.getYtelseType());
+            leggTilInntekter(aktørId, builder, inntektsInformasjon);
         }
 
         if (YtelseType.FRISINN.equals(kobling.getYtelseType()) && inntektsKilde.equals(InntektskildeType.INNTEKT_OPPTJENING)

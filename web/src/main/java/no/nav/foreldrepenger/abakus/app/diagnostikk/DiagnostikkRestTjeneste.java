@@ -1,21 +1,11 @@
 package no.nav.foreldrepenger.abakus.app.diagnostikk;
 
+import java.util.function.Function;
+
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
-import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.aktor.AktørTjeneste;
-import no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt;
-import no.nav.foreldrepenger.abakus.kobling.repository.KoblingRepository;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.Saksnummer;
-import no.nav.vedtak.sikkerhet.abac.AbacDataAttributter;
-import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
-import no.nav.vedtak.sikkerhet.abac.StandardAbacAttributtType;
-import no.nav.vedtak.sikkerhet.abac.TilpassetAbacAttributt;
-import no.nav.vedtak.sikkerhet.abac.beskyttet.ActionType;
-
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -29,8 +19,17 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-
-import java.util.function.Function;
+import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
+import no.nav.foreldrepenger.abakus.aktor.AktørTjeneste;
+import no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt;
+import no.nav.foreldrepenger.abakus.kobling.repository.KoblingRepository;
+import no.nav.foreldrepenger.abakus.typer.AktørId;
+import no.nav.foreldrepenger.abakus.typer.Saksnummer;
+import no.nav.vedtak.sikkerhet.abac.AbacDataAttributter;
+import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
+import no.nav.vedtak.sikkerhet.abac.StandardAbacAttributtType;
+import no.nav.vedtak.sikkerhet.abac.TilpassetAbacAttributt;
+import no.nav.vedtak.sikkerhet.abac.beskyttet.ActionType;
 
 @Path("/diagnostikk")
 @ApplicationScoped
@@ -70,7 +69,7 @@ public class DiagnostikkRestTjeneste {
         var kobling = koblingRepository.hentSisteKoblingReferanseFor(aktørId, saksnummer, ytelseType)
             .orElseThrow(
                 () -> new IllegalArgumentException("Fant ikke kobling for saksnummer=" + saksnummer + ", aktørId og ytelseType=" + ytelseType));
-        var ident = aktørTjeneste.hentIdentForAktør(aktørId, ytelseType).orElseThrow(); // skal ikke komme hit, bør feile forrige linje
+        var ident = aktørTjeneste.hentIdentForAktør(aktørId).orElseThrow(); // skal ikke komme hit, bør feile forrige linje
 
         /*
          * logg tilgang til tabell - må gjøres før dumps (siden StreamingOutput ikke kjører i scope av denne metoden på stacken,

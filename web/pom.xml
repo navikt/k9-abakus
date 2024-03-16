@@ -40,10 +40,6 @@
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.abakus</groupId>
-            <artifactId>lonnskomp</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>no.nav.foreldrepenger.abakus</groupId>
             <artifactId>migreringer</artifactId>
         </dependency>
         <dependency>
