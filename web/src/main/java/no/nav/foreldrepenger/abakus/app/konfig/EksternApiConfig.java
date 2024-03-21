@@ -62,6 +62,7 @@ public class EksternApiConfig extends Application {
 
         return Set.of(EksternDelingAvYtelserRestTjeneste.class,
             // Applikasjonsoppsett
+            AuthenticationFilter.class,
             JacksonJsonConfig.class,
             // Swagger
             OpenApiResource.class,
