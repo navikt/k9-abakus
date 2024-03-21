@@ -7,6 +7,8 @@ import jakarta.transaction.Transactional;
 
 import no.nav.foreldrepenger.konfig.KonfigVerdi;
 
+import no.nav.vedtak.felles.integrasjon.kafka.KafkaMessageHandler;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,30 +19,39 @@ import no.nav.vedtak.felles.prosesstask.api.ProsessTaskTjeneste;
 @ApplicationScoped
 @ActivateRequestContext
 @Transactional
-public class VedtaksHendelseHåndterer {
+public class VedtaksHendelseHåndterer implements KafkaMessageHandler.KafkaStringMessageHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(VedtaksHendelseHåndterer.class);
+
+    private static final String GROUP_ID = "k9-abakus"; // Hold konstant pga offset commit
+    private String topicName;
     private ProsessTaskTjeneste taskTjeneste;
-    private boolean lagreVedtak;
 
     public VedtaksHendelseHåndterer() {
         // CDI
     }
 
     @Inject
-    public VedtaksHendelseHåndterer(@KonfigVerdi(value = "kafka.lagre.vedtak", defaultVerdi = "true") Boolean lagreVedtak,
+    public VedtaksHendelseHåndterer(@KonfigVerdi(value = "kafka.fattevedtak.topic", defaultVerdi = "teamforeldrepenger.familie-vedtakfattet-v1") String topicName,
                                     ProsessTaskTjeneste taskTjeneste) {
+        this.topicName = topicName;
         this.taskTjeneste = taskTjeneste;
-        this.lagreVedtak = lagreVedtak;
     }
 
-    void handleMessage(String key, String payload) {
-        LOG.debug("Mottatt ytelse-vedtatt hendelse med key='{}', payload={}", key, payload);
-        if (lagreVedtak) {
-            var data = ProsessTaskDataBuilder.forProsessTask(LagreVedtakTask.class).medProperty(LagreVedtakTask.KEY, key).medPayload(payload);
-            taskTjeneste.lagre(data.build());
-        } else {
-            LOG.info("Lagring av vedtak er slått av. Husk å slå det på igjen samtidig med k9-abakus flyttes til egen database.");
-        }
+    @Override
+    public void handleRecord(String key, String value) {
+        LOG.debug("Mottatt ytelse-vedtatt hendelse med key='{}', payload={}", key, value);
+        var data = ProsessTaskDataBuilder.forProsessTask(LagreVedtakTask.class).medProperty(LagreVedtakTask.KEY, key).medPayload(value);
+        taskTjeneste.lagre(data.build());
+    }
+
+    @Override
+    public String topic() {
+        return topicName;
+    }
+
+    @Override
+    public String groupId() {
+        return GROUP_ID;
     }
 }
