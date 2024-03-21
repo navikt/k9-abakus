@@ -8,10 +8,10 @@ import jakarta.ws.rs.core.Application;
 import no.nav.foreldrepenger.abakus.app.metrics.PrometheusRestService;
 import no.nav.foreldrepenger.abakus.app.healthcheck.HealthCheckRestService;
 
-@ApplicationPath(InternalApiConfig.API_URL)
+@ApplicationPath(InternalApiConfig.API_URI)
 public class InternalApiConfig extends Application {
 
-    public static final String API_URL = "internal";
+    public static final String API_URI = "/internal";
 
     public InternalApiConfig() {
         // CDI
