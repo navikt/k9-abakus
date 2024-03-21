@@ -1,13 +1,9 @@
 package no.nav.foreldrepenger.abakus.registerdata;
 
-import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -19,22 +15,17 @@ import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseStatus;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
-import no.nav.foreldrepenger.abakus.lonnskomp.domene.LønnskompensasjonRepository;
-import no.nav.foreldrepenger.abakus.lonnskomp.domene.LønnskompensasjonVedtak;
 import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Arbeidsforhold;
 import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
 import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.ArbeidsforholdTjeneste;
 import no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.FinnInntektRequest;
 import no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
 import no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.Månedsinntekt;
 import no.nav.foreldrepenger.abakus.registerdata.ytelse.arena.FpwsproxyKlient;
 import no.nav.foreldrepenger.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
 import no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.InnhentingInfotrygdTjeneste;
 import no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseGrunnlag;
 import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
 import no.nav.foreldrepenger.abakus.typer.PersonIdent;
 import no.nav.foreldrepenger.abakus.typer.Saksnummer;
 import no.nav.foreldrepenger.konfig.Environment;
@@ -43,15 +34,12 @@ import no.nav.foreldrepenger.konfig.Environment;
 public class InnhentingSamletTjeneste {
 
     private static final Logger LOG = LoggerFactory.getLogger(InnhentingSamletTjeneste.class);
-    private static final Set<YtelseType> LØNNSKOMP_FOR_YTELSER = Set.of(YtelseType.FORELDREPENGER, YtelseType.SVANGERSKAPSPENGER);
     private final boolean isDev = Environment.current().isDev();
-    private final boolean isLocal = Environment.current().isLocal();
 
     private ArbeidsforholdTjeneste arbeidsforholdTjeneste;
     private InntektTjeneste inntektTjeneste;
     private FpwsproxyKlient fpwsproxyKlient;
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
-    private LønnskompensasjonRepository lønnskompensasjonRepository;
 
     InnhentingSamletTjeneste() {
         //CDI
@@ -61,14 +49,11 @@ public class InnhentingSamletTjeneste {
     public InnhentingSamletTjeneste(ArbeidsforholdTjeneste arbeidsforholdTjeneste,
 
                                     InntektTjeneste inntektTjeneste,
-                                    InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste,
-                                    LønnskompensasjonRepository lønnskompensasjonRepository,
-                                    FpwsproxyKlient fpwsproxyKlient) {
+                                    InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste, FpwsproxyKlient fpwsproxyKlient) {
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
-        this.lønnskompensasjonRepository = lønnskompensasjonRepository;
     }
 
     public InntektsInformasjon getInntektsInformasjon(AktørId aktørId, IntervallEntitet periode, InntektskildeType kilde, YtelseType ytelse) {
@@ -78,31 +63,6 @@ public class InnhentingSamletTjeneste {
         builder.medAktørId(aktørId.getId());
 
         return inntektTjeneste.finnInntekt(builder.build(), kilde, ytelse);
-    }
-
-    public boolean skalInnhenteLønnskompensasjon(Kobling kobling, @SuppressWarnings("unused") InntektskildeType kilde) {
-        return LØNNSKOMP_FOR_YTELSER.contains(kobling.getYtelseType());
-    }
-
-    public List<Månedsinntekt> getLønnskompensasjon(AktørId aktørId, IntervallEntitet periode) {
-        List<Månedsinntekt> resultat = new ArrayList<>();
-        lønnskompensasjonRepository.hentLønnskompensasjonForIPeriode(aktørId, periode.getFomDato(), periode.getTomDato())
-            .stream()
-            .filter(lk -> lk.getBeløp().getVerdi().compareTo(BigDecimal.ZERO) > 0)
-            .forEach(lk -> resultat.addAll(periodiserLønnskompensasjon(lk)));
-        return resultat;
-    }
-
-    private List<Månedsinntekt> periodiserLønnskompensasjon(LønnskompensasjonVedtak vedtak) {
-        return vedtak.getAnvistePerioder()
-            .stream()
-            .map(a -> new Månedsinntekt.Builder().medMåned(YearMonth.from(a.getAnvistFom()))
-                .medBeløp(a.getBeløp().map(Beløp::getVerdi).orElse(BigDecimal.ZERO))
-                .medArbeidsgiver(vedtak.getOrgNummer().getId())
-                .medYtelse(false)
-                .build())
-            .filter(mi -> mi.getBeløp().compareTo(BigDecimal.ZERO) > 0)
-            .collect(Collectors.toList());
     }
 
     public Map<ArbeidsforholdIdentifikator, List<Arbeidsforhold>> getArbeidsforhold(AktørId aktørId,

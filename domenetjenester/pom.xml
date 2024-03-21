@@ -18,7 +18,6 @@
         <module>kobling</module>
         <module>iay</module>
         <module>vedtak</module>
-        <module>lonnskomp</module>
     </modules>
 
     <dependencies>

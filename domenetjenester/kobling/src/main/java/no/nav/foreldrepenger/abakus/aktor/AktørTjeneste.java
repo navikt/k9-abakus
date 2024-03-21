@@ -7,8 +7,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
-
-import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.foreldrepenger.abakus.typer.AktørId;
 import no.nav.foreldrepenger.abakus.typer.PersonIdent;
 import no.nav.pdl.HentIdenterQueryRequest;
@@ -29,23 +27,18 @@ public class AktørTjeneste {
     private static final int DEFAULT_CACHE_SIZE = 1000;
     private static final long DEFAULT_CACHE_TIMEOUT = TimeUnit.MILLISECONDS.convert(8, TimeUnit.HOURS);
 
-    private static final Set<YtelseType> FORELDREPENGER_YTELSER = Set.of(YtelseType.FORELDREPENGER, YtelseType.SVANGERSKAPSPENGER,
-        YtelseType.ENGANGSTØNAD);
-
     private final LRUCache<AktørId, PersonIdent> cacheAktørIdTilIdent;
     private final LRUCache<PersonIdent, AktørId> cacheIdentTilAktørId;
 
-    private final Persondata pdlKlientFOR;
     private final Persondata pdlKlientOMS;
 
     public AktørTjeneste() {
-        this.pdlKlientFOR = new PdlKlient(Tema.FOR);
-        this.pdlKlientOMS = new PdlKlient(Tema.OMS);
+        this.pdlKlientOMS = new PdlKlient(Tema.OMS); // Inntil omlegging til k9-felles
         this.cacheAktørIdTilIdent = new LRUCache<>(DEFAULT_CACHE_SIZE, DEFAULT_CACHE_TIMEOUT);
         this.cacheIdentTilAktørId = new LRUCache<>(DEFAULT_CACHE_SIZE, DEFAULT_CACHE_TIMEOUT);
     }
 
-    public Optional<AktørId> hentAktørForIdent(PersonIdent fnr, YtelseType ytelse) {
+    public Optional<AktørId> hentAktørForIdent(PersonIdent fnr) {
         var request = new HentIdenterQueryRequest();
         request.setIdent(fnr.getIdent());
         request.setGrupper(List.of(IdentGruppe.AKTORID));
@@ -53,7 +46,7 @@ public class AktørTjeneste {
         var projection = new IdentlisteResponseProjection().identer(new IdentInformasjonResponseProjection().ident());
 
         try {
-            var identliste = hentIdenterForYtelse(request, projection, ytelse);
+            var identliste = hentIdenterForYtelse(request, projection);
             var aktørId = identliste.getIdenter().stream().findFirst().map(IdentInformasjon::getIdent).map(AktørId::new);
             aktørId.ifPresent(a -> cacheIdentTilAktørId.put(fnr, a));
             return aktørId;
@@ -65,7 +58,7 @@ public class AktørTjeneste {
         }
     }
 
-    public Set<AktørId> hentAktørIderForIdent(PersonIdent fnr, YtelseType ytelse) {
+    public Set<AktørId> hentAktørIderForIdent(PersonIdent fnr) {
         var request = new HentIdenterQueryRequest();
         request.setIdent(fnr.getIdent());
         request.setGrupper(List.of(IdentGruppe.AKTORID));
@@ -73,7 +66,7 @@ public class AktørTjeneste {
         var projection = new IdentlisteResponseProjection().identer(new IdentInformasjonResponseProjection().ident());
 
         try {
-            var identliste = hentIdenterForYtelse(request, projection, ytelse);
+            var identliste = hentIdenterForYtelse(request, projection);
             return identliste.getIdenter().stream().map(IdentInformasjon::getIdent).map(AktørId::new).collect(Collectors.toSet());
         } catch (VLException v) {
             if (Persondata.PDL_KLIENT_NOT_FOUND_KODE.equals(v.getKode())) {
@@ -83,7 +76,7 @@ public class AktørTjeneste {
         }
     }
 
-    public Optional<PersonIdent> hentIdentForAktør(AktørId aktørId, YtelseType ytelse) {
+    public Optional<PersonIdent> hentIdentForAktør(AktørId aktørId) {
         var fraCache = cacheAktørIdTilIdent.get(aktørId);
         if (fraCache != null) {
             return Optional.of(fraCache);
@@ -97,7 +90,7 @@ public class AktørTjeneste {
         final Identliste identliste;
 
         try {
-            identliste = hentIdenterForYtelse(request, projection, ytelse);
+            identliste = hentIdenterForYtelse(request, projection);
             var ident = identliste.getIdenter().stream().findFirst().map(IdentInformasjon::getIdent).map(PersonIdent::new);
             ident.ifPresent(i -> cacheAktørIdTilIdent.put(aktørId, i));
             return ident;
@@ -109,7 +102,7 @@ public class AktørTjeneste {
         }
     }
 
-    public Set<PersonIdent> hentPersonIdenterForAktør(AktørId aktørId, YtelseType ytelse) {
+    public Set<PersonIdent> hentPersonIdenterForAktør(AktørId aktørId) {
         var request = new HentIdenterQueryRequest();
         request.setIdent(aktørId.getId());
         request.setGrupper(List.of(IdentGruppe.FOLKEREGISTERIDENT));
@@ -117,7 +110,7 @@ public class AktørTjeneste {
         var projection = new IdentlisteResponseProjection().identer(new IdentInformasjonResponseProjection().ident());
 
         try {
-            var identliste = hentIdenterForYtelse(request, projection, ytelse);
+            var identliste = hentIdenterForYtelse(request, projection);
             return identliste.getIdenter().stream().map(IdentInformasjon::getIdent).map(PersonIdent::new).collect(Collectors.toSet());
         } catch (VLException v) {
             if (Persondata.PDL_KLIENT_NOT_FOUND_KODE.equals(v.getKode())) {
@@ -127,8 +120,7 @@ public class AktørTjeneste {
         }
     }
 
-    private Identliste hentIdenterForYtelse(HentIdenterQueryRequest request, IdentlisteResponseProjection projection, YtelseType ytelseType) {
-        return FORELDREPENGER_YTELSER.contains(ytelseType) ? pdlKlientFOR.hentIdenter(request, projection) : pdlKlientOMS.hentIdenter(request,
-            projection);
+    private Identliste hentIdenterForYtelse(HentIdenterQueryRequest request, IdentlisteResponseProjection projection) {
+        return pdlKlientOMS.hentIdenter(request, projection);
     }
 }

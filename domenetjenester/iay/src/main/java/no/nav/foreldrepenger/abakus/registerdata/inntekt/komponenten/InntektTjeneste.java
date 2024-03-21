@@ -8,12 +8,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
@@ -134,7 +133,7 @@ public class InntektTjeneste {
                     for (ArbeidsInntektMaaned arbeidsInntektMaaned : arbeidsInntektIdent.getArbeidsInntektMaaned()) {
                         ArbeidsInntektInformasjon arbeidsInntektInformasjon = oversettInntekter(månedsinntekter, arbeidsInntektMaaned, kilde);
                         if (YtelseType.FRISINN.equals(ytelse)) {
-                            oversettArbeidsforhold(arbeidsforhold, arbeidsInntektInformasjon, ytelse);
+                            oversettArbeidsforhold(arbeidsforhold, arbeidsInntektInformasjon);
                         }
                     }
                 }
@@ -180,8 +179,7 @@ public class InntektTjeneste {
     }
 
     private void oversettArbeidsforhold(List<FrilansArbeidsforhold> arbeidsforhold,
-                                        ArbeidsInntektInformasjon arbeidsInntektInformasjon,
-                                        YtelseType ytelse) {
+                                        ArbeidsInntektInformasjon arbeidsInntektInformasjon) {
         if (arbeidsInntektInformasjon.getArbeidsforholdListe() == null) {
             return;
         }
@@ -199,20 +197,20 @@ public class InntektTjeneste {
             if (arbeidsforholdFrilanser.getAntallTimerPerUkeSomEnFullStillingTilsvarer() != null) {
                 builder.medBeregnetAntallTimerPerUke(BigDecimal.valueOf(arbeidsforholdFrilanser.getAntallTimerPerUkeSomEnFullStillingTilsvarer()));
             }
-            oversettArbeidsgiver(arbeidsforholdFrilanser, builder, ytelse);
+            oversettArbeidsgiver(arbeidsforholdFrilanser, builder);
 
             arbeidsforhold.add(builder.build());
         }
     }
 
-    private void oversettArbeidsgiver(ArbeidsforholdFrilanser arbeidsforholdFrilanser, FrilansArbeidsforhold.Builder builder, YtelseType ytelse) {
+    private void oversettArbeidsgiver(ArbeidsforholdFrilanser arbeidsforholdFrilanser, FrilansArbeidsforhold.Builder builder) {
         var arbeidsgiver = arbeidsforholdFrilanser.getArbeidsgiver();
         if (AktoerType.AKTOER_ID.equals(arbeidsgiver.getAktoerType())) { // OK med NPE hvis arbeidsgiver er null
             builder.medArbeidsgiverAktørId(new AktørId(arbeidsgiver.getIdentifikator()));
         } else if (AktoerType.ORGANISASJON.equals(arbeidsgiver.getAktoerType())) {
             builder.medArbeidsgiverOrgnr(arbeidsgiver.getIdentifikator());
         } else if (AktoerType.NATURLIG_IDENT.equals(arbeidsgiver.getAktoerType())) {
-            AktørId aktørId = aktørConsumer.hentAktørForIdent(new PersonIdent(arbeidsgiver.getIdentifikator()), ytelse).orElse(null);
+            AktørId aktørId = aktørConsumer.hentAktørForIdent(new PersonIdent(arbeidsgiver.getIdentifikator())).orElse(null);
             builder.medArbeidsgiverAktørId(aktørId);
         } else {
             LOG.info("Arbeidsgiver for frilanser har ukjent aktørtype: {}", arbeidsgiver.getAktoerType());
