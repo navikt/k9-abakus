@@ -1,6 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun;
-
-import static org.junit.jupiter.api.Assertions.*;
+package no.nav.k9.abakus.registerdata.inntekt.sigrun;
 
 import java.time.Year;
 
@@ -8,8 +6,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.SigrunConsumer;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.SigrunConsumer;
 
 class SigrunTjenesteTest {
 

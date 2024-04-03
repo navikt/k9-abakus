@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,8 +10,8 @@ import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 import no.nav.abakus.iaygrunnlag.request.Dataset;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
 
 class InntektArbeidYtelseGrunnlagBuilderTest {
 

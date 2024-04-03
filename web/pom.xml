@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>no.nav.foreldrepenger.abakus</groupId>
+        <groupId>no.nav.k9.abakus</groupId>
         <artifactId>k9-abakus</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
@@ -15,11 +15,11 @@
 
     <dependencies>
         <dependency>
-            <groupId>no.nav.foreldrepenger.abakus</groupId>
+            <groupId>no.nav.k9.abakus</groupId>
             <artifactId>kobling</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.foreldrepenger.abakus</groupId>
+            <groupId>no.nav.k9.abakus</groupId>
             <artifactId>felles</artifactId>
         </dependency>
         <dependency>
@@ -31,15 +31,15 @@
             <artifactId>prosesstask-rest-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.foreldrepenger.abakus</groupId>
+            <groupId>no.nav.k9.abakus</groupId>
             <artifactId>prosesstask</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.foreldrepenger.abakus</groupId>
+            <groupId>no.nav.k9.abakus</groupId>
             <artifactId>iay</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.foreldrepenger.abakus</groupId>
+            <groupId>no.nav.k9.abakus</groupId>
             <artifactId>migreringer</artifactId>
         </dependency>
         <dependency>
@@ -201,7 +201,7 @@
 
         <!-- Jandex index --><!-- Test avhengigheter -->
         <dependency>
-            <groupId>no.nav.foreldrepenger.abakus</groupId>
+            <groupId>no.nav.k9.abakus</groupId>
             <artifactId>migreringer</artifactId>
             <type>test-jar</type>
             <scope>test</scope>
@@ -227,7 +227,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>no.nav.foreldrepenger.abakus.jetty.JettyServer</mainClass>
+                            <mainClass>no.nav.k9.abakus.jetty.JettyServer</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

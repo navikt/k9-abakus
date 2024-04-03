@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.vedtak.kafka;
+package no.nav.k9.abakus.vedtak.kafka;
 
 import static org.apache.kafka.streams.errors.StreamsUncaughtExceptionHandler.StreamThreadExceptionResponse.SHUTDOWN_CLIENT;
 

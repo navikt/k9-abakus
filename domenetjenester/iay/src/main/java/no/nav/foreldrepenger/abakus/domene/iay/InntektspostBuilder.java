@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -7,7 +7,7 @@ import no.nav.abakus.iaygrunnlag.kodeverk.InntektYtelseType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektspostType;
 import no.nav.abakus.iaygrunnlag.kodeverk.LønnsinntektBeskrivelse;
 import no.nav.abakus.iaygrunnlag.kodeverk.SkatteOgAvgiftsregelType;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.Beløp;
 
 public class InntektspostBuilder {
     private Inntektspost inntektspost;

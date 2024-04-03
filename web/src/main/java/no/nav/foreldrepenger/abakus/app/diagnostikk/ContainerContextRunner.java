@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.diagnostikk;
+package no.nav.k9.abakus.app.diagnostikk;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -13,8 +13,8 @@ import jakarta.transaction.Transactional;
 import org.jboss.weld.context.RequestContext;
 import org.jboss.weld.context.unbound.UnboundLiteral;
 
-import no.nav.foreldrepenger.abakus.app.diagnostikk.dumps.RegisterInnhentingDump;
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
+import no.nav.k9.abakus.app.diagnostikk.dumps.RegisterInnhentingDump;
+import no.nav.k9.abakus.kobling.Kobling;
 import no.nav.vedtak.log.mdc.MdcExtendedLogContext;
 import no.nav.vedtak.sikkerhet.kontekst.BasisKontekst;
 import no.nav.vedtak.sikkerhet.kontekst.KontekstHolder;

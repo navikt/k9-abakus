@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold;
+package no.nav.k9.abakus.domene.iay.arbeidsforhold;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -25,12 +25,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidsforholdHandlingType;
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.domene.iay.GrunnlagReferanse;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.typer.EksternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.InternArbeidsforholdRef;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.domene.iay.GrunnlagReferanse;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
 
 /**
  * Gjelder ekstra informasjon om arbeidsforhold (overstyringer, angitte eksterne/interne referanser for arbeidsforhold).

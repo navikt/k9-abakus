@@ -4,13 +4,14 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+
     <parent>
         <groupId>no.nav.foreldrepenger.felles</groupId>
         <artifactId>fp-bom</artifactId>
         <version>3.1.2</version>
     </parent>
 
-	<groupId>no.nav.foreldrepenger.abakus</groupId>
+	<groupId>no.nav.k9.abakus</groupId>
 	<artifactId>k9-abakus</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
@@ -105,58 +106,58 @@
 
 
 			<dependency>
-				<groupId>no.nav.foreldrepenger.abakus</groupId>
+				<groupId>no.nav.k9.abakus</groupId>
 				<artifactId>felles</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.foreldrepenger.abakus</groupId>
+				<groupId>no.nav.k9.abakus</groupId>
 				<artifactId>abakus-kodeverk</artifactId>
 				<version>${project.version}</version>
 			</dependency>
             <dependency>
-                <groupId>no.nav.foreldrepenger.abakus</groupId>
+                <groupId>no.nav.k9.abakus</groupId>
                 <artifactId>abakus-vedtak</artifactId>
                 <version>${project.version}</version>
             </dependency>
 			<dependency>
-				<groupId>no.nav.foreldrepenger.abakus</groupId>
+				<groupId>no.nav.k9.abakus</groupId>
 				<artifactId>abakus-kontrakt</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.foreldrepenger.abakus</groupId>
+				<groupId>no.nav.k9.abakus</groupId>
 				<artifactId>kobling</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.foreldrepenger.abakus</groupId>
+				<groupId>no.nav.k9.abakus</groupId>
 				<artifactId>iay</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.foreldrepenger.abakus</groupId>
+				<groupId>no.nav.k9.abakus</groupId>
 				<artifactId>prosesstask</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.foreldrepenger.abakus</groupId>
+				<groupId>no.nav.k9.abakus</groupId>
 				<artifactId>vedtak</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.foreldrepenger.abakus</groupId>
+				<groupId>no.nav.k9.abakus</groupId>
 				<artifactId>migreringer</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.foreldrepenger.abakus</groupId>
+				<groupId>no.nav.k9.abakus</groupId>
 				<artifactId>migreringer</artifactId>
 				<version>${project.version}</version>
 				<type>test-jar</type>
 			</dependency>
 			<dependency>
-				<groupId>no.nav.foreldrepenger.abakus</groupId>
+				<groupId>no.nav.k9.abakus</groupId>
 				<artifactId>web</artifactId>
 				<version>${project.version}</version>
 			</dependency>

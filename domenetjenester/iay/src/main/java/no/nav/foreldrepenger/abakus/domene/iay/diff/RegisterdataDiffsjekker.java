@@ -1,7 +1,7 @@
-package no.nav.foreldrepenger.abakus.domene.iay.diff;
+package no.nav.k9.abakus.domene.iay.diff;
 
-import no.nav.foreldrepenger.abakus.felles.diff.DiffEntity;
-import no.nav.foreldrepenger.abakus.felles.diff.TraverseGraph;
+import no.nav.k9.abakus.felles.diff.DiffEntity;
+import no.nav.k9.abakus.felles.diff.TraverseGraph;
 
 public class RegisterdataDiffsjekker {
     private DiffEntity diffEntity;

@@ -1,12 +1,12 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient;
+package no.nav.k9.abakus.registerdata.inntekt.sigrun.klient;
 
 import java.time.Year;
 import java.util.List;
 
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden.PgiFolketrygdenResponse;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden.SigrunPgiFolketrygdenResponse;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.summertskattegrunnlag.SigrunSummertSkattegrunnlagResponse;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden.PgiFolketrygdenResponse;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden.SigrunPgiFolketrygdenResponse;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.summertskattegrunnlag.SigrunSummertSkattegrunnlagResponse;
 
 public interface SigrunConsumer {
 

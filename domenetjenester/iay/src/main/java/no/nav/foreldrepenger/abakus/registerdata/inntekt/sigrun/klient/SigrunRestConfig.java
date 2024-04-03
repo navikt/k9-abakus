@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient;
+package no.nav.k9.abakus.registerdata.inntekt.sigrun.klient;
 
 class SigrunRestConfig {
     // felles config

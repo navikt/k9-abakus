@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten;
+package no.nav.k9.abakus.registerdata.inntekt.komponenten;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
@@ -16,9 +16,9 @@ import jakarta.inject.Inject;
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.aktor.AktørTjeneste;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.PersonIdent;
+import no.nav.k9.abakus.aktor.AktørTjeneste;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.PersonIdent;
 import no.nav.tjenester.aordningen.inntektsinformasjon.Aktoer;
 import no.nav.tjenester.aordningen.inntektsinformasjon.AktoerType;
 import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsInntektIdent;

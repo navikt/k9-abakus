@@ -1,10 +1,10 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import java.math.BigDecimal;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektPeriodeType;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
-import no.nav.foreldrepenger.abakus.typer.OrgNummer;
+import no.nav.k9.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.OrgNummer;
 
 public class YtelseStørrelseBuilder {
     private final YtelseStørrelse ytelseStørrelse;

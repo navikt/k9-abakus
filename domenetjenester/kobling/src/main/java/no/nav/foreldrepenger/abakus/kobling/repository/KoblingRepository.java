@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.kobling.repository;
+package no.nav.k9.abakus.kobling.repository;
 
 import java.util.List;
 import java.util.Objects;
@@ -15,15 +15,15 @@ import org.slf4j.LoggerFactory;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Kodeverdi;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.felles.diff.DiffEntity;
-import no.nav.foreldrepenger.abakus.felles.diff.DiffResult;
-import no.nav.foreldrepenger.abakus.felles.diff.TraverseGraph;
-import no.nav.foreldrepenger.abakus.felles.diff.TraverseJpaEntityGraphConfig;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
-import no.nav.foreldrepenger.abakus.kobling.KoblingReferanse;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.Saksnummer;
+import no.nav.k9.abakus.felles.diff.DiffEntity;
+import no.nav.k9.abakus.felles.diff.DiffResult;
+import no.nav.k9.abakus.felles.diff.TraverseGraph;
+import no.nav.k9.abakus.felles.diff.TraverseJpaEntityGraphConfig;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.kobling.Kobling;
+import no.nav.k9.abakus.kobling.KoblingReferanse;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.Saksnummer;
 import no.nav.vedtak.felles.jpa.HibernateVerktøy;
 
 @ApplicationScoped

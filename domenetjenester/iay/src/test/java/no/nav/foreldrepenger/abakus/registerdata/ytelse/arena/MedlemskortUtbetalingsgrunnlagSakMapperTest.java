@@ -1,9 +1,9 @@
-package no.nav.foreldrepenger.abakus.registerdata.ytelse.arena;
+package no.nav.k9.abakus.registerdata.ytelse.arena;
 
-import static no.nav.foreldrepenger.abakus.registerdata.ytelse.arena.MedlemskortUtbetalingsgrunnlagSakMapper.tilKilde;
-import static no.nav.foreldrepenger.abakus.registerdata.ytelse.arena.MedlemskortUtbetalingsgrunnlagSakMapper.tilTilstand;
-import static no.nav.foreldrepenger.abakus.registerdata.ytelse.arena.MedlemskortUtbetalingsgrunnlagSakMapper.tilType;
-import static no.nav.foreldrepenger.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSakDtoSeraliseringOgDeseraliseringTest.getMeldekortUtbetalingsgrunnlagSakDto;
+import static no.nav.k9.abakus.registerdata.ytelse.arena.MedlemskortUtbetalingsgrunnlagSakMapper.tilKilde;
+import static no.nav.k9.abakus.registerdata.ytelse.arena.MedlemskortUtbetalingsgrunnlagSakMapper.tilTilstand;
+import static no.nav.k9.abakus.registerdata.ytelse.arena.MedlemskortUtbetalingsgrunnlagSakMapper.tilType;
+import static no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSakDtoSeraliseringOgDeseraliseringTest.getMeldekortUtbetalingsgrunnlagSakDto;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;

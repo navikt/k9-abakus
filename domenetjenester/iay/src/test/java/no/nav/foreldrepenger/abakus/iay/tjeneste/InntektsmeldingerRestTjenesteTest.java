@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.iay.tjeneste;
+package no.nav.k9.abakus.iay.tjeneste;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,17 +23,17 @@ import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektsmeldingInnsendingsårsakType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.abakus.iaygrunnlag.request.InntektsmeldingerMottattRequest;
-import no.nav.foreldrepenger.abakus.dbstoette.JpaExtension;
-import no.nav.foreldrepenger.abakus.domene.iay.GrunnlagReferanse;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseGrunnlag;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseRepository;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektsmeldingAggregat;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
-import no.nav.foreldrepenger.abakus.iay.InntektArbeidYtelseTjeneste;
-import no.nav.foreldrepenger.abakus.iay.InntektsmeldingerTjeneste;
-import no.nav.foreldrepenger.abakus.kobling.KoblingTjeneste;
-import no.nav.foreldrepenger.abakus.kobling.repository.KoblingRepository;
-import no.nav.foreldrepenger.abakus.kobling.repository.LåsRepository;
+import no.nav.k9.abakus.dbstoette.JpaExtension;
+import no.nav.k9.abakus.domene.iay.GrunnlagReferanse;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlag;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseRepository;
+import no.nav.k9.abakus.domene.iay.InntektsmeldingAggregat;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
+import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
+import no.nav.k9.abakus.iay.InntektsmeldingerTjeneste;
+import no.nav.k9.abakus.kobling.KoblingTjeneste;
+import no.nav.k9.abakus.kobling.repository.KoblingRepository;
+import no.nav.k9.abakus.kobling.repository.LåsRepository;
 
 
 class InntektsmeldingerRestTjenesteTest {

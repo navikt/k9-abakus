@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.iay.jpa;
+package no.nav.k9.abakus.iay.jpa;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

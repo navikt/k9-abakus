@@ -1,9 +1,9 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient;
+package no.nav.k9.abakus.registerdata.inntekt.sigrun.klient;
 
-import static no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.SigrunRestConfig.PATH_BS;
-import static no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.SigrunRestConfig.PATH_PGI_FT;
-import static no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.SigrunRestConfig.PATH_SSG;
-import static no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.SigrunRestConfig.X_CALL_ID;
+import static no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.SigrunRestConfig.PATH_BS;
+import static no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.SigrunRestConfig.PATH_PGI_FT;
+import static no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.SigrunRestConfig.PATH_SSG;
+import static no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.SigrunRestConfig.X_CALL_ID;
 
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -18,8 +18,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.ws.rs.core.UriBuilder;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden.PgiFolketrygdenResponse;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.summertskattegrunnlag.SSGResponse;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden.PgiFolketrygdenResponse;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.summertskattegrunnlag.SSGResponse;
 import no.nav.foreldrepenger.konfig.Environment;
 import no.nav.vedtak.exception.IntegrasjonException;
 import no.nav.vedtak.exception.ManglerTilgangException;

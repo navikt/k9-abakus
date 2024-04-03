@@ -1,6 +1,6 @@
-package no.nav.foreldrepenger.abakus.registerdata.tjeneste;
+package no.nav.k9.abakus.registerdata.tjeneste;
 
-import static no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.FAGSAK;
+import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.FAGSAK;
 
 import java.net.HttpURLConnection;
 import java.util.Optional;
@@ -39,11 +39,11 @@ import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.abakus.iaygrunnlag.request.InnhentRegisterdataRequest;
 import no.nav.abakus.iaygrunnlag.request.RegisterdataType;
 import no.nav.abakus.iaygrunnlag.request.SjekkStatusRequest;
-import no.nav.foreldrepenger.abakus.domene.iay.GrunnlagReferanse;
-import no.nav.foreldrepenger.abakus.felles.LoggUtil;
-import no.nav.foreldrepenger.abakus.kobling.KoblingReferanse;
-import no.nav.foreldrepenger.abakus.kobling.KoblingTjeneste;
-import no.nav.foreldrepenger.abakus.registerdata.tjeneste.dto.TaskResponsDto;
+import no.nav.k9.abakus.domene.iay.GrunnlagReferanse;
+import no.nav.k9.abakus.felles.LoggUtil;
+import no.nav.k9.abakus.kobling.KoblingReferanse;
+import no.nav.k9.abakus.kobling.KoblingTjeneste;
+import no.nav.k9.abakus.registerdata.tjeneste.dto.TaskResponsDto;
 import no.nav.vedtak.sikkerhet.abac.AbacDataAttributter;
 import no.nav.vedtak.sikkerhet.abac.AbacDto;
 import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;

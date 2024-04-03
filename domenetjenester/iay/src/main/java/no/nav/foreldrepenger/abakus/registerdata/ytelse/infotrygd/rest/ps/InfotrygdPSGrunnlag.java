@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.rest.ps;
+package no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.ps;
 
 import jakarta.enterprise.context.Dependent;
 import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.AbstractInfotrygdGrunnlag;

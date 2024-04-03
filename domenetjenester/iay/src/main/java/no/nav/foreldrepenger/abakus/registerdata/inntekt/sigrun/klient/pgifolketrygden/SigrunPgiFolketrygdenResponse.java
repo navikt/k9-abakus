@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden;
+package no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden;
 
 import java.time.Year;
 import java.util.List;

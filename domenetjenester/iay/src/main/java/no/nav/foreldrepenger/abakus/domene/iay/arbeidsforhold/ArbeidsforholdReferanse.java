@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold;
+package no.nav.k9.abakus.domene.iay.arbeidsforhold;
 
 import java.util.Objects;
 
@@ -15,13 +15,13 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.IndexKeyComposer;
-import no.nav.foreldrepenger.abakus.felles.diff.TraverseValue;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.typer.EksternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.InternArbeidsforholdRef;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
+import no.nav.k9.abakus.felles.diff.TraverseValue;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
 
 @Entity(name = "ArbeidsforholdReferanse")
 @Table(name = "IAY_ARBEIDSFORHOLD_REFER")

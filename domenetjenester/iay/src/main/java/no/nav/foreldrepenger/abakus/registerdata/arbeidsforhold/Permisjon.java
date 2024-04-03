@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold;
+package no.nav.k9.abakus.registerdata.arbeidsforhold;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.rest;
+package no.nav.k9.abakus.app.rest;
 
 import java.net.URI;
 import java.net.URISyntaxException;

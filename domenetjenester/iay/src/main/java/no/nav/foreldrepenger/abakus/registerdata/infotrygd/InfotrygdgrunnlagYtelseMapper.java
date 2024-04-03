@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.infotrygd;
+package no.nav.k9.abakus.registerdata.infotrygd;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -9,17 +9,17 @@ import java.util.Optional;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Arbeidskategori;
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.Ytelse;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseGrunnlag;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseGrunnlagBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseStørrelseBuilder;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseAnvist;
-import no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseGrunnlag;
-import no.nav.foreldrepenger.abakus.typer.OrgNummer;
-import no.nav.foreldrepenger.abakus.typer.OrganisasjonsNummerValidator;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
+import no.nav.k9.abakus.domene.iay.Ytelse;
+import no.nav.k9.abakus.domene.iay.YtelseBuilder;
+import no.nav.k9.abakus.domene.iay.YtelseGrunnlag;
+import no.nav.k9.abakus.domene.iay.YtelseGrunnlagBuilder;
+import no.nav.k9.abakus.domene.iay.YtelseStørrelseBuilder;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseAnvist;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseGrunnlag;
+import no.nav.k9.abakus.typer.OrgNummer;
+import no.nav.k9.abakus.typer.OrganisasjonsNummerValidator;
 import no.nav.fpsak.tidsserie.LocalDateSegment;
 import no.nav.fpsak.tidsserie.LocalDateSegmentCombinator;
 import no.nav.fpsak.tidsserie.LocalDateTimeline;

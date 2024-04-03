@@ -1,11 +1,11 @@
-package no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold;
+package no.nav.k9.abakus.registerdata.arbeidsforhold;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import no.nav.foreldrepenger.abakus.typer.EksternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
 
 public class Arbeidsforhold {
     private Arbeidsgiver arbeidsgiver;

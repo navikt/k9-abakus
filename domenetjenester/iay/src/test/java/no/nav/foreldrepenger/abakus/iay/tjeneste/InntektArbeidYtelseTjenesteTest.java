@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.iay.tjeneste;
+package no.nav.k9.abakus.iay.tjeneste;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -17,20 +17,20 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
 import no.nav.abakus.iaygrunnlag.request.Dataset;
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseRepository;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektsmeldingAggregat;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdReferanse;
-import no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.Inntektsmelding;
-import no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.InntektsmeldingBuilder;
-import no.nav.foreldrepenger.abakus.iay.InntektArbeidYtelseTjeneste;
-import no.nav.foreldrepenger.abakus.kobling.KoblingReferanse;
-import no.nav.foreldrepenger.abakus.typer.EksternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.InternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.OrgNummer;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseRepository;
+import no.nav.k9.abakus.domene.iay.InntektsmeldingAggregat;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdReferanse;
+import no.nav.k9.abakus.domene.iay.inntektsmelding.Inntektsmelding;
+import no.nav.k9.abakus.domene.iay.inntektsmelding.InntektsmeldingBuilder;
+import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
+import no.nav.k9.abakus.kobling.KoblingReferanse;
+import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.OrgNummer;
 
 class InntektArbeidYtelseTjenesteTest {
 

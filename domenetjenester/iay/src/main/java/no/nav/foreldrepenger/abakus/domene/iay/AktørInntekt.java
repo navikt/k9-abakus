@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 
 import java.util.Collection;
@@ -26,10 +26,10 @@ import jakarta.persistence.Version;
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektspostType;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.IndexKeyComposer;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.typer.AktørId;
 
 @Table(name = "IAY_AKTOER_INNTEKT")
 @Entity(name = "AktørInntekt")

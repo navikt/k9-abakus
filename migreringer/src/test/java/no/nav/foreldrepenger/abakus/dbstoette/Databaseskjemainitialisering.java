@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.dbstoette;
+package no.nav.k9.abakus.dbstoette;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.iay.tjeneste.dto.iay;
+package no.nav.k9.abakus.iay.tjeneste.dto.iay;
 
 import java.util.Comparator;
 import java.util.List;
@@ -15,19 +15,19 @@ import no.nav.abakus.iaygrunnlag.arbeidsforhold.v1.ArbeidsforholdInformasjon;
 import no.nav.abakus.iaygrunnlag.arbeidsforhold.v1.ArbeidsforholdOverstyringDto;
 import no.nav.abakus.iaygrunnlag.arbeidsforhold.v1.ArbeidsforholdReferanseDto;
 import no.nav.abakus.iaygrunnlag.kodeverk.BekreftetPermisjonStatus;
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.domene.iay.BekreftetPermisjon;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdOverstyringBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdOverstyrtePerioder;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdReferanse;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.EksternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.InternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.OrgNummer;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.domene.iay.BekreftetPermisjon;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdOverstyringBuilder;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdOverstyrtePerioder;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdReferanse;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.OrgNummer;
+import no.nav.k9.abakus.typer.Stillingsprosent;
 
 class MapArbeidsforholdInformasjon {
 
@@ -114,7 +114,7 @@ class MapArbeidsforholdInformasjon {
 
     static class MapTilDto {
 
-        ArbeidsforholdInformasjon map(UUID grunnlagRef, no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon entitet) {
+        ArbeidsforholdInformasjon map(UUID grunnlagRef, no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon entitet) {
             if (entitet == null) {
                 return null;
             }
@@ -172,7 +172,7 @@ class MapArbeidsforholdInformasjon {
             return new ArbeidsforholdReferanseDto(arbeidsgiver, new ArbeidsforholdRefDto(internReferanse, eksternReferanse));
         }
 
-        private ArbeidsforholdRefDto mapArbeidsforholdsId(no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon arbeidsforholdInformasjon,
+        private ArbeidsforholdRefDto mapArbeidsforholdsId(no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon arbeidsforholdInformasjon,
                                                           UUID grunnlagRef,
                                                           Arbeidsgiver arbeidsgiver,
                                                           InternArbeidsforholdRef ref) {

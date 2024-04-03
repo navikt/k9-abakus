@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.virksomhet;
+package no.nav.k9.abakus.domene.virksomhet;
 
 import java.time.LocalDate;
 import java.util.Objects;

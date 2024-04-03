@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata;
+package no.nav.k9.abakus.registerdata;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;
@@ -13,12 +13,12 @@ import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektspostType;
 import no.nav.abakus.iaygrunnlag.kodeverk.LønnsinntektBeskrivelse;
 import no.nav.abakus.iaygrunnlag.kodeverk.SkatteOgAvgiftsregelType;
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektspostBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.Opptjeningsnøkkel;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
+import no.nav.k9.abakus.domene.iay.InntektBuilder;
+import no.nav.k9.abakus.domene.iay.InntektspostBuilder;
+import no.nav.k9.abakus.domene.iay.Opptjeningsnøkkel;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
 
 /**
  * Lager Inntekt for lønnsinnntekter

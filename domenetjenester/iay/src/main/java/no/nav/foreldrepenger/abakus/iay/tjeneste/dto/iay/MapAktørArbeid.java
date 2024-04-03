@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.iay.tjeneste.dto.iay;
+package no.nav.k9.abakus.iay.tjeneste.dto.iay;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -18,22 +18,22 @@ import no.nav.abakus.iaygrunnlag.arbeid.v1.AktivitetsAvtaleDto;
 import no.nav.abakus.iaygrunnlag.arbeid.v1.ArbeidDto;
 import no.nav.abakus.iaygrunnlag.arbeid.v1.PermisjonDto;
 import no.nav.abakus.iaygrunnlag.arbeid.v1.YrkesaktivitetDto;
-import no.nav.foreldrepenger.abakus.domene.iay.AktivitetsAvtale;
-import no.nav.foreldrepenger.abakus.domene.iay.AktivitetsAvtaleBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.AktørArbeid;
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder.AktørArbeidBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.Opptjeningsnøkkel;
-import no.nav.foreldrepenger.abakus.domene.iay.Permisjon;
-import no.nav.foreldrepenger.abakus.domene.iay.PermisjonBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.Yrkesaktivitet;
-import no.nav.foreldrepenger.abakus.domene.iay.YrkesaktivitetBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.InternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.OrgNummer;
+import no.nav.k9.abakus.domene.iay.AktivitetsAvtale;
+import no.nav.k9.abakus.domene.iay.AktivitetsAvtaleBuilder;
+import no.nav.k9.abakus.domene.iay.AktørArbeid;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder.AktørArbeidBuilder;
+import no.nav.k9.abakus.domene.iay.Opptjeningsnøkkel;
+import no.nav.k9.abakus.domene.iay.Permisjon;
+import no.nav.k9.abakus.domene.iay.PermisjonBuilder;
+import no.nav.k9.abakus.domene.iay.Yrkesaktivitet;
+import no.nav.k9.abakus.domene.iay.YrkesaktivitetBuilder;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.OrgNummer;
 
 public class MapAktørArbeid {
 

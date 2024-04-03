@@ -1,13 +1,13 @@
-package no.nav.foreldrepenger.abakus.domene.iay.diff;
+package no.nav.k9.abakus.domene.iay.diff;
 
 import java.util.function.Function;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Kodeverdi;
-import no.nav.foreldrepenger.abakus.felles.diff.TraverseGraph;
-import no.nav.foreldrepenger.abakus.felles.diff.TraverseGraphConfig;
-import no.nav.foreldrepenger.abakus.felles.diff.TraverseJpaEntityGraphConfig;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
+import no.nav.k9.abakus.felles.diff.TraverseGraph;
+import no.nav.k9.abakus.felles.diff.TraverseGraphConfig;
+import no.nav.k9.abakus.felles.diff.TraverseJpaEntityGraphConfig;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.kobling.Kobling;
 
 /*
  * Legger denne sammen med RootClass

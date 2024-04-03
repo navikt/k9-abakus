@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient;
+package no.nav.k9.abakus.registerdata.inntekt.sigrun.klient;
 
 import static java.util.Arrays.asList;
 
@@ -13,11 +13,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden.PgiFolketrygdenResponse;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden.SigrunPgiFolketrygdenResponse;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.summertskattegrunnlag.SSGResponse;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.summertskattegrunnlag.SigrunSummertSkattegrunnlagResponse;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden.PgiFolketrygdenResponse;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden.SigrunPgiFolketrygdenResponse;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.summertskattegrunnlag.SSGResponse;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.summertskattegrunnlag.SigrunSummertSkattegrunnlagResponse;
 import no.nav.foreldrepenger.konfig.Environment;
 import no.nav.vedtak.felles.integrasjon.rest.RestClient;
 

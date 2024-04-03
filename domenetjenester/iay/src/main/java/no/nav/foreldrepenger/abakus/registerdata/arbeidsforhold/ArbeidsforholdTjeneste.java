@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold;
+package no.nav.k9.abakus.registerdata.arbeidsforhold;
 
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
@@ -12,17 +12,17 @@ import org.slf4j.LoggerFactory;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.rest.AaregRestKlient;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.rest.ArbeidsavtaleRS;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.rest.ArbeidsforholdRS;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.rest.OpplysningspliktigArbeidsgiverRS;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.rest.PeriodeRS;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.rest.PermisjonPermitteringRS;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.EksternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.PersonIdent;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.rest.AaregRestKlient;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.rest.ArbeidsavtaleRS;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.rest.ArbeidsforholdRS;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.rest.OpplysningspliktigArbeidsgiverRS;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.rest.PeriodeRS;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.rest.PermisjonPermitteringRS;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.PersonIdent;
+import no.nav.k9.abakus.typer.Stillingsprosent;
 
 @ApplicationScoped
 public class ArbeidsforholdTjeneste {
@@ -101,13 +101,13 @@ public class ArbeidsforholdTjeneste {
     private void utledArbeidsgiverRS(ArbeidsforholdRS arbeidsforhold, Arbeidsforhold.Builder builder) {
         if (OpplysningspliktigArbeidsgiverRS.Type.Person.equals(arbeidsforhold.getArbeidsgiver().getType())) {
             AktørId arbeidsgiver = new AktørId(arbeidsforhold.getArbeidsgiver().getAktoerId());
-            no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Person person = new no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Person.Builder().medAktørId(
+            no.nav.k9.abakus.registerdata.arbeidsforhold.Person person = new no.nav.k9.abakus.registerdata.arbeidsforhold.Person.Builder().medAktørId(
                 arbeidsgiver).build();
             builder.medArbeidsgiver(person);
             final var uuid = UUID.nameUUIDFromBytes(arbeidsforhold.getType().getBytes(StandardCharsets.UTF_8));
             builder.medArbeidsforholdId(uuid.toString());
         } else if (OpplysningspliktigArbeidsgiverRS.Type.Organisasjon.equals(arbeidsforhold.getArbeidsgiver().getType())) {
-            no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Organisasjon organisasjon = new no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Organisasjon.Builder().medOrgNummer(
+            no.nav.k9.abakus.registerdata.arbeidsforhold.Organisasjon organisasjon = new no.nav.k9.abakus.registerdata.arbeidsforhold.Organisasjon.Builder().medOrgNummer(
                 arbeidsforhold.getArbeidsgiver().getOrganisasjonsnummer()).build();
             builder.medArbeidsgiver(organisasjon);
             builder.medArbeidsforholdId(arbeidsforhold.getArbeidsforholdId());

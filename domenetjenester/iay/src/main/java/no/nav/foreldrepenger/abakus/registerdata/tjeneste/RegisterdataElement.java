@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.tjeneste;
+package no.nav.k9.abakus.registerdata.tjeneste;
 
 public enum RegisterdataElement {
     ARBEIDSFORHOLD,

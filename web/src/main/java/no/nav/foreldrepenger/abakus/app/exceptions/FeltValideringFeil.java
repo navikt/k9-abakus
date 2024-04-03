@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.exceptions;
+package no.nav.k9.abakus.app.exceptions;
 
 import java.util.List;
 

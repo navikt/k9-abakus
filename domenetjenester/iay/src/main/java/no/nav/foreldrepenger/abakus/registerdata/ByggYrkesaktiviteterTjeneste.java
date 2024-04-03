@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata;
+package no.nav.k9.abakus.registerdata;
 
 import static no.nav.vedtak.konfig.Tid.TIDENES_BEGYNNELSE;
 import static no.nav.vedtak.konfig.Tid.TIDENES_ENDE;
@@ -11,18 +11,18 @@ import java.util.Optional;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
 import no.nav.abakus.iaygrunnlag.kodeverk.PermisjonsbeskrivelseType;
-import no.nav.foreldrepenger.abakus.domene.iay.AktivitetsAvtaleBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.Opptjeningsnøkkel;
-import no.nav.foreldrepenger.abakus.domene.iay.Permisjon;
-import no.nav.foreldrepenger.abakus.domene.iay.PermisjonBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.YrkesaktivitetBuilder;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Arbeidsavtale;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Arbeidsforhold;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
-import no.nav.foreldrepenger.abakus.typer.InternArbeidsforholdRef;
+import no.nav.k9.abakus.domene.iay.AktivitetsAvtaleBuilder;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
+import no.nav.k9.abakus.domene.iay.Opptjeningsnøkkel;
+import no.nav.k9.abakus.domene.iay.Permisjon;
+import no.nav.k9.abakus.domene.iay.PermisjonBuilder;
+import no.nav.k9.abakus.domene.iay.YrkesaktivitetBuilder;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.Arbeidsavtale;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.Arbeidsforhold;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
+import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
 
 class ByggYrkesaktiviteterTjeneste {
 
@@ -109,7 +109,7 @@ class ByggYrkesaktiviteterTjeneste {
         }
     }
 
-    private Permisjon opprettPermisjoner(no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Permisjon permisjon,
+    private Permisjon opprettPermisjoner(no.nav.k9.abakus.registerdata.arbeidsforhold.Permisjon permisjon,
                                          YrkesaktivitetBuilder yrkesaktivitetBuilder,
                                          LocalDate arbeidsforholdTom) {
         PermisjonBuilder permisjonBuilder = yrkesaktivitetBuilder.getPermisjonBuilder();

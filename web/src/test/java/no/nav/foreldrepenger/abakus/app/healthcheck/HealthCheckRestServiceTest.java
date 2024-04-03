@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.healthcheck;
+package no.nav.k9.abakus.app.healthcheck;
 
 import static jakarta.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 import static jakarta.ws.rs.core.Response.Status.OK;
@@ -13,7 +13,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 
-import no.nav.foreldrepenger.abakus.app.tjenester.ApplicationServiceStarter;
+import no.nav.k9.abakus.app.tjenester.ApplicationServiceStarter;
 import no.nav.vedtak.log.metrics.LivenessAware;
 import no.nav.vedtak.log.metrics.ReadinessAware;
 

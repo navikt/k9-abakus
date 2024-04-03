@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -22,24 +22,24 @@ import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektspostType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.dbstoette.JpaExtension;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.Fravær;
-import no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.InntektsmeldingBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittAnnenAktivitet;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjening;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
-import no.nav.foreldrepenger.abakus.kobling.KoblingReferanse;
-import no.nav.foreldrepenger.abakus.kobling.repository.KoblingRepository;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
-import no.nav.foreldrepenger.abakus.typer.EksternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.InternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.OrgNummer;
-import no.nav.foreldrepenger.abakus.typer.Saksnummer;
+import no.nav.k9.abakus.dbstoette.JpaExtension;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
+import no.nav.k9.abakus.domene.iay.inntektsmelding.Fravær;
+import no.nav.k9.abakus.domene.iay.inntektsmelding.InntektsmeldingBuilder;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittAnnenAktivitet;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjening;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.kobling.Kobling;
+import no.nav.k9.abakus.kobling.KoblingReferanse;
+import no.nav.k9.abakus.kobling.repository.KoblingRepository;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.OrgNummer;
+import no.nav.k9.abakus.typer.Saksnummer;
 import no.nav.vedtak.felles.testutilities.cdi.CdiAwareExtension;
 
 @ExtendWith(CdiAwareExtension.class)

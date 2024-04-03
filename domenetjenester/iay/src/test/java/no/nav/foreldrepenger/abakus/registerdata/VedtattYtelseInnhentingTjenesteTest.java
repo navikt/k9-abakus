@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata;
+package no.nav.k9.abakus.registerdata;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -18,20 +18,20 @@ import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
 import no.nav.abakus.iaygrunnlag.kodeverk.Inntektskategori;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseStatus;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseRepository;
-import no.nav.foreldrepenger.abakus.domene.iay.Ytelse;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseAnvist;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.Saksnummer;
-import no.nav.foreldrepenger.abakus.vedtak.domene.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelse;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelseAndelBuilder;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelseBuilder;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelseRepository;
-import no.nav.foreldrepenger.abakus.vedtak.domene.YtelseAnvistBuilder;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseRepository;
+import no.nav.k9.abakus.domene.iay.Ytelse;
+import no.nav.k9.abakus.domene.iay.YtelseAnvist;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.kobling.Kobling;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.Saksnummer;
+import no.nav.k9.abakus.vedtak.domene.Arbeidsgiver;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelse;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelseAndelBuilder;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelseBuilder;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelseRepository;
+import no.nav.k9.abakus.vedtak.domene.YtelseAnvistBuilder;
 
 class VedtattYtelseInnhentingTjenesteTest {
 

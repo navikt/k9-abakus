@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.typer;
+package no.nav.k9.abakus.typer;
 
 import java.util.Objects;
 

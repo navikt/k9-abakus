@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.jetty;
+package no.nav.k9.abakus.jetty;
 
 import java.util.Properties;
 

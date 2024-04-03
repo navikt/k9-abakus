@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.rest;
+package no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest;
 
 import jakarta.enterprise.context.Dependent;
 import no.nav.vedtak.felles.integrasjon.rest.RestClientConfig;

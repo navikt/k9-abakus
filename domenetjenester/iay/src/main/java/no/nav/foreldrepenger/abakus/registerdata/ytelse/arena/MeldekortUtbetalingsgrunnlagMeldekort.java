@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.ytelse.arena;
+package no.nav.k9.abakus.registerdata.ytelse.arena;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun;
+package no.nav.k9.abakus.registerdata.inntekt.sigrun;
 
 import java.util.List;
 import java.util.Map;

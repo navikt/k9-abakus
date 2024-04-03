@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import java.time.LocalDate;
 import java.util.LinkedHashSet;
@@ -21,12 +21,12 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.IndexKeyComposer;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.Stillingsprosent;
 
 @Entity(name = "YtelseAnvistEntitet")
 @Table(name = "IAY_YTELSE_ANVIST")

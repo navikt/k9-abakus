@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.aktor;
+package no.nav.k9.abakus.aktor;
 
 import no.nav.vedtak.felles.integrasjon.person.AbstractPersonKlient;
 import no.nav.vedtak.felles.integrasjon.person.Tema;

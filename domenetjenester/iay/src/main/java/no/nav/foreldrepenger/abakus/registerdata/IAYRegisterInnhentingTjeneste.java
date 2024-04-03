@@ -1,10 +1,10 @@
-package no.nav.foreldrepenger.abakus.registerdata;
+package no.nav.k9.abakus.registerdata;
 
 import java.util.Set;
 
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
-import no.nav.foreldrepenger.abakus.registerdata.tjeneste.RegisterdataElement;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
+import no.nav.k9.abakus.kobling.Kobling;
+import no.nav.k9.abakus.registerdata.tjeneste.RegisterdataElement;
 
 public interface IAYRegisterInnhentingTjeneste {
 

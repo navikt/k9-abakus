@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.iay.tjeneste.dto.iay;
+package no.nav.k9.abakus.iay.tjeneste.dto.iay;
 
 import java.time.ZoneId;
 import java.util.Set;
@@ -10,13 +10,13 @@ import no.nav.abakus.iaygrunnlag.request.Dataset;
 import no.nav.abakus.iaygrunnlag.v1.InntektArbeidYtelseAggregatOverstyrtDto;
 import no.nav.abakus.iaygrunnlag.v1.InntektArbeidYtelseAggregatRegisterDto;
 import no.nav.abakus.iaygrunnlag.v1.InntektArbeidYtelseGrunnlagDto;
-import no.nav.foreldrepenger.abakus.domene.iay.GrunnlagReferanse;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregat;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseGrunnlag;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
-import no.nav.foreldrepenger.abakus.iay.tjeneste.dto.iay.MapAktørInntekt.MapTilDto;
-import no.nav.foreldrepenger.abakus.kobling.KoblingReferanse;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
+import no.nav.k9.abakus.domene.iay.GrunnlagReferanse;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregat;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlag;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
+import no.nav.k9.abakus.iay.tjeneste.dto.iay.MapAktørInntekt.MapTilDto;
+import no.nav.k9.abakus.kobling.KoblingReferanse;
+import no.nav.k9.abakus.typer.AktørId;
 
 public class IAYTilDtoMapper {
 

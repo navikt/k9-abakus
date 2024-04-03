@@ -1,15 +1,15 @@
-package no.nav.foreldrepenger.abakus.registerdata;
+package no.nav.k9.abakus.registerdata;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidsforholdHandlingType;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdOverstyring;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdOverstyring;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
 
 final class FjernOverstyringerForBortfalteArbeidsforhold {
 

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun;
+package no.nav.k9.abakus.registerdata.inntekt.sigrun;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -14,10 +14,10 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektspostType;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.BeregnetSkatt;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.summertskattegrunnlag.SSGGrunnlag;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.summertskattegrunnlag.SSGResponse;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.BeregnetSkatt;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.summertskattegrunnlag.SSGGrunnlag;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.summertskattegrunnlag.SSGResponse;
 
 class SigrunTilInternMapperTest {
     @Test

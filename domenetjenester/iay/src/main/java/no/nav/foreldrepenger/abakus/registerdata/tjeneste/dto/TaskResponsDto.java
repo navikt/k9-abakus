@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.tjeneste.dto;
+package no.nav.k9.abakus.registerdata.tjeneste.dto;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;

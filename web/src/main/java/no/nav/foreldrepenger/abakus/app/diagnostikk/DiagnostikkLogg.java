@@ -1,7 +1,7 @@
-package no.nav.foreldrepenger.abakus.app.diagnostikk;
+package no.nav.k9.abakus.app.diagnostikk;
 
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.typer.Saksnummer;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.typer.Saksnummer;
 
 import jakarta.persistence.*;
 

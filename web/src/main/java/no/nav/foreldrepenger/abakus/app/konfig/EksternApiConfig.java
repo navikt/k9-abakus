@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.konfig;
+package no.nav.k9.abakus.app.konfig;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,12 +17,12 @@ import io.swagger.v3.oas.integration.SwaggerConfiguration;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
-import no.nav.foreldrepenger.abakus.app.exceptions.ConstraintViolationMapper;
-import no.nav.foreldrepenger.abakus.app.exceptions.GeneralRestExceptionMapper;
-import no.nav.foreldrepenger.abakus.app.exceptions.JsonMappingExceptionMapper;
-import no.nav.foreldrepenger.abakus.app.exceptions.JsonParseExceptionMapper;
-import no.nav.foreldrepenger.abakus.app.jackson.JacksonJsonConfig;
-import no.nav.foreldrepenger.abakus.app.rest.ekstern.EksternDelingAvYtelserRestTjeneste;
+import no.nav.k9.abakus.app.exceptions.ConstraintViolationMapper;
+import no.nav.k9.abakus.app.exceptions.GeneralRestExceptionMapper;
+import no.nav.k9.abakus.app.exceptions.JsonMappingExceptionMapper;
+import no.nav.k9.abakus.app.exceptions.JsonParseExceptionMapper;
+import no.nav.k9.abakus.app.jackson.JacksonJsonConfig;
+import no.nav.k9.abakus.app.rest.ekstern.EksternDelingAvYtelserRestTjeneste;
 import no.nav.foreldrepenger.konfig.Environment;
 import no.nav.vedtak.exception.TekniskException;
 

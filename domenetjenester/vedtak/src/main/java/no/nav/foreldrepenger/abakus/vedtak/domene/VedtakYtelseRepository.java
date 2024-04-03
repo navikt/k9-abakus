@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.vedtak.domene;
+package no.nav.k9.abakus.vedtak.domene;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,9 +16,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.Saksnummer;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.Saksnummer;
 import no.nav.vedtak.felles.jpa.HibernateVerktøy;
 
 @ApplicationScoped

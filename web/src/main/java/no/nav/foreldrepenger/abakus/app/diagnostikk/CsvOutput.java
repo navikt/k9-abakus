@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.diagnostikk;
+package no.nav.k9.abakus.app.diagnostikk;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Kodeverdi;
 

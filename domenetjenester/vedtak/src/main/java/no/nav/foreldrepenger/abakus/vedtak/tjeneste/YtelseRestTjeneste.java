@@ -1,6 +1,6 @@
-package no.nav.foreldrepenger.abakus.vedtak.tjeneste;
+package no.nav.k9.abakus.vedtak.tjeneste;
 
-import static no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.APPLIKASJON;
+import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.APPLIKASJON;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,12 +23,12 @@ import jakarta.ws.rs.core.MediaType;
 import no.nav.abakus.vedtak.ytelse.Aktør;
 import no.nav.abakus.vedtak.ytelse.Ytelse;
 import no.nav.abakus.vedtak.ytelse.request.VedtakForPeriodeRequest;
-import no.nav.foreldrepenger.abakus.aktor.AktørTjeneste;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.PersonIdent;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelseRepository;
-import no.nav.foreldrepenger.abakus.vedtak.extract.v1.ConvertToYtelseV1;
+import no.nav.k9.abakus.aktor.AktørTjeneste;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.PersonIdent;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelseRepository;
+import no.nav.k9.abakus.vedtak.extract.v1.ConvertToYtelseV1;
 import no.nav.vedtak.sikkerhet.abac.AbacDataAttributter;
 import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
 import no.nav.vedtak.sikkerhet.abac.StandardAbacAttributtType;

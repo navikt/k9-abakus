@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.dto;
+package no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

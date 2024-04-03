@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.diagnostikk.dumps;
+package no.nav.k9.abakus.app.diagnostikk.dumps;
 
 import java.util.List;
 
@@ -7,11 +7,11 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Tuple;
 
-import no.nav.foreldrepenger.abakus.app.diagnostikk.CsvOutput;
-import no.nav.foreldrepenger.abakus.app.diagnostikk.DebugDump;
-import no.nav.foreldrepenger.abakus.app.diagnostikk.DumpKontekst;
-import no.nav.foreldrepenger.abakus.app.diagnostikk.DumpOutput;
-import no.nav.foreldrepenger.abakus.kobling.kontroll.YtelseTypeRef;
+import no.nav.k9.abakus.app.diagnostikk.CsvOutput;
+import no.nav.k9.abakus.app.diagnostikk.DebugDump;
+import no.nav.k9.abakus.app.diagnostikk.DumpKontekst;
+import no.nav.k9.abakus.app.diagnostikk.DumpOutput;
+import no.nav.k9.abakus.kobling.kontroll.YtelseTypeRef;
 
 @ApplicationScoped
 @YtelseTypeRef

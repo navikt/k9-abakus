@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.iay.tjeneste.migrering;
+package no.nav.k9.abakus.iay.tjeneste.migrering;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

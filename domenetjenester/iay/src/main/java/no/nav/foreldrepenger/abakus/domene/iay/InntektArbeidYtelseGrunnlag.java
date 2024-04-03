@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -21,12 +21,12 @@ import jakarta.persistence.Version;
 
 import org.hibernate.annotations.NaturalId;
 
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjening;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjeningAggregat;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.DiffIgnore;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjening;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningAggregat;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.DiffIgnore;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
 import no.nav.vedtak.felles.jpa.converters.BooleanToStringConverter;
 
 @Entity(name = "InntektArbeidGrunnlag")

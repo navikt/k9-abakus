@@ -1,6 +1,6 @@
-package no.nav.foreldrepenger.abakus.iay.tjeneste;
+package no.nav.k9.abakus.iay.tjeneste;
 
-import static no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.FAGSAK;
+import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.FAGSAK;
 
 import java.util.Optional;
 import java.util.function.Function;
@@ -22,16 +22,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.abakus.iaygrunnlag.UuidDto;
 import no.nav.abakus.iaygrunnlag.request.OppgittOpptjeningMottattRequest;
-import no.nav.foreldrepenger.abakus.domene.iay.GrunnlagReferanse;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
-import no.nav.foreldrepenger.abakus.felles.LoggUtil;
-import no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt;
-import no.nav.foreldrepenger.abakus.iay.OppgittOpptjeningTjeneste;
-import no.nav.foreldrepenger.abakus.iay.tjeneste.dto.iay.MapOppgittOpptjening;
-import no.nav.foreldrepenger.abakus.kobling.KoblingReferanse;
-import no.nav.foreldrepenger.abakus.kobling.KoblingTjeneste;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.Saksnummer;
+import no.nav.k9.abakus.domene.iay.GrunnlagReferanse;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
+import no.nav.k9.abakus.felles.LoggUtil;
+import no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt;
+import no.nav.k9.abakus.iay.OppgittOpptjeningTjeneste;
+import no.nav.k9.abakus.iay.tjeneste.dto.iay.MapOppgittOpptjening;
+import no.nav.k9.abakus.kobling.KoblingReferanse;
+import no.nav.k9.abakus.kobling.KoblingTjeneste;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.Saksnummer;
 import no.nav.vedtak.sikkerhet.abac.AbacDataAttributter;
 import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
 import no.nav.vedtak.sikkerhet.abac.StandardAbacAttributtType;

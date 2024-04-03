@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.vedtak.kafka;
+package no.nav.k9.abakus.vedtak.kafka;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.control.ActivateRequestContext;
@@ -10,7 +10,7 @@ import no.nav.foreldrepenger.konfig.KonfigVerdi;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.abakus.vedtak.LagreVedtakTask;
+import no.nav.k9.abakus.vedtak.LagreVedtakTask;
 import no.nav.vedtak.felles.prosesstask.api.ProsessTaskDataBuilder;
 import no.nav.vedtak.felles.prosesstask.api.ProsessTaskTjeneste;
 

@@ -1,8 +1,8 @@
-package no.nav.foreldrepenger.abakus.app.vedlikehold;
+package no.nav.k9.abakus.app.vedlikehold;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-import static no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.DRIFT;
-import static no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.FAGSAK;
+import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.DRIFT;
+import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.FAGSAK;
 
 import java.util.List;
 import java.util.function.Function;
@@ -21,14 +21,14 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
 import no.nav.abakus.iaygrunnlag.UuidDto;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektsmeldingAggregat;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittEgenNæring;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjening;
-import no.nav.foreldrepenger.abakus.iay.InntektArbeidYtelseTjeneste;
-import no.nav.foreldrepenger.abakus.kobling.KoblingReferanse;
-import no.nav.foreldrepenger.abakus.typer.JournalpostId;
-import no.nav.foreldrepenger.abakus.typer.OrgNummer;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
+import no.nav.k9.abakus.domene.iay.InntektsmeldingAggregat;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittEgenNæring;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjening;
+import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
+import no.nav.k9.abakus.kobling.KoblingReferanse;
+import no.nav.k9.abakus.typer.JournalpostId;
+import no.nav.k9.abakus.typer.OrgNummer;
 import no.nav.vedtak.sikkerhet.abac.AbacDataAttributter;
 import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
 import no.nav.vedtak.sikkerhet.abac.StandardAbacAttributtType;

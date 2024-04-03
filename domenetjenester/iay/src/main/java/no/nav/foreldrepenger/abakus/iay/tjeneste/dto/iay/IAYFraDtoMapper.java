@@ -1,14 +1,14 @@
-package no.nav.foreldrepenger.abakus.iay.tjeneste.dto.iay;
+package no.nav.k9.abakus.iay.tjeneste.dto.iay;
 
 import no.nav.abakus.iaygrunnlag.arbeidsforhold.v1.ArbeidsforholdInformasjon;
 import no.nav.abakus.iaygrunnlag.v1.InntektArbeidYtelseAggregatOverstyrtDto;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregat;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.VersjonType;
-import no.nav.foreldrepenger.abakus.iay.InntektArbeidYtelseTjeneste;
-import no.nav.foreldrepenger.abakus.kobling.KoblingReferanse;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregat;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
+import no.nav.k9.abakus.domene.iay.VersjonType;
+import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
+import no.nav.k9.abakus.kobling.KoblingReferanse;
+import no.nav.k9.abakus.typer.AktørId;
 
 import java.time.ZoneId;
 import java.util.Objects;

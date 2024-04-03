@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden;
+package no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektspostType;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 
 public final class SigrunPgiFolketrygdenMapper {
 

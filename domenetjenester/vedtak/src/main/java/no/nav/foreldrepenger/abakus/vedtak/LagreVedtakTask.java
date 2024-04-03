@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.vedtak;
+package no.nav.k9.abakus.vedtak;
 
 import java.io.IOException;
 import java.util.Set;
@@ -15,9 +15,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import no.nav.abakus.iaygrunnlag.JsonObjectMapper;
 import no.nav.abakus.vedtak.ytelse.Ytelse;
 import no.nav.abakus.vedtak.ytelse.v1.YtelseV1;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelseBuilder;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelseRepository;
-import no.nav.foreldrepenger.abakus.vedtak.extract.v1.ExtractFromYtelseV1;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelseBuilder;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelseRepository;
+import no.nav.k9.abakus.vedtak.extract.v1.ExtractFromYtelseV1;
 import no.nav.vedtak.exception.TekniskException;
 import no.nav.vedtak.felles.prosesstask.api.ProsessTask;
 import no.nav.vedtak.felles.prosesstask.api.ProsessTaskData;

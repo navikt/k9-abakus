@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.jetty;
+package no.nav.k9.abakus.jetty;
 
 import org.flywaydb.core.Flyway;
 import org.flywaydb.core.api.FlywayException;

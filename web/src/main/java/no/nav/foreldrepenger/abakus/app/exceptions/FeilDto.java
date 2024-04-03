@@ -1,7 +1,7 @@
-package no.nav.foreldrepenger.abakus.app.exceptions;
+package no.nav.k9.abakus.app.exceptions;
 
 import static java.util.Collections.emptyList;
-import static no.nav.foreldrepenger.abakus.app.exceptions.FeilType.GENERELL_FEIL;
+import static no.nav.k9.abakus.app.exceptions.FeilType.GENERELL_FEIL;
 
 import java.util.Collection;
 

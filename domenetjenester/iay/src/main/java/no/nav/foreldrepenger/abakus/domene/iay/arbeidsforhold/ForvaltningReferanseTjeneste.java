@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold;
+package no.nav.k9.abakus.domene.iay.arbeidsforhold;
 
 public class ForvaltningReferanseTjeneste {
 

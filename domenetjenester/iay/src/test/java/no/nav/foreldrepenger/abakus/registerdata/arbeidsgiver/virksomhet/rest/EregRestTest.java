@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.arbeidsgiver.virksomhet.rest;
+package no.nav.k9.abakus.registerdata.arbeidsgiver.virksomhet.rest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

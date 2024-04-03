@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.kobling;
+package no.nav.k9.abakus.kobling;
 
 import java.util.List;
 import java.util.Optional;
@@ -7,10 +7,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.kobling.repository.KoblingRepository;
-import no.nav.foreldrepenger.abakus.kobling.repository.LåsRepository;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.Saksnummer;
+import no.nav.k9.abakus.kobling.repository.KoblingRepository;
+import no.nav.k9.abakus.kobling.repository.LåsRepository;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.Saksnummer;
 
 @ApplicationScoped
 public class KoblingTjeneste {

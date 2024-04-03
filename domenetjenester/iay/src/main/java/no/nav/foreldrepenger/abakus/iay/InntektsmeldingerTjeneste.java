@@ -1,16 +1,16 @@
-package no.nav.foreldrepenger.abakus.iay;
+package no.nav.k9.abakus.iay;
 
 import java.util.List;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import no.nav.foreldrepenger.abakus.domene.iay.GrunnlagReferanse;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseRepository;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.Inntektsmelding;
-import no.nav.foreldrepenger.abakus.kobling.KoblingReferanse;
+import no.nav.k9.abakus.domene.iay.GrunnlagReferanse;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseRepository;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
+import no.nav.k9.abakus.domene.iay.inntektsmelding.Inntektsmelding;
+import no.nav.k9.abakus.kobling.KoblingReferanse;
 
 @ApplicationScoped
 public class InntektsmeldingerTjeneste {

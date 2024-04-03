@@ -1,12 +1,12 @@
-package no.nav.foreldrepenger.abakus.app.konfig;
+package no.nav.k9.abakus.app.konfig;
 
 import java.util.Set;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
 
-import no.nav.foreldrepenger.abakus.app.metrics.PrometheusRestService;
-import no.nav.foreldrepenger.abakus.app.healthcheck.HealthCheckRestService;
+import no.nav.k9.abakus.app.metrics.PrometheusRestService;
+import no.nav.k9.abakus.app.healthcheck.HealthCheckRestService;
 
 @ApplicationPath(InternalApiConfig.API_URI)
 public class InternalApiConfig extends Application {

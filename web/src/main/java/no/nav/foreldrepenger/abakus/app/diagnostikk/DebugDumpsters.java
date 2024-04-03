@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.diagnostikk;
+package no.nav.k9.abakus.app.diagnostikk;
 
 import java.io.BufferedOutputStream;
 import java.io.IOException;
@@ -20,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.kobling.kontroll.YtelseTypeRef;
-import no.nav.foreldrepenger.abakus.typer.Saksnummer;
+import no.nav.k9.abakus.kobling.kontroll.YtelseTypeRef;
+import no.nav.k9.abakus.typer.Saksnummer;
 
 @ApplicationScoped
 public class DebugDumpsters {

@@ -1,12 +1,12 @@
-package no.nav.foreldrepenger.abakus.vedtak.domene;
+package no.nav.k9.abakus.vedtak.domene;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.IndexKeyComposer;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.Stillingsprosent;
 
 import jakarta.persistence.*;
 

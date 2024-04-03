@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.callback;
+package no.nav.k9.abakus.registerdata.callback;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -12,11 +12,11 @@ import jakarta.inject.Inject;
 import no.nav.abakus.callback.registerdata.CallbackDto;
 import no.nav.abakus.callback.registerdata.Grunnlag;
 import no.nav.abakus.callback.registerdata.ReferanseDto;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseGrunnlag;
-import no.nav.foreldrepenger.abakus.iay.InntektArbeidYtelseTjeneste;
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
-import no.nav.foreldrepenger.abakus.kobling.KoblingTjeneste;
-import no.nav.foreldrepenger.abakus.kobling.TaskConstants;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlag;
+import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
+import no.nav.k9.abakus.kobling.Kobling;
+import no.nav.k9.abakus.kobling.KoblingTjeneste;
+import no.nav.k9.abakus.kobling.TaskConstants;
 import no.nav.vedtak.exception.TekniskException;
 import no.nav.vedtak.felles.integrasjon.rest.RestClient;
 import no.nav.vedtak.felles.integrasjon.rest.RestConfig;

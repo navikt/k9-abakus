@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.exceptions;
+package no.nav.k9.abakus.app.exceptions;
 
 public enum FeilType {
     MANGLER_TILGANG_FEIL("MANGLER_TILGANG_FEIL"),

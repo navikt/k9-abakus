@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding;
+package no.nav.k9.abakus.domene.iay.inntektsmelding;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -17,11 +17,11 @@ import jakarta.persistence.Version;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
 import no.nav.abakus.iaygrunnlag.kodeverk.UtsettelseÅrsakType;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.IndexKeyComposer;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.iay.jpa.UtsettelseÅrsakTypeKodeverdiConverter;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.iay.jpa.UtsettelseÅrsakTypeKodeverdiConverter;
 
 @Entity(name = "UtsettelsePeriode")
 @Table(name = "IAY_UTSETTELSE_PERIODE")

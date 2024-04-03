@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.diagnostikk;
+package no.nav.k9.abakus.app.diagnostikk;
 
 import java.util.List;
 
@@ -7,7 +7,7 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Tuple;
 
-import no.nav.foreldrepenger.abakus.kobling.kontroll.YtelseTypeRef;
+import no.nav.k9.abakus.kobling.kontroll.YtelseTypeRef;
 
 /**
  * Logger tilgang til fagsak for diagnostikk dumps til en egen tabell, inkluderer logg som del av output.

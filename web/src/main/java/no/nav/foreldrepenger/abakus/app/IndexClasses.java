@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app;
+package no.nav.k9.abakus.app;
 
 import java.io.IOException;
 import java.net.URI;

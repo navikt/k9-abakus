@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay.søknad;
+package no.nav.k9.abakus.domene.iay.søknad;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -18,12 +18,12 @@ import jakarta.persistence.Table;
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
 import no.nav.abakus.iaygrunnlag.kodeverk.Landkode;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.IndexKeyComposer;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.iay.jpa.ArbeidTypeKodeverdiConverter;
-import no.nav.foreldrepenger.abakus.iay.jpa.LandKodeKodeverdiConverter;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.iay.jpa.ArbeidTypeKodeverdiConverter;
+import no.nav.k9.abakus.iay.jpa.LandKodeKodeverdiConverter;
 import no.nav.vedtak.felles.jpa.converters.BooleanToStringConverter;
 
 /**

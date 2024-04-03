@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.healthcheck;
+package no.nav.k9.abakus.app.healthcheck;
 
 import static jakarta.ws.rs.core.MediaType.TEXT_PLAIN;
 import static jakarta.ws.rs.core.Response.Status.SERVICE_UNAVAILABLE;
@@ -19,7 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.swagger.v3.oas.annotations.Operation;
-import no.nav.foreldrepenger.abakus.app.tjenester.ApplicationServiceStarter;
+import no.nav.k9.abakus.app.tjenester.ApplicationServiceStarter;
 import no.nav.vedtak.log.metrics.LivenessAware;
 import no.nav.vedtak.log.metrics.ReadinessAware;
 

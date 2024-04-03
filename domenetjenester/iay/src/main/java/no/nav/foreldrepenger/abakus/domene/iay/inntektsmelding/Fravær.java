@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding;
+package no.nav.k9.abakus.domene.iay.inntektsmelding;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -16,10 +16,10 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.IndexKeyComposer;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 
 @Entity(name = "Fravær")
 @Table(name = "IAY_FRAVAER")

@@ -1,10 +1,10 @@
-package no.nav.foreldrepenger.abakus.app.diagnostikk.rapportering;
+package no.nav.k9.abakus.app.diagnostikk.rapportering;
 
 import java.util.List;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.app.diagnostikk.DumpOutput;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.app.diagnostikk.DumpOutput;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 
 public interface RapportGenerator {
 
