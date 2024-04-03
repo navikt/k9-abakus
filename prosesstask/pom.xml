@@ -12,7 +12,11 @@
 
 	<artifactId>prosesstask</artifactId>
 	<name>Abakus :: Prosesstask</name>
-	<packaging>jar</packaging>
+    <properties>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+    </properties>
+    <packaging>jar</packaging>
 
 	<dependencies>
 		<dependency>
