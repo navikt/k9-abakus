@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.kontrakter.iaygrunnlag.v1.iay;
+package no.nav.abakus.iaygrunnlag.v1.iay;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

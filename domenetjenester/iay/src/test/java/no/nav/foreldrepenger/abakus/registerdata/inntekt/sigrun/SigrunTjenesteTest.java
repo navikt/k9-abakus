@@ -1,7 +1,5 @@
 package no.nav.k9.abakus.registerdata.inntekt.sigrun;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 import java.time.Year;
 
 import org.assertj.core.api.Assertions;

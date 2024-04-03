@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.kontrakter.callback.registerdata;
+package no.nav.abakus.callback.registerdata;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
