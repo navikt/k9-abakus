@@ -34,7 +34,7 @@ jobs:
       contents: write
       issues: write
       packages: read
-    uses: navikt/k9-verdikjede/.github/workflows/build-options.yml@master
+    uses: navikt/sif-gha-workflows/.github/workflows/verdikjede-test.yml@master
     if: github.ref_name == 'master'
     needs: build-app
     with:
@@ -47,7 +47,7 @@ jobs:
       id-token: write
       contents: read
     if: github.ref_name == 'master'
-    needs: [build-app, kalkulus-verdikjede-tester]
+    needs: [build-app, verdikjede-tester]
     uses: navikt/sif-gha-workflows/.github/workflows/maven-deploy.yml@main
     with:
       gar: true
@@ -61,7 +61,7 @@ jobs:
       id-token: write
       contents: read
     if: github.ref_name == 'master'
-    needs: [build-app, kalkulus-verdikjede-tester]
+    needs: [build-app, verdikjede-tester]
     uses: navikt/sif-gha-workflows/.github/workflows/maven-deploy.yml@main
     with:
       gar: true
