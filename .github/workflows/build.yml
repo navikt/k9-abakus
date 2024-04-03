@@ -34,7 +34,7 @@ jobs:
       contents: write
       issues: write
       packages: read
-    uses: navikt/sif-gha-workflows/.github/workflows/verdikjede-test.yml@master
+    uses: navikt/sif-gha-workflows/.github/workflows/verdikjede-test.yml@main
     if: github.ref_name == 'master'
     needs: build-app
     with:
