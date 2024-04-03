@@ -14,7 +14,6 @@ enum k9DataKeys implements RessursDataKey {
         this.key = key;
     }
 
-    @Override
     public String getKey() {
         return key;
     }
