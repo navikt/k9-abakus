@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.infotrygd;
+package no.nav.k9.abakus.registerdata.infotrygd;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -15,15 +15,15 @@ import org.slf4j.LoggerFactory;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Arbeidskategori;
 import no.nav.abakus.iaygrunnlag.kodeverk.Inntektskategori;
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseAnvistAndel;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseAnvistAndelBuilder;
-import no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseAnvist;
-import no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseArbeid;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
-import no.nav.foreldrepenger.abakus.typer.OrgNummer;
-import no.nav.foreldrepenger.abakus.typer.OrganisasjonsNummerValidator;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.domene.iay.YtelseAnvistAndel;
+import no.nav.k9.abakus.domene.iay.YtelseAnvistAndelBuilder;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseAnvist;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseArbeid;
+import no.nav.k9.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.OrgNummer;
+import no.nav.k9.abakus.typer.OrganisasjonsNummerValidator;
+import no.nav.k9.abakus.typer.Stillingsprosent;
 
 public class InfotrygdgrunnlagAnvistAndelMapper {
 

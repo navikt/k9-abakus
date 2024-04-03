@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.vedtak.extract.v1;
+package no.nav.k9.abakus.vedtak.extract.v1;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,11 +19,11 @@ import no.nav.abakus.vedtak.ytelse.v1.anvisning.Anvisning;
 import no.nav.abakus.vedtak.ytelse.v1.anvisning.AnvistAndel;
 import no.nav.abakus.vedtak.ytelse.v1.anvisning.ArbeidsgiverIdent;
 import no.nav.abakus.vedtak.ytelse.v1.anvisning.Inntektklasse;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
-import no.nav.foreldrepenger.abakus.vedtak.domene.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelse;
-import no.nav.foreldrepenger.abakus.vedtak.domene.YtelseAnvist;
+import no.nav.k9.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.vedtak.domene.Arbeidsgiver;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelse;
+import no.nav.k9.abakus.vedtak.domene.YtelseAnvist;
 
 public final class ConvertToYtelseV1 {
 

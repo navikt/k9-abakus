@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.vedtak.domene;
+package no.nav.k9.abakus.vedtak.domene;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseStatus;
 

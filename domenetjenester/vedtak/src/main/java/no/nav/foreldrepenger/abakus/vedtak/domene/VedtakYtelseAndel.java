@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.vedtak.domene;
+package no.nav.k9.abakus.vedtak.domene;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -19,11 +19,11 @@ import jakarta.persistence.Version;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
 import no.nav.abakus.iaygrunnlag.kodeverk.Inntektskategori;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.IndexKeyComposer;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.Stillingsprosent;
 
 @Entity(name = "VedtakYtelseAndel")
 @Table(name = "VE_YTELSE_ANDEL")

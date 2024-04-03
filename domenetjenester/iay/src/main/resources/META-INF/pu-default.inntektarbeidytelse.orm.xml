@@ -42,33 +42,33 @@
     <sequence-generator name="SEQ_AKTIVITETS_AVTALE" allocation-size="50" sequence-name="SEQ_AKTIVITETS_AVTALE" />
 
     <!-- InntektArbeidYtelser aggregat og grunnlag -->
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdOverstyring" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdReferanse" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.AktivitetsAvtale" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.AktørArbeid" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.AktørInntekt" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.AktørYtelse" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseGrunnlag" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregat" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.Inntektspost" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.Permisjon" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.Inntekt" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.Ytelse" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.YtelseAnvist" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.YtelseAnvistAndel" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.YtelseGrunnlag" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.YtelseStørrelse" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.Yrkesaktivitet" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdOverstyrtePerioder" />
+    <entity class="no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon" />
+    <entity class="no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdOverstyring" />
+    <entity class="no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdReferanse" />
+    <entity class="no.nav.k9.abakus.domene.iay.AktivitetsAvtale" />
+    <entity class="no.nav.k9.abakus.domene.iay.AktørArbeid" />
+    <entity class="no.nav.k9.abakus.domene.iay.AktørInntekt" />
+    <entity class="no.nav.k9.abakus.domene.iay.AktørYtelse" />
+    <entity class="no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlag" />
+    <entity class="no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregat" />
+    <entity class="no.nav.k9.abakus.domene.iay.Inntektspost" />
+    <entity class="no.nav.k9.abakus.domene.iay.Permisjon" />
+    <entity class="no.nav.k9.abakus.domene.iay.Inntekt" />
+    <entity class="no.nav.k9.abakus.domene.iay.Ytelse" />
+    <entity class="no.nav.k9.abakus.domene.iay.YtelseAnvist" />
+    <entity class="no.nav.k9.abakus.domene.iay.YtelseAnvistAndel" />
+    <entity class="no.nav.k9.abakus.domene.iay.YtelseGrunnlag" />
+    <entity class="no.nav.k9.abakus.domene.iay.YtelseStørrelse" />
+    <entity class="no.nav.k9.abakus.domene.iay.Yrkesaktivitet" />
+    <entity class="no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdOverstyrtePerioder" />
 
     <!-- Inntektsmelding -->
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.InntektsmeldingAggregat" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.Inntektsmelding" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.Fravær" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.Gradering" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.NaturalYtelse" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.UtsettelsePeriode" />
-    <entity class="no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.Refusjon" />
+    <entity class="no.nav.k9.abakus.domene.iay.InntektsmeldingAggregat" />
+    <entity class="no.nav.k9.abakus.domene.iay.inntektsmelding.Inntektsmelding" />
+    <entity class="no.nav.k9.abakus.domene.iay.inntektsmelding.Fravær" />
+    <entity class="no.nav.k9.abakus.domene.iay.inntektsmelding.Gradering" />
+    <entity class="no.nav.k9.abakus.domene.iay.inntektsmelding.NaturalYtelse" />
+    <entity class="no.nav.k9.abakus.domene.iay.inntektsmelding.UtsettelsePeriode" />
+    <entity class="no.nav.k9.abakus.domene.iay.inntektsmelding.Refusjon" />
 
 </entity-mappings>

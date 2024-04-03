@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.ytelse.arena;
+package no.nav.k9.abakus.registerdata.ytelse.arena;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -12,7 +12,7 @@ import jakarta.ws.rs.core.UriBuilderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.abakus.typer.PersonIdent;
+import no.nav.k9.abakus.typer.PersonIdent;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.request.ArenaRequestDto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.MeldekortUtbetalingsgrunnlagSakDto;
 import no.nav.vedtak.felles.integrasjon.rest.FpApplication;

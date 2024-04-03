@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.typer;
+package no.nav.k9.abakus.typer;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -9,9 +9,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.IndexKeyComposer;
-import no.nav.foreldrepenger.abakus.felles.diff.TraverseValue;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
+import no.nav.k9.abakus.felles.diff.TraverseValue;
 
 /**
  * Beløp representerer kombinasjon av kroner og øre på standardisert format

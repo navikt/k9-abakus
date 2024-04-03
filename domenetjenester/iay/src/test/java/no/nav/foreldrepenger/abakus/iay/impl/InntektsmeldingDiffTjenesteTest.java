@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.iay.impl;
+package no.nav.k9.abakus.iay.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -11,12 +11,12 @@ import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
-import no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.Inntektsmelding;
-import no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.InntektsmeldingBuilder;
-import no.nav.foreldrepenger.abakus.domene.virksomhet.Virksomhet;
-import no.nav.foreldrepenger.abakus.typer.InternArbeidsforholdRef;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
+import no.nav.k9.abakus.domene.iay.inntektsmelding.Inntektsmelding;
+import no.nav.k9.abakus.domene.iay.inntektsmelding.InntektsmeldingBuilder;
+import no.nav.k9.abakus.domene.virksomhet.Virksomhet;
+import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
 
 class InntektsmeldingDiffTjenesteTest {
     private static final Arbeidsgiver AG1 = Arbeidsgiver.virksomhet(lagVirksomhet("910909088"));

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold;
+package no.nav.k9.abakus.domene.iay.arbeidsforhold;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -28,15 +28,15 @@ import jakarta.persistence.Version;
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidsforholdHandlingType;
 import no.nav.abakus.iaygrunnlag.kodeverk.BekreftetPermisjonStatus;
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.domene.iay.BekreftetPermisjon;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.IndexKeyComposer;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.iay.jpa.ArbeidsforholdHandlingTypeKodeverdiConverter;
-import no.nav.foreldrepenger.abakus.typer.InternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.domene.iay.BekreftetPermisjon;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.iay.jpa.ArbeidsforholdHandlingTypeKodeverdiConverter;
+import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.Stillingsprosent;
 
 /**
  * Overstyring av arbeidsforhold angitt av saksbehandler.
@@ -71,7 +71,7 @@ public class ArbeidsforholdOverstyring extends BaseEntitet implements IndexKey {
      * Kjært navn for arbeidsgiver angitt av Saksbehandler (normalt kun ekstra arbeidsforhold lagt til). Ingen garanti for at dette matcher noe offisielt registrert navn.
      * <p>
      * Settes normalt kun for arbeidsforhold lagt til ekstra. Ellers hent fra
-     * {@link no.nav.foreldrepenger.abakus.domene.iay.Yrkesaktivitet#getAktivitetsAvtalerForArbeid()}.
+     * {@link no.nav.k9.abakus.domene.iay.Yrkesaktivitet#getAktivitetsAvtalerForArbeid()}.
      */
     @Column(name = "arbeidsgiver_navn")
     private String arbeidsgiverNavn;
@@ -80,7 +80,7 @@ public class ArbeidsforholdOverstyring extends BaseEntitet implements IndexKey {
      * Stillingsprosent angitt av saksbehandler.
      * <p>
      * Settes normalt kun for arbeidsforhold lagt til ekstra. Ellers hent fra
-     * {@link no.nav.foreldrepenger.abakus.domene.iay.Yrkesaktivitet#getAktivitetsAvtalerForArbeid()}.
+     * {@link no.nav.k9.abakus.domene.iay.Yrkesaktivitet#getAktivitetsAvtalerForArbeid()}.
      */
     @Embedded
     @AttributeOverrides(@AttributeOverride(name = "verdi", column = @Column(name = "stillingsprosent")))
@@ -95,7 +95,7 @@ public class ArbeidsforholdOverstyring extends BaseEntitet implements IndexKey {
 
     /**
      * Settes kun dersom saksbehandler har tatt stilling til permisjon. (om det skal brukes eller ikke). Bruk ellers
-     * {@link no.nav.foreldrepenger.abakus.domene.iay.Yrkesaktivitet#getPermisjon()}.
+     * {@link no.nav.k9.abakus.domene.iay.Yrkesaktivitet#getPermisjon()}.
      */
     @Embedded
     private BekreftetPermisjon bekreftetPermisjon = new BekreftetPermisjon();

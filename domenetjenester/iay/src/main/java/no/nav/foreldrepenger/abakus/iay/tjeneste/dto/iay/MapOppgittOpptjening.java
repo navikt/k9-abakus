@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.iay.tjeneste.dto.iay;
+package no.nav.k9.abakus.iay.tjeneste.dto.iay;
 
 import java.time.ZoneId;
 import java.util.Collection;
@@ -21,17 +21,17 @@ import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgittFrilansDto;
 import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgittFrilansoppdragDto;
 import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgittOpptjeningDto;
 import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgitteOpptjeningerDto;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittAnnenAktivitet;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittArbeidsforhold;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittEgenNæring;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittFrilans;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittFrilansoppdrag;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjening;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjeningBuilder.EgenNæringBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjeningBuilder.OppgittArbeidsforholdBuilder;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.typer.OrgNummer;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittAnnenAktivitet;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittArbeidsforhold;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittEgenNæring;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittFrilans;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittFrilansoppdrag;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjening;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder.EgenNæringBuilder;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder.OppgittArbeidsforholdBuilder;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.typer.OrgNummer;
 
 public class MapOppgittOpptjening {
 
@@ -233,7 +233,7 @@ public class MapOppgittOpptjening {
             builder.leggTilFrilansOpplysninger(frilans);
 
             if (dto.getJournalpostId() != null) {
-                builder.medJournalpostId(new no.nav.foreldrepenger.abakus.typer.JournalpostId(dto.getJournalpostId().getId()));
+                builder.medJournalpostId(new no.nav.k9.abakus.typer.JournalpostId(dto.getJournalpostId().getId()));
             }
             if (dto.getInnsendingstidspunkt() != null) {
                 builder.medInnsendingstidspuntk(dto.getInnsendingstidspunkt().atZoneSameInstant(ZoneId.systemDefault()).toLocalDateTime());

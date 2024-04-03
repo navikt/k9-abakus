@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.healthcheck;
+package no.nav.k9.abakus.app.healthcheck;
 
 import java.sql.SQLException;
 

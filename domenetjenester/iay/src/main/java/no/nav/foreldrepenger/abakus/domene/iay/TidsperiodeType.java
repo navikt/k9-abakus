@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 public enum TidsperiodeType {
     FØR_SKJÆRINGSTIDSPUNKT,

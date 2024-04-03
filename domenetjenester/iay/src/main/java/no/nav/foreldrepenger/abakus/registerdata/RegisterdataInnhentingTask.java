@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata;
+package no.nav.k9.abakus.registerdata;
 
 import java.util.Set;
 
@@ -15,16 +15,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import no.nav.abakus.iaygrunnlag.JsonObjectMapper;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.abakus.iaygrunnlag.request.InnhentRegisterdataRequest;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
-import no.nav.foreldrepenger.abakus.iay.InntektArbeidYtelseTjeneste;
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
-import no.nav.foreldrepenger.abakus.kobling.KoblingTask;
-import no.nav.foreldrepenger.abakus.kobling.KoblingTjeneste;
-import no.nav.foreldrepenger.abakus.kobling.TaskConstants;
-import no.nav.foreldrepenger.abakus.kobling.kontroll.YtelseTypeRef;
-import no.nav.foreldrepenger.abakus.kobling.repository.LåsRepository;
-import no.nav.foreldrepenger.abakus.registerdata.tjeneste.InnhentRegisterdataTjeneste;
-import no.nav.foreldrepenger.abakus.registerdata.tjeneste.RegisterdataElement;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
+import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
+import no.nav.k9.abakus.kobling.Kobling;
+import no.nav.k9.abakus.kobling.KoblingTask;
+import no.nav.k9.abakus.kobling.KoblingTjeneste;
+import no.nav.k9.abakus.kobling.TaskConstants;
+import no.nav.k9.abakus.kobling.kontroll.YtelseTypeRef;
+import no.nav.k9.abakus.kobling.repository.LåsRepository;
+import no.nav.k9.abakus.registerdata.tjeneste.InnhentRegisterdataTjeneste;
+import no.nav.k9.abakus.registerdata.tjeneste.RegisterdataElement;
 import no.nav.vedtak.felles.prosesstask.api.ProsessTask;
 import no.nav.vedtak.felles.prosesstask.api.ProsessTaskData;
 

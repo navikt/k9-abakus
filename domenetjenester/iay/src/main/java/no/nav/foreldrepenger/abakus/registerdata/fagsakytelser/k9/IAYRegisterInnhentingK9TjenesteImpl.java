@@ -1,18 +1,18 @@
-package no.nav.foreldrepenger.abakus.registerdata.fagsakytelser.k9;
+package no.nav.k9.abakus.registerdata.fagsakytelser.k9;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.aktor.AktørTjeneste;
-import no.nav.foreldrepenger.abakus.iay.InntektArbeidYtelseTjeneste;
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
-import no.nav.foreldrepenger.abakus.kobling.kontroll.YtelseTypeRef;
-import no.nav.foreldrepenger.abakus.registerdata.IAYRegisterInnhentingFellesTjenesteImpl;
-import no.nav.foreldrepenger.abakus.registerdata.InnhentingSamletTjeneste;
-import no.nav.foreldrepenger.abakus.registerdata.VedtattYtelseInnhentingTjeneste;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsgiver.virksomhet.VirksomhetTjeneste;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.sigrun.SigrunTjeneste;
+import no.nav.k9.abakus.aktor.AktørTjeneste;
+import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
+import no.nav.k9.abakus.kobling.Kobling;
+import no.nav.k9.abakus.kobling.kontroll.YtelseTypeRef;
+import no.nav.k9.abakus.registerdata.IAYRegisterInnhentingFellesTjenesteImpl;
+import no.nav.k9.abakus.registerdata.InnhentingSamletTjeneste;
+import no.nav.k9.abakus.registerdata.VedtattYtelseInnhentingTjeneste;
+import no.nav.k9.abakus.registerdata.arbeidsgiver.virksomhet.VirksomhetTjeneste;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.SigrunTjeneste;
 
 @ApplicationScoped
 @YtelseTypeRef(YtelseType.PLEIEPENGER_SYKT_BARN)

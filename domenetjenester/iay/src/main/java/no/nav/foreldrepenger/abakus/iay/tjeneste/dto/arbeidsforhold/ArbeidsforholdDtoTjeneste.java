@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.iay.tjeneste.dto.arbeidsforhold;
+package no.nav.k9.abakus.iay.tjeneste.dto.arbeidsforhold;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,15 +14,15 @@ import no.nav.abakus.iaygrunnlag.Periode;
 import no.nav.abakus.iaygrunnlag.arbeidsforhold.v1.ArbeidsforholdDto;
 import no.nav.abakus.iaygrunnlag.arbeidsforhold.v1.ArbeidsforholdReferanseDto;
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
-import no.nav.foreldrepenger.abakus.aktor.AktørTjeneste;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Arbeidsforhold;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.ArbeidsforholdTjeneste;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Organisasjon;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Person;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.EksternArbeidsforholdRef;
+import no.nav.k9.abakus.aktor.AktørTjeneste;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.Arbeidsforhold;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdTjeneste;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.Organisasjon;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.Person;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
 
 @ApplicationScoped
 public class ArbeidsforholdDtoTjeneste {
@@ -69,7 +69,7 @@ public class ArbeidsforholdDtoTjeneste {
         return new ArbeidsforholdRefDto(null, arbeidsforholdId.getReferanse());
     }
 
-    private Aktør mapArbeidsgiver(no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Arbeidsgiver arbeidsgiver) {
+    private Aktør mapArbeidsgiver(no.nav.k9.abakus.registerdata.arbeidsforhold.Arbeidsgiver arbeidsgiver) {
         if (arbeidsgiver instanceof Person person) {
             return new AktørIdPersonident(person.getAktørId());
         } else if (arbeidsgiver instanceof Organisasjon organisasjon) {

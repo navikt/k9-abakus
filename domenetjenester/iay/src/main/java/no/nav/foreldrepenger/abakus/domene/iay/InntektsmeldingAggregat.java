@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,10 +19,10 @@ import jakarta.persistence.Version;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.Inntektsmelding;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.typer.JournalpostId;
+import no.nav.k9.abakus.domene.iay.inntektsmelding.Inntektsmelding;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.typer.JournalpostId;
 
 @Entity(name = "Inntektsmeldinger")
 @Table(name = "IAY_INNTEKTSMELDINGER")

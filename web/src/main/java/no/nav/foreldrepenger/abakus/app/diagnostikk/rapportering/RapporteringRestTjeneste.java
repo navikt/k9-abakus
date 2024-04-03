@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.diagnostikk.rapportering;
+package no.nav.k9.abakus.app.diagnostikk.rapportering;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,9 +29,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.app.diagnostikk.DumpOutput;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt;
+import no.nav.k9.abakus.app.diagnostikk.DumpOutput;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt;
 import no.nav.vedtak.felles.prosesstask.rest.AbacEmptySupplier;
 import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
 import no.nav.vedtak.sikkerhet.abac.TilpassetAbacAttributt;

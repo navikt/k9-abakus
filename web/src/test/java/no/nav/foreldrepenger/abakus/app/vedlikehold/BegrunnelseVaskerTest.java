@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.vedlikehold;
+package no.nav.k9.abakus.app.vedlikehold;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 

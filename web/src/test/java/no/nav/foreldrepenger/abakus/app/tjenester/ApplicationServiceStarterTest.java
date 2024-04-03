@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.tjenester;
+package no.nav.k9.abakus.app.tjenester;
 
 import static org.mockito.Mockito.verify;
 

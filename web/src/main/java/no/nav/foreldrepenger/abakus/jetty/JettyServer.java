@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.jetty;
+package no.nav.k9.abakus.jetty;
 
 import static org.eclipse.jetty.ee10.webapp.MetaInfConfiguration.CONTAINER_JAR_PATTERN;
 
@@ -30,9 +30,9 @@ import org.flywaydb.core.api.FlywayException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.abakus.app.konfig.ApiConfig;
-import no.nav.foreldrepenger.abakus.app.konfig.EksternApiConfig;
-import no.nav.foreldrepenger.abakus.app.konfig.InternalApiConfig;
+import no.nav.k9.abakus.app.konfig.ApiConfig;
+import no.nav.k9.abakus.app.konfig.EksternApiConfig;
+import no.nav.k9.abakus.app.konfig.InternalApiConfig;
 import no.nav.foreldrepenger.konfig.Environment;
 
 public class JettyServer {

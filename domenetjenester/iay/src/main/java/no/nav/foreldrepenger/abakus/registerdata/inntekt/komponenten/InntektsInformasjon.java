@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten;
+package no.nav.k9.abakus.registerdata.inntekt.komponenten;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -8,8 +8,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.Månedsinntekt.YtelseNøkkel;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.Månedsinntekt.YtelseNøkkel;
 
 public class InntektsInformasjon {
 

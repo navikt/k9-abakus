@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.impl;
+package no.nav.k9.abakus.registerdata.arbeidsforhold.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -16,16 +16,16 @@ import org.junit.jupiter.api.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.abakus.iaygrunnlag.JsonObjectMapper;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Arbeidsavtale;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Arbeidsforhold;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.ArbeidsforholdTjeneste;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.Organisasjon;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.rest.AaregRestKlient;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.rest.ArbeidsforholdRS;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.PersonIdent;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.Arbeidsavtale;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.Arbeidsforhold;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdTjeneste;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.Organisasjon;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.rest.AaregRestKlient;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.rest.ArbeidsforholdRS;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.PersonIdent;
 
 class ArbeidsforholdTjenesteMedRestTest {
 

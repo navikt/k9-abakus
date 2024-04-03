@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.jackson;
+package no.nav.k9.abakus.app.jackson;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,7 +14,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import jakarta.ws.rs.ext.ContextResolver;
 import jakarta.ws.rs.ext.Provider;
 import no.nav.abakus.iaygrunnlag.v1.InntektArbeidYtelseGrunnlagDto;
-import no.nav.foreldrepenger.abakus.app.IndexClasses;
+import no.nav.k9.abakus.app.IndexClasses;
 
 @Provider
 public class JacksonJsonConfig implements ContextResolver<ObjectMapper> {

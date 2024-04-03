@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -7,11 +7,11 @@ import java.util.Set;
 import java.util.UUID;
 
 import no.nav.abakus.iaygrunnlag.request.Dataset;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjening;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjeningAggregat;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjening;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningAggregat;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

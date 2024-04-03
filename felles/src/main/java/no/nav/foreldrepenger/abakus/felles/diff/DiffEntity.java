@@ -1,6 +1,6 @@
-package no.nav.foreldrepenger.abakus.felles.diff;
+package no.nav.k9.abakus.felles.diff;
 
-import no.nav.foreldrepenger.abakus.felles.diff.TraverseGraph.TraverseResult;
+import no.nav.k9.abakus.felles.diff.TraverseGraph.TraverseResult;
 
 public class DiffEntity {
 

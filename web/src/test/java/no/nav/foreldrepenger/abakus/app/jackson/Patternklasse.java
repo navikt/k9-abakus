@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.jackson;
+package no.nav.k9.abakus.app.jackson;
 
 import jakarta.validation.constraints.Pattern;
 

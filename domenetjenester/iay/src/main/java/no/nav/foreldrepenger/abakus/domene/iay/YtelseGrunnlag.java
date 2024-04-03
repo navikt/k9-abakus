@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -24,11 +24,11 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Arbeidskategori;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.iay.jpa.ArbeidskategoriKodeverdiConverter;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.iay.jpa.ArbeidskategoriKodeverdiConverter;
+import no.nav.k9.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.Stillingsprosent;
 
 @Entity(name = "YtelseGrunnlagEntitet")
 @Table(name = "IAY_YTELSE_GRUNNLAG")

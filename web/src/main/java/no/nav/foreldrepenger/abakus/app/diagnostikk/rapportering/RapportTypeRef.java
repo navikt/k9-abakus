@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.diagnostikk.rapportering;
+package no.nav.k9.abakus.app.diagnostikk.rapportering;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Documented;
@@ -18,7 +18,7 @@ import jakarta.enterprise.inject.Stereotype;
 import jakarta.enterprise.util.AnnotationLiteral;
 import jakarta.inject.Qualifier;
 
-import no.nav.foreldrepenger.abakus.app.diagnostikk.rapportering.RapportTypeRef.ContainerOfRapportTypeRef;
+import no.nav.k9.abakus.app.diagnostikk.rapportering.RapportTypeRef.ContainerOfRapportTypeRef;
 
 /**
  * Marker type som implementerer interface {@link RapportGenerator} for å skille ulike implementasjoner av samme steg for ulike rapportTyper

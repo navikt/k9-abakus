@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.typer;
+package no.nav.k9.abakus.typer;
 
 import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
@@ -9,7 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
-import no.nav.foreldrepenger.abakus.felles.diff.IndexKeyComposer;
+import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
 
 /**
  * Intern arbeidsforhold referanse.

@@ -1,10 +1,10 @@
-package no.nav.foreldrepenger.abakus.vedtak.domene;
+package no.nav.k9.abakus.vedtak.domene;
 
 import java.math.BigDecimal;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Inntektskategori;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.Stillingsprosent;
 
 public class VedtakYtelseAndelBuilder {
     private final VedtakYtelseAndel vedtakYtelseAndel;

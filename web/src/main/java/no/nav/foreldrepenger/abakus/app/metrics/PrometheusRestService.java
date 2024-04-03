@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.metrics;
+package no.nav.k9.abakus.app.metrics;
 
 
 import io.prometheus.client.CollectorRegistry;

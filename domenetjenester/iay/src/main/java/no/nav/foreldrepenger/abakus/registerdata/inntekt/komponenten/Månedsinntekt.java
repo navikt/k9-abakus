@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten;
+package no.nav.k9.abakus.registerdata.inntekt.komponenten;
 
 import java.math.BigDecimal;
 import java.time.YearMonth;

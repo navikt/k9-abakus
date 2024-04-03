@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.felles.diff;
+package no.nav.k9.abakus.felles.diff;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 
-import no.nav.foreldrepenger.abakus.felles.diff.TraverseGraph.TraverseResult;
+import no.nav.k9.abakus.felles.diff.TraverseGraph.TraverseResult;
 
 /**
  * Henter ut resultat fra å diffe to entitet objekter.

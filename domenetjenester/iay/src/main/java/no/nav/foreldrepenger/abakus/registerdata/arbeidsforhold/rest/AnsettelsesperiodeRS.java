@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.rest;
+package no.nav.k9.abakus.registerdata.arbeidsforhold.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonFormat;

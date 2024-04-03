@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -21,15 +21,15 @@ import no.nav.abakus.iaygrunnlag.kodeverk.InntektYtelseType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektspostType;
 import no.nav.abakus.iaygrunnlag.kodeverk.LønnsinntektBeskrivelse;
 import no.nav.abakus.iaygrunnlag.kodeverk.SkatteOgAvgiftsregelType;
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.IndexKeyComposer;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.iay.jpa.InntektYtelseTypeKodeverdiConverter;
-import no.nav.foreldrepenger.abakus.iay.jpa.InntektspostTypeKodeverdiConverter;
-import no.nav.foreldrepenger.abakus.iay.jpa.LønnsbeskrivelseKodeverdiConverter;
-import no.nav.foreldrepenger.abakus.iay.jpa.SkatteOgAvgiftsregelTypeKodeverdiConverter;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.iay.jpa.InntektYtelseTypeKodeverdiConverter;
+import no.nav.k9.abakus.iay.jpa.InntektspostTypeKodeverdiConverter;
+import no.nav.k9.abakus.iay.jpa.LønnsbeskrivelseKodeverdiConverter;
+import no.nav.k9.abakus.iay.jpa.SkatteOgAvgiftsregelTypeKodeverdiConverter;
+import no.nav.k9.abakus.typer.Beløp;
 
 @Entity(name = "Inntektspost")
 @Table(name = "IAY_INNTEKTSPOST")

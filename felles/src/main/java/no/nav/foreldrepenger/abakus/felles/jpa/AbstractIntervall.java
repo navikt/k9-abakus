@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.felles.jpa;
+package no.nav.k9.abakus.felles.jpa;
 
 import java.io.Serializable;
 import java.time.LocalDate;

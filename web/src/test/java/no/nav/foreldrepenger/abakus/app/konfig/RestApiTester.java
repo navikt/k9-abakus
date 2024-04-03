@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.konfig;
+package no.nav.k9.abakus.app.konfig;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.infotrygd;
+package no.nav.k9.abakus.registerdata.infotrygd;
 
 /**
  * Nødnummer for infotrygd. Brukt i saker med delvis refusjon. Kun til sjekk mot orgnummer.

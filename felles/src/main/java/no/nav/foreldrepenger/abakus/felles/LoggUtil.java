@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.felles;
+package no.nav.k9.abakus.felles;
 
 import java.util.UUID;
 

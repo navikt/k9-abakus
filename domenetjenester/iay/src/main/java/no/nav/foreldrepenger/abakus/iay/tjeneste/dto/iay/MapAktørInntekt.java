@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.iay.tjeneste.dto.iay;
+package no.nav.k9.abakus.iay.tjeneste.dto.iay;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -15,16 +15,16 @@ import no.nav.abakus.iaygrunnlag.PersonIdent;
 import no.nav.abakus.iaygrunnlag.inntekt.v1.InntekterDto;
 import no.nav.abakus.iaygrunnlag.inntekt.v1.UtbetalingDto;
 import no.nav.abakus.iaygrunnlag.inntekt.v1.UtbetalingsPostDto;
-import no.nav.foreldrepenger.abakus.domene.iay.AktørInntekt;
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.domene.iay.Inntekt;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder.AktørInntektBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.Inntektspost;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektspostBuilder;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.OrgNummer;
+import no.nav.k9.abakus.domene.iay.AktørInntekt;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.domene.iay.Inntekt;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder.AktørInntektBuilder;
+import no.nav.k9.abakus.domene.iay.InntektBuilder;
+import no.nav.k9.abakus.domene.iay.Inntektspost;
+import no.nav.k9.abakus.domene.iay.InntektspostBuilder;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.OrgNummer;
 
 public class MapAktørInntekt {
 

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.ytelse;
+package no.nav.k9.abakus.registerdata.ytelse;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -10,9 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.InnhentingInfotrygdTjeneste;
-import no.nav.foreldrepenger.abakus.typer.PersonIdent;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.InnhentingInfotrygdTjeneste;
+import no.nav.k9.abakus.typer.PersonIdent;
 
 @ExtendWith(MockitoExtension.class)
 class InfotrygdTjenesteImplTest {

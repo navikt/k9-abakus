@@ -1,6 +1,6 @@
-package no.nav.foreldrepenger.abakus.app.rest.ekstern;
+package no.nav.k9.abakus.app.rest.ekstern;
 
-import static no.nav.foreldrepenger.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.APPLIKASJON;
+import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.APPLIKASJON;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -38,19 +38,19 @@ import no.nav.abakus.vedtak.ytelse.v1.YtelseV1;
 import no.nav.abakus.vedtak.ytelse.v1.anvisning.Anvisning;
 import no.nav.abakus.vedtak.ytelse.v1.anvisning.AnvistAndel;
 import no.nav.abakus.vedtak.ytelse.v1.anvisning.ArbeidsgiverIdent;
-import no.nav.foreldrepenger.abakus.aktor.AktørTjeneste;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.registerdata.infotrygd.InfotrygdgrunnlagYtelseMapper;
-import no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.InnhentingInfotrygdTjeneste;
-import no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.rest.ps.InfotrygdPSGrunnlag;
-import no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.rest.ps.PS;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
-import no.nav.foreldrepenger.abakus.typer.PersonIdent;
-import no.nav.foreldrepenger.abakus.typer.Saksnummer;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelseRepository;
-import no.nav.foreldrepenger.abakus.vedtak.extract.v1.ConvertToYtelseV1;
+import no.nav.k9.abakus.aktor.AktørTjeneste;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.registerdata.infotrygd.InfotrygdgrunnlagYtelseMapper;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.InnhentingInfotrygdTjeneste;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.ps.InfotrygdPSGrunnlag;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.ps.PS;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.PersonIdent;
+import no.nav.k9.abakus.typer.Saksnummer;
+import no.nav.k9.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelseRepository;
+import no.nav.k9.abakus.vedtak.extract.v1.ConvertToYtelseV1;
 import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.GrunnlagRequest;
 import no.nav.vedtak.konfig.Tid;
 import no.nav.vedtak.sikkerhet.abac.AbacDataAttributter;
@@ -86,7 +86,7 @@ public class EksternDelingAvYtelserRestTjeneste {
         this.infotrygdPSGrunnlag = infotrygdPSGrunnlag;
     }
 
-    private static ArbeidsgiverIdent mapArbeidsgiverIdent(no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver arbeidsgiver) {
+    private static ArbeidsgiverIdent mapArbeidsgiverIdent(no.nav.k9.abakus.domene.iay.Arbeidsgiver arbeidsgiver) {
         if (arbeidsgiver == null) {
             return null;
         }
@@ -171,7 +171,7 @@ public class EksternDelingAvYtelserRestTjeneste {
         return Set.of(new PersonIdent(aktør.getVerdi()));
     }
 
-    private YtelseV1 ytelseTilYtelse(AktørId aktørId, no.nav.foreldrepenger.abakus.domene.iay.Ytelse vedtak) {
+    private YtelseV1 ytelseTilYtelse(AktørId aktørId, no.nav.k9.abakus.domene.iay.Ytelse vedtak) {
         var ytelse = new YtelseV1();
         var aktør = new Aktør();
         aktør.setVerdi(aktørId.getId());
@@ -191,7 +191,7 @@ public class EksternDelingAvYtelserRestTjeneste {
         return ytelse;
     }
 
-    private Anvisning mapLagretInfotrygdAnvist(no.nav.foreldrepenger.abakus.domene.iay.YtelseAnvist anvist) {
+    private Anvisning mapLagretInfotrygdAnvist(no.nav.k9.abakus.domene.iay.YtelseAnvist anvist) {
         var anvisning = new Anvisning();
         var periode = new Periode();
         periode.setFom(anvist.getAnvistFOM());
@@ -205,7 +205,7 @@ public class EksternDelingAvYtelserRestTjeneste {
         return anvisning;
     }
 
-    private List<AnvistAndel> mapInfotrygdAndeler(no.nav.foreldrepenger.abakus.domene.iay.YtelseAnvist anvist) {
+    private List<AnvistAndel> mapInfotrygdAndeler(no.nav.k9.abakus.domene.iay.YtelseAnvist anvist) {
         return anvist.getYtelseAnvistAndeler()
             .stream()
             .map(a -> new AnvistAndel(a.getArbeidsgiver().map(EksternDelingAvYtelserRestTjeneste::mapArbeidsgiverIdent).orElse(null),

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.iay.tjeneste.dto.iay;
+package no.nav.k9.abakus.iay.tjeneste.dto.iay;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -16,15 +16,15 @@ import no.nav.abakus.iaygrunnlag.ytelse.v1.FordelingDto;
 import no.nav.abakus.iaygrunnlag.ytelse.v1.YtelseDto;
 import no.nav.abakus.iaygrunnlag.ytelse.v1.YtelseGrunnlagDto;
 import no.nav.abakus.iaygrunnlag.ytelse.v1.YtelserDto;
-import no.nav.foreldrepenger.abakus.domene.iay.AktørYtelse;
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.domene.iay.Ytelse;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseAnvist;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseAnvistAndel;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseGrunnlag;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseStørrelse;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.domene.iay.AktørYtelse;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.domene.iay.Ytelse;
+import no.nav.k9.abakus.domene.iay.YtelseAnvist;
+import no.nav.k9.abakus.domene.iay.YtelseAnvistAndel;
+import no.nav.k9.abakus.domene.iay.YtelseGrunnlag;
+import no.nav.k9.abakus.domene.iay.YtelseStørrelse;
+import no.nav.k9.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.Stillingsprosent;
 
 public class MapAktørYtelse {
     private static final Comparator<YtelseDto> COMP_YTELSE = Comparator.comparing(YtelseDto::getSaksnummer,

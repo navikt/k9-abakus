@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.vedtak.extract.v1;
+package no.nav.k9.abakus.vedtak.extract.v1;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,9 +23,9 @@ import no.nav.abakus.vedtak.ytelse.v1.anvisning.Anvisning;
 import no.nav.abakus.vedtak.ytelse.v1.anvisning.AnvistAndel;
 import no.nav.abakus.vedtak.ytelse.v1.anvisning.ArbeidsgiverIdent;
 import no.nav.abakus.vedtak.ytelse.v1.anvisning.Inntektklasse;
-import no.nav.foreldrepenger.abakus.dbstoette.JpaExtension;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelseBuilder;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelseRepository;
+import no.nav.k9.abakus.dbstoette.JpaExtension;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelseBuilder;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelseRepository;
 
 class ExtractFromYtelseV1Test {
 

@@ -1,6 +1,6 @@
-package no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding;
+package no.nav.k9.abakus.domene.iay.inntektsmelding;
 
-import no.nav.foreldrepenger.abakus.typer.InternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
 
 public class ForvaltningEndreInternReferanse {
 

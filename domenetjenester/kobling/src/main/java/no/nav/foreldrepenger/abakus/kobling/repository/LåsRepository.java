@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.kobling.repository;
+package no.nav.k9.abakus.kobling.repository;
 
 import java.util.Objects;
 
@@ -7,8 +7,8 @@ import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
-import no.nav.foreldrepenger.abakus.kobling.KoblingLås;
+import no.nav.k9.abakus.kobling.Kobling;
+import no.nav.k9.abakus.kobling.KoblingLås;
 import no.nav.vedtak.exception.TekniskException;
 
 @ApplicationScoped

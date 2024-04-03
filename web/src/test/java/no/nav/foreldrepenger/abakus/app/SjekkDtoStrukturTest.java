@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app;
+package no.nav.k9.abakus.app;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import no.nav.foreldrepenger.abakus.app.jackson.JacksonJsonConfig;
+import no.nav.k9.abakus.app.jackson.JacksonJsonConfig;
 
 class SjekkDtoStrukturTest {
 

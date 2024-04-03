@@ -1,13 +1,13 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Landkode;
-import no.nav.foreldrepenger.abakus.domene.iay.diff.TraverseEntityGraphFactory;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjeningBuilder.EgenNæringBuilder;
-import no.nav.foreldrepenger.abakus.felles.diff.DiffEntity;
+import no.nav.k9.abakus.domene.iay.diff.TraverseEntityGraphFactory;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder.EgenNæringBuilder;
+import no.nav.k9.abakus.felles.diff.DiffEntity;
 
 class DiffSjekkTest {
 

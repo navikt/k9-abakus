@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay.søknad;
+package no.nav.k9.abakus.domene.iay.søknad;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,8 +18,8 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
 
 @Entity(name = "OppgittOpptjeningAggregat")
 @Table(name = "IAY_OPPGITTE_OPPTJENINGER")

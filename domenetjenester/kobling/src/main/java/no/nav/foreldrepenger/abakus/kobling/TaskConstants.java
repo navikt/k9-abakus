@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.kobling;
+package no.nav.k9.abakus.kobling;
 
 public final class TaskConstants {
     public static final String GAMMEL_KOBLING_ID = "behandlingId";

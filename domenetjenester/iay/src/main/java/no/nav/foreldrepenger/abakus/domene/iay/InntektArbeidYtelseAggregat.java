@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -20,9 +20,9 @@ import jakarta.persistence.Version;
 
 import org.hibernate.annotations.NaturalId;
 
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.DiffIgnore;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.DiffIgnore;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
 
 @Table(name = "IAY_INNTEKT_ARBEID_YTELSER")
 @Entity(name = "InntektArbeidYtelser")

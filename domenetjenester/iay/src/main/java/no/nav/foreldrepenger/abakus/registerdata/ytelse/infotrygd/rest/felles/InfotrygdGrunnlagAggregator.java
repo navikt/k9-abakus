@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.rest.felles;
+package no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.felles;
 
 import static java.util.stream.Collectors.toList;
 

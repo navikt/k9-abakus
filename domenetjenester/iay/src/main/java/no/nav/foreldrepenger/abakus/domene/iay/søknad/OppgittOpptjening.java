@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay.søknad;
+package no.nav.k9.abakus.domene.iay.søknad;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,10 +24,10 @@ import jakarta.persistence.Table;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.NaturalId;
 
-import no.nav.foreldrepenger.abakus.felles.diff.ChangeTracked;
-import no.nav.foreldrepenger.abakus.felles.diff.DiffIgnore;
-import no.nav.foreldrepenger.abakus.felles.jpa.BaseEntitet;
-import no.nav.foreldrepenger.abakus.typer.JournalpostId;
+import no.nav.k9.abakus.felles.diff.ChangeTracked;
+import no.nav.k9.abakus.felles.diff.DiffIgnore;
+import no.nav.k9.abakus.felles.jpa.BaseEntitet;
+import no.nav.k9.abakus.typer.JournalpostId;
 
 @Immutable
 @Entity(name = "OppgittOpptjening")

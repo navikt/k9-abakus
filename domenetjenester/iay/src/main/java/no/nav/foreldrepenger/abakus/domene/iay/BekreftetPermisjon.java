@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay;
+package no.nav.k9.abakus.domene.iay;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -11,8 +11,8 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.Embedded;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.BekreftetPermisjonStatus;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.iay.jpa.BekreftetPermisjonStatusKodeverdiConverter;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.iay.jpa.BekreftetPermisjonStatusKodeverdiConverter;
 
 @Embeddable
 public class BekreftetPermisjon {

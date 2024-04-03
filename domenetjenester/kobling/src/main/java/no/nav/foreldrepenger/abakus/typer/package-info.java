@@ -1,4 +1,4 @@
 /**
  * Value objects i bruk i ytelser.
  */
-package no.nav.foreldrepenger.abakus.typer;
+package no.nav.k9.abakus.typer;

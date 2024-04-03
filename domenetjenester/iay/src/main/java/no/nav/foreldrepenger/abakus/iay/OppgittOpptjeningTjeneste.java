@@ -1,9 +1,9 @@
-package no.nav.foreldrepenger.abakus.iay;
+package no.nav.k9.abakus.iay;
 
-import no.nav.foreldrepenger.abakus.domene.iay.GrunnlagReferanse;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseRepository;
-import no.nav.foreldrepenger.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
-import no.nav.foreldrepenger.abakus.kobling.KoblingReferanse;
+import no.nav.k9.abakus.domene.iay.GrunnlagReferanse;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseRepository;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
+import no.nav.k9.abakus.kobling.KoblingReferanse;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.felles.sikkerhet;
+package no.nav.k9.abakus.felles.sikkerhet;
 
 import no.nav.vedtak.sikkerhet.abac.pdp.RessursDataKey;
 

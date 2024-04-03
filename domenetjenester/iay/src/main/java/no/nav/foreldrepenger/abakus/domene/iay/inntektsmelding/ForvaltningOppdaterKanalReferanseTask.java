@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding;
+package no.nav.k9.abakus.domene.iay.inntektsmelding;
 
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

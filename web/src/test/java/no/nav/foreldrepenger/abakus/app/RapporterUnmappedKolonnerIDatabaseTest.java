@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app;
+package no.nav.k9.abakus.app;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
-import no.nav.foreldrepenger.abakus.dbstoette.Databaseskjemainitialisering;
+import no.nav.k9.abakus.dbstoette.Databaseskjemainitialisering;
 
 /**
  * Denne testen rapporterer kun tabeller og kolonner som ikke er mappet i hibernate. Det kan være gyldige grunner til det (f.eks. dersom det

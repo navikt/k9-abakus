@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.impl;
+package no.nav.k9.abakus.registerdata.inntekt.komponenten.impl;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,10 +25,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.FinnInntektRequest;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.Månedsinntekt;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.FinnInntektRequest;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.Månedsinntekt;
 import no.nav.tjenester.aordningen.inntektsinformasjon.Aktoer;
 import no.nav.tjenester.aordningen.inntektsinformasjon.AktoerType;
 import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsInntektIdent;

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.felles.diff;
+package no.nav.k9.abakus.felles.diff;
 
 
 /**

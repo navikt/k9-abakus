@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.app.diagnostikk.dumps;
+package no.nav.k9.abakus.app.diagnostikk.dumps;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -18,20 +18,20 @@ import jakarta.inject.Inject;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
-import no.nav.foreldrepenger.abakus.app.diagnostikk.ContainerContextRunner;
-import no.nav.foreldrepenger.abakus.app.diagnostikk.DebugDump;
-import no.nav.foreldrepenger.abakus.app.diagnostikk.DumpKontekst;
-import no.nav.foreldrepenger.abakus.app.diagnostikk.DumpOutput;
-import no.nav.foreldrepenger.abakus.app.jackson.JacksonJsonConfig;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.kobling.kontroll.YtelseTypeRef;
-import no.nav.foreldrepenger.abakus.registerdata.IAYRegisterInnhentingFellesTjenesteImpl;
-import no.nav.foreldrepenger.abakus.registerdata.arbeidsforhold.rest.AaregRestKlient;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.FinnInntektRequest;
-import no.nav.foreldrepenger.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
-import no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.rest.felles.InfotrygdGrunnlagAggregator;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.PersonIdent;
+import no.nav.k9.abakus.app.diagnostikk.ContainerContextRunner;
+import no.nav.k9.abakus.app.diagnostikk.DebugDump;
+import no.nav.k9.abakus.app.diagnostikk.DumpKontekst;
+import no.nav.k9.abakus.app.diagnostikk.DumpOutput;
+import no.nav.k9.abakus.app.jackson.JacksonJsonConfig;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.kobling.kontroll.YtelseTypeRef;
+import no.nav.k9.abakus.registerdata.IAYRegisterInnhentingFellesTjenesteImpl;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.rest.AaregRestKlient;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.FinnInntektRequest;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.felles.InfotrygdGrunnlagAggregator;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.PersonIdent;
 import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.Grunnlag;
 import no.nav.vedtak.felles.integrasjon.spokelse.Spøkelse;
 

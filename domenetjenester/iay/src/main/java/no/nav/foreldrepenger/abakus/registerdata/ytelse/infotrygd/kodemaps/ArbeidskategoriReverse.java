@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata.ytelse.infotrygd.kodemaps;
+package no.nav.k9.abakus.registerdata.ytelse.infotrygd.kodemaps;
 
 import java.util.Map;
 

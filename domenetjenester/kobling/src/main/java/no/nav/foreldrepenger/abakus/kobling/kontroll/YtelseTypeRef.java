@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.kobling.kontroll;
+package no.nav.k9.abakus.kobling.kontroll;
 
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Documented;

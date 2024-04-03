@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.registerdata;
+package no.nav.k9.abakus.registerdata;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -6,25 +6,25 @@ import java.util.List;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
-import no.nav.foreldrepenger.abakus.domene.iay.Arbeidsgiver;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.InntektArbeidYtelseRepository;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseAnvistAndel;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseAnvistAndelBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseAnvistBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.YtelseBuilder;
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
-import no.nav.foreldrepenger.abakus.typer.AktørId;
-import no.nav.foreldrepenger.abakus.typer.Beløp;
-import no.nav.foreldrepenger.abakus.typer.EksternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.InternArbeidsforholdRef;
-import no.nav.foreldrepenger.abakus.typer.Stillingsprosent;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelse;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelseAndel;
-import no.nav.foreldrepenger.abakus.vedtak.domene.VedtakYtelseRepository;
+import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
+import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseRepository;
+import no.nav.k9.abakus.domene.iay.YtelseAnvistAndel;
+import no.nav.k9.abakus.domene.iay.YtelseAnvistAndelBuilder;
+import no.nav.k9.abakus.domene.iay.YtelseAnvistBuilder;
+import no.nav.k9.abakus.domene.iay.YtelseBuilder;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.kobling.Kobling;
+import no.nav.k9.abakus.typer.AktørId;
+import no.nav.k9.abakus.typer.Beløp;
+import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.Stillingsprosent;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelse;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelseAndel;
+import no.nav.k9.abakus.vedtak.domene.VedtakYtelseRepository;
 
 @ApplicationScoped
 public class VedtattYtelseInnhentingTjeneste {

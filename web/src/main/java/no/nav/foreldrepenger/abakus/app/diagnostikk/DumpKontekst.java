@@ -1,9 +1,9 @@
-package no.nav.foreldrepenger.abakus.app.diagnostikk;
+package no.nav.k9.abakus.app.diagnostikk;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.foreldrepenger.abakus.kobling.Kobling;
-import no.nav.foreldrepenger.abakus.typer.PersonIdent;
-import no.nav.foreldrepenger.abakus.typer.Saksnummer;
+import no.nav.k9.abakus.kobling.Kobling;
+import no.nav.k9.abakus.typer.PersonIdent;
+import no.nav.k9.abakus.typer.Saksnummer;
 
 public class DumpKontekst {
 

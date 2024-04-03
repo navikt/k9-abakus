@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.kobling;
+package no.nav.k9.abakus.kobling;
 
 import java.util.Objects;
 import java.util.UUID;

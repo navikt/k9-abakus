@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.domene.iay.søknad;
+package no.nav.k9.abakus.domene.iay.søknad;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,9 +11,9 @@ import java.util.UUID;
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
 import no.nav.abakus.iaygrunnlag.kodeverk.Landkode;
 import no.nav.abakus.iaygrunnlag.kodeverk.VirksomhetType;
-import no.nav.foreldrepenger.abakus.felles.jpa.IntervallEntitet;
-import no.nav.foreldrepenger.abakus.typer.JournalpostId;
-import no.nav.foreldrepenger.abakus.typer.OrgNummer;
+import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.typer.JournalpostId;
+import no.nav.k9.abakus.typer.OrgNummer;
 
 public class OppgittOpptjeningBuilder {
 

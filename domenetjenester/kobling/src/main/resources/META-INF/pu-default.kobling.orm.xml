@@ -7,6 +7,6 @@
 
     <sequence-generator name="SEQ_KOBLING" sequence-name="SEQ_KOBLING"/>
 
-    <entity class="no.nav.foreldrepenger.abakus.kobling.Kobling"/>
+    <entity class="no.nav.k9.abakus.kobling.Kobling"/>
 
 </entity-mappings>

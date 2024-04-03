@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.felles.jpa;
+package no.nav.k9.abakus.felles.jpa;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -9,7 +9,7 @@ import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 
-import no.nav.foreldrepenger.abakus.felles.diff.DiffIgnore;
+import no.nav.k9.abakus.felles.diff.DiffIgnore;
 import no.nav.vedtak.sikkerhet.kontekst.Kontekst;
 import no.nav.vedtak.sikkerhet.kontekst.KontekstHolder;
 

@@ -1,4 +1,4 @@
-package no.nav.foreldrepenger.abakus.typer;
+package no.nav.k9.abakus.typer;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -12,7 +12,7 @@ import jakarta.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
-import no.nav.foreldrepenger.abakus.felles.diff.TraverseValue;
+import no.nav.k9.abakus.felles.diff.TraverseValue;
 
 /**
  * Id som genereres fra NAV Aktør Register. Denne iden benyttes til interne forhold i Nav og vil ikke endres f.eks. dersom bruker går fra

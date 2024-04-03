@@ -1,10 +1,10 @@
-package no.nav.foreldrepenger.abakus.iay.impl;
+package no.nav.k9.abakus.iay.impl;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import no.nav.foreldrepenger.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
-import no.nav.foreldrepenger.abakus.domene.iay.inntektsmelding.Inntektsmelding;
+import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
+import no.nav.k9.abakus.domene.iay.inntektsmelding.Inntektsmelding;
 
 /**
  * Utleder differanse i inntektsmeldinger mellom to set.
