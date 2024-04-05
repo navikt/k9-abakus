@@ -40,7 +40,7 @@ public class SigrunRestClient {
 
     public SigrunRestClient() {
         this.client = RestClient.client();
-        this.restConfig = RestConfig.forClient(AaregRestKlient.class);
+        this.restConfig = RestConfig.forClient(SigrunRestClient.class);
     }
 
     //api/v1/pensjonsgivendeinntektforfolketrygden
@@ -65,7 +65,7 @@ public class SigrunRestClient {
         } else if (status == HttpURLConnection.HTTP_FORBIDDEN) {
             throw new ManglerTilgangException("F-018815", "Mangler tilgang. Fikk http-kode 403 fra server");
         } else if (status == HttpURLConnection.HTTP_NOT_FOUND) {
-            LOG.trace("Sigrun PGI NOT FOUND");
+            LOG.info("Sigrun PGI NOT FOUND");
             return Optional.empty();
         } else {
             if (status == HttpURLConnection.HTTP_UNAUTHORIZED) {
