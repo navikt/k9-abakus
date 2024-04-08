@@ -36,11 +36,11 @@
 
         <kontrakt.java.version>21</kontrakt.java.version>
 
-		<felles.version>7.0.8</felles.version>
+		<felles.version>7.0.6</felles.version>
 		<prosesstask.version>5.0.5</prosesstask.version>
-		<kontrakter.version>9.1.8</kontrakter.version>
+		<kontrakter.version>9.1.5</kontrakter.version>
         <tidsserie.version>2.7.1</tidsserie.version>
-        <swagger-ui.version>5.12.0</swagger-ui.version>
+        <swagger-ui.version>5.11.8</swagger-ui.version>
 
         <!-- Forteller til maven-deploy-plugin at artefaktet ikke skal deployes.
         Arves og overstyrres i de enkelte artefakter. -->
