@@ -1,8 +1,7 @@
-package no.nav.k9.abakus.registerdata.inntekt.sigrun.klient;
+package no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.pgifolketrygden;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public record PgiFolketrygdenResponse(String norskPersonidentifikator, Integer inntektsaar, List<Pgi> pensjonsgivendeInntekt) {
     public record Pgi(Skatteordning skatteordning, LocalDate datoForFastsetting, Long pensjonsgivendeInntektAvLoennsinntekt,
@@ -13,8 +12,11 @@ public record PgiFolketrygdenResponse(String norskPersonidentifikator, Integer i
         FASTLAND, SVALBARD, KILDESKATT_PAA_LOENN
     }
 
-    public List<Pgi> safePensjonsgivendeInntekt() {
-        return Optional.ofNullable(pensjonsgivendeInntekt()).orElse(List.of());
+    // Mens vi venter på avklaring rundt kildeskatt
+    public List<Pgi> pgiSomSikkertKanBrukes() {
+        return pensjonsgivendeInntekt().stream()
+            .filter(p -> !Skatteordning.KILDESKATT_PAA_LOENN.equals(p.skatteordning()))
+            .toList();
     }
 
     @Override
