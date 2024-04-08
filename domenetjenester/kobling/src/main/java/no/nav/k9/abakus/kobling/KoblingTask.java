@@ -3,7 +3,6 @@ package no.nav.k9.abakus.kobling;
 import no.nav.k9.abakus.kobling.repository.LåsRepository;
 import no.nav.vedtak.felles.prosesstask.api.ProsessTaskData;
 import no.nav.vedtak.felles.prosesstask.api.ProsessTaskHandler;
-import no.nav.vedtak.log.mdc.MdcExtendedLogContext;
 
 public abstract class KoblingTask implements ProsessTaskHandler {
 
