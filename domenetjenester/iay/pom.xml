@@ -15,16 +15,6 @@
 	<name>Abakus :: Domenetjeneste :: IAY</name>
 
 	<dependencies>
-		<dependency>
-			<!-- for Bean validation -->
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-		</dependency>
-        <dependency>
-            <!-- for Bean validation -->
-            <groupId>org.glassfish</groupId>
-            <artifactId>jakarta.el</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>no.nav.fpsak.tidsserie</groupId>
