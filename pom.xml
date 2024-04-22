@@ -8,7 +8,7 @@
     <parent>
         <groupId>no.nav.foreldrepenger.felles</groupId>
         <artifactId>fp-bom</artifactId>
-        <version>3.1.2</version>
+        <version>3.2.0</version>
     </parent>
 
 	<groupId>no.nav.k9.abakus</groupId>
@@ -36,11 +36,11 @@
 
         <kontrakt.java.version>21</kontrakt.java.version>
 
-		<felles.version>7.0.8</felles.version>
-		<prosesstask.version>5.0.5</prosesstask.version>
-		<kontrakter.version>9.1.8</kontrakter.version>
+		<felles.version>7.1.2</felles.version>
+		<prosesstask.version>5.0.8</prosesstask.version>
+		<kontrakter.version>9.1.12</kontrakter.version>
         <tidsserie.version>2.7.1</tidsserie.version>
-        <swagger-ui.version>5.12.0</swagger-ui.version>
+        <swagger-ui.version>5.15.0</swagger-ui.version>
 
         <!-- Forteller til maven-deploy-plugin at artefaktet ikke skal deployes.
         Arves og overstyrres i de enkelte artefakter. -->
@@ -56,7 +56,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.felles</groupId>
                 <artifactId>fp-bom</artifactId>
-                <version>3.1.2</version>
+                <version>3.2.0</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -195,6 +195,15 @@
 				<artifactId>aordningen-inntektsinformasjon-v1</artifactId>
 				<version>1.7</version>
 			</dependency>
+
+            <!-- Metrics -->
+            <dependency>
+                <groupId>io.prometheus</groupId>
+                <artifactId>simpleclient_bom</artifactId>
+                <version>0.16.0</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
 
 
             <!-- Swagger-UI -->
