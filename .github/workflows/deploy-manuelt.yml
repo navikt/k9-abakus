@@ -25,5 +25,6 @@ jobs:
       gar: false
       image: ghcr.io/${{ github.repository }}:${{ inputs.image }}
       cluster: ${{ inputs.environment }}-fss
+      naiserator_file: .deploy/naiserator.yaml
       namespace: k9saksbehandling
     secrets: inherit
