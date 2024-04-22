@@ -22,7 +22,7 @@ jobs:
       id-token: write
     uses: navikt/sif-gha-workflows/.github/workflows/maven-deploy.yml@main
     with:
-      gar: false
+      gar: true
       image: ghcr.io/${{ github.repository }}:${{ inputs.image }}
       cluster: ${{ inputs.environment }}-fss
       naiserator_file: .deploy/naiserator.yaml
