@@ -20,6 +20,7 @@ jobs:
     permissions:
       contents: read
       id-token: write
+      deployments: read
     uses: navikt/sif-gha-workflows/.github/workflows/maven-deploy.yml@main
     with:
       gar: true
