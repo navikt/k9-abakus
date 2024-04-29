@@ -40,7 +40,7 @@
 		<prosesstask.version>5.0.8</prosesstask.version>
 		<kontrakter.version>9.1.12</kontrakter.version>
         <tidsserie.version>2.7.1</tidsserie.version>
-        <swagger-ui.version>5.15.0</swagger-ui.version>
+        <swagger-ui.version>5.17.2</swagger-ui.version>
 
         <!-- Forteller til maven-deploy-plugin at artefaktet ikke skal deployes.
         Arves og overstyrres i de enkelte artefakter. -->
