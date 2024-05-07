@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -94,7 +95,7 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
 
         var personIdent = getFnrFraAktørId(kobling.getAktørId());
 
-        var map = sigrunTjeneste.hentPensjonsgivende(personIdent, kobling.getOpplysningsperiodeSkattegrunnlag());
+        var map = sigrunTjeneste.hentPensjonsgivende(personIdent, Objects.requireNonNull(kobling.getOpplysningsperiodeSkattegrunnlag()));
         var aktørInntektBuilder = inntektArbeidYtelseAggregatBuilder.getAktørInntektBuilder(kobling.getAktørId());
 
         var inntektBuilder = aktørInntektBuilder.getInntektBuilder(InntektskildeType.SIGRUN, null);
