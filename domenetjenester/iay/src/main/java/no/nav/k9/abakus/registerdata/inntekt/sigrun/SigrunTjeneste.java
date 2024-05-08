@@ -64,7 +64,7 @@ public class SigrunTjeneste {
 
     private Year utledSenesteÅr(IntervallEntitet opplysningsperiode) {
         var ifjor = Year.now().minusYears(1);
-        var oppgitt = opplysningsperiode != null ? Year.from(opplysningsperiode.getTomDato()) : ifjor;
+        var oppgitt = Year.from(opplysningsperiode.getTomDato());
         return oppgitt.isAfter(ifjor) ? ifjor : oppgitt;
     }
 
@@ -80,8 +80,8 @@ public class SigrunTjeneste {
     }
 
     private List<Year> utledTidligereÅr(IntervallEntitet opplysningsperiode, Year senesteÅr, boolean harDataSenesteÅr) {
-        long periodeLengde = opplysningsperiode != null ? YEARS.between(opplysningsperiode.getFomDato(), opplysningsperiode.getTomDato()) : 2L;
-        var tidligsteÅr = opplysningsperiode != null ? Year.from(opplysningsperiode.getFomDato()) : senesteÅr.minusYears(2);
+        long periodeLengde = YEARS.between(opplysningsperiode.getFomDato(), opplysningsperiode.getTomDato());
+        var tidligsteÅr = Year.from(opplysningsperiode.getFomDato());
         var fraTidligsteÅr = harDataSenesteÅr || periodeLengde > 2L ? tidligsteÅr : tidligsteÅr.minusYears(1);
         if (fraTidligsteÅr.isBefore(FØRSTE_PGI)) {
             fraTidligsteÅr = FØRSTE_PGI;
