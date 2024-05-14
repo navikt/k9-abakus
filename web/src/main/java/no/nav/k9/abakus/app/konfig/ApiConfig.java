@@ -3,6 +3,8 @@ package no.nav.k9.abakus.app.konfig;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import jakarta.ws.rs.ApplicationPath;
 import jakarta.ws.rs.core.Application;
@@ -52,7 +54,8 @@ public class ApiConfig extends Application {
             .openAPI(oas)
             .prettyPrint(true)
             .scannerClass("io.swagger.v3.jaxrs2.integration.JaxrsAnnotationScanner")
-            .resourcePackages(Set.of("no.nav.folketrygdloven"))
+            .resourcePackages(Stream.of("no.nav.k9.", "no.nav.k9.sak", "no.nav.k9", "no.nav.vedtak")
+                .collect(Collectors.toSet()))
             .ignoredRoutes(Set.of("/api/ytelse/v1/hent-vedtatte/for-ident/k9", "/api/ytelse/v1/hent-vedtatte-og-historiske/for-ident/k9",
                 "/api/ytelse/v1/hent-vedtatte/for-ident"));
 
