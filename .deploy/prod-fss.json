@@ -13,8 +13,8 @@
     "mem": "1024Mi"
   },
   "ingresses": [
-    "https://k9abakus.intern.nav.no/",
-    "https://k9abakus.prod-fss-pub.nais.io"
+    "https://k9-abakus.intern.nav.no/",
+    "https://k9-abakus.prod-fss-pub.nais.io"
   ],
   "AZURE_IAC_RULES": [
     {
