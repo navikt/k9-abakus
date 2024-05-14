@@ -12,7 +12,10 @@
     "cpu": "200m",
     "mem": "1024Mi"
   },
-  "ingresses": ["https://k9abakus.dev.intern.nav.no/"],
+  "ingresses": [
+    "https://k9-abakus.dev.intern.nav.no/",
+    "https://k9-abakus.dev-fss-pub.nais.io"
+  ],
   "AZURE_IAC_RULES": [
     {
       "app": "k9-sak",
