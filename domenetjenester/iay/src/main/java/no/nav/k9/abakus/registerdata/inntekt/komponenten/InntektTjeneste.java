@@ -1,5 +1,7 @@
 package no.nav.k9.abakus.registerdata.inntekt.komponenten;
 
+import static no.nav.k9.abakus.registerdata.inntekt.komponenten.UtledFormål.utledFormålFraYtelse;
+
 import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -41,8 +43,7 @@ import no.nav.vedtak.felles.integrasjon.rest.RestRequest;
 import no.nav.vedtak.felles.integrasjon.rest.TokenFlow;
 
 @ApplicationScoped
-@RestClientConfig(tokenConfig = TokenFlow.AZUREAD_CC, endpointProperty = "hentinntektlistebolk.url", endpointDefault = "https://app.adeo.no/inntektskomponenten-ws/rs/api/v1/hentinntektlistebolk",
-    scopesProperty = "hentinntektlistebolk.scopes", scopesDefault = "api://prod-fss.team-inntekt.inntektskomponenten/.default")
+@RestClientConfig(tokenConfig = TokenFlow.AZUREAD_CC, endpointProperty = "hentinntektlistebolk.url", endpointDefault = "https://app.adeo.no/inntektskomponenten-ws/rs/api/v1/hentinntektlistebolk", scopesProperty = "hentinntektlistebolk.scopes", scopesDefault = "api://prod-fss.team-inntekt.inntektskomponenten/.default")
 public class InntektTjeneste {
 
     // Dato for eldste request til inntk - det er av og til noen ES saker som spør lenger tilbake i tid
@@ -75,13 +76,13 @@ public class InntektTjeneste {
     }
 
     public InntektsInformasjon finnInntekt(FinnInntektRequest finnInntektRequest, InntektskildeType kilde, YtelseType ytelse) {
-        HentInntektListeBolkResponse response = finnInntektRaw(finnInntektRequest, kilde);
+        HentInntektListeBolkResponse response = finnInntektRaw(finnInntektRequest, kilde, ytelse);
         return oversettResponse(response, kilde, ytelse);
 
     }
 
-    public HentInntektListeBolkResponse finnInntektRaw(FinnInntektRequest finnInntektRequest, InntektskildeType kilde) {
-        var request = lagRequest(finnInntektRequest, kilde);
+    public HentInntektListeBolkResponse finnInntektRaw(FinnInntektRequest finnInntektRequest, InntektskildeType kilde, YtelseType ytelse) {
+        var request = lagRequest(finnInntektRequest, kilde, ytelse);
 
         HentInntektListeBolkResponse response;
         try {
@@ -93,7 +94,7 @@ public class InntektTjeneste {
         return response;
     }
 
-    private RestRequest lagRequest(FinnInntektRequest finnInntektRequest, InntektskildeType kilde) {
+    private RestRequest lagRequest(FinnInntektRequest finnInntektRequest, InntektskildeType kilde, YtelseType ytelse) {
         var request = new HentInntektListeBolkRequest();
 
         if (finnInntektRequest.getFnr() != null) {
@@ -105,12 +106,13 @@ public class InntektTjeneste {
         InntektsFilter filter = getFilter(kilde);
         if (filter != null) {
             request.setAinntektsfilter(filter.getKode());
-            request.setFormaal(filter.getFormål().getKode());
+            request.setFormaal(filter.getFormål().orElse(utledFormålFraYtelse(ytelse)).getKode());
         }
         request.setMaanedFom(finnInntektRequest.getFom().isAfter(INNTK_TIDLIGSTE_DATO) ? finnInntektRequest.getFom() : INNTK_TIDLIGSTE_DATO);
         request.setMaanedTom(finnInntektRequest.getTom().isAfter(INNTK_TIDLIGSTE_DATO) ? finnInntektRequest.getTom() : INNTK_TIDLIGSTE_DATO);
         return RestRequest.newPOSTJson(request, restConfig.endpoint(), restConfig);
     }
+
 
     private InntektsFilter getFilter(InntektskildeType kilde) {
         // Skal bare få en verdi.
@@ -178,8 +180,7 @@ public class InntektTjeneste {
             tilleggsinformasjon.getTilleggsinformasjonDetaljer().getDetaljerType());
     }
 
-    private void oversettArbeidsforhold(List<FrilansArbeidsforhold> arbeidsforhold,
-                                        ArbeidsInntektInformasjon arbeidsInntektInformasjon) {
+    private void oversettArbeidsforhold(List<FrilansArbeidsforhold> arbeidsforhold, ArbeidsInntektInformasjon arbeidsInntektInformasjon) {
         if (arbeidsInntektInformasjon.getArbeidsforholdListe() == null) {
             return;
         }

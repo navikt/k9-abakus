@@ -1,10 +1,12 @@
 package no.nav.k9.abakus.registerdata.inntekt.komponenten;
 
+import java.util.Optional;
+
 public enum InntektsFilter {
 
     OPPTJENINGSGRUNNLAG("PensjonsgivendeA-Inntekt", InntektsFormål.FORMAAL_PGI),
-    BEREGNINGSGRUNNLAG("8-28", InntektsFormål.FORMAAL_FORELDREPENGER),
-    SAMMENLIGNINGSGRUNNLAG("8-30", InntektsFormål.FORMAAL_FORELDREPENGER);
+    BEREGNINGSGRUNNLAG("8-28", null),
+    SAMMENLIGNINGSGRUNNLAG("8-30", null);
 
     private String kode;
     private InntektsFormål formål;
@@ -18,7 +20,7 @@ public enum InntektsFilter {
         return kode;
     }
 
-    public InntektsFormål getFormål() {
-        return formål;
+    public Optional<InntektsFormål> getFormål() {
+        return Optional.ofNullable(formål);
     }
 }

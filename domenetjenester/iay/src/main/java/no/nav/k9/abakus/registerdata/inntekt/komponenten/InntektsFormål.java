@@ -2,7 +2,10 @@ package no.nav.k9.abakus.registerdata.inntekt.komponenten;
 
 public enum InntektsFormål {
 
-    FORMAAL_FORELDREPENGER("Foreldrepenger"),
+    FORMAAL_OMSORSGPENGER("Omsorgspenger"),
+    FORMAAL_PLEIEPENGER_SYKT_BARN("PleiepengerSyktBarn"),
+    FORMAAL_PLEIEPENGER_NÆRSTÅENDE("PleiepengerNaerstaaende"),
+    FORMAAL_OPPLÆRINGSPENGER("Opplaeringspenger"),
     FORMAAL_PGI("PensjonsgivendeA-inntekt");
 
     private String kode;

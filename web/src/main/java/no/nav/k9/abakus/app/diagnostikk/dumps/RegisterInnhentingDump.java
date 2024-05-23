@@ -18,6 +18,7 @@ import jakarta.inject.Inject;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
+import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.app.diagnostikk.ContainerContextRunner;
 import no.nav.k9.abakus.app.diagnostikk.DebugDump;
 import no.nav.k9.abakus.app.diagnostikk.DumpKontekst;
@@ -95,19 +96,19 @@ public class RegisterInnhentingDump implements DebugDump {
 
         dumps.addAll(innhentAareg(ident, periode));
 
-        dumps.addAll(innhentInntekt(aktørId, periode));
+        dumps.addAll(innhentInntekt(aktørId, periode, kontekst.getYtelseType()));
 
         return dumps;
     }
 
-    private List<DumpOutput> innhentInntekt(AktørId aktørId, IntervallEntitet periode) {
+    private List<DumpOutput> innhentInntekt(AktørId aktørId, IntervallEntitet periode, YtelseType ytelseType) {
         var dumps = new ArrayList<DumpOutput>();
         var fom = periode.getFomDato();
         var tom = periode.getTomDato();
         INNTEKTSKILDER.forEach(inntektsKilde -> {
             var request = FinnInntektRequest.builder(YearMonth.from(fom), YearMonth.from(tom)).medAktørId(aktørId.getId()).build();
 
-            dumps.add(dumpJsonOutput(PREFIKS + "-inntekt-" + inntektsKilde.getKode(), () -> inntektTjeneste.finnInntektRaw(request, inntektsKilde)));
+            dumps.add(dumpJsonOutput(PREFIKS + "-inntekt-" + inntektsKilde.getKode(), () -> inntektTjeneste.finnInntektRaw(request, inntektsKilde, ytelseType)));
         });
         return dumps;
     }
