@@ -110,7 +110,7 @@ class InntektTjenesteImplTest {
 
         // Act
         InntektsInformasjon inntektsInformasjon = inntektTjeneste.finnInntekt(finnInntektRequest, InntektskildeType.INNTEKT_OPPTJENING,
-            YtelseType.FORELDREPENGER);
+            YtelseType.OMSORGSPENGER);
 
         // Assert
         verify(restKlient, times(1)).send(any(), eq(HentInntektListeBolkResponse.class));
@@ -168,7 +168,7 @@ class InntektTjenesteImplTest {
 
         try {
             // Act
-            inntektTjeneste.finnInntekt(finnInntektRequest, InntektskildeType.INNTEKT_OPPTJENING, YtelseType.SVANGERSKAPSPENGER);
+            inntektTjeneste.finnInntekt(finnInntektRequest, InntektskildeType.INNTEKT_OPPTJENING, YtelseType.PLEIEPENGER_NÆRSTÅENDE);
             fail("Forventet VLException");
         } catch (VLException e) {
             // Assert
