@@ -8,7 +8,7 @@
     <parent>
         <groupId>no.nav.foreldrepenger.felles</groupId>
         <artifactId>fp-bom</artifactId>
-        <version>3.3.1</version>
+        <version>3.4.0</version>
     </parent>
 
 	<groupId>no.nav.k9.abakus</groupId>
@@ -56,7 +56,7 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.felles</groupId>
                 <artifactId>fp-bom</artifactId>
-                <version>3.3.1</version>
+                <version>3.4.0</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
