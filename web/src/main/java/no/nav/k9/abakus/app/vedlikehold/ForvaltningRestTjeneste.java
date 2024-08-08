@@ -21,6 +21,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
 import no.nav.abakus.iaygrunnlag.UuidDto;
+import no.nav.abakus.iaygrunnlag.request.ByttAktørRequest;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
 import no.nav.k9.abakus.domene.iay.InntektsmeldingAggregat;
 import no.nav.k9.abakus.domene.iay.søknad.OppgittEgenNæring;
@@ -198,7 +199,6 @@ public class ForvaltningRestTjeneste {
         public AbacDataAttributter apply(Object obj) {
             var req = (ByttAktørRequest) obj;
             return AbacDataAttributter.opprett()
-                .leggTil(StandardAbacAttributtType.AKTØR_ID, req.getUtgåttAktør().getVerdi())
                 .leggTil(StandardAbacAttributtType.AKTØR_ID, req.getGyldigAktør().getVerdi());
         }
     }
