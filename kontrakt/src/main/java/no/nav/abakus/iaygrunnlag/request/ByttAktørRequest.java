@@ -1,4 +1,4 @@
-package no.nav.k9.abakus.app.vedlikehold;
+package no.nav.abakus.iaygrunnlag.request;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -32,6 +32,11 @@ public class ByttAktørRequest {
 
     public ByttAktørRequest() {
         // Jackson
+    }
+
+    public ByttAktørRequest(Aktør utgåttAktør, Aktør gyldigAktør) {
+        this.utgåttAktør = utgåttAktør;
+        this.gyldigAktør = gyldigAktør;
     }
 
     public Aktør getUtgåttAktør() {
