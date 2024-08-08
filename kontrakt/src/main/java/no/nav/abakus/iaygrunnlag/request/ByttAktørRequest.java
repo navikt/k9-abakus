@@ -34,6 +34,11 @@ public class ByttAktørRequest {
         // Jackson
     }
 
+    public ByttAktørRequest(Aktør utgåttAktør, Aktør gyldigAktør) {
+        this.utgåttAktør = utgåttAktør;
+        this.gyldigAktør = gyldigAktør;
+    }
+
     public Aktør getUtgåttAktør() {
         return utgåttAktør;
     }
