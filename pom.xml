@@ -213,6 +213,18 @@
                 <version>${swagger-ui.version}</version>
             </dependency>
 
+            <!-- transitive avhengigheter som er importert med ulike versjoner, setter en for å sikre stabilitet -->
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>1.5.6</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jboss.logging</groupId>
+                <artifactId>jboss-logging</artifactId>
+                <version>3.5.3.Final</version>
+            </dependency>
+
         </dependencies>
 	</dependencyManagement>
 
