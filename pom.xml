@@ -205,6 +205,13 @@
                 <type>pom</type>
             </dependency>
 
+            <!-- trace -->
+            <dependency>
+                <groupId>io.opentelemetry.instrumentation</groupId>
+                <artifactId>opentelemetry-instrumentation-annotations</artifactId>
+                <version>2.6.0</version>
+            </dependency>
+
 
             <!-- Swagger-UI -->
             <dependency>

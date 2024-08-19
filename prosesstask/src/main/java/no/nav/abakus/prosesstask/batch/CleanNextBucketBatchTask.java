@@ -1,11 +1,11 @@
 package no.nav.abakus.prosesstask.batch;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import no.nav.vedtak.felles.prosesstask.api.ProsessTask;
 import no.nav.vedtak.felles.prosesstask.api.ProsessTaskData;
 import no.nav.vedtak.felles.prosesstask.api.ProsessTaskHandler;
@@ -23,6 +23,7 @@ public class CleanNextBucketBatchTask implements ProsessTaskHandler {
         this.taskTjeneste = taskTjeneste;
     }
 
+    @WithSpan("TASK partition.cleanBucket")
     @Override
     public void doTask(ProsessTaskData prosessTaskData) {
         int antallSlettet = taskTjeneste.tømNestePartisjon();

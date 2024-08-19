@@ -2,6 +2,7 @@ package no.nav.k9.abakus.registerdata;
 
 import java.util.Set;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Any;
 import jakarta.enterprise.inject.Instance;
@@ -55,6 +56,7 @@ public class RegisterdataInnhentingTask extends KoblingTask {
         return YtelseTypeRef.Lookup.find(innhentTjenester, ytelseType).orElseThrow();
     }
 
+    @WithSpan("TASK registerdata.innhent")
     @Override
     protected void prosesser(ProsessTaskData prosessTaskData) {
         String nyKoblingId = prosessTaskData.getPropertyValue(TaskConstants.NY_KOBLING_ID);
