@@ -11,7 +11,7 @@ RUN mkdir conf
 ENV JAVA_OPTS="-Djava.security.egd=file:/dev/urandom \
     -Dlogback.configurationFile=conf/logback.xml"
 
-COPY web/init-app.sh /init-scripts/init-app.sh
+COPY --chown=apprunner:root build/init-app.sh /init-scripts/init-app.sh
 
 # Config
 COPY web/target/classes/logback*.xml ./conf/
