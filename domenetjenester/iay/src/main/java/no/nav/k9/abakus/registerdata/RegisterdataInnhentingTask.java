@@ -56,7 +56,7 @@ public class RegisterdataInnhentingTask extends KoblingTask {
         return YtelseTypeRef.Lookup.find(innhentTjenester, ytelseType).orElseThrow();
     }
 
-    @WithSpan
+    @WithSpan("TASK registerdata.innhent")
     @Override
     protected void prosesser(ProsessTaskData prosessTaskData) {
         String nyKoblingId = prosessTaskData.getPropertyValue(TaskConstants.NY_KOBLING_ID);

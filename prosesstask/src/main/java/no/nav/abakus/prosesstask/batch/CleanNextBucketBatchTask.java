@@ -23,7 +23,7 @@ public class CleanNextBucketBatchTask implements ProsessTaskHandler {
         this.taskTjeneste = taskTjeneste;
     }
 
-    @WithSpan
+    @WithSpan("TASK partition.cleanBucket")
     @Override
     public void doTask(ProsessTaskData prosessTaskData) {
         int antallSlettet = taskTjeneste.tømNestePartisjon();

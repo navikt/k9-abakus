@@ -41,7 +41,7 @@ public class LagreVedtakTask implements ProsessTaskHandler {
         this.ytelseRepository = ytelseRepository;
         this.extractor = extractor;
     }
-    @WithSpan
+    @WithSpan("TASK vedtakEvent.lagre")
     @Override
     public void doTask(ProsessTaskData data) {
         String key = data.getPropertyValue(KEY);

@@ -16,7 +16,7 @@ public abstract class KoblingTask implements ProsessTaskHandler {
         this.låsRepository = låsRepository;
     }
 
-    @WithSpan
+    @WithSpan("TASK (koblingtask)")
     @Override
     public void doTask(ProsessTaskData prosessTaskData) {
         String nyKoblingId = prosessTaskData.getPropertyValue(TaskConstants.NY_KOBLING_ID);

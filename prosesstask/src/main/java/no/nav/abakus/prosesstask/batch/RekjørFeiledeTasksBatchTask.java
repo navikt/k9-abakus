@@ -24,7 +24,7 @@ public class RekjørFeiledeTasksBatchTask implements ProsessTaskHandler {
         this.taskTjeneste = taskTjeneste;
     }
 
-    @WithSpan
+    @WithSpan(value = "TASK retry.feilendeTasks")
     @Override
     public void doTask(ProsessTaskData prosessTaskData) {
         var rekjørAlleFeiledeTasks = taskTjeneste.restartAlleFeiledeTasks();

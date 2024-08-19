@@ -34,7 +34,7 @@ public class ForvaltningOppdaterKanalReferanseTask implements ProsessTaskHandler
     }
 
     @SuppressWarnings("unchecked")
-    @WithSpan
+    @WithSpan("TASK forvaltning.oppdaterKanalreferanse")
     @Override
     public void doTask(ProsessTaskData prosessTaskData) {
 
