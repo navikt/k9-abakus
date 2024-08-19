@@ -1,5 +1,6 @@
 package no.nav.abakus.prosesstask.batch;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -23,6 +24,7 @@ public class RekjørFeiledeTasksBatchTask implements ProsessTaskHandler {
         this.taskTjeneste = taskTjeneste;
     }
 
+    @WithSpan
     @Override
     public void doTask(ProsessTaskData prosessTaskData) {
         var rekjørAlleFeiledeTasks = taskTjeneste.restartAlleFeiledeTasks();

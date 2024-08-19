@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -40,7 +41,7 @@ public class LagreVedtakTask implements ProsessTaskHandler {
         this.ytelseRepository = ytelseRepository;
         this.extractor = extractor;
     }
-
+    @WithSpan
     @Override
     public void doTask(ProsessTaskData data) {
         String key = data.getPropertyValue(KEY);

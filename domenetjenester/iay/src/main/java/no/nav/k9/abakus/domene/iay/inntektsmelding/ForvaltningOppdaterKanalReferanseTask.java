@@ -3,6 +3,7 @@ package no.nav.k9.abakus.domene.iay.inntektsmelding;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
@@ -33,6 +34,7 @@ public class ForvaltningOppdaterKanalReferanseTask implements ProsessTaskHandler
     }
 
     @SuppressWarnings("unchecked")
+    @WithSpan
     @Override
     public void doTask(ProsessTaskData prosessTaskData) {
 
