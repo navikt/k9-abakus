@@ -30,3 +30,5 @@ public class CleanNextBucketBatchTask implements ProsessTaskHandler {
         LOG.info("Tømmer neste partisjon med ferdige tasks, slettet {}", antallSlettet);
     }
 }
+
+
