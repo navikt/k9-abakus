@@ -1,15 +1,10 @@
 package no.nav.k9.abakus.iay.tjeneste.dto.iay;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import no.nav.abakus.iaygrunnlag.Aktør;
@@ -24,11 +19,8 @@ import no.nav.abakus.iaygrunnlag.inntektsmelding.v1.InntektsmeldingDto;
 import no.nav.abakus.iaygrunnlag.inntektsmelding.v1.InntektsmeldingerDto;
 import no.nav.abakus.iaygrunnlag.inntektsmelding.v1.NaturalytelseDto;
 import no.nav.abakus.iaygrunnlag.inntektsmelding.v1.RefusjonDto;
-import no.nav.abakus.iaygrunnlag.inntektsmelding.v1.RefusjonskravDatoDto;
-import no.nav.abakus.iaygrunnlag.inntektsmelding.v1.RefusjonskravDatoerDto;
 import no.nav.abakus.iaygrunnlag.inntektsmelding.v1.UtsettelsePeriodeDto;
 import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
-import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlag;
 import no.nav.k9.abakus.domene.iay.InntektsmeldingAggregat;
 import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
 import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
@@ -40,7 +32,6 @@ import no.nav.k9.abakus.domene.iay.inntektsmelding.InntektsmeldingBuilder;
 import no.nav.k9.abakus.domene.iay.inntektsmelding.NaturalYtelse;
 import no.nav.k9.abakus.domene.iay.inntektsmelding.Refusjon;
 import no.nav.k9.abakus.domene.iay.inntektsmelding.UtsettelsePeriode;
-import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
 import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
@@ -85,99 +76,6 @@ public class MapInntektsmeldinger {
         inntektsmeldingerDto.medInntektsmeldinger(inntektsmeldingerDtoList);
         return inntektsmeldingerDto;
     }
-
-    public static RefusjonskravDatoerDto mapRefusjonskravdatoer(Set<Inntektsmelding> inntektsmeldinger, InntektArbeidYtelseGrunnlag nyesteGrunnlag) {
-        if (nyesteGrunnlag.getInntektsmeldinger().isEmpty()) {
-            return new RefusjonskravDatoerDto(Collections.emptyList());
-        }
-        List<RefusjonskravDatoDto> refusjonskravDatoList = lagRefusjonskravdatoPerArbeidsgiver(inntektsmeldinger, nyesteGrunnlag);
-
-        return new RefusjonskravDatoerDto(refusjonskravDatoList);
-    }
-
-    private static List<RefusjonskravDatoDto> lagRefusjonskravdatoPerArbeidsgiver(Set<Inntektsmelding> inntektsmeldinger,
-                                                                                  InntektArbeidYtelseGrunnlag nyesteGrunnlag) {
-        List<RefusjonskravDatoDto> refusjonskravDatoList = new ArrayList<>();
-        Map<Arbeidsgiver, Optional<LocalDate>> førsteRefusjonsdatoMap = nyesteGrunnlag.getInntektsmeldinger()
-            .map(MapInntektsmeldinger::lagFørsteRefusjonsdatoMap).orElse(Map.of());
-        førsteRefusjonsdatoMap.forEach(
-            (arbeidsgiver, førsteDatoMedRefusjon) -> finnFørsteDatoForInnsendelseAvRefusjonskrav(inntektsmeldinger, arbeidsgiver).ifPresent(
-                innsendingDato -> refusjonskravDatoList.add(
-                    new RefusjonskravDatoDto(mapTilAktør(arbeidsgiver), innsendingDato.toLocalDate(), førsteDatoMedRefusjon.orElse(null),
-                        harRefusjonFraStart(arbeidsgiver, nyesteGrunnlag)))));
-        return refusjonskravDatoList;
-    }
-
-    private static boolean harRefusjonFraStart(Arbeidsgiver arbeidsgiver, InntektArbeidYtelseGrunnlag nyesteGrunnlag) {
-        return nyesteGrunnlag.getInntektsmeldinger()
-            .stream()
-            .flatMap(ims -> ims.getInntektsmeldinger().stream())
-            .filter(im -> im.getArbeidsgiver().equals(arbeidsgiver))
-            .anyMatch(MapInntektsmeldinger::harRefusjonFraStart);
-    }
-
-
-    private static Map<Arbeidsgiver, Optional<LocalDate>> lagFørsteRefusjonsdatoMap(InntektsmeldingAggregat inntektsmeldingAggregat) {
-        return inntektsmeldingAggregat.getInntektsmeldinger()
-            .stream()
-            .filter(MapInntektsmeldinger::harRefusjonskrav)
-            .collect(Collectors.toMap(Inntektsmelding::getArbeidsgiver, MapInntektsmeldinger::finnFørsteDatoMedRefusjon,
-                MapInntektsmeldinger::mergeDatoer));
-    }
-
-    private static Optional<LocalDate> mergeDatoer(Optional<LocalDate> d1, Optional<LocalDate> d2) {
-        if (d1.isEmpty() || d2.isEmpty()) {
-            return Optional.empty();
-        }
-        LocalDate dato1 = d1.get();
-        LocalDate dato2 = d2.get();
-        return dato1.isAfter(dato2) ? d2 : d1;
-    }
-
-    private static Optional<LocalDateTime> finnFørsteDatoForInnsendelseAvRefusjonskrav(Set<Inntektsmelding> inntektsmeldinger,
-                                                                                       Arbeidsgiver arbeidsgiver) {
-        return inntektsmeldinger.stream()
-            .filter(im -> im.getArbeidsgiver().equals(arbeidsgiver))
-            .filter(MapInntektsmeldinger::harRefusjonskrav)
-            .map(Inntektsmelding::getInnsendingstidspunkt)
-            .min(Comparator.naturalOrder());
-    }
-
-    private static Aktør mapTilAktør(Arbeidsgiver arbeidsgiver) {
-        if (!arbeidsgiver.getErVirksomhet()) {
-            return new AktørIdPersonident(arbeidsgiver.getIdentifikator());
-        } else {
-            return new no.nav.abakus.iaygrunnlag.Organisasjon(arbeidsgiver.getIdentifikator());
-        }
-    }
-
-    private static Optional<LocalDate> finnFørsteDatoMedRefusjon(Inntektsmelding im) {
-        return harRefusjonFraStart(im) ? Optional.ofNullable(utledStartDato(im)) : im.getEndringerRefusjon()
-            .stream()
-            .map(Refusjon::getFom)
-            .min(Comparator.naturalOrder());
-    }
-
-    private static LocalDate utledStartDato(Inntektsmelding im) {
-        if (im.getStartDatoPermisjon() != null) {
-            return im.getStartDatoPermisjon();
-        } else {
-            return im.getOppgittFravær().stream().map(Fravær::getPeriode).map(IntervallEntitet::getFomDato).min(LocalDate::compareTo).orElse(null);
-        }
-    }
-
-    private static boolean harRefusjonskrav(Inntektsmelding im) {
-        return harRefusjonFraStart(im) || harEndringerIRefusjon(im);
-    }
-
-    private static boolean harEndringerIRefusjon(Inntektsmelding im) {
-        return im.getEndringerRefusjon().stream().anyMatch(refusjon -> !refusjon.getRefusjonsbeløp().erNulltall());
-    }
-
-    private static boolean harRefusjonFraStart(Inntektsmelding im) {
-        return im.getRefusjonBeløpPerMnd() != null && !im.getRefusjonBeløpPerMnd().erNulltall();
-    }
-
 
     private static List<InntektsmeldingDto> mapUnikeInntektsmeldinger(Map<Inntektsmelding, ArbeidsforholdInformasjon> inntektsmeldingerMap) {
         List<InntektsmeldingDto> ims = new ArrayList<>();
