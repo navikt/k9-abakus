@@ -29,6 +29,7 @@ import no.nav.abakus.iaygrunnlag.ArbeidsforholdReferanse;
 import no.nav.abakus.iaygrunnlag.Periode;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.abakus.iaygrunnlag.request.AktørDatoRequest;
+import no.nav.k9.abakus.aktor.AktørTjeneste;
 import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
 import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
 import no.nav.k9.abakus.felles.LoggUtil;
@@ -36,9 +37,11 @@ import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
 import no.nav.k9.abakus.iay.tjeneste.dto.arbeidsforhold.ArbeidsforholdDtoTjeneste;
 import no.nav.k9.abakus.kobling.KoblingReferanse;
 import no.nav.k9.abakus.kobling.KoblingTjeneste;
+import no.nav.k9.abakus.registerdata.arbeidsforhold.rest.AaregRestKlient;
 import no.nav.k9.abakus.registerdata.arbeidsgiver.virksomhet.VirksomhetTjeneste;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
+import no.nav.k9.abakus.typer.PersonIdent;
 import no.nav.vedtak.log.mdc.MdcExtendedLogContext;
 import no.nav.vedtak.sikkerhet.abac.AbacDataAttributter;
 import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
@@ -58,6 +61,8 @@ public class ArbeidsforholdRestTjeneste {
     private InntektArbeidYtelseTjeneste iayTjeneste;
     private ArbeidsforholdDtoTjeneste dtoTjeneste;
     private VirksomhetTjeneste virksomhetTjeneste;
+    private AaregRestKlient aaregRestKlient;
+    private AktørTjeneste aktørConsumer;
 
     public ArbeidsforholdRestTjeneste() {
     } // CDI Ctor
@@ -66,11 +71,13 @@ public class ArbeidsforholdRestTjeneste {
     public ArbeidsforholdRestTjeneste(KoblingTjeneste koblingTjeneste,
                                       InntektArbeidYtelseTjeneste iayTjeneste,
                                       ArbeidsforholdDtoTjeneste dtoTjeneste,
-                                      VirksomhetTjeneste virksomhetTjeneste) {
+                                      VirksomhetTjeneste virksomhetTjeneste, AaregRestKlient aaregRestKlient, AktørTjeneste aktørConsumer) {
         this.koblingTjeneste = koblingTjeneste;
         this.iayTjeneste = iayTjeneste;
         this.dtoTjeneste = dtoTjeneste;
         this.virksomhetTjeneste = virksomhetTjeneste;
+        this.aaregRestKlient = aaregRestKlient;
+        this.aktørConsumer = aktørConsumer;
     }
 
     @POST
@@ -95,6 +102,32 @@ public class ArbeidsforholdRestTjeneste {
         final Response response = Response.ok(arbeidstakersArbeidsforhold).build();
         return response;
     }
+
+
+    @POST
+    @Path("/arbeidstaker/raw")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    @Operation(description = "Gir ut alle arbeidsforhold i en gitt periode/dato for en gitt aktør. NB! Proxyer direkte til aa-registeret / ingen bruk av sak/kobling i abakus", tags = "arbeidsforhold")
+    @BeskyttetRessurs(actionType = ActionType.READ, resource = FAGSAK)
+    @SuppressWarnings("findsecbugs:JAXRS_ENDPOINT")
+    public Response hentArbeidsforholdRaw(@NotNull @TilpassetAbacAttributt(supplierClass = AktørDatoRequestAbacDataSupplier.class) @Valid AktørDatoRequest request) {
+        AktørId aktørId = new AktørId(request.getAktør().getIdent());
+        Periode periode = request.getPeriode();
+        YtelseType ytelse = request.getYtelse() != null ? request.getYtelse() : YtelseType.UDEFINERT;
+        LOG_CONTEXT.add("ytelseType", request.getYtelse().getKode());
+        LOG_CONTEXT.add("periode", periode);
+
+        LocalDate fom = periode.getFom();
+        LocalDate tom = Objects.equals(fom, periode.getTom()) ? fom.plusDays(1) // enkel dato søk
+            : periode.getTom(); // periode søk
+        LOG.info("ABAKUS arbeidstaker - sjekk consumers for ytelse {}", ytelse);
+        var personIdent = aktørConsumer.hentIdentForAktør(aktørId).orElseThrow();
+        var arbeidstakersArbeidsforhold = aaregRestKlient.finnArbeidsforholdForArbeidstaker(personIdent.getIdent(), fom, tom);
+        final Response response = Response.ok(arbeidstakersArbeidsforhold).build();
+        return response;
+    }
+
 
     @POST
     @Path("/referanse")
