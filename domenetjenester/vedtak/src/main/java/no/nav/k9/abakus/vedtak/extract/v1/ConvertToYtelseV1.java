@@ -114,6 +114,9 @@ public final class ConvertToYtelseV1 {
             case SVANGERSKAPSPENGER -> Ytelser.SVANGERSKAPSPENGER;
 
             case FRISINN -> Ytelser.FRISINN;
+
+            case UNGDOMSYTELSE -> Ytelser.UNGDOMSYTELSE;
+
             default -> null;
         };
     }

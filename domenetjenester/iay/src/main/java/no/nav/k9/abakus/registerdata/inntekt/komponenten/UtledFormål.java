@@ -11,6 +11,7 @@ class UtledFormål {
             case PLEIEPENGER_NÆRSTÅENDE -> InntektsFormål.FORMAAL_PLEIEPENGER_NÆRSTÅENDE;
             case OPPLÆRINGSPENGER -> InntektsFormål.FORMAAL_OPPLÆRINGSPENGER;
             case FRISINN -> InntektsFormål.FORMAAL_OMSORSGPENGER; // Har ikkje eget formål for frisinn
+            case UNGDOMSYTELSE -> InntektsFormål.FORMAAL_OMSORSGPENGER; // TODO: Bruk riktig formål
             default -> throw new IllegalArgumentException("Fant ingen passende formål for innhenting av inntekt for " + ytelse.getKode());
         };
     }

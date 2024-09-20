@@ -53,6 +53,9 @@ public enum YtelseType implements Kodeverdi {
      */
     ENSLIG_FORSØRGER("EF", "Enslig forsørger"),
 
+    UNGDOMSYTELSE("UNG", "Ungdomsytelse"),
+
+
     UDEFINERT("-", "Ikke definert"),
     ;
 
@@ -89,7 +92,7 @@ public enum YtelseType implements Kodeverdi {
 
     public static List<YtelseType> abakusYtelser() {
         return List.of(YtelseType.FORELDREPENGER, YtelseType.SVANGERSKAPSPENGER, YtelseType.OMSORGSPENGER, YtelseType.PLEIEPENGER_SYKT_BARN,
-            YtelseType.PLEIEPENGER_NÆRSTÅENDE, YtelseType.OPPLÆRINGSPENGER, YtelseType.FRISINN);
+            YtelseType.PLEIEPENGER_NÆRSTÅENDE, YtelseType.OPPLÆRINGSPENGER, YtelseType.FRISINN, YtelseType.UNGDOMSYTELSE);
     }
 
     @Override

@@ -131,6 +131,8 @@ public class ExtractFromYtelseV1 implements ExtractFromYtelse<YtelseV1> {
             case SVANGERSKAPSPENGER -> YtelseType.SVANGERSKAPSPENGER;
 
             case FRISINN -> YtelseType.FRISINN;
+
+            case UNGDOMSYTELSE -> YtelseType.UNGDOMSYTELSE;
         };
     }
 

@@ -20,6 +20,12 @@ public enum Ytelser {
     /**
      * Midlertidig ytelse for Selvstendig næringsdrivende og Frilansere (Anmodning 10).
      */
-    FRISINN
+    FRISINN,
 
-}
+
+    /**
+     * Ungdomsytelse for personer mellom 18 og 29 år med deltakelse i ungdomsprogram
+     */
+    UNGDOMSYTELSE
+
+    }
