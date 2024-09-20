@@ -15,19 +15,19 @@ import no.nav.k9.abakus.registerdata.inntekt.sigrun.SigrunTjeneste;
 
 @ApplicationScoped
 @YtelseTypeRef(YtelseType.UNGDOMSYTELSE)
-public class IAYRegisterInnhentingK9TjenesteImpl extends IAYRegisterInnhentingFellesTjenesteImpl {
+public class IAYRegisterInnhentingUngdomsytelseTjenesteImpl extends IAYRegisterInnhentingFellesTjenesteImpl {
 
-    protected IAYRegisterInnhentingK9TjenesteImpl() {
+    protected IAYRegisterInnhentingUngdomsytelseTjenesteImpl() {
         super();
     }
 
     @Inject
-    public IAYRegisterInnhentingK9TjenesteImpl(InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste,
-                                               VirksomhetTjeneste virksomhetTjeneste,
-                                               InnhentingSamletTjeneste innhentingSamletTjeneste,
-                                               AktørTjeneste aktørConsumer,
-                                               SigrunTjeneste sigrunTjeneste,
-                                               VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste) {
+    public IAYRegisterInnhentingUngdomsytelseTjenesteImpl(InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste,
+                                                          VirksomhetTjeneste virksomhetTjeneste,
+                                                          InnhentingSamletTjeneste innhentingSamletTjeneste,
+                                                          AktørTjeneste aktørConsumer,
+                                                          SigrunTjeneste sigrunTjeneste,
+                                                          VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste) {
         super(inntektArbeidYtelseTjeneste, virksomhetTjeneste, innhentingSamletTjeneste, aktørConsumer, sigrunTjeneste,
             vedtattYtelseInnhentingTjeneste);
     }
