@@ -40,5 +40,8 @@
         "swagger"
       ]
     }
-  ]
+  ],
+  "env": {
+    "OTEL_RESOURCE_ATTRIBUTES": "service.name=k9-abakus,service.namespace=k9saksbehandling,deployment.environment=p,nais.backend=elastic-apm;grafana-lgtm"
+  }
 }
