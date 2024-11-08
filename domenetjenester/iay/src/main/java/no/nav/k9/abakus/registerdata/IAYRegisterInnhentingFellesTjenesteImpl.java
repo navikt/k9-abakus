@@ -19,20 +19,17 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektYtelseType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektspostType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.aktor.AktørTjeneste;
-import no.nav.k9.abakus.domene.iay.AktivitetsAvtaleBuilder;
 import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlag;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
 import no.nav.k9.abakus.domene.iay.InntektBuilder;
 import no.nav.k9.abakus.domene.iay.InntektspostBuilder;
-import no.nav.k9.abakus.domene.iay.Opptjeningsnøkkel;
 import no.nav.k9.abakus.domene.iay.YrkesaktivitetBuilder;
 import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
@@ -44,7 +41,6 @@ import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.Organisasjon;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.Person;
 import no.nav.k9.abakus.registerdata.arbeidsgiver.virksomhet.VirksomhetTjeneste;
-import no.nav.k9.abakus.registerdata.inntekt.komponenten.FrilansArbeidsforhold;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.Månedsinntekt;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.SigrunTjeneste;
@@ -116,22 +112,6 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         inntektArbeidYtelseAggregatBuilder.leggTilAktørInntekt(aktørInntektBuilder);
     }
 
-    private class FnrSupplier {
-
-        private final AktørId aktørId;
-        public FnrSupplier(AktørId aktørId) {
-            this.aktørId = aktørId;
-        }
-
-        private PersonIdent tilPersonIdent() {
-            try {
-                return aktørConsumer.hentIdentForAktør(this.aktørId).orElse(null);
-            } catch (Exception e) {
-                return null;
-            }
-        }
-    }
-
     @Override
     public InntektArbeidYtelseGrunnlagBuilder innhentRegisterdata(Kobling kobling, Set<RegisterdataElement> informasjonsElementer) {
         var grunnlagBuilder = InntektArbeidYtelseGrunnlagBuilder.oppdatere(
@@ -164,8 +144,8 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
     }
 
     private void innhentYtelser(Kobling kobling, InntektArbeidYtelseAggregatBuilder builder) {
-        ytelseRegisterInnhenting.byggYtelser(kobling, kobling.getAktørId(), getFnrFraAktørId(kobling.getAktørId()),
-            kobling.getOpplysningsperiode(), builder, skalInnhenteYtelseGrunnlag(kobling));
+        ytelseRegisterInnhenting.byggYtelser(kobling, kobling.getAktørId(), getFnrFraAktørId(kobling.getAktørId()), kobling.getOpplysningsperiode(),
+            builder, skalInnhenteYtelseGrunnlag(kobling));
     }
 
     private Set<ArbeidsforholdIdentifikator> innhentArbeidsforhold(Kobling kobling,
@@ -174,9 +154,7 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         return byggOpptjeningOpplysningene(kobling, kobling.getAktørId(), kobling.getOpplysningsperiode(), builder, informasjonsElementer);
     }
 
-    private void leggTilInntekter(AktørId aktørId,
-                                  InntektArbeidYtelseAggregatBuilder builder,
-                                  InntektsInformasjon inntektsInformasjon) {
+    private void leggTilInntekter(AktørId aktørId, InntektArbeidYtelseAggregatBuilder builder, InntektsInformasjon inntektsInformasjon) {
         var aktørInntektBuilder = builder.getAktørInntektBuilder(aktørId);
         InntektskildeType kilde = inntektsInformasjon.getKilde();
         aktørInntektBuilder.fjernInntekterFraKilde(kilde);
@@ -212,36 +190,6 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
 
         aktørInntektBuilder.leggTilInntekt(inntektBuilderForYtelser);
         builder.leggTilAktørInntekt(aktørInntektBuilder);
-    }
-
-    private void oversettFrilanseArbeidsforholdFraINNTK(Kobling kobling,
-                                                        InntektArbeidYtelseAggregatBuilder builder,
-                                                        Map.Entry<ArbeidsforholdIdentifikator, List<FrilansArbeidsforhold>> frilansArbeidsforhold,
-                                                        AktørId aktørId) {
-
-        var koblingReferanse = kobling.getKoblingReferanse();
-
-        var aktørArbeidBuilder = builder.getAktørArbeidBuilder(aktørId);
-        var arbeidsforholdIdentifikator = frilansArbeidsforhold.getKey();
-        var arbeidsgiver = mapArbeidsgiver(arbeidsforholdIdentifikator);
-
-        var arbeidsforholdRef = finnReferanseFor(koblingReferanse, arbeidsgiver, arbeidsforholdIdentifikator.getArbeidsforholdId());
-
-        final String arbeidsforholdId = arbeidsforholdIdentifikator.harArbeidsforholdRef() ? arbeidsforholdIdentifikator.getArbeidsforholdId()
-            .getReferanse() : null;
-        var eksternReferanse = EksternArbeidsforholdRef.ref(arbeidsforholdId);
-        var internReferanse = arbeidsforholdRef.orElseGet(() -> builder.medNyInternArbeidsforholdRef(arbeidsgiver, eksternReferanse));
-
-        Opptjeningsnøkkel nøkkel = new Opptjeningsnøkkel(internReferanse, arbeidsgiver);
-        ArbeidType arbeidType = ArbeidType.fraKode(arbeidsforholdIdentifikator.getType());
-        var yrkesaktivitetBuilder = aktørArbeidBuilder.getYrkesaktivitetBuilderForNøkkelAvType(nøkkel, arbeidType);
-        yrkesaktivitetBuilder.medArbeidsforholdId(internReferanse).medArbeidsgiver(arbeidsgiver).medArbeidType(arbeidType);
-        yrkesaktivitetBuilder.tilbakestillAvtalerInklusiveInntektFrilans();
-        frilansArbeidsforhold.getValue()
-            .forEach(avtale -> yrkesaktivitetBuilder.leggTilAktivitetsAvtale(opprettAktivitetsAvtaleFrilans(avtale, yrkesaktivitetBuilder)));
-
-        aktørArbeidBuilder.leggTilYrkesaktivitet(yrkesaktivitetBuilder);
-        builder.leggTilAktørArbeid(aktørArbeidBuilder);
     }
 
     private Arbeidsgiver finnArbeidsgiverForInntektsData(String arbeidsgiverString, Set<YearMonth> inntekterForMåneder) {
@@ -345,15 +293,6 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         if (informasjonsElementer.contains(registerdataElement)) {
             leggTilInntekter(aktørId, builder, inntektsInformasjon);
         }
-
-        if (YtelseType.FRISINN.equals(kobling.getYtelseType()) && inntektsKilde.equals(InntektskildeType.INNTEKT_OPPTJENING)
-            && informasjonsElementer.contains(RegisterdataElement.ARBEIDSFORHOLD)) {
-            // Tar med arbeidsforhold med sluttdato før AAREG importerte frilans. Disse er ikke helt overstyrbare
-            inntektsInformasjon.getFrilansArbeidsforhold()
-                .entrySet()
-                .forEach(frilansArbeidsforhold -> oversettFrilanseArbeidsforholdFraINNTK(kobling, builder, frilansArbeidsforhold, aktørId));
-
-        }
     }
 
     private Optional<InternArbeidsforholdRef> finnReferanseFor(KoblingReferanse koblingReferanse,
@@ -400,18 +339,6 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         }
         throw new IllegalArgumentException("Utvikler feil: ArbeidsgiverEntitet av ukjent type.");
     }
-
-    private AktivitetsAvtaleBuilder opprettAktivitetsAvtaleFrilans(FrilansArbeidsforhold frilansArbeidsforhold,
-                                                                   YrkesaktivitetBuilder yrkesaktivitetBuilder) {
-        IntervallEntitet periode;
-        if (frilansArbeidsforhold.getTom() == null || frilansArbeidsforhold.getTom().isBefore(frilansArbeidsforhold.getFom())) {
-            periode = IntervallEntitet.fraOgMed(frilansArbeidsforhold.getFom());
-        } else {
-            periode = IntervallEntitet.fraOgMedTilOgMed(frilansArbeidsforhold.getFom(), frilansArbeidsforhold.getTom());
-        }
-        return yrkesaktivitetBuilder.getAktivitetsAvtaleBuilderFrilansInntk(periode, true);
-    }
-
 
     private void lagInntektsposterYtelse(Månedsinntekt månedsinntekt, InntektBuilder inntektBuilder) {
         inntektBuilder.leggTilInntektspost(inntektBuilder.getInntektspostBuilder()
