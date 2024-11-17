@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektYtelseType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektspostType;
-import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.aktor.AktørTjeneste;
 import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
@@ -221,9 +220,9 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         }
         int length = arbeidsgiverIdentifikator.length();
         if (length <= 4) {
-            return "*".repeat(length);
+            return "*" .repeat(length);
         }
-        return "*".repeat(length - 4) + arbeidsgiverIdentifikator.substring(length - 4);
+        return "*" .repeat(length - 4) + arbeidsgiverIdentifikator.substring(length - 4);
     }
 
     private LocalDate finnHentedatoForJuridisk(Set<YearMonth> inntekterForMåneder) {
@@ -250,17 +249,13 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
 
         if (informasjonsElementer.contains(RegisterdataElement.ARBEIDSFORHOLD)) {
             InntektArbeidYtelseAggregatBuilder.AktørArbeidBuilder aktørArbeidBuilder = builder.getAktørArbeidBuilder(aktørId);
-            if (YtelseType.FRISINN.equals(kobling.getYtelseType())) { // Trenger frilans fra INNTK så lenge FRISINN finnes
-                aktørArbeidBuilder.tilbakestillYrkesaktiviteterInklusiveInntektFrilans();
-            } else { // Alle andre ytelser bruker kun frilans fra AAREG
-                aktørArbeidBuilder.tilbakestillYrkesaktiviteter();
-                // Hvis/Når AAREG en gang i framtiden gir frilans som del av default arbeidsforholdtype - så kan følgende kuttes
-                Map<ArbeidsforholdIdentifikator, List<Arbeidsforhold>> arbeidsforholdFrilans = innhentingSamletTjeneste.getArbeidsforholdFrilans(
-                    aktørId, getFnrFraAktørId(aktørId), opplysningsPeriode);
-                arbeidsforholdFrilans.entrySet()
-                    .forEach(forholdet -> oversettArbeidsforholdTilYrkesaktivitet(kobling, builder, forholdet, aktørArbeidBuilder));
-                arbeidsforholdList.addAll(arbeidsforholdFrilans.keySet());
-            }
+            aktørArbeidBuilder.tilbakestillYrkesaktiviteter();
+            // Hvis/Når AAREG en gang i framtiden gir frilans som del av default arbeidsforholdtype - så kan følgende kuttes
+            Map<ArbeidsforholdIdentifikator, List<Arbeidsforhold>> arbeidsforholdFrilans = innhentingSamletTjeneste.getArbeidsforholdFrilans(aktørId,
+                getFnrFraAktørId(aktørId), opplysningsPeriode);
+            arbeidsforholdFrilans.entrySet()
+                .forEach(forholdet -> oversettArbeidsforholdTilYrkesaktivitet(kobling, builder, forholdet, aktørArbeidBuilder));
+            arbeidsforholdList.addAll(arbeidsforholdFrilans.keySet());
             Map<ArbeidsforholdIdentifikator, List<Arbeidsforhold>> arbeidsforhold = innhentingSamletTjeneste.getArbeidsforhold(aktørId,
                 getFnrFraAktørId(aktørId), opplysningsPeriode);
             arbeidsforhold.entrySet().forEach(forholdet -> oversettArbeidsforholdTilYrkesaktivitet(kobling, builder, forholdet, aktørArbeidBuilder));

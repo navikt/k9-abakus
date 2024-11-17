@@ -20,7 +20,6 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Version;
-
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
 import no.nav.k9.abakus.felles.diff.ChangeTracked;
@@ -126,17 +125,6 @@ public class AktørArbeid extends BaseEntitet implements IndexKey {
         return oppdatere;
     }
 
-    void fjernYrkesaktivitetForBuilder(YrkesaktivitetBuilder builder) {
-        Yrkesaktivitet yrkesaktivitetKladd = builder.getKladd();
-        ArbeidType arbeidType = yrkesaktivitetKladd.getArbeidType();
-        if (arbeidType.erAnnenOpptjening() || ArbeidType.SELVSTENDIG_NÆRINGSDRIVENDE.equals(arbeidType)) {
-            yrkesaktiviter.removeIf(ya -> ya.getArbeidType().equals(arbeidType));
-        } else {
-            Opptjeningsnøkkel nøkkel = new Opptjeningsnøkkel(yrkesaktivitetKladd);
-            yrkesaktiviter.removeIf(ya -> ya.getArbeidType().equals(arbeidType) && new Opptjeningsnøkkel(ya).matcher(nøkkel));
-        }
-    }
-
     YrkesaktivitetBuilder getYrkesaktivitetBuilderForType(ArbeidType type) {
         Optional<Yrkesaktivitet> yrkesaktivitet = yrkesaktiviter.stream().filter(ya -> ya.getArbeidType().equals(type)).findFirst();
         final YrkesaktivitetBuilder oppdatere = YrkesaktivitetBuilder.oppdatere(yrkesaktivitet);
@@ -174,7 +162,4 @@ public class AktørArbeid extends BaseEntitet implements IndexKey {
         this.yrkesaktiviter = yrkesaktiviter.stream().filter(Yrkesaktivitet::erYrkesaktivitetMedLegacyInnhold).collect(Collectors.toSet());
     }
 
-    void tilbakestillYrkesaktiviteterInklusiveInntektFrilans() {
-        this.yrkesaktiviter.clear();
-    }
 }
