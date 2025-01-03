@@ -212,6 +212,18 @@
                 <version>2.10.0</version>
             </dependency>
 
+            <dependency>
+                <groupId>com.papertrailapp</groupId>
+                <artifactId>logback-syslog4j</artifactId>
+                <version>1.0.0</version>
+                <!-- exclude logback for å bli kvitt CVE-2024-12798 -->
+                <exclusions>
+                    <exclusion>
+                        <groupId>ch.qos.logback</groupId>
+                        <artifactId>logback-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
 
             <!-- Swagger-UI -->
             <dependency>
@@ -221,11 +233,6 @@
             </dependency>
 
             <!-- transitive avhengigheter som er importert med ulike versjoner, setter en for å sikre stabilitet -->
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>1.5.12</version>
-            </dependency>
             <dependency>
                 <groupId>org.jboss.logging</groupId>
                 <artifactId>jboss-logging</artifactId>
