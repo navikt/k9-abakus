@@ -55,7 +55,7 @@ public class CallbackTask implements ProsessTaskHandler {
         String callbackUrl = data.getPropertyValue(TaskConstants.CALLBACK_URL);
         String callbackScope = data.getPropertyValue(TaskConstants.CALLBACK_SCOPE);
         String nyKoblingId = data.getPropertyValue(TaskConstants.NY_KOBLING_ID);
-        Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : Long.valueOf(data.getBehandlingId());
+        Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : data.getBehandlingIdAsLong();
         Kobling kobling = koblingTjeneste.hent(koblingId);
 
         CallbackDto callbackDto = new CallbackDto();

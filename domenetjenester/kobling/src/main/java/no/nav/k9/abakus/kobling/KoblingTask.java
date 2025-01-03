@@ -20,7 +20,7 @@ public abstract class KoblingTask implements ProsessTaskHandler {
     @Override
     public void doTask(ProsessTaskData prosessTaskData) {
         String nyKoblingId = prosessTaskData.getPropertyValue(TaskConstants.NY_KOBLING_ID);
-        Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : Long.valueOf(prosessTaskData.getBehandlingId());
+        Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : prosessTaskData.getBehandlingIdAsLong();
 
         KoblingLås koblingLås = låsRepository.taLås(koblingId);
 
