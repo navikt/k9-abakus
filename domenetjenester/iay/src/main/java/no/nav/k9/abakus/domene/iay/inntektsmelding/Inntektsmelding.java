@@ -45,18 +45,19 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
     public static final Comparator<? super Inntektsmelding> COMP_REKKEFØLGE = (Inntektsmelding a, Inntektsmelding b) -> {
         if (a == b) {
             return 0;
-        } else if (a == null) {
+        }
+        if (a == null) {
             return -1;
-        } else if (b == null) {
+        }
+        if (b == null) {
             return 1;
         }
-        if (!a.erFraNavNo() && !b.erFraNavNo() && a.getKanalreferanse() != null && b.getKanalreferanse() != null) {
-            // Kanalreferanser fra Altinn kan brukes til sammenligning
-            return a.getKanalreferanse().compareTo(b.getKanalreferanse());
-        } else {
+        if (a.erFraNavNo() || b.erFraNavNo() || a.getKanalreferanse() == null || b.getKanalreferanse() == null) {
             // For inntektsmeldinger fra nav.no bruker vi innsendingstidspunkt
             return a.getInnsendingstidspunkt().compareTo(b.getInnsendingstidspunkt());
         }
+        // For inntektsmeldinger fra Altinn bruker vi kanalreferanse
+        return a.getKanalreferanse().compareTo(b.getKanalreferanse());
     };
 
     @Id
