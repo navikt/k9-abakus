@@ -50,10 +50,12 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
         } else if (b == null) {
             return 1;
         }
-        if (a.getKanalreferanse() != null && b.getKanalreferanse() != null) {
+        if (!Objects.equals(a.getKildesystem(), "NAV_NO") && !Objects.equals(b.getKildesystem(), "NAV_NO")
+            && a.getKanalreferanse() != null && b.getKanalreferanse() != null) {
+            // Kanalreferanser fra Altinn kan brukes til sammenligning
             return a.getKanalreferanse().compareTo(b.getKanalreferanse());
         } else {
-            // crazy fallback for manglende kanalreferanser
+            // For inntektsmeldinger fra nav.no bruker vi innsendingstidspunkt
             return a.getInnsendingstidspunkt().compareTo(b.getInnsendingstidspunkt());
         }
     };
