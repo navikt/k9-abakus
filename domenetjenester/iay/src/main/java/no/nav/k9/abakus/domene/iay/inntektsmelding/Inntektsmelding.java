@@ -43,15 +43,14 @@ import no.nav.vedtak.felles.jpa.converters.BooleanToStringConverter;
 public class Inntektsmelding extends BaseEntitet implements IndexKey {
 
     public static final Comparator<? super Inntektsmelding> COMP_REKKEFØLGE = (Inntektsmelding a, Inntektsmelding b) -> {
-        if (a == b || (a == null && b == null)) {
+        if (a == b) {
             return 0;
         } else if (a == null) {
             return -1;
         } else if (b == null) {
             return 1;
         }
-        if (!Objects.equals(a.getKildesystem(), "NAV_NO") && !Objects.equals(b.getKildesystem(), "NAV_NO")
-            && a.getKanalreferanse() != null && b.getKanalreferanse() != null) {
+        if (!a.erFraNavNo() && !b.erFraNavNo() && a.getKanalreferanse() != null && b.getKanalreferanse() != null) {
             // Kanalreferanser fra Altinn kan brukes til sammenligning
             return a.getKanalreferanse().compareTo(b.getKanalreferanse());
         } else {
@@ -250,6 +249,10 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
 
     public String getKildesystem() {
         return kildesystem;
+    }
+
+    public boolean erFraNavNo() {
+        return Objects.equals(getKildesystem(), "NAV_NO");
     }
 
     void setKildesystem(String kildesystem) {

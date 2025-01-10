@@ -132,15 +132,11 @@ public class InntektsmeldingAggregat extends BaseEntitet {
 
     private boolean brukKanalreferanseTilSammenligning(Inntektsmelding gammel, Inntektsmelding ny) {
         // Kanalreferanser fra nav.no er tilfeldige uuider og kan ikke brukes til sammenligning
-        if (erFraNavNo(gammel) || erFraNavNo(ny)) {
+        if (gammel.erFraNavNo() || ny.erFraNavNo()) {
             return false;
         }
         // Kanalreferanser fra Altinn kan brukes til sammenligning
         return gammel.getKanalreferanse() != null && ny.getKanalreferanse() != null;
-    }
-
-    private boolean erFraNavNo(Inntektsmelding inntektsmelding) {
-        return Objects.equals(inntektsmelding.getKildesystem(), "NAV_NO");
     }
 
     @Override
