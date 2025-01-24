@@ -1,5 +1,6 @@
 package no.nav.abakus.iaygrunnlag.oppgittopptjening.v1;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import jakarta.validation.Valid;
@@ -29,9 +30,23 @@ public class OppgittAnnenAktivitetDto {
     @NotNull
     private ArbeidType arbeidTypeDto;
 
+    @JsonProperty(value = "inntekt")
+    private BigDecimal inntekt;
+
+
     @JsonCreator
     public OppgittAnnenAktivitetDto(@JsonProperty(value = "periode", required = true) @Valid @NotNull Periode periode,
-                                    @JsonProperty(value = "arbeidType", required = true) @NotNull ArbeidType arbeidType) {
+                                    @JsonProperty(value = "arbeidType", required = true) @NotNull ArbeidType arbeidType,
+                                    @JsonProperty(value = "inntekt") BigDecimal inntekt) {
+        Objects.requireNonNull(periode, "periode");
+        Objects.requireNonNull(arbeidType, "arbeidType");
+        this.periode = periode;
+        this.arbeidTypeDto = arbeidType;
+        this.inntekt = inntekt;
+    }
+
+    public OppgittAnnenAktivitetDto(Periode periode,
+                                    ArbeidType arbeidType) {
         Objects.requireNonNull(periode, "periode");
         Objects.requireNonNull(arbeidType, "arbeidType");
         this.periode = periode;
@@ -45,4 +60,6 @@ public class OppgittAnnenAktivitetDto {
     public ArbeidType getArbeidTypeDto() {
         return arbeidTypeDto;
     }
+
+    public BigDecimal getInntekt() { return inntekt;}
 }

@@ -206,7 +206,7 @@ public class MapOppgittOpptjening {
 
             var periode = new Periode(annenAktivitet.getPeriode().getFomDato(), annenAktivitet.getPeriode().getTomDato());
             var arbeidType = annenAktivitet.getArbeidType();
-            return new OppgittAnnenAktivitetDto(periode, arbeidType);
+            return new OppgittAnnenAktivitetDto(periode, arbeidType, annenAktivitet.getInntekt());
         }
     }
 
@@ -329,7 +329,7 @@ public class MapOppgittOpptjening {
             Periode dto1 = dto.getPeriode();
             var periode = IntervallEntitet.fraOgMedTilOgMed(dto1.getFom(), dto1.getTom());
             var arbeidType = dto.getArbeidTypeDto();
-            return new OppgittAnnenAktivitet(periode, arbeidType);
+            return new OppgittAnnenAktivitet(periode, arbeidType, dto.getInntekt());
         }
 
         private Landkode mapLandkoder(Landkode landkode) {

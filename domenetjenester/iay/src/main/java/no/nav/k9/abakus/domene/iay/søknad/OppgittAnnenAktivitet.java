@@ -1,5 +1,6 @@
 package no.nav.k9.abakus.domene.iay.søknad;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -43,6 +44,17 @@ public class OppgittAnnenAktivitet extends BaseEntitet implements IndexKey {
     @Column(name = "arbeid_type", nullable = false, updatable = false)
     private ArbeidType arbeidType;
 
+    @Column(name = "inntekt")
+    private BigDecimal inntekt;
+
+    public OppgittAnnenAktivitet(IntervallEntitet periode, ArbeidType arbeidType, BigDecimal inntekt) {
+        this.periode = periode;
+        this.arbeidType = arbeidType;
+        this.inntekt = inntekt;
+    }
+
+
+    // Brukes kun i test for å slippe å sende inn null i alle tester som ikkje skal ha inntekt
     public OppgittAnnenAktivitet(IntervallEntitet periode, ArbeidType arbeidType) {
         this.periode = periode;
         this.arbeidType = arbeidType;
@@ -56,6 +68,7 @@ public class OppgittAnnenAktivitet extends BaseEntitet implements IndexKey {
     public OppgittAnnenAktivitet(OppgittAnnenAktivitet orginal) {
         periode = orginal.getPeriode();
         arbeidType = orginal.getArbeidType();
+        inntekt = orginal.getInntekt();
     }
 
     @Override
@@ -74,6 +87,10 @@ public class OppgittAnnenAktivitet extends BaseEntitet implements IndexKey {
 
     public void setOppgittOpptjening(OppgittOpptjening oppgittOpptjening) {
         this.oppgittOpptjening = oppgittOpptjening;
+    }
+
+    public BigDecimal getInntekt() {
+        return inntekt;
     }
 
     @Override
