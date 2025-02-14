@@ -3,10 +3,8 @@ package no.nav.k9.abakus.domene.iay.inntektsmelding;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.Objects;
 import java.util.Optional;
-
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektsmeldingInnsendingsårsakType;
 import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
@@ -17,20 +15,6 @@ import no.nav.k9.abakus.typer.JournalpostId;
 import no.nav.vedtak.konfig.Tid;
 
 public class InntektsmeldingBuilder {
-
-    public static final Comparator<? super InntektsmeldingBuilder> COMP_REKKEFØLGE = (InntektsmeldingBuilder a, InntektsmeldingBuilder b) -> {
-        if (a == b) {
-            return 0;
-        }
-        if (a.getKanalreferanse() != null && b.getKanalreferanse() != null) {
-            return a.getKanalreferanse().compareTo(b.getKanalreferanse());
-        } else {
-            // crazy fallback når mangler kanalreferanse.
-            return a.getInnsendingstidspunkt().compareTo(b.getInnsendingstidspunkt());
-        }
-
-    };
-
 
     private final Inntektsmelding kladd;
     private boolean erBygget;

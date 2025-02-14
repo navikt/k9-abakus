@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.abakus.iaygrunnlag.request.Dataset;
 import no.nav.abakus.iaygrunnlag.request.InntektArbeidYtelseGrunnlagRequest.GrunnlagVersjon;
@@ -184,24 +183,17 @@ public class InntektArbeidYtelseTjeneste {
      *
      * @param ytelseType
      * @param dataset
-     * @param beholdOpprinngeligeIM
      */
     public void kopierGrunnlagFraEksisterendeBehandling(YtelseType ytelseType,
                                                         AktørId aktørId,
                                                         Saksnummer saksnummer,
                                                         KoblingReferanse fraKobling,
                                                         KoblingReferanse tilKobling,
-                                                        Set<Dataset> dataset,
-                                                        boolean beholdOpprinngeligeIM) {
+                                                        Set<Dataset> dataset) {
         var origAggregat = hentGrunnlagFor(fraKobling);
-        if (origAggregat.isPresent()) {
-            if (beholdOpprinngeligeIM) {
-                //gjelder spesialbehandlinger(berørt, feriepenger og utsatt start)
-                kopierGrunnlagBeholdInntektsmeldinger(tilKobling, origAggregat.get(), dataset);
-            } else {
-                kopierGrunnlagPlussNyereInntektsmeldingerForFagsak(tilKobling, ytelseType, aktørId, saksnummer, origAggregat.get(), dataset);
-            }
-        }
+        origAggregat.ifPresent(
+            inntektArbeidYtelseGrunnlag -> kopierGrunnlagPlussNyereInntektsmeldingerForFagsak(tilKobling, ytelseType, aktørId, saksnummer,
+                inntektArbeidYtelseGrunnlag, dataset));
     }
 
     /**

@@ -122,16 +122,21 @@ public class InntektsmeldingAggregat extends BaseEntitet {
 
     private boolean skalFjerneInntektsmelding(Inntektsmelding gammel, Inntektsmelding ny) {
         if (gammel.gjelderSammeArbeidsforhold(ny)) {
-            if (gammel.getKanalreferanse() != null && ny.getKanalreferanse() != null) {
+            if (brukKanalreferanseTilSammenligning(gammel, ny)) {
                 return ny.getKanalreferanse().compareTo(gammel.getKanalreferanse()) > 0;
             }
-            if (gammel.getInnsendingstidspunkt().compareTo(ny.getInnsendingstidspunkt()) <= 0) {
-                // crazy fallback - enkelte inntektsmeldinger har ikke blitt journalført med kanalreferanse.
-                // Oppstår når SBH journalfører IM på annen sak i Gosys. Skal fikses der.
-                return true;
-            }
+            return !gammel.getInnsendingstidspunkt().isAfter(ny.getInnsendingstidspunkt());
         }
         return false;
+    }
+
+    private boolean brukKanalreferanseTilSammenligning(Inntektsmelding gammel, Inntektsmelding ny) {
+        // Kanalreferanser fra nav.no er tilfeldige uuider og kan ikke brukes til sammenligning
+        if (gammel.erFraNavNo() || ny.erFraNavNo()) {
+            return false;
+        }
+        // Kanalreferanser fra Altinn kan brukes til sammenligning
+        return gammel.getKanalreferanse() != null && ny.getKanalreferanse() != null;
     }
 
     @Override

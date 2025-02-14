@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
@@ -197,10 +196,6 @@ public class InntektArbeidYtelseAggregatBuilder {
             return kladd.getYrkesaktivitetBuilderForNøkkel(nøkkel, arbeidType);
         }
 
-        public YrkesaktivitetBuilder getYrkesaktivitetBuilderForNøkkelAvType(Opptjeningsnøkkel nøkkel, Set<ArbeidType> arbeidType) {
-            return kladd.getYrkesaktivitetBuilderForNøkkel(nøkkel, arbeidType);
-        }
-
         public YrkesaktivitetBuilder getYrkesaktivitetBuilderForType(ArbeidType type) {
             return kladd.getYrkesaktivitetBuilderForType(type);
         }
@@ -209,11 +204,6 @@ public class InntektArbeidYtelseAggregatBuilder {
             if (!yrkesaktivitet.getErOppdatering()) {
                 kladd.leggTilYrkesaktivitet(yrkesaktivitet.build());
             }
-            return this;
-        }
-
-        public AktørArbeidBuilder leggTilYrkesaktivitet(Yrkesaktivitet yrkesaktivitet) {
-            kladd.leggTilYrkesaktivitet(yrkesaktivitet);
             return this;
         }
 
@@ -228,21 +218,10 @@ public class InntektArbeidYtelseAggregatBuilder {
             return oppdatering;
         }
 
-        public AktørArbeid getKladd() {
-            return kladd;
-        }
-
-        public void fjernYrkesaktivitetHvisFinnes(YrkesaktivitetBuilder builder) {
-            kladd.fjernYrkesaktivitetForBuilder(builder);
-        }
-
         public void tilbakestillYrkesaktiviteter() {
             kladd.tilbakestillYrkesaktiviteter();
         }
 
-        public void tilbakestillYrkesaktiviteterInklusiveInntektFrilans() {
-            kladd.tilbakestillYrkesaktiviteterInklusiveInntektFrilans();
-        }
     }
 
     public static class AktørInntektBuilder {
@@ -350,7 +329,8 @@ public class InntektArbeidYtelseAggregatBuilder {
         }
 
         public YtelseBuilder getYtelselseBuilderForType(Fagsystem fagsystem,
-                                                        YtelseType type, IntervallEntitet periode,
+                                                        YtelseType type,
+                                                        IntervallEntitet periode,
                                                         Optional<LocalDate> tidligsteAnvistFom) {
             return kladd.getYtelseBuilderForType(fagsystem, type, periode, tidligsteAnvistFom);
         }

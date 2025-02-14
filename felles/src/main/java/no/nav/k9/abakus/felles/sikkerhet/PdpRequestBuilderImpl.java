@@ -40,8 +40,4 @@ public class PdpRequestBuilderImpl implements PdpRequestBuilder {
             .build();
     }
 
-    @Override
-    public boolean internAzureConsumer(String azpName) {
-        return INTERNAL_CLUSTER_NAMESPACE.stream().anyMatch(azpName::startsWith);
-    }
 }

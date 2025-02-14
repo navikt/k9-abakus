@@ -23,6 +23,11 @@
       "cluster": "dev-fss"
     },
     {
+      "app": "ung-sak",
+      "namespace": "k9saksbehandling",
+      "cluster": "dev-gcp"
+    },
+    {
       "app": "k9-klage",
       "namespace": "k9saksbehandling",
       "cluster": "dev-fss"
@@ -42,10 +47,6 @@
     }
   ],
   "env": {
-    "OTEL_EXPORTER_OTLP_ENDPOINT": "https://elastic-apm.adeo.no",
-    "OTEL_METRICS_EXPORTER": "otlp",
-    "OTEL_LOGS_EXPORTER": "none",
-    "OTEL_RESOURCE_ATTRIBUTES": "service.name=k9-abakus,service.version=k9-abakus,deployment.environment=q",
-    "OTEL_TRACES_EXPORTER": "otlp"
+    "OTEL_RESOURCE_ATTRIBUTES": "service.name=k9-abakus,service.namespace=k9saksbehandling,deployment.environment=q,nais.backend=elastic-apm;grafana-lgtm"
   }
 }

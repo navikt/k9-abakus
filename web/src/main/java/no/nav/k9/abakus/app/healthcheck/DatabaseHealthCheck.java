@@ -4,12 +4,13 @@ import java.sql.SQLException;
 
 import jakarta.annotation.Resource;
 import jakarta.enterprise.context.ApplicationScoped;
+import no.nav.vedtak.server.LiveAndReadinessAware;
+
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.vedtak.log.metrics.LiveAndReadinessAware;
 
 @ApplicationScoped
 public class DatabaseHealthCheck implements LiveAndReadinessAware {
