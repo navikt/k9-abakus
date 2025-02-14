@@ -30,6 +30,13 @@ spec:
   prometheus:
     enabled: true
     path: /k9/abakus/internal/metrics/prometheus
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java
+      destinations:
+        - id: "grafana-lgtm"
+        - id: "elastic-apm"
   replicas:
     min: {{minReplicas}}
     max: {{maxReplicas}}
