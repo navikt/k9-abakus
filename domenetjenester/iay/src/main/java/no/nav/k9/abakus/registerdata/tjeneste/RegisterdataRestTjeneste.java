@@ -1,5 +1,7 @@
 package no.nav.k9.abakus.registerdata.tjeneste;
 
+import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.FAGSAK;
+
 import java.net.HttpURLConnection;
 import java.util.Optional;
 import java.util.Set;
@@ -47,7 +49,6 @@ import no.nav.vedtak.sikkerhet.abac.AbacDto;
 import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
 import no.nav.vedtak.sikkerhet.abac.StandardAbacAttributtType;
 import no.nav.vedtak.sikkerhet.abac.beskyttet.ActionType;
-import no.nav.vedtak.sikkerhet.abac.beskyttet.ResourceType;
 
 @OpenAPIDefinition(tags = @Tag(name = "registerinnhenting"))
 @Path("/registerdata/v1")
@@ -72,7 +73,7 @@ public class RegisterdataRestTjeneste {
     @Path("/innhent/async")
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(description = "Trigger registerinnhenting for en gitt id", tags = "registerinnhenting")
-    @BeskyttetRessurs(actionType = ActionType.CREATE, resourceType = ResourceType.FAGSAK, sporingslogg = true)
+    @BeskyttetRessurs(actionType = ActionType.CREATE, resource = FAGSAK)
     @SuppressWarnings({"findsecbugs:JAXRS_ENDPOINT", "resource"})
     public Response innhentOgLagreRegisterdataAsync(@Parameter(name = "innhent") @Valid InnhentRegisterdataAbacDto dto) {
         Response response;
@@ -97,7 +98,7 @@ public class RegisterdataRestTjeneste {
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(description = "Sjekker innhentingFerdig på async innhenting og gir siste referanseid på grunnlaget når tasken er ferdig. "
         + "Hvis ikke innhentingFerdig", tags = "registerinnhenting")
-    @BeskyttetRessurs(actionType = ActionType.READ, resourceType = ResourceType.FAGSAK, sporingslogg = true)
+    @BeskyttetRessurs(actionType = ActionType.READ, resource = FAGSAK)
     @SuppressWarnings({"findsecbugs:JAXRS_ENDPOINT", "resource"})
     public Response innhentAsyncStatus(@Parameter(name = "status") @Valid SjekkStatusAbacDto dto) {
         Response response;
