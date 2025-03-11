@@ -21,7 +21,6 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.aktor.AktørTjeneste;
-import no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt;
 import no.nav.k9.abakus.kobling.repository.KoblingRepository;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.Saksnummer;
@@ -30,6 +29,7 @@ import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
 import no.nav.vedtak.sikkerhet.abac.StandardAbacAttributtType;
 import no.nav.vedtak.sikkerhet.abac.TilpassetAbacAttributt;
 import no.nav.vedtak.sikkerhet.abac.beskyttet.ActionType;
+import no.nav.vedtak.sikkerhet.abac.beskyttet.ResourceType;
 
 @Path("/diagnostikk")
 @ApplicationScoped
@@ -60,7 +60,7 @@ public class DiagnostikkRestTjeneste {
     @Path("/grunnlag")
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     @Operation(description = "Henter en dump av info for debugging og analyse av en sak. Logger hvem som har hatt innsyn", summary = ("Henter en dump av info for debugging og analyse av en sak"), tags = "forvaltning")
-    @BeskyttetRessurs(actionType = ActionType.READ, resource = AbakusBeskyttetRessursAttributt.DRIFT)
+    @BeskyttetRessurs(actionType = ActionType.READ, resourceType = ResourceType.DRIFT, sporingslogg = true)
     public Response dumpSak(@NotNull @QueryParam("saksnummer") @Parameter(description = "saksnummer") @Valid @TilpassetAbacAttributt(supplierClass = AbacNoopSupplier.class) SaksnummerDto saksnummerDto,
                             @NotNull @QueryParam("aktørId") @Parameter(description = "aktørId") @Valid @TilpassetAbacAttributt(supplierClass = AbacAktørIdSupplier.class) AktørId aktørId,
                             @NotNull @QueryParam("ytelseType") @Parameter(description = "ytelseType") @Valid @TilpassetAbacAttributt(supplierClass = AbacNoopSupplier.class) YtelseType ytelseType) {
