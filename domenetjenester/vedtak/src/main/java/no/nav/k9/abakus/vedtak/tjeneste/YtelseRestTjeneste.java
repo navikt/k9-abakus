@@ -1,7 +1,5 @@
 package no.nav.k9.abakus.vedtak.tjeneste;
 
-import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.APPLIKASJON;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -34,6 +32,7 @@ import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
 import no.nav.vedtak.sikkerhet.abac.StandardAbacAttributtType;
 import no.nav.vedtak.sikkerhet.abac.TilpassetAbacAttributt;
 import no.nav.vedtak.sikkerhet.abac.beskyttet.ActionType;
+import no.nav.vedtak.sikkerhet.abac.beskyttet.ResourceType;
 
 @OpenAPIDefinition(tags = @Tag(name = "ytelse"))
 @Path("/ytelse/v1")
@@ -61,7 +60,7 @@ public class YtelseRestTjeneste {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Henter alle vedtak for en gitt person, evt med periode etter en fom", tags = "ytelse")
-    @BeskyttetRessurs(actionType = ActionType.READ, resource = APPLIKASJON)
+    @BeskyttetRessurs(actionType = ActionType.READ, resourceType = ResourceType.APPLIKASJON, sporingslogg = true)
     @SuppressWarnings("findsecbugs:JAXRS_ENDPOINT")
     public List<Ytelse> hentVedtakYtelse(@NotNull @TilpassetAbacAttributt(supplierClass = VedtakForPeriodeRequestAbacDataSupplier.class) @Valid VedtakForPeriodeRequest request) {
 
