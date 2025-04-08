@@ -193,7 +193,7 @@ class IayGrunnlagTest {
                 new OppgittArbeidsforholdDto(periode, ArbeidType.ORDINÆRT_ARBEIDSFORHOLD).medErUtenlandskInntekt(true)
                     .medInntekt(BigDecimal.valueOf(10000))
                     .medOppgittVirksomhetNavn("GammelDansk", Landkode.DNK)))
-            .medYtelse(List.of(new OppgittYtelseDto(periode).medYtelse(BigDecimal.valueOf(10000))))
+            .medYtelse(List.of(new OppgittYtelseDto(periode, BigDecimal.valueOf(10000))))
             .medEgenNæring(List.of(new OppgittEgenNæringDto(periode).medBegrunnelse("MinBegrunnelse")
                 .medBruttoInntekt(10000)
                 .medEndringDato(fom)

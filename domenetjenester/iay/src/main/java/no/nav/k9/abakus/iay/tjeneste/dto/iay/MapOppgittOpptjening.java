@@ -166,7 +166,7 @@ public class MapOppgittOpptjening {
             }
             IntervallEntitet periode1 = ytelse.getPeriode();
             var periode = new Periode(periode1.getFomDato(), periode1.getTomDato());
-            return new OppgittYtelseDto(periode).medYtelse(ytelse.getYtelse());
+            return new OppgittYtelseDto(periode, ytelse.getYtelse());
         }
 
         private OppgittEgenNæringDto mapEgenNæring(OppgittEgenNæring egenNæring) {
