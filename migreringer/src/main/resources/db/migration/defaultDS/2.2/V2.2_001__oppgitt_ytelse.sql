@@ -22,9 +22,6 @@ comment on column iay_oppgitt_ytelse.tom is 'Tom-dato for oppgitt ytelse';
 create index idx_oppgitt_ytelse_oppgitt_opptjening
     on iay_oppgitt_ytelse (oppgitt_opptjening_id);
 
-create unique index uidx_oppgitt_ytelse_01
-    on iay_oppgitt_ytelse (id);
-
 create sequence seq_oppgitt_ytelse
     start with 1000000
     increment by 50;
