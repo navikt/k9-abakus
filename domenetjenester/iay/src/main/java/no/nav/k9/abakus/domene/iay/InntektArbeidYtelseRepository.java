@@ -573,6 +573,8 @@ public class InntektArbeidYtelseRepository {
         for (OppgittArbeidsforhold arbeidsforhold : oppgittArbeidsforhold) {
             entityManager.persist(arbeidsforhold);
         }
+
+        entitet.getOppgittYtelse().forEach(ytelse -> entityManager.persist(ytelse));
     }
 
     private void lagreInntektsMeldinger(InntektsmeldingAggregat inntektsmeldingAggregat) {

@@ -11,6 +11,7 @@
     <!-- Oppgitt opptjening fra søknad -->
     <sequence-generator name="SEQ_SO_OPPGITT_OPPTJENING" allocation-size="50" sequence-name="SEQ_SO_OPPGITT_OPPTJENING" />
     <sequence-generator name="SEQ_OPPGITT_ARBEIDSFORHOLD" allocation-size="50" sequence-name="SEQ_OPPGITT_ARBEIDSFORHOLD" />
+    <sequence-generator name="SEQ_OPPGITT_YTELSE" allocation-size="50" sequence-name="SEQ_OPPGITT_YTELSE" />
     <sequence-generator name="SEQ_EGEN_NAERING" allocation-size="50" sequence-name="SEQ_EGEN_NAERING" />
     <sequence-generator name="SEQ_ANNEN_AKTIVITET" allocation-size="50" sequence-name="SEQ_ANNEN_AKTIVITET" />
     <sequence-generator name="IAY_OPPGITTE_OPPTJENINGER" allocation-size="50" sequence-name="IAY_OPPGITTE_OPPTJENINGER" />
@@ -19,6 +20,7 @@
     <entity class="no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningAggregat"/>
     <entity class="no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjening"/>
     <entity class="no.nav.k9.abakus.domene.iay.søknad.OppgittArbeidsforhold"/>
+    <entity class="no.nav.k9.abakus.domene.iay.søknad.OppgittYtelse"/>
     <entity class="no.nav.k9.abakus.domene.iay.søknad.OppgittEgenNæring"/>
     <entity class="no.nav.k9.abakus.domene.iay.søknad.OppgittAnnenAktivitet"/>
     <entity class="no.nav.k9.abakus.domene.iay.søknad.OppgittFrilans"/>

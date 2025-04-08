@@ -62,6 +62,10 @@ public class OppgittOpptjening extends BaseEntitet {
 
     @OneToMany(mappedBy = "oppgittOpptjening")
     @ChangeTracked
+    private List<OppgittYtelse> oppgittYtelse;
+
+    @OneToMany(mappedBy = "oppgittOpptjening")
+    @ChangeTracked
     private List<OppgittEgenNæring> egenNæring;
 
     @OneToMany(mappedBy = "oppgittOpptjening")
@@ -96,6 +100,11 @@ public class OppgittOpptjening extends BaseEntitet {
             kopi.setOppgittOpptjening(this);
             return kopi;
         }).collect(Collectors.toList());
+        this.oppgittYtelse = orginal.getOppgittYtelse().stream().map(oppgittYtelse -> {
+            OppgittYtelse kopi = new OppgittYtelse(oppgittYtelse);
+            kopi.setOppgittOpptjening(this);
+            return kopi;
+        }).collect(Collectors.toList());
         this.egenNæring = orginal.getEgenNæring().stream().map(egenNæring -> {
             OppgittEgenNæring kopi = new OppgittEgenNæring(egenNæring);
             kopi.setOppgittOpptjening(this);
@@ -122,6 +131,10 @@ public class OppgittOpptjening extends BaseEntitet {
             return Collections.emptyList();
         }
         return Collections.unmodifiableList(oppgittArbeidsforhold);
+    }
+
+    public List<OppgittYtelse> getOppgittYtelse() {
+        return this.oppgittYtelse == null ? Collections.emptyList() : Collections.unmodifiableList(oppgittYtelse);
     }
 
     public UUID getEksternReferanse() {
@@ -205,6 +218,16 @@ public class OppgittOpptjening extends BaseEntitet {
         }
     }
 
+    void leggTilOppgittYtelse(OppgittYtelse oppgittYtelse) {
+        if (this.oppgittYtelse == null) {
+            this.oppgittYtelse = new ArrayList<>();
+        }
+        if (oppgittYtelse != null) {
+            oppgittYtelse.setOppgittOpptjening(this);
+            this.oppgittYtelse.add(oppgittYtelse);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -214,28 +237,34 @@ public class OppgittOpptjening extends BaseEntitet {
             return false;
         }
         var that = (OppgittOpptjening) o;
-        return Objects.equals(oppgittArbeidsforhold, that.oppgittArbeidsforhold) && Objects.equals(egenNæring, that.egenNæring) && Objects.equals(
-            annenAktivitet, that.annenAktivitet) && Objects.equals(journalpostId, that.journalpostId);
+        return Objects.equals(oppgittArbeidsforhold, that.oppgittArbeidsforhold) &&
+            Objects.equals(egenNæring, that.egenNæring) &&
+            Objects.equals(annenAktivitet, that.annenAktivitet) &&
+            Objects.equals(journalpostId, that.journalpostId) &&
+            Objects.equals(oppgittYtelse, that.oppgittYtelse);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(oppgittArbeidsforhold, egenNæring, annenAktivitet, journalpostId);
+        return Objects.hash(oppgittArbeidsforhold, oppgittYtelse, egenNæring, annenAktivitet, journalpostId);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "<" + "id=" + id + ", oppgittArbeidsforhold=" + oppgittArbeidsforhold + ", egenNæring=" + egenNæring
-            + ", annenAktivitet=" + annenAktivitet + '>';
+        return "OppgittOpptjening{" + "frilans=" + frilans + ", annenAktivitet=" + annenAktivitet + ", egenNæring=" + egenNæring + ", oppgittYtelse="
+            + oppgittYtelse + ", oppgittArbeidsforhold=" + oppgittArbeidsforhold + ", innsendingstidspunkt=" + innsendingstidspunkt
+            + ", journalpostId=" + journalpostId + ", eksternReferanse=" + eksternReferanse + '}';
     }
 
     /**
      * Nedstrippet versjon av toString, egnet for logging.
      */
     public String toStringSimple() {
-        return getClass().getSimpleName() + "<" + "id=" + id + ", eksternReferanse=" + eksternReferanse + ", oppgittArbeidsforhold=[" + (
-            oppgittArbeidsforhold == null ? "0" : oppgittArbeidsforhold.size()) + "]" + ", egenNæring=[" + (
-            egenNæring == null ? "0" : egenNæring.size()) + "]" + ", annenAktivitet=[" + (annenAktivitet == null ? "0" : annenAktivitet.size()) + "]"
-            + ", frilans=[" + (frilans == null ? "0" : frilans.getFrilansoppdrag().size()) + "]" + '>';
+        return getClass().getSimpleName() + "<" + "id=" + id + ", eksternReferanse=" + eksternReferanse +
+            ", oppgittArbeidsforhold=[" + (oppgittArbeidsforhold == null ? "0" : oppgittArbeidsforhold.size()) + "]" +
+            ", oppgittYtelse=[" + (oppgittYtelse == null ? "0" : oppgittYtelse.size()) + "]" +
+            ", egenNæring=[" + (egenNæring == null ? "0" : egenNæring.size()) + "]" +
+            ", annenAktivitet=[" + (annenAktivitet == null ? "0" : annenAktivitet.size()) + "]" +
+            ", frilans=[" + (frilans == null ? "0" : frilans.getFrilansoppdrag().size()) + "]" + '>';
     }
 }

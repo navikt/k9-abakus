@@ -1,5 +1,8 @@
 package no.nav.k9.abakus.iay.tjeneste.dto.iay;
 
+import static no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder.OppgittYtelseBuilder;
+import static no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder.ny;
+
 import java.time.ZoneId;
 import java.util.Collection;
 import java.util.Collections;
@@ -20,6 +23,7 @@ import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgittEgenNæringDto;
 import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgittFrilansDto;
 import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgittFrilansoppdragDto;
 import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgittOpptjeningDto;
+import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgittYtelseDto;
 import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgitteOpptjeningerDto;
 import no.nav.k9.abakus.domene.iay.søknad.OppgittAnnenAktivitet;
 import no.nav.k9.abakus.domene.iay.søknad.OppgittArbeidsforhold;
@@ -30,6 +34,7 @@ import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjening;
 import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
 import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder.EgenNæringBuilder;
 import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder.OppgittArbeidsforholdBuilder;
+import no.nav.k9.abakus.domene.iay.søknad.OppgittYtelse;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.typer.OrgNummer;
 
@@ -90,8 +95,13 @@ public class MapOppgittOpptjening {
                 .ifPresent(tidspunkt -> dto.setInnsendingstidspunkt(tidspunkt.atZone(ZoneId.of("Europe/Oslo")).toOffsetDateTime()));
             dto.medArbeidsforhold(oppgittOpptjening.getOppgittArbeidsforhold()
                 .stream()
-                .map(oa -> this.mapArbeidsforhold(oa))
+                .map(this::mapArbeidsforhold)
                 .sorted(COMP_OPPGITT_ARBEIDSFORHOLD)
+                .collect(Collectors.toList()));
+            dto.medYtelse(oppgittOpptjening.getOppgittYtelse()
+                .stream()
+                .map(this::mapYtelse)
+                .sorted(Comparator.comparing(it -> it.getPeriode().getFom()))
                 .collect(Collectors.toList()));
             dto.medEgenNæring(
                 oppgittOpptjening.getEgenNæring().stream().map(this::mapEgenNæring).sorted(COMP_OPPGITT_EGEN_NÆRING).collect(Collectors.toList()));
@@ -148,6 +158,15 @@ public class MapOppgittOpptjening {
             }
 
             return dto;
+        }
+
+        private OppgittYtelseDto mapYtelse(OppgittYtelse ytelse) {
+            if (ytelse == null) {
+                return null;
+            }
+            IntervallEntitet periode1 = ytelse.getPeriode();
+            var periode = new Periode(periode1.getFomDato(), periode1.getTomDato());
+            return new OppgittYtelseDto(periode).medYtelse(ytelse.getYtelse());
         }
 
         private OppgittEgenNæringDto mapEgenNæring(OppgittEgenNæring egenNæring) {
@@ -218,13 +237,16 @@ public class MapOppgittOpptjening {
             }
 
             var oppgittOpptjeningEksternReferanse = UUID.fromString(dto.getEksternReferanse().getReferanse());
-            var builder = OppgittOpptjeningBuilder.ny(oppgittOpptjeningEksternReferanse, dto.getOpprettetTidspunkt());
+            var builder = ny(oppgittOpptjeningEksternReferanse, dto.getOpprettetTidspunkt());
 
             var annenAktivitet = mapEach(dto.getAnnenAktivitet(), this::mapAnnenAktivitet);
             annenAktivitet.forEach(builder::leggTilAnnenAktivitet);
 
             var arbeidsforhold = mapEach(dto.getArbeidsforhold(), this::mapOppgittArbeidsforhold);
             arbeidsforhold.forEach(builder::leggTilOppgittArbeidsforhold);
+
+            var ytelser = mapEach(dto.getYtelse(), this::mapOppgittYtelse);
+            ytelser.forEach(builder::leggTilOppgittYtelse);
 
             var egenNæring = mapEach(dto.getEgenNæring(), this::mapEgenNæring);
             builder.leggTilEgneNæringer(egenNæring);
@@ -317,6 +339,19 @@ public class MapOppgittOpptjening {
 
             Landkode landkode = mapLandkoder(dto.getLandkode());
             builder.medUtenlandskVirksomhet(landkode, dto.getVirksomhetNavn());
+
+            return builder;
+        }
+
+        private OppgittYtelseBuilder mapOppgittYtelse(OppgittYtelseDto dto) {
+            if (dto == null) {
+                return null;
+            }
+
+            Periode dto1 = dto.getPeriode();
+            var builder = OppgittYtelseBuilder.ny()
+                .medYtelse(dto.getYtelse())
+                .medPeriode(IntervallEntitet.fraOgMedTilOgMed(dto1.getFom(), dto1.getTom()));
 
             return builder;
         }

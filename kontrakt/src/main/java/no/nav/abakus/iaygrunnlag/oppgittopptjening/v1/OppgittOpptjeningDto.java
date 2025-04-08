@@ -37,6 +37,10 @@ public class OppgittOpptjeningDto {
     @Valid
     private List<OppgittArbeidsforholdDto> arbeidsforhold;
 
+    @JsonProperty(value = "ytelse")
+    @Valid
+    private List<OppgittYtelseDto> ytelse;
+
     @JsonProperty(value = "egenNæring")
     @Valid
     private List<OppgittEgenNæringDto> egenNæring;
@@ -87,8 +91,11 @@ public class OppgittOpptjeningDto {
 
     @AssertTrue(message = "Må oppgi minst en av arbeidsforhold, egenNæring, annenAktivitet eller frilans")
     private boolean isOk() {
-        return (arbeidsforhold != null && !arbeidsforhold.isEmpty()) || (egenNæring != null && !egenNæring.isEmpty()) || (annenAktivitet != null
-            && !annenAktivitet.isEmpty()) || (frilans != null);
+        return (arbeidsforhold != null && !arbeidsforhold.isEmpty()) ||
+            (ytelse != null && !ytelse.isEmpty()) ||
+            (egenNæring != null && !egenNæring.isEmpty()) ||
+            (annenAktivitet != null && !annenAktivitet.isEmpty()) ||
+            (frilans != null);
     }
 
     public List<OppgittArbeidsforholdDto> getArbeidsforhold() {
@@ -101,6 +108,19 @@ public class OppgittOpptjeningDto {
 
     public OppgittOpptjeningDto medArbeidsforhold(List<OppgittArbeidsforholdDto> oppgittArbeidsforhold) {
         setArbeidsforhold(oppgittArbeidsforhold);
+        return this;
+    }
+
+    public List<OppgittYtelseDto> getYtelse() {
+        return ytelse;
+    }
+
+    public void setYtelse(List<OppgittYtelseDto> oppgittYtelse) {
+        this.ytelse = oppgittYtelse;
+    }
+
+    public OppgittOpptjeningDto medYtelse(List<OppgittYtelseDto> oppgittYtelse) {
+        setYtelse(oppgittYtelse);
         return this;
     }
 

@@ -10,6 +10,8 @@ import java.time.ZoneOffset;
 import java.util.List;
 import java.util.UUID;
 
+import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgittYtelseDto;
+
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectReader;
@@ -140,8 +142,7 @@ class IayGrunnlagTest {
                         List.of(new AktivitetsAvtaleDto(periode).medSistLønnsendring(fom).medBeskrivelse("beskrivelse").medStillingsprosent(50)))))))
             .medInntekt(List.of(new InntekterDto(fnr).medUtbetalinger(List.of(
                 new UtbetalingDto(InntektskildeType.INNTEKT_SAMMENLIGNING).medArbeidsgiver(org)
-                    .medPoster(List.of(new UtbetalingsPostDto(periode, InntektspostType.LØNN)
-                        .medInntektYtelseType(InntektYtelseType.FORELDREPENGER)
+                    .medPoster(List.of(new UtbetalingsPostDto(periode, InntektspostType.LØNN).medInntektYtelseType(InntektYtelseType.FORELDREPENGER)
                         .medBeløp(100)
                         .medSkattAvgiftType(SkatteOgAvgiftsregelType.NETTOLØNN)))))))
             .medYtelse(List.of(new YtelserDto(fnr).medYtelser(List.of(
@@ -192,6 +193,7 @@ class IayGrunnlagTest {
                 new OppgittArbeidsforholdDto(periode, ArbeidType.ORDINÆRT_ARBEIDSFORHOLD).medErUtenlandskInntekt(true)
                     .medInntekt(BigDecimal.valueOf(10000))
                     .medOppgittVirksomhetNavn("GammelDansk", Landkode.DNK)))
+            .medYtelse(List.of(new OppgittYtelseDto(periode).medYtelse(BigDecimal.valueOf(10000))))
             .medEgenNæring(List.of(new OppgittEgenNæringDto(periode).medBegrunnelse("MinBegrunnelse")
                 .medBruttoInntekt(10000)
                 .medEndringDato(fom)

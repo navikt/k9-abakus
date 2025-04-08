@@ -66,6 +66,12 @@ public class OppgittOpptjeningBuilder {
         return this;
     }
 
+    public OppgittOpptjeningBuilder leggTilOppgittYtelse(OppgittYtelseBuilder builder) {
+        this.kladd.leggTilOppgittYtelse(builder.build());
+        return this;
+    }
+
+
     public UUID getEksternReferanse() {
         return kladd.getEksternReferanse();
     }
@@ -210,4 +216,33 @@ public class OppgittOpptjeningBuilder {
             return this;
         }
     }
+
+    public static class OppgittYtelseBuilder {
+        private OppgittYtelse entitet;
+
+        private OppgittYtelseBuilder(OppgittYtelse entitet) {
+            this.entitet = entitet;
+        }
+
+        public static OppgittYtelseBuilder ny() {
+            return new OppgittYtelseBuilder(new OppgittYtelse());
+        }
+
+        public OppgittYtelseBuilder medPeriode(IntervallEntitet periode) {
+            this.entitet.setPeriode(periode);
+            return this;
+        }
+
+        public OppgittYtelseBuilder medYtelse(BigDecimal ytelse) {
+            this.entitet.setYtelse(ytelse);
+            return this;
+        }
+
+        public OppgittYtelse build() {
+            return entitet;
+        }
+
+    }
+
+
 }
