@@ -101,7 +101,7 @@ public class MapOppgittOpptjening {
             dto.medYtelse(oppgittOpptjening.getOppgittYtelse()
                 .stream()
                 .map(this::mapYtelse)
-                .sorted(Comparator.comparing(it -> it.getPeriode().getFom()))
+                .sorted(Comparator.comparing(it -> it.periode().getFom()))
                 .collect(Collectors.toList()));
             dto.medEgenNæring(
                 oppgittOpptjening.getEgenNæring().stream().map(this::mapEgenNæring).sorted(COMP_OPPGITT_EGEN_NÆRING).collect(Collectors.toList()));
@@ -348,9 +348,9 @@ public class MapOppgittOpptjening {
                 return null;
             }
 
-            Periode dto1 = dto.getPeriode();
+            Periode dto1 = dto.periode();
             var builder = OppgittYtelseBuilder.ny()
-                .medYtelse(dto.getYtelse())
+                .medYtelse(dto.ytelse())
                 .medPeriode(IntervallEntitet.fraOgMedTilOgMed(dto1.getFom(), dto1.getTom()));
 
             return builder;

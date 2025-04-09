@@ -11,7 +11,7 @@ import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import no.nav.abakus.iaygrunnlag.Periode;
 
-record OppgittYtelseDto(@Valid @NotNull Periode periode,
+public record OppgittYtelseDto(@Valid @NotNull Periode periode,
                         @DecimalMin(value = "0.00", message = "beløp [${validatedValue}] må være >= {value}") @DecimalMax(value = "9999999999.00", message = "beløp [${validatedValue}] må være >= {value}") @Digits(integer = 10, fraction = 2) BigDecimal ytelse) {
 
 }
