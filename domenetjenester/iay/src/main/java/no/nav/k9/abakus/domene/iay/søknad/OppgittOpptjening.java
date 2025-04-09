@@ -235,9 +235,21 @@ public class OppgittOpptjening extends BaseEntitet {
             return false;
         }
         var that = (OppgittOpptjening) o;
-        return Objects.equals(oppgittArbeidsforhold, that.oppgittArbeidsforhold) && Objects.equals(egenNæring, that.egenNæring) && Objects.equals(
-            annenAktivitet, that.annenAktivitet) && Objects.equals(journalpostId, that.journalpostId) && Objects.equals(oppgittYtelse,
-            that.oppgittYtelse);
+        return equalsUsorterteLister(this.oppgittArbeidsforhold, that.oppgittArbeidsforhold) &&
+            equalsUsorterteLister(egenNæring, that.egenNæring) &&
+            equalsUsorterteLister(annenAktivitet, that.annenAktivitet) &&
+            Objects.equals(journalpostId, that.journalpostId) &&
+            equalsUsorterteLister(oppgittYtelse, that.oppgittYtelse);
+    }
+
+    private <T extends Comparable<T>> boolean equalsUsorterteLister(List<T> l1, List<T> l2) {
+        if (l1 != null) {
+            l1.sort(Comparable::compareTo);
+        }
+        if (l2 != null) {
+            l2.sort(Comparable::compareTo);
+        }
+        return Objects.equals(l1, l2);
     }
 
     @Override

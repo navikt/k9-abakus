@@ -2,6 +2,7 @@ package no.nav.k9.abakus.domene.iay.søknad;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -18,6 +19,7 @@ import jakarta.persistence.Table;
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
 import no.nav.abakus.iaygrunnlag.kodeverk.Landkode;
+import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgittArbeidsforholdDto;
 import no.nav.k9.abakus.felles.diff.ChangeTracked;
 import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
 import no.nav.k9.abakus.felles.jpa.BaseEntitet;
@@ -37,7 +39,7 @@ import no.nav.vedtak.felles.jpa.converters.BooleanToStringConverter;
  */
 @Table(name = "IAY_OPPGITT_ARBEIDSFORHOLD")
 @Entity(name = "OppgittArbeidsforhold")
-public class OppgittArbeidsforhold extends BaseEntitet implements IndexKey {
+public class OppgittArbeidsforhold extends BaseEntitet implements IndexKey, Comparable<OppgittArbeidsforhold> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_OPPGITT_ARBEIDSFORHOLD")
@@ -174,5 +176,19 @@ public class OppgittArbeidsforhold extends BaseEntitet implements IndexKey {
     public String toString() {
         return getClass().getSimpleName() + "<" + "id=" + id + ", periode=" + periode + ", erUtenlandskInntekt=" + erUtenlandskInntekt
             + ", arbeidType=" + arbeidType + ", landkode=" + landkode + ", utenlandskVirksomhetNavn=" + utenlandskVirksomhetNavn + '>';
+    }
+
+    @Override
+    public int compareTo(OppgittArbeidsforhold o) {
+        Comparator<OppgittArbeidsforhold> comparator = Comparator.comparing(
+                (OppgittArbeidsforhold dto) -> dto.getArbeidType() == null ? null : dto.getArbeidType().getKode(),
+                Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(dto -> dto.getPeriode().getFomDato(), Comparator.nullsFirst(Comparator.naturalOrder()))
+            .thenComparing(dto -> dto.getPeriode().getTomDato(), Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(dto -> dto.getLandkode() == null ? null : dto.getLandkode().getKode(), Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(OppgittArbeidsforhold::getInntekt, Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(OppgittArbeidsforhold::getUtenlandskVirksomhetNavn, Comparator.nullsLast(Comparator.naturalOrder()));
+
+        return comparator.compare(this, o);
     }
 }

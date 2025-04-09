@@ -1,5 +1,6 @@
 package no.nav.k9.abakus.domene.iay.søknad;
 
+import java.util.Comparator;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -15,6 +16,7 @@ import jakarta.persistence.Table;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
+import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgittAnnenAktivitetDto;
 import no.nav.k9.abakus.felles.diff.ChangeTracked;
 import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
 import no.nav.k9.abakus.felles.jpa.BaseEntitet;
@@ -24,7 +26,7 @@ import no.nav.k9.abakus.iay.jpa.ArbeidTypeKodeverdiConverter;
 
 @Table(name = "IAY_ANNEN_AKTIVITET")
 @Entity(name = "AnnenAktivitet")
-public class OppgittAnnenAktivitet extends BaseEntitet implements IndexKey {
+public class OppgittAnnenAktivitet extends BaseEntitet implements IndexKey, Comparable<OppgittAnnenAktivitet> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_ANNEN_AKTIVITET")
@@ -96,5 +98,16 @@ public class OppgittAnnenAktivitet extends BaseEntitet implements IndexKey {
     @Override
     public String toString() {
         return "AnnenAktivitetEntitet{" + "id=" + id + ", periode=" + periode + ", arbeidType=" + arbeidType + '}';
+    }
+
+    @Override
+    public int compareTo(OppgittAnnenAktivitet o) {
+        Comparator<OppgittAnnenAktivitet> comparator = Comparator.comparing(
+                (OppgittAnnenAktivitet dto) -> dto.getArbeidType() == null ? null : dto.getArbeidType().getKode(),
+                Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(dto -> dto.getPeriode().getFomDato(), Comparator.nullsFirst(Comparator.naturalOrder()))
+            .thenComparing(dto -> dto.getPeriode().getTomDato(), Comparator.nullsLast(Comparator.naturalOrder()));
+
+        return comparator.compare(this, o);
     }
 }

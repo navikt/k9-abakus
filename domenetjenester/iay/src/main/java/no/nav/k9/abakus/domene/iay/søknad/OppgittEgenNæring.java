@@ -2,6 +2,7 @@ package no.nav.k9.abakus.domene.iay.søknad;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.Objects;
 
 import jakarta.persistence.Column;
@@ -18,6 +19,7 @@ import jakarta.persistence.Table;
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
 import no.nav.abakus.iaygrunnlag.kodeverk.Landkode;
 import no.nav.abakus.iaygrunnlag.kodeverk.VirksomhetType;
+import no.nav.abakus.iaygrunnlag.oppgittopptjening.v1.OppgittEgenNæringDto;
 import no.nav.k9.abakus.felles.diff.ChangeTracked;
 import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
 import no.nav.k9.abakus.felles.jpa.BaseEntitet;
@@ -30,7 +32,7 @@ import no.nav.vedtak.felles.jpa.converters.BooleanToStringConverter;
 
 @Table(name = "IAY_EGEN_NAERING")
 @Entity(name = "EgenNæring")
-public class OppgittEgenNæring extends BaseEntitet implements IndexKey {
+public class OppgittEgenNæring extends BaseEntitet implements IndexKey, Comparable<OppgittEgenNæring> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_EGEN_NAERING")
@@ -274,5 +276,19 @@ public class OppgittEgenNæring extends BaseEntitet implements IndexKey {
             + ", virksomhetType=" + virksomhetType + ", regnskapsførerNavn='" + regnskapsførerNavn + '\'' + ", regnskapsførerTlf='"
             + regnskapsførerTlf + '\'' + ", endringDato=" + endringDato + ", begrunnelse='" + begrunnelse + '\'' + ", bruttoInntekt=" + bruttoInntekt
             + ", landkode=" + landkode + ", utenlandskVirksomhetNavn=" + utenlandskVirksomhetNavn + '}';
+    }
+
+    @Override
+    public int compareTo(OppgittEgenNæring o) {
+        Comparator<OppgittEgenNæring> comparator = Comparator.comparing(
+                (OppgittEgenNæring dto) -> dto.getVirksomhetType() == null ? null : dto.getVirksomhetType().getKode(),
+                Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(dto -> dto.getPeriode().getFomDato(), Comparator.nullsFirst(Comparator.naturalOrder()))
+            .thenComparing(dto -> dto.getPeriode().getTomDato(), Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(dto -> dto.getOrgnummer() == null ? null : dto.getOrgnummer().getId(), Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(dto -> dto.getLandkode() == null ? null : dto.getLandkode().getKode(), Comparator.nullsLast(Comparator.naturalOrder()))
+            .thenComparing(OppgittEgenNæring::getUtenlandskVirksomhetNavn, Comparator.nullsLast(Comparator.naturalOrder()));
+
+        return comparator.compare(this, o);
     }
 }

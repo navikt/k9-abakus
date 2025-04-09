@@ -9,6 +9,7 @@ import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.Objects;
 
 /**
@@ -22,7 +23,7 @@ import java.util.Objects;
  */
 @Table(name = "IAY_OPPGITT_YTELSE")
 @Entity(name = "OppgittYtelse")
-public class OppgittYtelse extends BaseEntitet implements IndexKey {
+public class OppgittYtelse extends BaseEntitet implements IndexKey, Comparable<OppgittYtelse> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_OPPGITT_YTELSE")
@@ -99,5 +100,12 @@ public class OppgittYtelse extends BaseEntitet implements IndexKey {
     @Override
     public int hashCode() {
         return Objects.hashCode(periode);
+    }
+
+    @Override
+    public int compareTo(OppgittYtelse o) {
+        return Comparator.comparing(OppgittYtelse::getFraOgMed)
+                .thenComparing(OppgittYtelse::getTilOgMed)
+                .compare(this, o);
     }
 }
