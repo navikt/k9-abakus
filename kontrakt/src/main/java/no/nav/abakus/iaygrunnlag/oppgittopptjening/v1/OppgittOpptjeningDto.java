@@ -89,7 +89,7 @@ public class OppgittOpptjeningDto {
         this.opprettetTidspunkt = tidspunkt.atZone(ZoneId.systemDefault()).toOffsetDateTime();
     }
 
-    @AssertTrue(message = "Må oppgi minst en av arbeidsforhold, egenNæring, annenAktivitet eller frilans")
+    @AssertTrue(message = "Må oppgi minst en av arbeidsforhold, ytelse, egenNæring, annenAktivitet eller frilans")
     private boolean isOk() {
         return (arbeidsforhold != null && !arbeidsforhold.isEmpty()) ||
             (ytelse != null && !ytelse.isEmpty()) ||
