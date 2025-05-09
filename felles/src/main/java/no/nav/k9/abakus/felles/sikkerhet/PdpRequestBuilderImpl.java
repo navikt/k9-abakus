@@ -7,6 +7,10 @@ import java.util.stream.Collectors;
 
 import no.nav.abakus.iaygrunnlag.AktørIdPersonident;
 
+import no.nav.sif.abac.kontrakt.abac.AbacBehandlingStatus;
+
+import no.nav.sif.abac.kontrakt.abac.AbacFagsakStatus;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,8 +53,8 @@ public class PdpRequestBuilderImpl implements PdpRequestBuilder {
         }
 
         // TODO: Gå over til å hente fra pip-tjenesten når alle kall inkluderer behandlinguuid?
-        //pdpRequest.put(k9DataKeys.BEHANDLING_STATUS.getKey(), AbacBehandlingStatus  .UTREDES.getEksternKode());
-        //pdpRequest.put(k9DataKeys.FAGSAK_STATUS.getKey(), AbacFagsakStatus.UNDER_BEHANDLING.getEksternKode());
+        pdpRequest.put(k9DataKeys.BEHANDLING_STATUS.getKey(), AbacBehandlingStatus.UTREDES.getEksternKode());
+        pdpRequest.put(k9DataKeys.FAGSAK_STATUS.getKey(), AbacFagsakStatus.UNDER_BEHANDLING.getEksternKode());
         return pdpRequest;
     }
 
