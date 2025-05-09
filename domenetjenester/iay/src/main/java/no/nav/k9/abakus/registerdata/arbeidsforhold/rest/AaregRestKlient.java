@@ -3,17 +3,17 @@ package no.nav.k9.abakus.registerdata.arbeidsforhold.rest;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriBuilderException;
-
-import no.nav.vedtak.felles.integrasjon.rest.NavHeaders;
-import no.nav.vedtak.felles.integrasjon.rest.RestClient;
-import no.nav.vedtak.felles.integrasjon.rest.RestClientConfig;
-import no.nav.vedtak.felles.integrasjon.rest.RestConfig;
-import no.nav.vedtak.felles.integrasjon.rest.RestRequest;
-import no.nav.vedtak.felles.integrasjon.rest.TokenFlow;
+import no.nav.k9.felles.integrasjon.rest.OidcRestClient;
+import no.nav.k9.felles.integrasjon.rest.ScopedRestIntegration;
+import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 /*
  * Dokumentasjon https://confluence.adeo.no/display/FEL/AAREG+-+Tjeneste+REST+aareg.api
@@ -22,23 +22,21 @@ import no.nav.vedtak.felles.integrasjon.rest.TokenFlow;
  */
 
 @ApplicationScoped
-@RestClientConfig(tokenConfig = TokenFlow.ADAPTIVE, endpointProperty = "aareg.rs.url",
-    endpointDefault = "http://aareg-services-nais.arbeidsforhold/api/v1/arbeidstaker",
-    scopesProperty = "aareg.scopes", scopesDefault = "api://prod-fss.arbeidsforhold.aareg-services-nais/.default")
+@ScopedRestIntegration(scopeKey = "aareg.scopes", defaultScope = "api://prod-fss.arbeidsforhold.aareg-services-nais/.default")
 public class AaregRestKlient {
 
+    private final OidcRestClient oidcRestClient;
+    private final String url;
 
-    private final RestClient restClient; // Setter på consumer-token fra STS
-    private final RestConfig restConfig;
-
-    public AaregRestKlient() {
-        this.restClient = RestClient.client();
-        this.restConfig = RestConfig.forClient(AaregRestKlient.class);
+    public AaregRestKlient(OidcRestClient oidcRestClient,
+                                         @KonfigVerdi(value = "aareg.rs.url", defaultVerdi = "http://aareg-services-nais.arbeidsforhold/api/v1/arbeidstaker") String url) {
+        this.oidcRestClient = oidcRestClient;
+        this.url = url;
     }
 
     public List<ArbeidsforholdRS> finnArbeidsforholdForArbeidstaker(String ident, LocalDate qfom, LocalDate qtom) {
         try {
-            var target = UriBuilder.fromUri(restConfig.endpoint())
+            var target = UriBuilder.fromUri(url)
                 .path("arbeidsforhold")
                 .queryParam("ansettelsesperiodeFom", String.valueOf(qfom))
                 .queryParam("ansettelsesperiodeTom", String.valueOf(qtom))
@@ -46,8 +44,10 @@ public class AaregRestKlient {
                 .queryParam("historikk", "true")
                 .queryParam("sporingsinformasjon", "false")
                 .build();
-            var request = RestRequest.newGET(target, restConfig).header(NavHeaders.HEADER_NAV_PERSONIDENT, ident);
-            var result = restClient.send(request, ArbeidsforholdRS[].class);
+            Set<Header> headers = Set.of(
+                new BasicHeader("Nav-Personident", ident)
+            );
+            ArbeidsforholdRS[] result = oidcRestClient.get(target, headers, ArbeidsforholdRS[].class);
             return Arrays.asList(result);
         } catch (UriBuilderException | IllegalArgumentException e) {
             throw new IllegalArgumentException("Utviklerfeil syntax-exception for finnArbeidsforholdForArbeidstaker");
@@ -56,7 +56,7 @@ public class AaregRestKlient {
 
     public List<ArbeidsforholdRS> finnArbeidsforholdForFrilanser(String ident, LocalDate qfom, LocalDate qtom) {
         try {
-            var target = UriBuilder.fromUri(restConfig.endpoint())
+            var target = UriBuilder.fromUri(url)
                 .path("arbeidsforhold")
                 .queryParam("ansettelsesperiodeFom", String.valueOf(qfom))
                 .queryParam("ansettelsesperiodeTom", String.valueOf(qtom))
@@ -65,8 +65,10 @@ public class AaregRestKlient {
                 .queryParam("historikk", "true")
                 .queryParam("sporingsinformasjon", "false")
                 .build();
-            var request = RestRequest.newGET(target, restConfig).header(NavHeaders.HEADER_NAV_PERSONIDENT, ident);
-            var result = restClient.send(request, ArbeidsforholdRS[].class);
+            Set<Header> headers = Set.of(
+                new BasicHeader("Nav-Personident", ident)
+            );
+            ArbeidsforholdRS[] result = oidcRestClient.get(target, headers, ArbeidsforholdRS[].class);
             return Arrays.asList(result);
         } catch (UriBuilderException | IllegalArgumentException e) {
             throw new IllegalArgumentException("Utviklerfeil syntax-exception for finnArbeidsforholdForArbeidstaker");

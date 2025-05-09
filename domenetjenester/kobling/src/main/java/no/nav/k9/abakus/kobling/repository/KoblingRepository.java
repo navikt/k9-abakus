@@ -4,15 +4,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
 import jakarta.persistence.TypedQuery;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import no.nav.abakus.iaygrunnlag.kodeverk.Kodeverdi;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.felles.diff.DiffEntity;
@@ -24,7 +23,7 @@ import no.nav.k9.abakus.kobling.Kobling;
 import no.nav.k9.abakus.kobling.KoblingReferanse;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.Saksnummer;
-import no.nav.vedtak.felles.jpa.HibernateVerktøy;
+import no.nav.k9.felles.jpa.HibernateVerktøy;
 
 @ApplicationScoped
 public class KoblingRepository {

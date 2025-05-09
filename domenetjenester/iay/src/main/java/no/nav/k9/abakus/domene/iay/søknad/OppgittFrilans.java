@@ -18,7 +18,7 @@ import jakarta.persistence.Table;
 
 import no.nav.k9.abakus.felles.diff.ChangeTracked;
 import no.nav.k9.abakus.felles.jpa.BaseEntitet;
-import no.nav.vedtak.felles.jpa.converters.BooleanToStringConverter;
+import no.nav.k9.felles.jpa.converters.BooleanToStringConverter;
 
 
 @Table(name = "IAY_OPPGITT_FRILANS")

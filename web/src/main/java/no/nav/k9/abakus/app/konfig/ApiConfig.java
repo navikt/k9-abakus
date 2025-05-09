@@ -33,9 +33,9 @@ import no.nav.k9.abakus.iay.tjeneste.OppgittOpptjeningRestTjeneste;
 import no.nav.k9.abakus.iay.tjeneste.OppgittOpptjeningV2RestTjeneste;
 import no.nav.k9.abakus.registerdata.tjeneste.RegisterdataRestTjeneste;
 import no.nav.k9.abakus.vedtak.tjeneste.YtelseRestTjeneste;
-import no.nav.foreldrepenger.konfig.Environment;
-import no.nav.vedtak.exception.TekniskException;
-import no.nav.vedtak.felles.prosesstask.rest.ProsessTaskRestTjeneste;
+import no.nav.k9.felles.konfigurasjon.env.Environment;
+import no.nav.k9.felles.exception.TekniskException;
+import no.nav.k9.prosesstask.rest.ProsessTaskRestTjeneste;
 
 @ApplicationPath(ApiConfig.API_URI)
 public class ApiConfig extends Application {
@@ -80,7 +80,7 @@ public class ApiConfig extends Application {
 
             ForvaltningRestTjeneste.class, DiagnostikkRestTjeneste.class, RapporteringRestTjeneste.class,
 
-            AuthenticationFilter.class, OpenApiResource.class, JacksonJsonConfig.class, ConstraintViolationMapper.class, JsonMappingExceptionMapper.class,
+            OpenApiResource.class, JacksonJsonConfig.class, ConstraintViolationMapper.class, JsonMappingExceptionMapper.class,
             JsonParseExceptionMapper.class, GeneralRestExceptionMapper.class);
     }
 

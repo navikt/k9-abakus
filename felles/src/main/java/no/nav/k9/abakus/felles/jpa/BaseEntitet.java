@@ -2,16 +2,13 @@ package no.nav.k9.abakus.felles.jpa;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-
 import no.nav.k9.abakus.felles.diff.DiffIgnore;
-import no.nav.vedtak.sikkerhet.kontekst.Kontekst;
-import no.nav.vedtak.sikkerhet.kontekst.KontekstHolder;
+import no.nav.k9.sikkerhet.context.SubjectHandler;
 
 /**
  * En basis {@link Entity} klasse som håndtere felles standarder for utformign av tabeller (eks. sporing av hvem som har
@@ -39,8 +36,8 @@ public class BaseEntitet implements Serializable {
     private LocalDateTime endretTidspunkt;
 
     private static String finnBrukernavn() {
-        return Optional.ofNullable(KontekstHolder.getKontekst()).map(Kontekst::getKompaktUid)
-            .orElse(BRUKERNAVN_NÅR_SIKKERHETSKONTEKST_IKKE_FINNES);
+        String brukerident = SubjectHandler.getSubjectHandler().getUid();
+        return brukerident != null ? brukerident : BRUKERNAVN_NÅR_SIKKERHETSKONTEKST_IKKE_FINNES;
     }
 
     @PrePersist

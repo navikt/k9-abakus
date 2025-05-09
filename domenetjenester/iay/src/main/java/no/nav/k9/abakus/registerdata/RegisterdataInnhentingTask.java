@@ -26,8 +26,8 @@ import no.nav.k9.abakus.kobling.kontroll.YtelseTypeRef;
 import no.nav.k9.abakus.kobling.repository.LåsRepository;
 import no.nav.k9.abakus.registerdata.tjeneste.InnhentRegisterdataTjeneste;
 import no.nav.k9.abakus.registerdata.tjeneste.RegisterdataElement;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTask;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskData;
+import no.nav.k9.prosesstask.api.ProsessTask;
+import no.nav.k9.prosesstask.api.ProsessTaskData;
 
 @ApplicationScoped
 @ProsessTask("registerdata.innhent")
@@ -60,7 +60,7 @@ public class RegisterdataInnhentingTask extends KoblingTask {
     @Override
     protected void prosesser(ProsessTaskData prosessTaskData) {
         String nyKoblingId = prosessTaskData.getPropertyValue(TaskConstants.NY_KOBLING_ID);
-        Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : prosessTaskData.getBehandlingIdAsLong();
+        Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : Long.valueOf(prosessTaskData.getBehandlingId());
         Kobling kobling = koblingTjeneste.hent(koblingId);
         LOG.info("Starter registerinnhenting for sak=[{}, {}] med behandling='{}'", kobling.getSaksnummer(), kobling.getYtelseType(),
             kobling.getKoblingReferanse());

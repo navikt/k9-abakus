@@ -2,8 +2,6 @@ package no.nav.k9.abakus.app.exceptions;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import jakarta.ws.rs.core.Response;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,10 +9,11 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import ch.qos.logback.classic.Level;
-import no.nav.vedtak.exception.FunksjonellException;
-import no.nav.vedtak.exception.ManglerTilgangException;
-import no.nav.vedtak.exception.TekniskException;
-import no.nav.vedtak.log.util.MemoryAppender;
+import jakarta.ws.rs.core.Response;
+import no.nav.k9.felles.exception.FunksjonellException;
+import no.nav.k9.felles.exception.ManglerTilgangException;
+import no.nav.k9.felles.exception.TekniskException;
+import no.nav.k9.felles.log.util.MemoryAppender;
 
 @Execution(ExecutionMode.SAME_THREAD)
 class GeneralRestExceptionMapperTest {

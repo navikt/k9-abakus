@@ -13,6 +13,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import no.nav.k9.felles.testutilities.cdi.CdiAwareExtension;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +42,6 @@ import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
 import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
 import no.nav.k9.abakus.typer.OrgNummer;
 import no.nav.k9.abakus.typer.Saksnummer;
-import no.nav.vedtak.felles.testutilities.cdi.CdiAwareExtension;
 
 @ExtendWith(CdiAwareExtension.class)
 class InntektArbeidYtelseRepositoryTest {

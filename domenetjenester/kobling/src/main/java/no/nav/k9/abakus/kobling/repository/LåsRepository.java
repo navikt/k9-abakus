@@ -6,10 +6,9 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
-
 import no.nav.k9.abakus.kobling.Kobling;
 import no.nav.k9.abakus.kobling.KoblingLås;
-import no.nav.vedtak.exception.TekniskException;
+import no.nav.k9.felles.exception.TekniskException;
 
 @ApplicationScoped
 public class LåsRepository {

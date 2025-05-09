@@ -13,7 +13,7 @@ import org.hibernate.validator.internal.engine.path.PathImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.vedtak.exception.VLException;
+import no.nav.k9.felles.exception.VLException;
 
 public class ConstraintViolationMapper implements ExceptionMapper<ConstraintViolationException> {
 

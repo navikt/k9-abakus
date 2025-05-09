@@ -9,10 +9,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Any;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
-import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.GrunnlagRequest;
-import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.InfotrygdGrunnlag;
-import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.Grunnlag;
-import no.nav.vedtak.konfig.Tid;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.InfotrygdGrunnlag;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.request.GrunnlagRequest;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.respons.Grunnlag;
+import no.nav.k9.felles.konfigurasjon.konfig.Tid;
 
 @ApplicationScoped
 public class InfotrygdGrunnlagAggregator {
@@ -28,12 +28,12 @@ public class InfotrygdGrunnlagAggregator {
     }
 
     public List<Grunnlag> hentAggregertGrunnlag(String fnr, LocalDate fom, LocalDate tom) {
-        var request = new GrunnlagRequest(fnr, Tid.fomEllerMin(fom), Tid.tomEllerMax(tom));
+        var request = new GrunnlagRequest(fnr, fomEllerMin(fom), tomEllerMax(tom));
         return tjenester.stream().map(t -> t.hentGrunnlag(request)).flatMap(List::stream).collect(toList());
     }
 
     public List<Grunnlag> hentAggregertGrunnlagFailSoft(String fnr, LocalDate fom, LocalDate tom) {
-        var request = new GrunnlagRequest(fnr, Tid.fomEllerMin(fom), Tid.tomEllerMax(tom));
+        var request = new GrunnlagRequest(fnr, fomEllerMin(fom), tomEllerMax(tom));
         return tjenester.stream().map(t -> t.hentGrunnlagFailSoft(request)).flatMap(List::stream).collect(toList());
     }
 
@@ -41,5 +41,14 @@ public class InfotrygdGrunnlagAggregator {
     public String toString() {
         return getClass().getSimpleName() + "[tjenester=" + tjenester + "]";
     }
+
+    public static LocalDate fomEllerMin(LocalDate fom) {
+        return fom != null ? fom : Tid.TIDENES_BEGYNNELSE;
+    }
+
+    public static LocalDate tomEllerMax(LocalDate tom) {
+        return tom != null ? tom : Tid.TIDENES_ENDE;
+    }
+
 
 }

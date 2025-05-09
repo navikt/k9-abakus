@@ -2,8 +2,8 @@ package no.nav.k9.abakus.kobling;
 
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import no.nav.k9.abakus.kobling.repository.LåsRepository;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskData;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskHandler;
+import no.nav.k9.prosesstask.api.ProsessTaskData;
+import no.nav.k9.prosesstask.api.ProsessTaskHandler;
 
 public abstract class KoblingTask implements ProsessTaskHandler {
 
@@ -20,7 +20,7 @@ public abstract class KoblingTask implements ProsessTaskHandler {
     @Override
     public void doTask(ProsessTaskData prosessTaskData) {
         String nyKoblingId = prosessTaskData.getPropertyValue(TaskConstants.NY_KOBLING_ID);
-        Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : prosessTaskData.getBehandlingIdAsLong();
+        Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : Long.valueOf(prosessTaskData.getBehandlingId());
 
         KoblingLås koblingLås = låsRepository.taLås(koblingId);
 

@@ -5,14 +5,17 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import no.nav.k9.felles.integrasjon.organisasjon.OrganisasjonEReg;
+
+import no.nav.k9.felles.integrasjon.organisasjon.OrganisasjonstypeEReg;
+
+import no.nav.k9.felles.integrasjon.organisasjon.UtvidetOrganisasjonEReg;
+
 import org.junit.jupiter.api.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import no.nav.abakus.iaygrunnlag.JsonObjectMapper;
-import no.nav.vedtak.felles.integrasjon.organisasjon.JuridiskEnhetVirksomheter;
-import no.nav.vedtak.felles.integrasjon.organisasjon.OrganisasjonEReg;
-import no.nav.vedtak.felles.integrasjon.organisasjon.OrganisasjonstypeEReg;
 
 class EregRestTest {
 
@@ -40,8 +43,8 @@ class EregRestTest {
 
         var org = fromJson(json, OrganisasjonEReg.class);
         assertThat(org.getNavn()).isEqualTo("MIN BEDRIFT AVD DER JEG BOR");
-        assertThat(org.organisasjonsnummer()).isEqualTo("999999999");
-        assertThat(org.type()).isEqualTo(OrganisasjonstypeEReg.VIRKSOMHET);
+        assertThat(org.getOrganisasjonsnummer()).isEqualTo("999999999");
+        assertThat(org.getType()).isEqualTo(OrganisasjonstypeEReg.VIRKSOMHET);
     }
 
     @Test
@@ -77,7 +80,7 @@ class EregRestTest {
               ]
             }""";
 
-        var org = fromJson(json, JuridiskEnhetVirksomheter.class);
+        var org = fromJson(json, UtvidetOrganisasjonEReg.class);
         assertThat(org.driverVirksomheter()).hasSize(2);
         assertThat(org.getEksaktVirksomhetForDato(LocalDate.now())).hasSize(1);
         assertThat(org.getEksaktVirksomhetForDato(LocalDate.now()).get(0)).isEqualTo("999999997");

@@ -23,11 +23,11 @@
             <artifactId>felles</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.prosesstask</groupId>
-            <artifactId>prosesstask-kontekst</artifactId>
+            <groupId>no.nav.k9.prosesstask</groupId>
+            <artifactId>prosesstask-legacy</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.vedtak.prosesstask</groupId>
+            <groupId>no.nav.k9.prosesstask</groupId>
             <artifactId>prosesstask-rest-api</artifactId>
         </dependency>
         <dependency>
@@ -43,22 +43,24 @@
             <artifactId>migreringer</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.foreldrepenger.felles</groupId>
-            <artifactId>felles-abac-kontekst</artifactId>
+            <groupId>no.nav.k9.felles.sikkerhet</groupId>
+            <artifactId>k9-felles-sikkerhet</artifactId>
         </dependency>
 
 
         <!-- NAV -->
 
+
         <!-- Server Provided Libraries. Transitive avhengigheter som ikke burde vært her da de trekkes inn av server. -->
         <dependency>
-            <groupId>no.nav.foreldrepenger.felles</groupId>
-            <artifactId>felles-auth-filter</artifactId>
+            <groupId>no.nav.k9.felles.sikkerhet</groupId>
+            <artifactId>k9-felles-sikkerhet</artifactId>
         </dependency>
         <dependency>
-            <groupId>no.nav.foreldrepenger.felles</groupId>
-            <artifactId>felles-util</artifactId>
+            <groupId>no.nav.k9.felles</groupId>
+            <artifactId>k9-felles-util</artifactId>
         </dependency>
+
 
         <!-- Database håndtering -->
         <dependency>
@@ -108,17 +110,17 @@
             <artifactId>jackson-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty.ee10</groupId>
-            <artifactId>jetty-ee10-plus</artifactId>
+            <groupId>org.eclipse.jetty.ee9</groupId>
+            <artifactId>jetty-ee9-plus</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty.ee10</groupId>
-            <artifactId>jetty-ee10-cdi</artifactId>
+            <groupId>org.eclipse.jetty.ee9</groupId>
+            <artifactId>jetty-ee9-cdi</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.jetty.ee10</groupId>
-            <artifactId>jetty-ee10-webapp</artifactId>
+            <groupId>org.eclipse.jetty.ee9</groupId>
+            <artifactId>jetty-ee9-webapp</artifactId>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
@@ -167,6 +169,8 @@
             <artifactId>logback-syslog4j</artifactId>
         </dependency>
 
+
+
         <!-- Annet -->
         <dependency>
             <groupId>jakarta.validation</groupId>
@@ -203,8 +207,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>no.nav.foreldrepenger.felles</groupId>
-            <artifactId>felles-testutilities</artifactId>
+            <groupId>no.nav.k9.felles</groupId>
+            <artifactId>k9-felles-testutilities</artifactId>
             <scope>test</scope>
         </dependency>
 

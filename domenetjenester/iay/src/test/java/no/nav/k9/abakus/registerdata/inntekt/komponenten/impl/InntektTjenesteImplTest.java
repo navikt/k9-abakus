@@ -29,6 +29,8 @@ import no.nav.k9.abakus.registerdata.inntekt.komponenten.FinnInntektRequest;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.Månedsinntekt;
+import no.nav.k9.felles.exception.VLException;
+import no.nav.k9.felles.integrasjon.rest.SystemUserOidcRestClient;
 import no.nav.tjenester.aordningen.inntektsinformasjon.Aktoer;
 import no.nav.tjenester.aordningen.inntektsinformasjon.AktoerType;
 import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsInntektIdent;
@@ -38,8 +40,6 @@ import no.nav.tjenester.aordningen.inntektsinformasjon.Sikkerhetsavvik;
 import no.nav.tjenester.aordningen.inntektsinformasjon.inntekt.Inntekt;
 import no.nav.tjenester.aordningen.inntektsinformasjon.inntekt.InntektType;
 import no.nav.tjenester.aordningen.inntektsinformasjon.response.HentInntektListeBolkResponse;
-import no.nav.vedtak.exception.VLException;
-import no.nav.vedtak.felles.integrasjon.rest.RestClient;
 
 @ExtendWith(MockitoExtension.class)
 class InntektTjenesteImplTest {
@@ -51,12 +51,12 @@ class InntektTjenesteImplTest {
     private static final String SIKKERHETSAVVIK2 = "Mangler rettighet 2";
 
     @Mock
-    private RestClient restKlient;
+    private SystemUserOidcRestClient restKlient;
     private InntektTjeneste inntektTjeneste;
 
     @BeforeEach
     public void before() {
-        inntektTjeneste = new InntektTjeneste(restKlient, null);
+        inntektTjeneste = new InntektTjeneste(restKlient, null, null);
     }
 
     @SuppressWarnings("resource")
@@ -65,7 +65,7 @@ class InntektTjenesteImplTest {
         // Arrange
         HentInntektListeBolkResponse response = opprettResponse();
 
-        when(restKlient.send(any(), any())).thenReturn(response);
+        when(restKlient.post(any(), any(), eq(HentInntektListeBolkResponse.class))).thenReturn(response);
 
         Aktoer arbeidsplassen = new Aktoer();
         arbeidsplassen.setAktoerType(AktoerType.ORGANISASJON);
@@ -113,7 +113,7 @@ class InntektTjenesteImplTest {
             YtelseType.OMSORGSPENGER);
 
         // Assert
-        verify(restKlient, times(1)).send(any(), eq(HentInntektListeBolkResponse.class));
+        verify(restKlient, times(1)).post(any(), any(), eq(HentInntektListeBolkResponse.class));
 
         final List<Månedsinntekt> månedsinntekter = inntektsInformasjon.getMånedsinntekter();
         assertThat(månedsinntekter.size()).isEqualTo(5);
@@ -132,7 +132,7 @@ class InntektTjenesteImplTest {
         // Arrange
         HentInntektListeBolkResponse response = opprettResponse();
 
-        when(restKlient.send(any(), any())).thenReturn(response);
+        when(restKlient.get(any(), any(), eq(HentInntektListeBolkResponse.class))).thenReturn(response);
 
         Aktoer arbeidsplassen = new Aktoer();
         arbeidsplassen.setAktoerType(AktoerType.ORGANISASJON);
@@ -146,7 +146,7 @@ class InntektTjenesteImplTest {
             YtelseType.OMSORGSPENGER);
 
         // Assert
-        verify(restKlient, times(1)).send(any(), eq(HentInntektListeBolkResponse.class));
+        verify(restKlient, times(1)).get(any(), any(), eq(HentInntektListeBolkResponse.class));
 
         List<Månedsinntekt> månedsinntekter = inntektsInformasjon.getMånedsinntekter();
         assertThat(månedsinntekter.size()).isEqualTo(0);
@@ -162,7 +162,7 @@ class InntektTjenesteImplTest {
         Sikkerhetsavvik sikkerhetsavvik2 = new Sikkerhetsavvik();
         sikkerhetsavvik2.setTekst(SIKKERHETSAVVIK2);
         response.getSikkerhetsavvikListe().add(sikkerhetsavvik2);
-        when(restKlient.send(any(), any())).thenReturn(response);
+        when(restKlient.get(any(), any(), eq(HentInntektListeBolkResponse.class))).thenReturn(response);
 
         FinnInntektRequest finnInntektRequest = FinnInntektRequest.builder(GJELDENDE_MÅNED.minusMonths(3), GJELDENDE_MÅNED).medFnr(FNR).build();
 

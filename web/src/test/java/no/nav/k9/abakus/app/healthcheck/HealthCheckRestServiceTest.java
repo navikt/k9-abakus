@@ -12,13 +12,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import no.nav.k9.abakus.app.tjenester.ApplicationServiceStarter;
-import no.nav.vedtak.server.LivenessAware;
-import no.nav.vedtak.server.ReadinessAware;
-
-
-import org.mockito.junit.jupiter.MockitoExtension;
+import no.nav.k9.abakus.felles.server.LivenessAware;
+import no.nav.k9.abakus.felles.server.ReadinessAware;
 
 @ExtendWith(MockitoExtension.class)
 class HealthCheckRestServiceTest {
