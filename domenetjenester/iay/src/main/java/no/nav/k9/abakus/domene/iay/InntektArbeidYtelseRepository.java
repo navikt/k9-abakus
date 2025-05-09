@@ -39,8 +39,8 @@ import no.nav.k9.abakus.kobling.repository.KoblingRepository;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.JournalpostId;
 import no.nav.k9.abakus.typer.Saksnummer;
-import no.nav.vedtak.exception.TekniskException;
-import no.nav.vedtak.felles.jpa.HibernateVerktøy;
+import no.nav.k9.felles.exception.TekniskException;
+import no.nav.k9.felles.jpa.HibernateVerktøy;
 
 @ApplicationScoped
 public class InntektArbeidYtelseRepository {

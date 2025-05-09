@@ -1,30 +1,25 @@
 package no.nav.k9.abakus.registerdata.inntekt.sigrun.klient;
 
 import java.net.HttpURLConnection;
-import java.net.http.HttpResponse;
+import java.net.URI;
 import java.time.Year;
 import java.util.Optional;
+import java.util.Set;
 
-import no.nav.vedtak.exception.IntegrasjonException;
-import no.nav.vedtak.exception.ManglerTilgangException;
-
-import no.nav.vedtak.mapper.json.DefaultJsonMapper;
-
+import org.apache.http.Header;
+import org.apache.http.message.BasicHeader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import no.nav.vedtak.felles.integrasjon.rest.NavHeaders;
-import no.nav.vedtak.felles.integrasjon.rest.RestClient;
-import no.nav.vedtak.felles.integrasjon.rest.RestClientConfig;
-import no.nav.vedtak.felles.integrasjon.rest.RestConfig;
-import no.nav.vedtak.felles.integrasjon.rest.RestRequest;
-import no.nav.vedtak.felles.integrasjon.rest.TokenFlow;
+import jakarta.inject.Inject;
+import no.nav.k9.felles.exception.HttpStatuskodeException;
+import no.nav.k9.felles.integrasjon.rest.ScopedRestIntegration;
+import no.nav.k9.felles.integrasjon.rest.SystemUserOidcRestClient;
+import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 @ApplicationScoped
-@RestClientConfig(tokenConfig = TokenFlow.AZUREAD_CC, endpointProperty = "sigrunpgi.rs.url",
-    endpointDefault = "http://sigrun.team-inntekt/api/v1/pensjonsgivendeinntektforfolketrygden",
-    scopesProperty = "sigrunpgi.scopes", scopesDefault = "api://prod-fss.team-inntekt.sigrun/.default")
+@ScopedRestIntegration(scopeKey = "sigrunpgi.scopes", defaultScope = "api://prod-fss.team-inntekt.sigrun/.default/.default")
 public class SigrunRestClient {
 
     private static final String INNTEKTSAAR = "inntektsaar";
@@ -34,12 +29,14 @@ public class SigrunRestClient {
     private static final Year FØRSTE_PGI = Year.of(2017);
     private static final Logger LOG = LoggerFactory.getLogger(SigrunRestClient.class);
 
-    private final RestClient client;
-    private final RestConfig restConfig;
+    private SystemUserOidcRestClient oidcRestClient;
+    private final String url;
 
-    public SigrunRestClient() {
-        this.client = RestClient.client();
-        this.restConfig = RestConfig.forClient(SigrunRestClient.class);
+    @Inject
+    public SigrunRestClient(SystemUserOidcRestClient oidcRestClient,
+                            @KonfigVerdi(value = "sigrunpgi.rs.url", defaultVerdi = "http://sigrun.team-inntekt/api/v1/pensjonsgivendeinntektforfolketrygden") String url) {
+        this.oidcRestClient = oidcRestClient;
+        this.url = url;
     }
 
     //api/v1/pensjonsgivendeinntektforfolketrygden
@@ -47,31 +44,22 @@ public class SigrunRestClient {
         if (år.isBefore(FØRSTE_PGI)) {
             return Optional.empty();
         }
-        var request = RestRequest.newGET(restConfig.endpoint(), restConfig)
-            .header(NavHeaders.HEADER_NAV_PERSONIDENT, fnr)
-            .header(RETTIGHETSPAKKE, PLEIE_OG_OMSORGSPENGER)
-            .header(INNTEKTSAAR, år.toString());
 
-        HttpResponse<String> response = client.sendReturnUnhandled(request);
-        return handleResponse(response).map(r -> DefaultJsonMapper.fromJson(r, PgiFolketrygdenResponse.class));
-    }
+        Set<Header> headere = Set.of(
+            new BasicHeader("Nav-Personident", fnr),
+            new BasicHeader(RETTIGHETSPAKKE, PLEIE_OG_OMSORGSPENGER),
+            new BasicHeader(INNTEKTSAAR, år.toString()));
 
-    // Håndtere konvensjon om 404 for tilfelle som ikke finnes hos SKE.
-    private static Optional<String> handleResponse(HttpResponse<String> response) {
-        int status = response.statusCode();
-        if (status >= HttpURLConnection.HTTP_OK && status < HttpURLConnection.HTTP_MULT_CHOICE) {
-            return Optional.ofNullable(response.body()).filter(b -> !b.isEmpty());
-        } else if (status == HttpURLConnection.HTTP_FORBIDDEN) {
-            throw new ManglerTilgangException("F-018815", "Mangler tilgang. Fikk http-kode 403 fra server");
-        } else if (status == HttpURLConnection.HTTP_NOT_FOUND) {
-            LOG.info("Sigrun PGI NOT FOUND");
-            return Optional.empty();
-        } else {
-            if (status == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                LOG.info("Sigrun unauth");
+        try {
+            return oidcRestClient.getReturnsOptional(URI.create(url), headere, Set.of(), PgiFolketrygdenResponse.class);
+        } catch (HttpStatuskodeException statuskodeException){
+            if (statuskodeException.getHttpStatuskode() == HttpURLConnection.HTTP_NOT_FOUND) {
+                // Håndtere konvensjon om 404 for tilfelle som ikke finnes hos SKE.
+                return Optional.empty();
             }
-            throw new IntegrasjonException("F-016912", String.format("Server svarte med feilkode http-kode '%s' og response var '%s'", status, response.body()));
+            throw statuskodeException;
         }
+
     }
 
 

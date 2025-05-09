@@ -19,7 +19,6 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.k9.abakus.app.diagnostikk.ContainerContextRunner;
 import no.nav.k9.abakus.app.diagnostikk.DebugDump;
 import no.nav.k9.abakus.app.diagnostikk.DumpKontekst;
 import no.nav.k9.abakus.app.diagnostikk.DumpOutput;
@@ -30,11 +29,11 @@ import no.nav.k9.abakus.registerdata.IAYRegisterInnhentingFellesTjenesteImpl;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.rest.AaregRestKlient;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.FinnInntektRequest;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.SpøkelseKlient;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.felles.InfotrygdGrunnlagAggregator;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.respons.Grunnlag;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.PersonIdent;
-import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.Grunnlag;
-import no.nav.vedtak.felles.integrasjon.spokelse.Spøkelse;
 
 @ApplicationScoped
 @YtelseTypeRef
@@ -45,7 +44,7 @@ public class RegisterInnhentingDump implements DebugDump {
     private InntektTjeneste inntektTjeneste;
     private AaregRestKlient aaregKlient;
     private InfotrygdGrunnlagAggregator infotrygdGrunnlag;
-    private Spøkelse spokelseKlient;
+    private SpøkelseKlient spokelseKlient;
     private ObjectWriter writer;
 
     public RegisterInnhentingDump() {
@@ -56,7 +55,7 @@ public class RegisterInnhentingDump implements DebugDump {
     public RegisterInnhentingDump(AaregRestKlient aaregKlient,
                                   InntektTjeneste inntektTjeneste,
                                   InfotrygdGrunnlagAggregator infotrygdGrunnlag,
-                                  Spøkelse spokelseKlient) {
+                                  SpøkelseKlient spokelseKlient) {
         this.aaregKlient = aaregKlient;
         this.inntektTjeneste = inntektTjeneste;
         this.infotrygdGrunnlag = infotrygdGrunnlag;
@@ -147,6 +146,7 @@ public class RegisterInnhentingDump implements DebugDump {
     }
 
     private Future<List<DumpOutput>> submit(DumpKontekst kontekst, Function<DumpKontekst, List<DumpOutput>> call) {
-        return ContainerContextRunner.doRun(kontekst.getKobling(), () -> call.apply(kontekst));
+        //TODO fix (se til k9-sak)
+        return null;
     }
 }

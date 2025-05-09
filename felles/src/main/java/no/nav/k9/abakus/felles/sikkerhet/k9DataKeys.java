@@ -1,8 +1,6 @@
 package no.nav.k9.abakus.felles.sikkerhet;
 
-import no.nav.vedtak.sikkerhet.abac.pdp.RessursDataKey;
-
-enum k9DataKeys implements RessursDataKey {
+enum k9DataKeys  {
 
     BEHANDLING_STATUS("no.nav.abac.attributter.resource.k9.sak.behandlingsstatus"),
     FAGSAK_STATUS("no.nav.abac.attributter.resource.k9.sak.saksstatus"),

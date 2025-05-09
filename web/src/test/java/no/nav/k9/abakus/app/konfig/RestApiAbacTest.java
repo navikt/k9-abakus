@@ -8,16 +8,14 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.UUID;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.ws.rs.core.Request;
-
 import org.junit.jupiter.api.Test;
 
-import no.nav.vedtak.sikkerhet.abac.AbacDto;
-import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
-import no.nav.vedtak.sikkerhet.abac.TilpassetAbacAttributt;
-import no.nav.vedtak.sikkerhet.abac.beskyttet.ActionType;
-import no.nav.vedtak.sikkerhet.abac.beskyttet.ResourceType;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.core.Request;
+import no.nav.k9.felles.sikkerhet.abac.AbacDto;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessurs;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionAttributt;
+import no.nav.k9.felles.sikkerhet.abac.TilpassetAbacAttributt;
 
 class RestApiAbacTest {
 
@@ -82,10 +80,9 @@ class RestApiAbacTest {
     private void assertAtIngenBrukerDummyVerdierPåBeskyttetRessurs(Method metode) {
         var klasse = metode.getDeclaringClass();
         var annotation = metode.getAnnotation(BeskyttetRessurs.class);
-        if (annotation != null && annotation.actionType() == ActionType.DUMMY) {
-            fail(klasse.getSimpleName() + "." + metode.getName() + " Ikke bruk DUMMY-verdi for " + ActionType.class.getSimpleName());
-        } else if (annotation != null && annotation.resource().isEmpty() && annotation.property().isEmpty()
-            && annotation.resourceType() == ResourceType.DUMMY) {
+        if (annotation != null && annotation.action() == BeskyttetRessursActionAttributt.DUMMY) {
+            fail(klasse.getSimpleName() + "." + metode.getName() + " Ikke bruk DUMMY-verdi for " + BeskyttetRessursActionAttributt.class.getSimpleName());
+        } else if (annotation != null && annotation.resource().isEmpty() && annotation.property().isEmpty()) {
             fail(klasse.getSimpleName() + "." + metode.getName() + " En verdi for resource må være satt!");
         }
     }

@@ -8,7 +8,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import no.nav.vedtak.server.Controllable;
+import no.nav.k9.abakus.felles.server.Controllable;
 
 
 @ExtendWith(MockitoExtension.class)

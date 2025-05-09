@@ -2,14 +2,14 @@ package no.nav.k9.abakus.app.healthcheck;
 
 import java.sql.SQLException;
 
-import jakarta.annotation.Resource;
-import jakarta.enterprise.context.ApplicationScoped;
-import no.nav.vedtak.server.LiveAndReadinessAware;
-
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jakarta.annotation.Resource;
+import jakarta.enterprise.context.ApplicationScoped;
+import no.nav.k9.abakus.felles.server.LiveAndReadinessAware;
 
 
 @ApplicationScoped

@@ -3,7 +3,7 @@ package no.nav.k9.abakus.felles;
 import java.util.UUID;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.vedtak.log.mdc.MdcExtendedLogContext;
+import no.nav.k9.felles.log.mdc.MdcExtendedLogContext;
 
 public class LoggUtil {
     private static final MdcExtendedLogContext LOG_CONTEXT = MdcExtendedLogContext.getContext("prosess");

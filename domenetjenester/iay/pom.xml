@@ -22,8 +22,8 @@
         </dependency>
 
         <dependency>
-			<groupId>no.nav.vedtak.prosesstask</groupId>
-			<artifactId>prosesstask-kontekst</artifactId>
+			<groupId>no.nav.k9.prosesstask</groupId>
+			<artifactId>prosesstask-legacy</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>no.nav.k9.abakus</groupId>
@@ -34,12 +34,12 @@
 			<artifactId>kobling</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>no.nav.foreldrepenger.felles</groupId>
-			<artifactId>felles-db</artifactId>
+            <groupId>no.nav.k9.felles</groupId>
+            <artifactId>k9-felles-db</artifactId>
 		</dependency>
         <dependency>
-            <groupId>no.nav.foreldrepenger.felles</groupId>
-            <artifactId>felles-abac-kontekst</artifactId>
+            <groupId>no.nav.k9.felles.sikkerhet</groupId>
+            <artifactId>k9-felles-sikkerhet</artifactId>
         </dependency>
         <dependency>
             <groupId>no.nav.foreldrepenger.kontrakter</groupId>
@@ -51,14 +51,19 @@
 			<groupId>no.nav.k9.abakus</groupId>
 			<artifactId>vedtak</artifactId>
 		</dependency>
+        <!-- implementere
 		<dependency>
 			<groupId>no.nav.foreldrepenger.felles.integrasjon</groupId>
 			<artifactId>infotrygd-grunnlag-klient</artifactId>
 		</dependency>
+		-->
+        <!-- implementere
         <dependency>
             <groupId>no.nav.foreldrepenger.felles.integrasjon</groupId>
             <artifactId>spokelse-klient</artifactId>
         </dependency>
+        -->
+
 		<dependency>
 			<groupId>no.nav.foreldrepenger.kontrakter</groupId>
 			<artifactId>fp-feed-vedtak-tjenestespesifikasjon</artifactId>
@@ -75,12 +80,12 @@
 		</dependency>
 
 		<dependency>
-			<groupId>no.nav.foreldrepenger.felles.integrasjon</groupId>
-			<artifactId>felles-integrasjon-rest-klient</artifactId>
+			<groupId>no.nav.k9.felles.integrasjon</groupId>
+			<artifactId>k9-felles-integrasjon-rest-klient</artifactId>
 		</dependency>
         <dependency>
-            <groupId>no.nav.foreldrepenger.felles.integrasjon</groupId>
-            <artifactId>ereg-klient</artifactId>
+            <groupId>no.nav.k9.felles.integrasjon</groupId>
+            <artifactId>k9-ereg-klient</artifactId>
         </dependency>
 
 		<dependency>

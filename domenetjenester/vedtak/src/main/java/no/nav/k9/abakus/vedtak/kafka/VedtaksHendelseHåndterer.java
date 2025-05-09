@@ -5,16 +5,16 @@ import jakarta.enterprise.context.control.ActivateRequestContext;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
-import no.nav.foreldrepenger.konfig.KonfigVerdi;
+import no.nav.k9.abakus.felles.kafka.KafkaMessageHandler;
 
-import no.nav.vedtak.felles.integrasjon.kafka.KafkaMessageHandler;
+import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import no.nav.k9.abakus.vedtak.LagreVedtakTask;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskDataBuilder;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskTjeneste;
+import no.nav.k9.prosesstask.api.ProsessTaskDataBuilder;
+import no.nav.k9.prosesstask.api.ProsessTaskTjeneste;
 
 @ApplicationScoped
 @ActivateRequestContext

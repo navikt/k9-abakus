@@ -4,8 +4,8 @@ import java.util.List;
 
 import jakarta.validation.ConstraintViolationException;
 
-import no.nav.vedtak.exception.FunksjonellException;
-import no.nav.vedtak.exception.TekniskException;
+import no.nav.k9.felles.exception.FunksjonellException;
+import no.nav.k9.felles.exception.TekniskException;
 
 class FeltValideringFeil {
 
