@@ -24,7 +24,7 @@ import no.nav.k9.abakus.felles.jpa.BaseEntitet;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.iay.jpa.ArbeidTypeKodeverdiConverter;
 import no.nav.k9.abakus.iay.jpa.LandKodeKodeverdiConverter;
-import no.nav.vedtak.felles.jpa.converters.BooleanToStringConverter;
+import no.nav.k9.felles.jpa.converters.BooleanToStringConverter;
 
 /**
  * Entitetsklasse for oppgitte arbeidsforhold.

@@ -12,11 +12,12 @@ import jakarta.enterprise.inject.Any;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
+import no.nav.k9.abakus.felles.server.Controllable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.prometheus.client.hotspot.DefaultExports;
-import no.nav.vedtak.server.Controllable;
 
 /**
  * Initialiserer applikasjontjenester som implementer AppServiceHandler

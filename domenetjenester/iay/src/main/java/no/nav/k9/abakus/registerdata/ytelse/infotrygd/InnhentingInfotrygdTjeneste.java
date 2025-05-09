@@ -12,6 +12,20 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.SpøkelseKlient;
+
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.respons.Arbeidsforhold;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.respons.BehandlingstemaKode;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.respons.Grunnlag;
+
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.respons.Orgnummer;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.respons.Periode;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.respons.TemaKode;
+
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.respons.Vedtak;
+
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.spokelse.SykepengeVedtak;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,53 +45,46 @@ import no.nav.k9.abakus.registerdata.ytelse.infotrygd.kodemaps.RelatertYtelseSta
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.kodemaps.TemaReverse;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.felles.InfotrygdGrunnlagAggregator;
 import no.nav.k9.abakus.typer.PersonIdent;
-import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.Arbeidsforhold;
-import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.Grunnlag;
-import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.Orgnummer;
-import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.Periode;
-import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.Vedtak;
-import no.nav.vedtak.felles.integrasjon.spokelse.Spøkelse;
-import no.nav.vedtak.felles.integrasjon.spokelse.SykepengeVedtak;
-import no.nav.vedtak.konfig.Tid;
+import no.nav.k9.felles.konfigurasjon.konfig.Tid;
 
 @ApplicationScoped
 public class InnhentingInfotrygdTjeneste {
 
     private static final Logger LOG = LoggerFactory.getLogger(InnhentingInfotrygdTjeneste.class);
 
-    private static final Map<no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.TemaKode, YtelseType> STØNADSKAT1_TIL_YTELSETYPE = Map.ofEntries(
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.TemaKode.UKJENT, YtelseType.UDEFINERT),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.TemaKode.FA, YtelseType.FORELDREPENGER),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.TemaKode.SP, YtelseType.SYKEPENGER),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.TemaKode.BS, YtelseType.OMSORGSPENGER));
+    private static final Map<TemaKode, YtelseType> STØNADSKAT1_TIL_YTELSETYPE = Map.ofEntries(
+        Map.entry(TemaKode.UKJENT, YtelseType.UDEFINERT),
+        Map.entry(TemaKode.FA, YtelseType.FORELDREPENGER),
+        Map.entry(TemaKode.SP, YtelseType.SYKEPENGER),
+        Map.entry(TemaKode.BS, YtelseType.OMSORGSPENGER));
 
-    private static final Map<no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode, YtelseType> STØNADSKAT2_TIL_YTELSETYPE = Map.ofEntries(
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.UKJENT, YtelseType.UDEFINERT),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.AP, YtelseType.FORELDREPENGER),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.FP, YtelseType.FORELDREPENGER),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.FU, YtelseType.FORELDREPENGER),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.FØ, YtelseType.FORELDREPENGER),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.SV, YtelseType.SVANGERSKAPSPENGER),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.SP, YtelseType.SYKEPENGER),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.OM, YtelseType.OMSORGSPENGER),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.OP, YtelseType.OPPLÆRINGSPENGER),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.PP, YtelseType.PLEIEPENGER_NÆRSTÅENDE),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.PB, YtelseType.PLEIEPENGER_SYKT_BARN),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.PI, YtelseType.PLEIEPENGER_SYKT_BARN),
-        Map.entry(no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.v1.respons.BehandlingstemaKode.PN, YtelseType.PLEIEPENGER_SYKT_BARN));
+    private static final Map<BehandlingstemaKode, YtelseType> STØNADSKAT2_TIL_YTELSETYPE = Map.ofEntries(
+        Map.entry(BehandlingstemaKode.UKJENT, YtelseType.UDEFINERT),
+        Map.entry(BehandlingstemaKode.AP, YtelseType.FORELDREPENGER),
+        Map.entry(BehandlingstemaKode.FP, YtelseType.FORELDREPENGER),
+        Map.entry(BehandlingstemaKode.FU, YtelseType.FORELDREPENGER),
+        Map.entry(BehandlingstemaKode.FØ, YtelseType.FORELDREPENGER),
+        Map.entry(BehandlingstemaKode.SV, YtelseType.SVANGERSKAPSPENGER),
+        Map.entry(BehandlingstemaKode.SP, YtelseType.SYKEPENGER),
+        Map.entry(BehandlingstemaKode.OM, YtelseType.OMSORGSPENGER),
+        Map.entry(BehandlingstemaKode.OP, YtelseType.OPPLÆRINGSPENGER),
+        Map.entry(BehandlingstemaKode.PP, YtelseType.PLEIEPENGER_NÆRSTÅENDE),
+        Map.entry(BehandlingstemaKode.PB, YtelseType.PLEIEPENGER_SYKT_BARN),
+        Map.entry(BehandlingstemaKode.PI, YtelseType.PLEIEPENGER_SYKT_BARN),
+        Map.entry(BehandlingstemaKode.PN, YtelseType.PLEIEPENGER_SYKT_BARN));
 
     private static final List<Duration> SPOKELSE_TIMEOUTS = List.of(Duration.ofMillis(100), Duration.ofMillis(250), Duration.ofMillis(500),
         Duration.ofMillis(2500), Duration.ofMillis(12), Duration.ofSeconds(60));
 
     private InfotrygdGrunnlagAggregator infotrygdGrunnlag;
-    private Spøkelse spøkelse;
+    private SpøkelseKlient spøkelse;
 
     InnhentingInfotrygdTjeneste() {
         // CDI
     }
 
     @Inject
-    public InnhentingInfotrygdTjeneste(InfotrygdGrunnlagAggregator infotrygdGrunnlag, Spøkelse spøkelse) {
+    public InnhentingInfotrygdTjeneste(InfotrygdGrunnlagAggregator infotrygdGrunnlag, SpøkelseKlient spøkelse) {
         this.infotrygdGrunnlag = infotrygdGrunnlag;
         this.spøkelse = spøkelse;
     }

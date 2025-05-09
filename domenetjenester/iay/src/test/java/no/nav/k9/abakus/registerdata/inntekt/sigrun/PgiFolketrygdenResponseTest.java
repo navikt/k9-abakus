@@ -7,12 +7,15 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import no.nav.k9.felles.integrasjon.rest.DefaultJsonMapper;
+
 import org.junit.jupiter.api.Test;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektspostType;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.PgiFolketrygdenResponse;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.SigrunPgiFolketrygdenMapper;
-import no.nav.vedtak.mapper.json.DefaultJsonMapper;
 
 class PgiFolketrygdenResponseTest {
 
@@ -44,8 +47,8 @@ class PgiFolketrygdenResponseTest {
         """;
 
     @Test
-    void skal_mappe_og_beregne_slå_sammen_lønn_fra_offisiell_fra_pensjonsgivendeinntektforfolketrygden() {
-        var respons = DefaultJsonMapper.fromJson(SKATT_EKSEMPEL, PgiFolketrygdenResponse.class);
+    void skal_mappe_og_beregne_slå_sammen_lønn_fra_offisiell_fra_pensjonsgivendeinntektforfolketrygden() throws JsonProcessingException {
+        var respons = DefaultJsonMapper.MAPPER.readValue(SKATT_EKSEMPEL, PgiFolketrygdenResponse.class);
 
         var intern = SigrunPgiFolketrygdenMapper.mapFraPgiResponseTilIntern(List.of(respons));
 
@@ -91,8 +94,8 @@ class PgiFolketrygdenResponseTest {
         """;
 
     @Test
-    void skal_mappe_og_beregne_lønn_fra_dolly_med_lønn_fra_pensjonsgivendeinntektforfolketrygden() {
-        var responseStub = DefaultJsonMapper.fromJson(DOLLY_RESPONSE, PgiFolketrygdenResponse[].class);
+    void skal_mappe_og_beregne_lønn_fra_dolly_med_lønn_fra_pensjonsgivendeinntektforfolketrygden() throws JsonProcessingException {
+        var responseStub = DefaultJsonMapper.MAPPER.readValue(DOLLY_RESPONSE, PgiFolketrygdenResponse[].class);
 
         var intern = SigrunPgiFolketrygdenMapper.mapFraPgiResponseTilIntern(Arrays.stream(responseStub).toList());
 

@@ -49,7 +49,7 @@ import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
 import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
 import no.nav.k9.abakus.typer.OrganisasjonsNummerValidator;
 import no.nav.k9.abakus.typer.PersonIdent;
-import no.nav.vedtak.exception.TekniskException;
+import no.nav.k9.felles.exception.TekniskException;
 
 public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegisterInnhentingTjeneste {
 

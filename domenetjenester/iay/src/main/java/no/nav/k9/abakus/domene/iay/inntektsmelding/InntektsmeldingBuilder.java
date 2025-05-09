@@ -12,7 +12,7 @@ import no.nav.k9.abakus.typer.Beløp;
 import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
 import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
 import no.nav.k9.abakus.typer.JournalpostId;
-import no.nav.vedtak.konfig.Tid;
+import no.nav.k9.felles.konfigurasjon.konfig.Tid;
 
 public class InntektsmeldingBuilder {
 

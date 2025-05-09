@@ -50,12 +50,12 @@ import no.nav.k9.abakus.kobling.KoblingReferanse;
 import no.nav.k9.abakus.kobling.KoblingTjeneste;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.Saksnummer;
-import no.nav.vedtak.sikkerhet.abac.AbacDataAttributter;
-import no.nav.vedtak.sikkerhet.abac.AbacDto;
-import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
-import no.nav.vedtak.sikkerhet.abac.StandardAbacAttributtType;
-import no.nav.vedtak.sikkerhet.abac.TilpassetAbacAttributt;
-import no.nav.vedtak.sikkerhet.abac.beskyttet.ActionType;
+import no.nav.k9.felles.sikkerhet.abac.AbacDataAttributter;
+import no.nav.k9.felles.sikkerhet.abac.AbacDto;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessurs;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionAttributt;
+import no.nav.k9.felles.sikkerhet.abac.StandardAbacAttributtType;
+import no.nav.k9.felles.sikkerhet.abac.TilpassetAbacAttributt;
 
 @OpenAPIDefinition(tags = @Tag(name = "inntektsmelding"))
 @Path("/iay/inntektsmeldinger/v1")
@@ -84,7 +84,7 @@ public class InntektsmeldingerRestTjeneste {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Hent inntektsmeldinger for angitt søke spesifikasjon", tags = "inntektsmelding")
-    @BeskyttetRessurs(actionType = ActionType.READ, resource = FAGSAK)
+    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.READ, resource = FAGSAK)
     @SuppressWarnings("findsecbugs:JAXRS_ENDPOINT")
     public Response hentInntektsmeldingerForSak(@NotNull @Valid InntektsmeldingerRequestAbacDto spesifikasjon) {
         LoggUtil.setupLogMdc(spesifikasjon.getYtelseType(), spesifikasjon.getSaksnummer(), "<alle>");
@@ -102,7 +102,7 @@ public class InntektsmeldingerRestTjeneste {
     @POST
     @Path("/motta")
     @Operation(description = "Motta og lagre inntektsmelding(er)", tags = "inntektsmelding", responses = {@ApiResponse(description = "Oppdatert grunnlagreferanse", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UuidDto.class)))})
-    @BeskyttetRessurs(actionType = ActionType.CREATE, resource = FAGSAK)
+    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.CREATE, resource = FAGSAK)
     @SuppressWarnings("findsecbugs:JAXRS_ENDPOINT")
     public UuidDto lagreInntektsmeldinger(@NotNull @TilpassetAbacAttributt(supplierClass = AbacDataSupplier.class) @Valid InntektsmeldingerMottattRequest mottattRequest) {
         UuidDto resultat = null;
@@ -154,7 +154,7 @@ public class InntektsmeldingerRestTjeneste {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Hent inntektsmeldinger for angitt søke spesifikasjon", tags = "inntektsmelding")
-    @BeskyttetRessurs(actionType = ActionType.READ, resource = FAGSAK)
+    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.READ, resource = FAGSAK)
     @SuppressWarnings("findsecbugs:JAXRS_ENDPOINT")
     public Response hentDifferanseMellomToReferanserPåSak(@NotNull @Valid InntektsmeldingDiffRequestAbacDto spesifikasjon) {
         LoggUtil.setupLogMdc(spesifikasjon.getYtelseType(), spesifikasjon.getSaksnummer(),

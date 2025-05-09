@@ -37,17 +37,21 @@
         </dependency>
 
         <dependency>
-            <groupId>no.nav.foreldrepenger.felles</groupId>
-            <artifactId>felles-abac-kontekst</artifactId>
+            <groupId>no.nav.k9.felles.sikkerhet</groupId>
+            <artifactId>k9-felles-sikkerhet</artifactId>
         </dependency>
+        <!--
         <dependency>
             <groupId>no.nav.foreldrepenger.felles.integrasjon</groupId>
             <artifactId>kafka-properties</artifactId>
         </dependency>
+        -->
+        <!--
         <dependency>
             <groupId>no.nav.foreldrepenger.felles</groupId>
             <artifactId>felles-server</artifactId>
         </dependency>
+        -->
 
 		<dependency>
 			<groupId>io.swagger.core.v3</groupId>

@@ -1,43 +1,57 @@
 package no.nav.k9.abakus.felles.sikkerhet;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
-import jakarta.enterprise.context.ApplicationScoped;
+import no.nav.abakus.iaygrunnlag.AktørIdPersonident;
 
-import no.nav.foreldrepenger.konfig.Cluster;
-import no.nav.foreldrepenger.konfig.Environment;
-import no.nav.vedtak.sikkerhet.abac.AbacDataAttributter;
-import no.nav.vedtak.sikkerhet.abac.PdpRequestBuilder;
-import no.nav.vedtak.sikkerhet.abac.StandardAbacAttributtType;
-import no.nav.vedtak.sikkerhet.abac.pdp.AppRessursData;
-import no.nav.vedtak.sikkerhet.abac.pipdata.PipBehandlingStatus;
-import no.nav.vedtak.sikkerhet.abac.pipdata.PipFagsakStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import jakarta.annotation.Priority;
+import jakarta.enterprise.context.Dependent;
+import jakarta.enterprise.inject.Alternative;
+import no.nav.k9.felles.sikkerhet.abac.AbacAttributtSamling;
+import no.nav.k9.felles.sikkerhet.abac.PdpKlient;
+import no.nav.k9.felles.sikkerhet.abac.PdpRequest;
+import no.nav.k9.felles.sikkerhet.abac.PdpRequestBuilder;
+import no.nav.k9.felles.sikkerhet.abac.StandardAbacAttributtType;
 
 /**
  * Implementasjon av PDP request for denne applikasjonen.
  */
-@ApplicationScoped
+@Dependent
+@Alternative
+@Priority(2)
 public class PdpRequestBuilderImpl implements PdpRequestBuilder {
 
-    private static final Cluster CLUSTER = Environment.current().getCluster();
-    private static final String ABAC_DOMAIN = "k9";
-    private static final List<String> INTERNAL_CLUSTER_NAMESPACE = List.of(CLUSTER.clusterName() + ":k9saksbehandling",
-        CLUSTER.clusterName() + ":teamforeldrepenger");
+    private static final Logger LOG = LoggerFactory.getLogger(PdpRequestBuilderImpl.class);
+    private String abacDomain = "k9";
 
     @Override
-    public String abacDomene() {
-        return ABAC_DOMAIN;
-    }
+    public PdpRequest lagPdpRequest(AbacAttributtSamling attributter) {
+        PdpRequest pdpRequest = new PdpRequest();
+        pdpRequest.put(PdpKlient.ENVIRONMENT_AUTH_TOKEN, attributter.getIdToken());
+        pdpRequest.put(FellesAbacAttributter.XACML_1_0_ACTION_ACTION_ID, attributter.getActionType().getEksternKode());
+        pdpRequest.put(FellesAbacAttributter.RESOURCE_FELLES_DOMENE, abacDomain);
+        pdpRequest.put(FellesAbacAttributter.RESOURCE_FELLES_RESOURCE_TYPE, attributter.getResource());
 
-    @Override
-    public AppRessursData lagAppRessursData(AbacDataAttributter dataAttributter) {
-        return AppRessursData.builder()
-            .leggTilAktørIdSet(dataAttributter.getVerdier(StandardAbacAttributtType.AKTØR_ID))
-            .leggTilFødselsnumre(dataAttributter.getVerdier(StandardAbacAttributtType.FNR))
-            // TODO: Hente fra pip-tjenesten? arv fra tidligere... men nå er 2 pips aktuelle ....
-            .leggTilRessurs(k9DataKeys.FAGSAK_STATUS, PipFagsakStatus.UNDER_BEHANDLING)
-            .leggTilRessurs(k9DataKeys.BEHANDLING_STATUS, PipBehandlingStatus.UTREDES)
-            .build();
+        Set<AktørIdPersonident> aktørIder = attributter.getVerdier(StandardAbacAttributtType.AKTØR_ID);
+        Set<AktørIdPersonident> fødselsnumre = attributter.getVerdier(StandardAbacAttributtType.FNR);
+
+        if (!aktørIder.isEmpty()){
+            pdpRequest.put(FellesAbacAttributter.RESOURCE_FELLES_PERSON_AKTOERID_RESOURCE, aktørIder);
+        }
+        if (!fødselsnumre.isEmpty()){
+            pdpRequest.put(FellesAbacAttributter.RESOURCE_FELLES_PERSON_FNR, fødselsnumre);
+        }
+
+        // TODO: Gå over til å hente fra pip-tjenesten når alle kall inkluderer behandlinguuid?
+        //pdpRequest.put(k9DataKeys.BEHANDLING_STATUS.getKey(), AbacBehandlingStatus  .UTREDES.getEksternKode());
+        //pdpRequest.put(k9DataKeys.FAGSAK_STATUS.getKey(), AbacFagsakStatus.UNDER_BEHANDLING.getEksternKode());
+        return pdpRequest;
     }
 
 }

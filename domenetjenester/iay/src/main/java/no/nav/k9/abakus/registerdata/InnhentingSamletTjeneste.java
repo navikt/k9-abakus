@@ -28,7 +28,7 @@ import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseGrunnla
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.PersonIdent;
 import no.nav.k9.abakus.typer.Saksnummer;
-import no.nav.foreldrepenger.konfig.Environment;
+import no.nav.k9.felles.konfigurasjon.env.Environment;
 
 @ApplicationScoped
 public class InnhentingSamletTjeneste {

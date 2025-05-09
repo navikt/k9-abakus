@@ -1,19 +1,18 @@
 package no.nav.k9.abakus.app.exceptions;
 
-import jakarta.ws.rs.core.MediaType;
-import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.ext.ExceptionMapper;
-import jakarta.ws.rs.ext.Provider;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
-import no.nav.vedtak.exception.FunksjonellException;
-import no.nav.vedtak.exception.ManglerTilgangException;
-import no.nav.vedtak.felles.jpa.TomtResultatException;
-import no.nav.vedtak.log.mdc.MDCOperations;
-import no.nav.vedtak.log.util.LoggerUtils;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.ext.ExceptionMapper;
+import jakarta.ws.rs.ext.Provider;
+import no.nav.k9.felles.exception.FunksjonellException;
+import no.nav.k9.felles.exception.ManglerTilgangException;
+import no.nav.k9.felles.jpa.TomtResultatException;
+import no.nav.k9.felles.log.mdc.MDCOperations;
+import no.nav.k9.felles.log.util.LoggerUtils;
 
 @Provider
 public class GeneralRestExceptionMapper implements ExceptionMapper<Throwable> {

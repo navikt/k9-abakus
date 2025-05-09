@@ -19,10 +19,10 @@ import no.nav.abakus.vedtak.ytelse.v1.YtelseV1;
 import no.nav.k9.abakus.vedtak.domene.VedtakYtelseBuilder;
 import no.nav.k9.abakus.vedtak.domene.VedtakYtelseRepository;
 import no.nav.k9.abakus.vedtak.extract.v1.ExtractFromYtelseV1;
-import no.nav.vedtak.exception.TekniskException;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTask;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskData;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskHandler;
+import no.nav.k9.felles.exception.TekniskException;
+import no.nav.k9.prosesstask.api.ProsessTask;
+import no.nav.k9.prosesstask.api.ProsessTaskData;
+import no.nav.k9.prosesstask.api.ProsessTaskHandler;
 
 @ProsessTask("vedtakEvent.lagre")
 public class LagreVedtakTask implements ProsessTaskHandler {

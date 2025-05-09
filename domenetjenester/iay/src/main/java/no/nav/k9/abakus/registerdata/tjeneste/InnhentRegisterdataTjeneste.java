@@ -29,9 +29,9 @@ import no.nav.k9.abakus.registerdata.RegisterdataInnhentingTask;
 import no.nav.k9.abakus.registerdata.callback.CallbackTask;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.Saksnummer;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskData;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskGruppe;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskTjeneste;
+import no.nav.k9.prosesstask.api.ProsessTaskData;
+import no.nav.k9.prosesstask.api.ProsessTaskGruppe;
+import no.nav.k9.prosesstask.api.ProsessTaskTjeneste;
 
 @ApplicationScoped
 public class InnhentRegisterdataTjeneste {

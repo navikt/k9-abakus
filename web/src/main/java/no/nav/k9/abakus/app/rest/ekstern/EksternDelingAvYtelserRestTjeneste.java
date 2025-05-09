@@ -11,6 +11,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.request.GrunnlagRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,7 +44,7 @@ import no.nav.k9.abakus.aktor.AktørTjeneste;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.registerdata.infotrygd.InfotrygdgrunnlagYtelseMapper;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.InnhentingInfotrygdTjeneste;
-import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.ps.InfotrygdPSGrunnlag;
+import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.ps.InfotrygdPSGrunnlagRestKlient;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.ps.PS;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.Beløp;
@@ -51,14 +53,12 @@ import no.nav.k9.abakus.typer.Saksnummer;
 import no.nav.k9.abakus.typer.Stillingsprosent;
 import no.nav.k9.abakus.vedtak.domene.VedtakYtelseRepository;
 import no.nav.k9.abakus.vedtak.extract.v1.ConvertToYtelseV1;
-import no.nav.vedtak.felles.integrasjon.infotrygd.grunnlag.GrunnlagRequest;
-import no.nav.vedtak.konfig.Tid;
-import no.nav.vedtak.sikkerhet.abac.AbacDataAttributter;
-import no.nav.vedtak.sikkerhet.abac.BeskyttetRessurs;
-import no.nav.vedtak.sikkerhet.abac.StandardAbacAttributtType;
-import no.nav.vedtak.sikkerhet.abac.TilpassetAbacAttributt;
-import no.nav.vedtak.sikkerhet.abac.beskyttet.ActionType;
-import no.nav.vedtak.sikkerhet.abac.beskyttet.AvailabilityType;
+import no.nav.k9.felles.konfigurasjon.konfig.Tid;
+import no.nav.k9.felles.sikkerhet.abac.AbacDataAttributter;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessurs;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionAttributt;
+import no.nav.k9.felles.sikkerhet.abac.StandardAbacAttributtType;
+import no.nav.k9.felles.sikkerhet.abac.TilpassetAbacAttributt;
 
 @OpenAPIDefinition(tags = @Tag(name = "ekstern"), servers = @Server())
 @Path("/ytelse/v1")
@@ -72,14 +72,14 @@ public class EksternDelingAvYtelserRestTjeneste {
 
     private VedtakYtelseRepository ytelseRepository;
     private AktørTjeneste aktørTjeneste;
-    private InfotrygdPSGrunnlag infotrygdPSGrunnlag;
+    private InfotrygdPSGrunnlagRestKlient infotrygdPSGrunnlag;
 
     public EksternDelingAvYtelserRestTjeneste() {
     } // CDI Ctor
 
     @Inject
     public EksternDelingAvYtelserRestTjeneste(VedtakYtelseRepository ytelseRepository,
-                                              @PS InfotrygdPSGrunnlag infotrygdPSGrunnlag,
+                                              @PS InfotrygdPSGrunnlagRestKlient infotrygdPSGrunnlag,
                                               AktørTjeneste aktørTjeneste) {
         this.ytelseRepository = ytelseRepository;
         this.aktørTjeneste = aktørTjeneste;
@@ -98,7 +98,7 @@ public class EksternDelingAvYtelserRestTjeneste {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Henter alle vedtak for en gitt person, evt med periode etter en fom", tags = "ytelse")
-    @BeskyttetRessurs(actionType = ActionType.READ, resource = APPLIKASJON, availabilityType = AvailabilityType.ALL)
+    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.READ, resource = APPLIKASJON) //, availabilityType = AvailabilityType.ALL)
     @SuppressWarnings("findsecbugs:JAXRS_ENDPOINT")
     public List<Ytelse> hentVedtakYtelse(@NotNull @TilpassetAbacAttributt(supplierClass = EksternDelingAvYtelserRestTjeneste.VedtakForPeriodeRequestAbacDataSupplier.class) @Valid VedtakForPeriodeRequest request) {
         LOG.info("ABAKUS VEDTAK ekstern /hent-ytelse-vedtak for ytelser {}", request.getYtelser());
@@ -137,7 +137,7 @@ public class EksternDelingAvYtelserRestTjeneste {
         var identer = utledPersonIdentFraRequest(request.getIdent());
         var periode = IntervallEntitet.fraOgMedTilOgMed(request.getPeriode().getFom(), request.getPeriode().getTom());
         var fnr = identer.stream().map(PersonIdent::getIdent).toList();
-        var inforequest = new GrunnlagRequest(fnr, Tid.fomEllerMin(periode.getFomDato()), Tid.tomEllerMax(periode.getTomDato()));
+        var inforequest = new GrunnlagRequest(fnr, fomEllerMin(periode.getFomDato()), tomEllerMax(periode.getTomDato()));
         var infotrygdYtelser = infotrygdPSGrunnlag.hentGrunnlagFailSoft(inforequest);
         var mappedYtelser =  InnhentingInfotrygdTjeneste.mapTilInfotrygdYtelseGrunnlag(infotrygdYtelser, periode.getFomDato()).stream()
             .map(InfotrygdgrunnlagYtelseMapper::oversettInfotrygdYtelseGrunnlagTilYtelse)
@@ -229,5 +229,14 @@ public class EksternDelingAvYtelserRestTjeneste {
             return AbacDataAttributter.opprett().leggTil(attributeType, req.getIdent().getVerdi());
         }
     }
+
+    public static LocalDate fomEllerMin(LocalDate fom) {
+        return fom != null ? fom : Tid.TIDENES_BEGYNNELSE;
+    }
+
+    public static LocalDate tomEllerMax(LocalDate tom) {
+        return tom != null ? tom : Tid.TIDENES_ENDE;
+    }
+
 
 }

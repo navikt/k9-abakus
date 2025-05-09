@@ -5,12 +5,17 @@ import org.flywaydb.core.api.FlywayException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import no.nav.foreldrepenger.konfig.Environment;
+import no.nav.k9.felles.konfigurasjon.env.Environment;
+
+import javax.sql.DataSource;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 public class JettyDevServer extends JettyServer {
 
     private static final Environment ENV = Environment.current();
-    private static final Logger LOG = LoggerFactory.getLogger(JettyDevServer.class);
+    private static final Logger log = LoggerFactory.getLogger(JettyDevServer.class);
 
     private JettyDevServer(int serverPort) {
         super(serverPort);
@@ -28,21 +33,21 @@ public class JettyDevServer extends JettyServer {
     }
 
     @Override
-    void migrerDatabaser() {
+    protected void migrerDatabaser() throws IOException {
         try {
             super.migrerDatabaser();
-        } catch (Exception e) {
-            LOG.info("Migreringer feilet, cleaner og prøver på nytt for lokal db.");
-            try (var migreringDs = DatasourceUtil.createDatasource(DatasourceRole.ADMIN, 2)) {
-                var flyway = Flyway.configure()
-                    .dataSource(migreringDs)
-                    .locations("classpath:/db/migration/")
-                    .baselineOnMigrate(true)
-                    .cleanDisabled(false)
-                    .load();
-                flyway.clean();
-            } catch (FlywayException fwe) {
-                throw new IllegalStateException("Migrering feiler.", fwe);
+        } catch (IllegalStateException e) {
+            log.info("Migreringer feilet, cleaner og prøver på nytt.");
+            DataSource migreringDs = DatasourceUtil.createDatasource("defaultDS", DatasourceRole.ADMIN,
+                getEnvironmentClass(), 1);
+            try {
+                DevDatabaseScript.clean(migreringDs);
+            } finally {
+                try {
+                    migreringDs.getConnection().close();
+                } catch (SQLException sqlException) {
+                    log.warn("Klarte ikke stenge connection etter migrering", sqlException);
+                }
             }
             super.migrerDatabaser();
         }

@@ -7,21 +7,20 @@ import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import no.nav.abakus.iaygrunnlag.kodeverk.OrganisasjonType;
 import no.nav.k9.abakus.domene.virksomhet.Virksomhet;
-import no.nav.k9.abakus.registerdata.arbeidsgiver.virksomhet.rest.OrganisasjonRestKlient;
 import no.nav.k9.abakus.typer.OrgNummer;
-import no.nav.vedtak.exception.TekniskException;
-import no.nav.vedtak.felles.integrasjon.organisasjon.JuridiskEnhetVirksomheter;
-import no.nav.vedtak.felles.integrasjon.organisasjon.OrganisasjonEReg;
-import no.nav.vedtak.felles.integrasjon.organisasjon.OrganisasjonstypeEReg;
-import no.nav.vedtak.util.LRUCache;
+import no.nav.k9.felles.exception.TekniskException;
+import no.nav.k9.felles.integrasjon.organisasjon.OrganisasjonEReg;
+import no.nav.k9.felles.integrasjon.organisasjon.OrganisasjonRestKlient;
+import no.nav.k9.felles.integrasjon.organisasjon.OrganisasjonstypeEReg;
+import no.nav.k9.felles.integrasjon.organisasjon.UtvidetOrganisasjonEReg;
+import no.nav.k9.felles.util.LRUCache;
 
 
 @ApplicationScoped
@@ -39,7 +38,7 @@ public class VirksomhetTjeneste {
         .build();
 
     private LRUCache<String, OrganisasjonEReg> cacheEREG = new LRUCache<>(1000, CACHE_ELEMENT_LIVE_TIME_MS);
-    private LRUCache<String, JuridiskEnhetVirksomheter> cacheJuridiskEREG = new LRUCache<>(100, CACHE_ELEMENT_LIVE_TIME_MS);
+    private LRUCache<String, UtvidetOrganisasjonEReg> cacheJuridiskEREG = new LRUCache<>(100, CACHE_ELEMENT_LIVE_TIME_MS);
 
     private OrganisasjonRestKlient eregRestKlient;
 
@@ -72,7 +71,7 @@ public class VirksomhetTjeneste {
      * @return true (når virksomheten er orgledd)
      */
     public boolean sjekkOmOrganisasjonErOrgledd(String orgNummer) {
-        return OrganisasjonstypeEReg.ORGLEDD.equals(hentResponseOrganisasjon(orgNummer).type());
+        return OrganisasjonstypeEReg.ORGLEDD.equals(hentResponseOrganisasjon(orgNummer).getType());
     }
 
     /**
@@ -121,12 +120,12 @@ public class VirksomhetTjeneste {
     }
 
     private Virksomhet mapVirksomhet(OrganisasjonEReg org) {
-        var builder = new Virksomhet.Builder().medNavn(org.getNavn()).medRegistrert(org.getRegistreringsdato()).medOrgnr(org.organisasjonsnummer());
-        if (OrganisasjonstypeEReg.VIRKSOMHET.equals(org.type())) {
+        var builder = new Virksomhet.Builder().medNavn(org.getNavn()).medRegistrert(org.getRegistreringsdato()).medOrgnr(org.getOrganisasjonsnummer());
+        if (OrganisasjonstypeEReg.VIRKSOMHET.equals(org.getType())) {
             builder.medOrganisasjonstype(OrganisasjonType.VIRKSOMHET).medOppstart(org.getOppstartsdato()).medAvsluttet(org.getNedleggelsesdato());
-        } else if (OrganisasjonstypeEReg.JURIDISK_ENHET.equals(org.type())) {
+        } else if (OrganisasjonstypeEReg.JURIDISK_ENHET.equals(org.getType())) {
             builder.medOrganisasjonstype(OrganisasjonType.JURIDISK_ENHET);
-        } else if (OrganisasjonstypeEReg.ORGLEDD.equals(org.type())) {
+        } else if (OrganisasjonstypeEReg.ORGLEDD.equals(org.getType())) {
             builder.medOrganisasjonstype(OrganisasjonType.ORGLEDD);
         }
         return builder.build();
@@ -138,8 +137,8 @@ public class VirksomhetTjeneste {
         return response;
     }
 
-    private JuridiskEnhetVirksomheter hentResponseJuridisk(String orgnr) {
-        var response = Optional.ofNullable(cacheJuridiskEREG.get(orgnr)).orElseGet(() -> eregRestKlient.hentOrganisasjonHistorikk(orgnr));
+    private UtvidetOrganisasjonEReg hentResponseJuridisk(String orgnr) {
+        var response = Optional.ofNullable(cacheJuridiskEREG.get(orgnr)).orElseGet(() -> eregRestKlient.hentUtvidetOrganisasjon(orgnr));
         cacheJuridiskEREG.put(orgnr, response);
         return response;
     }
