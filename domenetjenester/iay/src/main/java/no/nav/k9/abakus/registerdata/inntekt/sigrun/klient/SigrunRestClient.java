@@ -30,7 +30,11 @@ public class SigrunRestClient {
     private static final Logger LOG = LoggerFactory.getLogger(SigrunRestClient.class);
 
     private SystemUserOidcRestClient oidcRestClient;
-    private final String url;
+    private String url;
+
+    SigrunRestClient() {
+        //for CDI proxy
+    }
 
     @Inject
     public SigrunRestClient(SystemUserOidcRestClient oidcRestClient,

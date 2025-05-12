@@ -51,6 +51,10 @@ public class InntektTjeneste {
     private String url;
 
 
+    InntektTjeneste() {
+        // For CDI proxy
+    }
+
     @Inject
     public InntektTjeneste(SystemUserOidcRestClient oidcRestClient,
                           @KonfigVerdi(value = "hentinntektlistebolk.url", defaultVerdi = "api://prod-fss.team-inntekt.inntektskomponenten/.default") String url) {
@@ -59,18 +63,6 @@ public class InntektTjeneste {
         this.kildeTilFilter = Map.of(InntektskildeType.INNTEKT_OPPTJENING, InntektsFilter.OPPTJENINGSGRUNNLAG, InntektskildeType.INNTEKT_BEREGNING,
             InntektsFilter.BEREGNINGSGRUNNLAG, InntektskildeType.INNTEKT_SAMMENLIGNING, InntektsFilter.SAMMENLIGNINGSGRUNNLAG);
     }
-
-    InntektTjeneste() {
-        // For CDI proxy
-    }
-
-//    public InntektTjeneste(RestClient restClient, AktørTjeneste aktørConsumer) {
-//        this.restClient = restClient;
-//        this.restConfig = RestConfig.forClient(InntektTjeneste.class);
-//        this.aktørConsumer = aktørConsumer;
-//        this.kildeTilFilter = Map.of(InntektskildeType.INNTEKT_OPPTJENING, InntektsFilter.OPPTJENINGSGRUNNLAG, InntektskildeType.INNTEKT_BEREGNING,
-//            InntektsFilter.BEREGNINGSGRUNNLAG, InntektskildeType.INNTEKT_SAMMENLIGNING, InntektsFilter.SAMMENLIGNINGSGRUNNLAG);
-//    }
 
     public InntektsInformasjon finnInntekt(FinnInntektRequest finnInntektRequest, InntektskildeType kilde, YtelseType ytelse) {
         HentInntektListeBolkResponse response = finnInntektRaw(finnInntektRequest, kilde, ytelse);

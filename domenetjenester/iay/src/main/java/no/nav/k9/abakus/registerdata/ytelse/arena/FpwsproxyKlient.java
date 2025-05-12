@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 
+import jakarta.inject.Inject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,6 +33,7 @@ public class FpwsproxyKlient {
         //for CDI proxy
     }
 
+    @Inject
     public FpwsproxyKlient(SystemUserOidcRestClient oidcRestClient,
                            @KonfigVerdi(value = "fpwsproxy.override.url", defaultVerdi = "http://fpwsproxy.teamforeldrepenger/fpwsproxy") String baseUrl) {
         this.oidcRestClient = oidcRestClient;

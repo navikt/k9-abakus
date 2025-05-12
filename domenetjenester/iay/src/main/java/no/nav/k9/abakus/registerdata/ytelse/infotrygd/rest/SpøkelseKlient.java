@@ -27,7 +27,6 @@ public class SpøkelseKlient {
     private SystemUserOidcRestClient oidcRestClient;
     private String url;
 
-
     @Inject
     public SpøkelseKlient(SystemUserOidcRestClient oidcRestClient,
                                          @KonfigVerdi(value = "spokelse.grunnlag.url", defaultVerdi = "api://prod-gcp.tbd.spokelse/.default") String url) {
