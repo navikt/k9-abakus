@@ -9,6 +9,7 @@ import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriBuilderException;
 import no.nav.k9.felles.integrasjon.rest.OidcRestClient;
@@ -25,11 +26,16 @@ import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 @ScopedRestIntegration(scopeKey = "aareg.scopes", defaultScope = "api://prod-fss.arbeidsforhold.aareg-services-nais/.default")
 public class AaregRestKlient {
 
-    private final OidcRestClient oidcRestClient;
-    private final String url;
+    private OidcRestClient oidcRestClient;
+    private String url;
 
+    AaregRestKlient() {
+        //for CDI proxy
+    }
+
+    @Inject
     public AaregRestKlient(OidcRestClient oidcRestClient,
-                                         @KonfigVerdi(value = "aareg.rs.url", defaultVerdi = "http://aareg-services-nais.arbeidsforhold/api/v1/arbeidstaker") String url) {
+                           @KonfigVerdi(value = "aareg.rs.url", defaultVerdi = "http://aareg-services-nais.arbeidsforhold/api/v1/arbeidstaker") String url) {
         this.oidcRestClient = oidcRestClient;
         this.url = url;
     }
@@ -44,9 +50,7 @@ public class AaregRestKlient {
                 .queryParam("historikk", "true")
                 .queryParam("sporingsinformasjon", "false")
                 .build();
-            Set<Header> headers = Set.of(
-                new BasicHeader("Nav-Personident", ident)
-            );
+            Set<Header> headers = Set.of(new BasicHeader("Nav-Personident", ident));
             ArbeidsforholdRS[] result = oidcRestClient.get(target, headers, ArbeidsforholdRS[].class);
             return Arrays.asList(result);
         } catch (UriBuilderException | IllegalArgumentException e) {
@@ -65,9 +69,7 @@ public class AaregRestKlient {
                 .queryParam("historikk", "true")
                 .queryParam("sporingsinformasjon", "false")
                 .build();
-            Set<Header> headers = Set.of(
-                new BasicHeader("Nav-Personident", ident)
-            );
+            Set<Header> headers = Set.of(new BasicHeader("Nav-Personident", ident));
             ArbeidsforholdRS[] result = oidcRestClient.get(target, headers, ArbeidsforholdRS[].class);
             return Arrays.asList(result);
         } catch (UriBuilderException | IllegalArgumentException e) {
