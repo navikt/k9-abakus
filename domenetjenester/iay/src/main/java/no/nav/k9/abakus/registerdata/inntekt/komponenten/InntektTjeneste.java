@@ -17,7 +17,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.k9.abakus.aktor.AktørTjeneste;
 import no.nav.k9.felles.exception.IntegrasjonException;
 import no.nav.k9.felles.exception.TekniskException;
 import no.nav.k9.felles.integrasjon.rest.ScopedRestIntegration;
@@ -45,7 +44,6 @@ public class InntektTjeneste {
 
     private static final Logger LOG = LoggerFactory.getLogger(InntektTjeneste.class);
 
-    private AktørTjeneste aktørConsumer;
     private Map<InntektskildeType, InntektsFilter> kildeTilFilter;
 
 
@@ -55,11 +53,9 @@ public class InntektTjeneste {
 
     @Inject
     public InntektTjeneste(SystemUserOidcRestClient oidcRestClient,
-                          @KonfigVerdi(value = "hentinntektlistebolk.url", defaultVerdi = "api://prod-fss.team-inntekt.inntektskomponenten/.default") String url,
-                          AktørTjeneste aktørConsumer) {
+                          @KonfigVerdi(value = "hentinntektlistebolk.url", defaultVerdi = "api://prod-fss.team-inntekt.inntektskomponenten/.default") String url) {
         this.oidcRestClient = oidcRestClient;
         this.url = url;
-        this.aktørConsumer = aktørConsumer;
         this.kildeTilFilter = Map.of(InntektskildeType.INNTEKT_OPPTJENING, InntektsFilter.OPPTJENINGSGRUNNLAG, InntektskildeType.INNTEKT_BEREGNING,
             InntektsFilter.BEREGNINGSGRUNNLAG, InntektskildeType.INNTEKT_SAMMENLIGNING, InntektsFilter.SAMMENLIGNINGSGRUNNLAG);
     }

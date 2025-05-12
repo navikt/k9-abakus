@@ -10,6 +10,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
@@ -17,10 +18,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
@@ -39,6 +39,7 @@ import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsInntektMaaned;
 import no.nav.tjenester.aordningen.inntektsinformasjon.Sikkerhetsavvik;
 import no.nav.tjenester.aordningen.inntektsinformasjon.inntekt.Inntekt;
 import no.nav.tjenester.aordningen.inntektsinformasjon.inntekt.InntektType;
+import no.nav.tjenester.aordningen.inntektsinformasjon.request.HentInntektListeBolkRequest;
 import no.nav.tjenester.aordningen.inntektsinformasjon.response.HentInntektListeBolkResponse;
 
 @ExtendWith(MockitoExtension.class)
@@ -50,22 +51,14 @@ class InntektTjenesteImplTest {
     private static final String SIKKERHETSAVVIK1 = "Mangler rettighet 1";
     private static final String SIKKERHETSAVVIK2 = "Mangler rettighet 2";
 
-    @Mock
-    private SystemUserOidcRestClient restKlient;
-    private InntektTjeneste inntektTjeneste;
+    private SystemUserOidcRestClient restKlient = Mockito.mock(SystemUserOidcRestClient.class);
+    private InntektTjeneste inntektTjeneste = new InntektTjeneste(restKlient, "dummyUrl");
 
-    @BeforeEach
-    public void before() {
-        inntektTjeneste = new InntektTjeneste(restKlient, null, null);
-    }
 
-    @SuppressWarnings("resource")
     @Test
-    void skal_kalle_consumer_og_oversette_response() throws Exception {
+    void skal_kalle_consumer_og_oversette_response() {
         // Arrange
         HentInntektListeBolkResponse response = opprettResponse();
-
-        when(restKlient.post(any(), any(), eq(HentInntektListeBolkResponse.class))).thenReturn(response);
 
         Aktoer arbeidsplassen = new Aktoer();
         arbeidsplassen.setAktoerType(AktoerType.ORGANISASJON);
@@ -108,6 +101,8 @@ class InntektTjenesteImplTest {
 
         FinnInntektRequest finnInntektRequest = FinnInntektRequest.builder(GJELDENDE_MÅNED.minusMonths(3), GJELDENDE_MÅNED).medFnr(FNR).build();
 
+        when(restKlient.post(any(URI.class), any(HentInntektListeBolkRequest.class), eq(HentInntektListeBolkResponse.class))).thenReturn(response);
+
         // Act
         InntektsInformasjon inntektsInformasjon = inntektTjeneste.finnInntekt(finnInntektRequest, InntektskildeType.INNTEKT_OPPTJENING,
             YtelseType.OMSORGSPENGER);
@@ -126,13 +121,11 @@ class InntektTjenesteImplTest {
         assertThat(månedsinntekter.get(2).isYtelse()).isFalse();
     }
 
-    @SuppressWarnings("resource")
     @Test
-    void skal_avkorte_periode_gi_tom_response() throws Exception {
+    void skal_avkorte_periode_gi_tom_response() {
         // Arrange
         HentInntektListeBolkResponse response = opprettResponse();
 
-        when(restKlient.get(any(), any(), eq(HentInntektListeBolkResponse.class))).thenReturn(response);
 
         Aktoer arbeidsplassen = new Aktoer();
         arbeidsplassen.setAktoerType(AktoerType.ORGANISASJON);
@@ -141,12 +134,14 @@ class InntektTjenesteImplTest {
 
         FinnInntektRequest finnInntektRequest = FinnInntektRequest.builder(tidligst.minusMonths(3), tidligst.plusMonths(3)).medFnr(FNR).build();
 
+
+        when(restKlient.post(any(URI.class), any(HentInntektListeBolkRequest.class), eq(HentInntektListeBolkResponse.class))).thenReturn(response);
         // Act
         final InntektsInformasjon inntektsInformasjon = inntektTjeneste.finnInntekt(finnInntektRequest, InntektskildeType.INNTEKT_OPPTJENING,
             YtelseType.OMSORGSPENGER);
 
         // Assert
-        verify(restKlient, times(1)).get(any(), any(), eq(HentInntektListeBolkResponse.class));
+        verify(restKlient, times(1)).post(any(URI.class), any(HentInntektListeBolkRequest.class), eq(HentInntektListeBolkResponse.class));
 
         List<Månedsinntekt> månedsinntekter = inntektsInformasjon.getMånedsinntekter();
         assertThat(månedsinntekter.size()).isEqualTo(0);
@@ -162,7 +157,7 @@ class InntektTjenesteImplTest {
         Sikkerhetsavvik sikkerhetsavvik2 = new Sikkerhetsavvik();
         sikkerhetsavvik2.setTekst(SIKKERHETSAVVIK2);
         response.getSikkerhetsavvikListe().add(sikkerhetsavvik2);
-        when(restKlient.get(any(), any(), eq(HentInntektListeBolkResponse.class))).thenReturn(response);
+        when(restKlient.post(any(URI.class), any(HentInntektListeBolkRequest.class), eq(HentInntektListeBolkResponse.class))).thenReturn(response);
 
         FinnInntektRequest finnInntektRequest = FinnInntektRequest.builder(GJELDENDE_MÅNED.minusMonths(3), GJELDENDE_MÅNED).medFnr(FNR).build();
 
