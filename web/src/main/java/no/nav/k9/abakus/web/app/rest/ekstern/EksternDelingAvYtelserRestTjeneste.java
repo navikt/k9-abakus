@@ -123,7 +123,7 @@ public class EksternDelingAvYtelserRestTjeneste {
     }
 
 
-    public List<Ytelse> hentVedtakYtelseInfotrygdK9Intern(VedtakForPeriodeRequest request) {
+    private List<Ytelse> hentVedtakYtelseInfotrygdK9Intern(VedtakForPeriodeRequest request) {
         if (request.getYtelser().isEmpty() || K9_INFOTRYGD_YTELSER.stream().noneMatch(y -> request.getYtelser().contains(y))) {
             return List.of();
         }
@@ -230,11 +230,11 @@ public class EksternDelingAvYtelserRestTjeneste {
         }
     }
 
-    public static LocalDate fomEllerMin(LocalDate fom) {
+    private static LocalDate fomEllerMin(LocalDate fom) {
         return fom != null ? fom : Tid.TIDENES_BEGYNNELSE;
     }
 
-    public static LocalDate tomEllerMax(LocalDate tom) {
+    private static LocalDate tomEllerMax(LocalDate tom) {
         return tom != null ? tom : Tid.TIDENES_ENDE;
     }
 
