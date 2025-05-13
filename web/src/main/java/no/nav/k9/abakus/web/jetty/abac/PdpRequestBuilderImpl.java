@@ -1,9 +1,6 @@
-package no.nav.k9.abakus.felles.sikkerhet;
+package no.nav.k9.abakus.web.jetty.abac;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import no.nav.abakus.iaygrunnlag.AktørIdPersonident;
 

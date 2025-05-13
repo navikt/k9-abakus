@@ -1,4 +1,4 @@
-package no.nav.k9.abakus.felles.sikkerhet;
+package no.nav.k9.abakus.web.jetty.abac;
 
 enum k9DataKeys  {
 
