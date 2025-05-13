@@ -237,10 +237,7 @@ public class JettyServer {
     }
 
     protected Resource createResourceCollection(Server server) {
-        //Resource resourceSwaggerUi = ResourceFactory.of(server).newClassLoaderResource("META-INF/resources/webjars/");
-        Resource resourcesWeb = ResourceFactory.of(server).newClassLoaderResource("web");
-        //return ResourceFactory.combine(resourceSwaggerUi, resourcesWeb);
-        return resourcesWeb;
+        return ResourceFactory.of(server).newClassLoaderResource("META-INF");
     }
 
     /**

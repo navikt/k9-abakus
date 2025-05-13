@@ -27,10 +27,14 @@ public class AktørTjeneste {
     private static final int DEFAULT_CACHE_SIZE = 1000;
     private static final long DEFAULT_CACHE_TIMEOUT = TimeUnit.MILLISECONDS.convert(8, TimeUnit.HOURS);
 
-    private final LRUCache<AktørId, PersonIdent> cacheAktørIdTilIdent;
-    private final LRUCache<PersonIdent, AktørId> cacheIdentTilAktørId;
+    private LRUCache<AktørId, PersonIdent> cacheAktørIdTilIdent;
+    private LRUCache<PersonIdent, AktørId> cacheIdentTilAktørId;
 
     private PdlKlient pdlKlient;
+
+    AktørTjeneste() {
+        //for CDI proxy
+    }
 
     @Inject
     public AktørTjeneste(PdlKlient pdlKlient) {
