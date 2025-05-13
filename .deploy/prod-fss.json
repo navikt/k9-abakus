@@ -61,7 +61,7 @@
     "DEFAULT_DS_URL":"jdbc:postgresql://a01dbvl034.adeo.no:5432/k9-abakus",
     "FPWSPROXY_OVERRIDE_URL":"http://fpwsproxy.teamforeldrepenger/fpwsproxy",
     "FPWSPROXY_SCOPES":"api://prod-fss.teamforeldrepenger.fpwsproxy/.default",
-
+    "CLIENT_SCOPE": "api://prod-fss.k9saksbehandling.k9-abakus/.default",
 
     "SERVER_PORT":"8080",
     "CONTEXT_PATH":"/k9/abakus",
