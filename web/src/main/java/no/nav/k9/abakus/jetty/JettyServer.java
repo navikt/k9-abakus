@@ -240,7 +240,7 @@ public class JettyServer {
 
     protected Resource createResourceCollection(Server server) {
         return ResourceFactory.combine(
-            //ResourceFactory.of(server).newClassLoaderResource("META-INF/resources/webjars/"),
+            ResourceFactory.of(server).newClassLoaderResource("META-INF/resources/webjars/"),
             ResourceFactory.of(server).newClassLoaderResource("web"));
     }
 
