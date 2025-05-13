@@ -34,12 +34,12 @@ public class ApplicationConfig extends ResourceConfig {
 
         oas.info(info)
             .addServersItem(new Server()
-                .url("/k9/abakuss"));
+                .url("/k9/abakus"));
         SwaggerConfiguration oasConfig = new SwaggerConfiguration()
             .openAPI(oas)
             .prettyPrint(true)
             .scannerClass("io.swagger.v3.jaxrs2.integration.JaxrsAnnotationScanner")
-            .resourcePackages(Stream.of("no.nav.k9.", "no.nav.k9.sak", "no.nav.k9", "no.nav.vedtak")
+            .resourcePackages(Stream.of("no.nav.k9.", "no.nav.vedtak")
                 .collect(Collectors.toSet()));
 
         try {
