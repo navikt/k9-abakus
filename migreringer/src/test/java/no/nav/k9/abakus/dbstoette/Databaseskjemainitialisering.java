@@ -20,7 +20,7 @@ public final class Databaseskjemainitialisering {
     private static final AtomicBoolean GUARD_UNIT_TEST_SKJEMAER = new AtomicBoolean();
 
     private static final String USER = "k9_abakus_unit";
-    private static final String DB_SCRIPT_LOCATION = "/db/migration/";
+    private static final String DB_SCRIPT_LOCATION = "/db/postgres/";
 
     private static final DataSource DS = settJdniOppslag(USER);
 
