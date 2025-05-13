@@ -7,7 +7,7 @@ public enum InntektsFilter {
     OPPTJENINGSGRUNNLAG("PensjonsgivendeA-Inntekt", InntektsFormål.FORMAAL_PGI),
     BEREGNINGSGRUNNLAG("8-28", null),
     SAMMENLIGNINGSGRUNNLAG("8-30", null),
-    UNGDOMSYTELSEKONTROLLGRUNNLAG("Ung", InntektsFormål.FORMAAL_UNGDOMSYTELSEN);
+    UNGDOMSYTELSEGRUNNLAG("Ung", InntektsFormål.FORMAAL_UNGDOMSYTELSEN);
 
     private String kode;
     private InntektsFormål formål;

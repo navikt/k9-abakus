@@ -66,7 +66,7 @@ public class InntektTjeneste {
         this.aktørConsumer = aktørConsumer;
         this.kildeTilFilter = Map.of(InntektskildeType.INNTEKT_OPPTJENING, InntektsFilter.OPPTJENINGSGRUNNLAG, InntektskildeType.INNTEKT_BEREGNING,
             InntektsFilter.BEREGNINGSGRUNNLAG, InntektskildeType.INNTEKT_SAMMENLIGNING, InntektsFilter.SAMMENLIGNINGSGRUNNLAG,
-            InntektskildeType.INNTEKT_KONTROLL_UNGDOMSYTELSEN, InntektsFilter.UNGDOMSYTELSEKONTROLLGRUNNLAG);
+            InntektskildeType.INNTEKT_UNGDOMSYTELSEN, InntektsFilter.UNGDOMSYTELSEGRUNNLAG);
     }
 
     public InntektsInformasjon finnInntekt(FinnInntektRequest finnInntektRequest, InntektskildeType kilde, YtelseType ytelse) {
