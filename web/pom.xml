@@ -47,7 +47,10 @@
             <groupId>no.nav.k9.felles.sikkerhet</groupId>
             <artifactId>k9-felles-sikkerhet</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>no.nav.k9.felles.oidc-token</groupId>
+            <artifactId>k9-sikkerhet-azure-cc</artifactId>
+        </dependency>
 
         <!-- NAV -->
 
