@@ -42,6 +42,40 @@
     }
   ],
   "env": {
-    "OTEL_RESOURCE_ATTRIBUTES": "service.name=k9-abakus,service.namespace=k9saksbehandling,deployment.environment=p,nais.backend=elastic-apm;grafana-lgtm"
+    "OTEL_RESOURCE_ATTRIBUTES": "service.name=k9-abakus,service.namespace=k9saksbehandling,deployment.environment=p,nais.backend=elastic-apm;grafana-lgtm",
+    "OIDC_STS_WELL_KNOWN_URL":"https://security-token-service.nais.adeo.no/.well-known/openid-configuration",
+    "HENTINNTEKTLISTEBOLK_URL":"https://app.adeo.no/inntektskomponenten-ws/rs/api/v1/hentinntektlistebolk",
+    "HENTINNTEKTLISTEBOLK_SCOPES":"api://prod-fss.team-inntekt.inntektskomponenten/.default",
+    "AAREG_RS_URL":"http://aareg-services-nais.arbeidsforhold/api/v1/arbeidstaker",
+    "AAREG_SCOPES":"api://prod-fss.arbeidsforhold.aareg-services-nais/.default",
+    "SIGRUNPGI_RS_URL":"http://sigrun.team-inntekt/api/v1/pensjonsgivendeinntektforfolketrygden",
+    "SIGRUNPGI_SCOPES":"api://prod-fss.team-inntekt.sigrun/.default",
+    "FPABAKUS_IT_PS_SCOPES":"api://prod-fss.k9saksbehandling.k9-infotrygd-grunnlag-paaroerende-sykdom/.default",
+    "FPABAKUS_IT_SP_SCOPES":"api://prod-fss.teamforeldrepenger.fp-infotrygd-sykepenger/.default",
+    "K9_SAK_SCOPES":"api://prod-fss.k9saksbehandling.k9-sak/.default",
+    "SPOKELSE_GRUNNLAG_URL":"https://spokelse.intern.nav.no/grunnlag",
+    "SPOKELSE_GRUNNLAG_SCOPES":"api://prod-gcp.tbd.spokelse/.default",
+    "ORGANISASJON_RS_URL":"https://ereg-services.intern.nav.no/api/v2/organisasjon",
+    "PDL_SCOPES":"api://prod-fss.pdl.pdl-api/.default",
+    "DEFAULT_DS_USERNAME":"k9-abakus",
+    "DEFAULT_DS_URL":"jdbc:postgresql://a01dbvl034.adeo.no:5432/k9-abakus",
+    "FPWSPROXY_OVERRIDE_URL":"http://fpwsproxy.teamforeldrepenger/fpwsproxy",
+    "FPWSPROXY_SCOPES":"api://prod-fss.teamforeldrepenger.fpwsproxy/.default",
+
+
+    "SERVER_PORT":"8080",
+    "CONTEXT_PATH":"/k9/abakus",
+    "APPLICATION_NAME":"k9-abakus",
+    "AZURE_HTTP_PROXY":"http://webproxy.nais:8088",
+    "AUDITLOGGER_ENABLED":"true",
+    "AUDITLOGGER_VENDOR":"k9",
+    "AUDITLOGGER_PRODUCT":"k9-abakus",
+    "ABAC_PDP_ENDPOINT_URL":"http://abac-k9.k9saksbehandling/application/authorize",
+    "ABAC_ATTRIBUTT_DRIFT":"no.nav.abac.attributter.k9.drift",
+    "KAFKA_FATTEVEDTAK_TOPIC":"teamforeldrepenger.familie-vedtakfattet-v1",
+    "FPABAKUS_IT_PS_GRUNNLAG_URL":"http://k9-infotrygd-grunnlag-paaroerende-sykdom/paaroerendeSykdom/grunnlag",
+    "FPABAKUS_IT_SP_GRUNNLAG_URL":"http://fp-infotrygd-sykepenger.teamforeldrepenger/grunnlag",
+    "PDL_BASE_URL":"http://pdl-api.pdl/graphql",
+    "PDL_TEMA":"OMS"
   }
 }
