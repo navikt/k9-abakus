@@ -2,19 +2,18 @@ package no.nav.k9.abakus.vedtak.kafka;
 
 import java.util.List;
 
-import no.nav.k9.abakus.felles.kafka.KafkaConsumerManager;
-import no.nav.k9.abakus.felles.server.Controllable;
-import no.nav.k9.abakus.felles.server.LiveAndReadinessAware;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import no.nav.k9.abakus.felles.kafka.KafkaConsumerManager;
+import no.nav.k9.abakus.felles.server.LiveAndReadinessAware;
+import no.nav.k9.felles.apptjeneste.AppServiceHandler;
 
 
 @ApplicationScoped
-public class VedtakConsumer implements LiveAndReadinessAware, Controllable {
+public class VedtakConsumer implements LiveAndReadinessAware, AppServiceHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(VedtakConsumer.class);
 

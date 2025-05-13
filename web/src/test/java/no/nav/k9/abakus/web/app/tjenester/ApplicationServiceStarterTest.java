@@ -2,14 +2,13 @@ package no.nav.k9.abakus.web.app.tjenester;
 
 import static org.mockito.Mockito.verify;
 
-import no.nav.k9.abakus.web.app.tjenester.ApplicationServiceStarter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import no.nav.k9.abakus.felles.server.Controllable;
+import no.nav.k9.felles.apptjeneste.AppServiceHandler;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -18,7 +17,7 @@ class ApplicationServiceStarterTest {
     private ApplicationServiceStarter serviceStarter;
 
     @Mock
-    private Controllable service;
+    private AppServiceHandler service;
 
     @BeforeEach
     public void setup() {

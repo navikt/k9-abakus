@@ -7,17 +7,15 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.inject.Any;
-import jakarta.enterprise.inject.Instance;
-import jakarta.inject.Inject;
-
-import no.nav.k9.abakus.felles.server.Controllable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import io.prometheus.client.hotspot.DefaultExports;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Any;
+import jakarta.enterprise.inject.Instance;
+import jakarta.inject.Inject;
+import no.nav.k9.felles.apptjeneste.AppServiceHandler;
 
 /**
  * Initialiserer applikasjontjenester som implementer AppServiceHandler
@@ -26,22 +24,22 @@ import io.prometheus.client.hotspot.DefaultExports;
 public class ApplicationServiceStarter {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ApplicationServiceStarter.class);
-    private Set<Controllable> services;
+    private Set<AppServiceHandler> services;
 
     ApplicationServiceStarter() {
         // CDI
     }
 
     @Inject
-    public ApplicationServiceStarter(@Any Instance<Controllable> services) {
+    public ApplicationServiceStarter(@Any Instance<AppServiceHandler> services) {
         this(services.stream().collect(Collectors.toSet()));
     }
 
-    ApplicationServiceStarter(Controllable service) {
+    ApplicationServiceStarter(AppServiceHandler service) {
         this(Set.of(service));
     }
 
-    ApplicationServiceStarter(Set<Controllable> services) {
+    ApplicationServiceStarter(Set<AppServiceHandler> services) {
         this.services = services;
     }
 
