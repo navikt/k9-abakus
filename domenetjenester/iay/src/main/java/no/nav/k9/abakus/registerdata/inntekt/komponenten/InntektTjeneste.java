@@ -36,7 +36,7 @@ import no.nav.vedtak.felles.integrasjon.rest.RestRequest;
 import no.nav.vedtak.felles.integrasjon.rest.TokenFlow;
 
 @ApplicationScoped
-@RestClientConfig(tokenConfig = TokenFlow.AZUREAD_CC, endpointProperty = "hentinntektlistebolk.url", endpointDefault = "https://app.adeo.no/inntektskomponenten-ws/rs/api/v1/hentinntektlistebolk", scopesProperty = "hentinntektlistebolk.scopes", scopesDefault = "api://prod-fss.team-inntekt.inntektskomponenten/.default")
+@RestClientConfig(tokenConfig = TokenFlow.AZUREAD_CC, endpointProperty = "hentinntektlistebolk.url", endpointDefault = "http://ikomp.team-inntekt/rs/api/v1/hentinntektlistebolk", scopesProperty = "hentinntektlistebolk.scopes", scopesDefault = "api://prod-fss.team-inntekt.ikomp/.default")
 public class InntektTjeneste {
 
     // Dato for eldste request til inntk - det er av og til noen ES saker som spør lenger tilbake i tid
@@ -65,7 +65,8 @@ public class InntektTjeneste {
         this.restConfig = RestConfig.forClient(InntektTjeneste.class);
         this.aktørConsumer = aktørConsumer;
         this.kildeTilFilter = Map.of(InntektskildeType.INNTEKT_OPPTJENING, InntektsFilter.OPPTJENINGSGRUNNLAG, InntektskildeType.INNTEKT_BEREGNING,
-            InntektsFilter.BEREGNINGSGRUNNLAG, InntektskildeType.INNTEKT_SAMMENLIGNING, InntektsFilter.SAMMENLIGNINGSGRUNNLAG);
+            InntektsFilter.BEREGNINGSGRUNNLAG, InntektskildeType.INNTEKT_SAMMENLIGNING, InntektsFilter.SAMMENLIGNINGSGRUNNLAG,
+            InntektskildeType.INNTEKT_KONTROLL_UNGDOMSYTELSEN, InntektsFilter.UNGDOMSYTELSEKONTROLLGRUNNLAG);
     }
 
     public InntektsInformasjon finnInntekt(FinnInntektRequest finnInntektRequest, InntektskildeType kilde, YtelseType ytelse) {
