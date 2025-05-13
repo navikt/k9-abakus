@@ -34,7 +34,7 @@ import no.nav.tjenester.aordningen.inntektsinformasjon.tilleggsinformasjondetalj
 import no.nav.tjenester.aordningen.inntektsinformasjon.tilleggsinformasjondetaljer.TilleggsinformasjonDetaljerType;
 
 @ApplicationScoped
-@ScopedRestIntegration(scopeKey = "hentinntektlistebolk.scopes", defaultScope = "api://prod-fss.team-inntekt.inntektskomponenten/.default")
+@ScopedRestIntegration(scopeKey = "hentinntektlistebolk.scopes", defaultScope = "api://prod-fss.team-inntekt.ikomp/.default")
 public class InntektTjeneste {
 
     // Dato for eldste request til inntk - det er av og til noen ES saker som spør lenger tilbake i tid
@@ -57,7 +57,7 @@ public class InntektTjeneste {
 
     @Inject
     public InntektTjeneste(SystemUserOidcRestClient oidcRestClient,
-                          @KonfigVerdi(value = "hentinntektlistebolk.url", defaultVerdi = "api://prod-fss.team-inntekt.inntektskomponenten/.default") String url) {
+                          @KonfigVerdi(value = "hentinntektlistebolk.url", defaultVerdi = "http://ikomp.team-inntekt/rs/api/v1/hentinntektlistebolk") String url) {
         this.oidcRestClient = oidcRestClient;
         this.url = url;
         this.kildeTilFilter = Map.of(InntektskildeType.INNTEKT_OPPTJENING, InntektsFilter.OPPTJENINGSGRUNNLAG, InntektskildeType.INNTEKT_BEREGNING,
