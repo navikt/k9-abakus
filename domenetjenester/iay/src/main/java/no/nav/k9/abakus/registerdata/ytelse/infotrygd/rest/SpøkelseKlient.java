@@ -19,7 +19,7 @@ import no.nav.k9.felles.integrasjon.rest.SystemUserOidcRestClient;
 import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 @Dependent
-@ScopedRestIntegration(scopeKey = "spokelse.grunnlag.scopes", defaultScope = "api://prod-gcp.tbd.spokelse/.default")
+@ScopedRestIntegration(scopeKey = "spokelse.grunnlag.scope", defaultScope = "api://prod-gcp.tbd.spokelse/.default")
 public class SpøkelseKlient {
 
     private static final Logger LOG = LoggerFactory.getLogger(InfotrygdSPGrunnlagRestKlient.class);

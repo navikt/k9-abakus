@@ -21,7 +21,7 @@ import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 @PS
 @Dependent
-@ScopedRestIntegration(scopeKey = "fpabakus.it.ps.scopes", defaultScope = "api://prod-fss.k9saksbehandling.k9-infotrygd-grunnlag-paaroerende-sykdom/.default")
+@ScopedRestIntegration(scopeKey = "fpabakus.it.ps.scope", defaultScope = "api://prod-fss.k9saksbehandling.k9-infotrygd-grunnlag-paaroerende-sykdom/.default")
 public class InfotrygdPSGrunnlagRestKlient implements InfotrygdGrunnlag {
 
     private static final Logger LOG = LoggerFactory.getLogger(InfotrygdPSGrunnlagRestKlient.class);

@@ -23,7 +23,7 @@ import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
  */
 
 @ApplicationScoped
-@ScopedRestIntegration(scopeKey = "aareg.scopes", defaultScope = "api://prod-fss.arbeidsforhold.aareg-services-nais/.default")
+@ScopedRestIntegration(scopeKey = "aareg.scope", defaultScope = "api://prod-fss.arbeidsforhold.aareg-services-nais/.default")
 public class AaregRestKlient {
 
     private OidcRestClient oidcRestClient;

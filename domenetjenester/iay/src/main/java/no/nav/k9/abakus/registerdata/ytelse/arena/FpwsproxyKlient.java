@@ -21,7 +21,7 @@ import no.nav.k9.felles.integrasjon.rest.SystemUserOidcRestClient;
 import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 @ApplicationScoped
-@ScopedRestIntegration(scopeKey = "fpwsproxy.scopes", defaultScope = "api://prod-fss.teamforeldrepenger.fpwsproxy/.default")
+@ScopedRestIntegration(scopeKey = "fpwsproxy.scope", defaultScope = "api://prod-fss.teamforeldrepenger.fpwsproxy/.default")
 public class FpwsproxyKlient {
 
     private static final Logger LOG = LoggerFactory.getLogger(FpwsproxyKlient.class);

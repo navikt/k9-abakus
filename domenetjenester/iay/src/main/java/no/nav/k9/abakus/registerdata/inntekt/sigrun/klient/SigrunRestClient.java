@@ -19,7 +19,7 @@ import no.nav.k9.felles.integrasjon.rest.SystemUserOidcRestClient;
 import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 @ApplicationScoped
-@ScopedRestIntegration(scopeKey = "sigrunpgi.scopes", defaultScope = "api://prod-fss.team-inntekt.sigrun/.default/.default")
+@ScopedRestIntegration(scopeKey = "sigrunpgi.scope", defaultScope = "api://prod-fss.team-inntekt.sigrun/.default/.default")
 public class SigrunRestClient {
 
     private static final String INNTEKTSAAR = "inntektsaar";
