@@ -2,6 +2,7 @@ package no.nav.k9.abakus.registerdata.inntekt.komponenten;
 
 import static no.nav.k9.abakus.registerdata.inntekt.komponenten.UtledFormål.utledFormålFraYtelse;
 
+import java.net.URI;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,7 +17,11 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.k9.abakus.aktor.AktørTjeneste;
+import no.nav.k9.felles.exception.IntegrasjonException;
+import no.nav.k9.felles.exception.TekniskException;
+import no.nav.k9.felles.integrasjon.rest.ScopedRestIntegration;
+import no.nav.k9.felles.integrasjon.rest.SystemUserOidcRestClient;
+import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 import no.nav.tjenester.aordningen.inntektsinformasjon.Aktoer;
 import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsInntektIdent;
 import no.nav.tjenester.aordningen.inntektsinformasjon.ArbeidsInntektMaaned;
@@ -27,16 +32,9 @@ import no.nav.tjenester.aordningen.inntektsinformasjon.request.HentInntektListeB
 import no.nav.tjenester.aordningen.inntektsinformasjon.response.HentInntektListeBolkResponse;
 import no.nav.tjenester.aordningen.inntektsinformasjon.tilleggsinformasjondetaljer.Etterbetalingsperiode;
 import no.nav.tjenester.aordningen.inntektsinformasjon.tilleggsinformasjondetaljer.TilleggsinformasjonDetaljerType;
-import no.nav.vedtak.exception.IntegrasjonException;
-import no.nav.vedtak.exception.TekniskException;
-import no.nav.vedtak.felles.integrasjon.rest.RestClient;
-import no.nav.vedtak.felles.integrasjon.rest.RestClientConfig;
-import no.nav.vedtak.felles.integrasjon.rest.RestConfig;
-import no.nav.vedtak.felles.integrasjon.rest.RestRequest;
-import no.nav.vedtak.felles.integrasjon.rest.TokenFlow;
 
 @ApplicationScoped
-@RestClientConfig(tokenConfig = TokenFlow.AZUREAD_CC, endpointProperty = "hentinntektlistebolk.url", endpointDefault = "http://ikomp.team-inntekt/rs/api/v1/hentinntektlistebolk", scopesProperty = "hentinntektlistebolk.scopes", scopesDefault = "api://prod-fss.team-inntekt.ikomp/.default")
+@ScopedRestIntegration(scopeKey = "hentinntektlistebolk.scopes", defaultScope = "api://prod-fss.team-inntekt.ikomp/.default")
 public class InntektTjeneste {
 
     // Dato for eldste request til inntk - det er av og til noen ES saker som spør lenger tilbake i tid
@@ -46,27 +44,24 @@ public class InntektTjeneste {
 
     private static final Logger LOG = LoggerFactory.getLogger(InntektTjeneste.class);
 
-    private RestClient restClient;
-    private RestConfig restConfig;
-    private AktørTjeneste aktørConsumer;
     private Map<InntektskildeType, InntektsFilter> kildeTilFilter;
+
+
+    private SystemUserOidcRestClient oidcRestClient;
+    private String url;
+
 
     InntektTjeneste() {
         // For CDI proxy
     }
 
     @Inject
-    public InntektTjeneste(AktørTjeneste aktørConsumer) {
-        this(RestClient.client(), aktørConsumer);
-    }
-
-    public InntektTjeneste(RestClient restClient, AktørTjeneste aktørConsumer) {
-        this.restClient = restClient;
-        this.restConfig = RestConfig.forClient(InntektTjeneste.class);
-        this.aktørConsumer = aktørConsumer;
+    public InntektTjeneste(SystemUserOidcRestClient oidcRestClient,
+                          @KonfigVerdi(value = "hentinntektlistebolk.url", defaultVerdi = "http://ikomp.team-inntekt/rs/api/v1/hentinntektlistebolk") String url) {
+        this.oidcRestClient = oidcRestClient;
+        this.url = url;
         this.kildeTilFilter = Map.of(InntektskildeType.INNTEKT_OPPTJENING, InntektsFilter.OPPTJENINGSGRUNNLAG, InntektskildeType.INNTEKT_BEREGNING,
-            InntektsFilter.BEREGNINGSGRUNNLAG, InntektskildeType.INNTEKT_SAMMENLIGNING, InntektsFilter.SAMMENLIGNINGSGRUNNLAG,
-            InntektskildeType.INNTEKT_UNGDOMSYTELSEN, InntektsFilter.UNGDOMSYTELSEGRUNNLAG);
+            InntektsFilter.BEREGNINGSGRUNNLAG, InntektskildeType.INNTEKT_SAMMENLIGNING, InntektsFilter.SAMMENLIGNINGSGRUNNLAG);
     }
 
     public InntektsInformasjon finnInntekt(FinnInntektRequest finnInntektRequest, InntektskildeType kilde, YtelseType ytelse) {
@@ -80,7 +75,7 @@ public class InntektTjeneste {
 
         HentInntektListeBolkResponse response;
         try {
-            response = restClient.send(request, HentInntektListeBolkResponse.class);
+            response = oidcRestClient.post(URI.create(url), request, HentInntektListeBolkResponse.class);
         } catch (RuntimeException e) {
             throw new IntegrasjonException("FP-824246",
                 "Feil ved kall til inntektstjenesten. Meld til #team_registre og #produksjonshendelser hvis dette skjer over lengre tidsperiode.", e);
@@ -88,7 +83,7 @@ public class InntektTjeneste {
         return response;
     }
 
-    private RestRequest lagRequest(FinnInntektRequest finnInntektRequest, InntektskildeType kilde, YtelseType ytelse) {
+    private HentInntektListeBolkRequest lagRequest(FinnInntektRequest finnInntektRequest, InntektskildeType kilde, YtelseType ytelse) {
         var request = new HentInntektListeBolkRequest();
 
         if (finnInntektRequest.getFnr() != null) {
@@ -104,7 +99,7 @@ public class InntektTjeneste {
         }
         request.setMaanedFom(finnInntektRequest.getFom().isAfter(INNTK_TIDLIGSTE_DATO) ? finnInntektRequest.getFom() : INNTK_TIDLIGSTE_DATO);
         request.setMaanedTom(finnInntektRequest.getTom().isAfter(INNTK_TIDLIGSTE_DATO) ? finnInntektRequest.getTom() : INNTK_TIDLIGSTE_DATO);
-        return RestRequest.newPOSTJson(request, restConfig.endpoint(), restConfig);
+        return request;
     }
 
 

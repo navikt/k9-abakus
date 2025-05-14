@@ -36,7 +36,7 @@ import no.nav.k9.abakus.felles.jpa.BaseEntitet;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.Saksnummer;
-import no.nav.vedtak.felles.jpa.converters.BooleanToStringConverter;
+import no.nav.k9.felles.jpa.converters.BooleanToStringConverter;
 
 @Entity(name = "VedtakYtelseEntitet")
 @Table(name = "VEDTAK_YTELSE")

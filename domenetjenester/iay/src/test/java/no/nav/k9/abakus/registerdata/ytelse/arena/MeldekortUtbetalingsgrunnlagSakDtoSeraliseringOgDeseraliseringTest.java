@@ -6,6 +6,10 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
+import no.nav.k9.felles.integrasjon.rest.DefaultJsonMapper;
+
 import org.junit.jupiter.api.Test;
 
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.BeløpDto;
@@ -14,7 +18,6 @@ import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.MeldekortUtbetal
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.MeldekortUtbetalingsgrunnlagSakDto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.YtelseStatusDto;
 import no.nav.foreldrepenger.kontrakter.fpwsproxy.arena.respons.YtelseTypeDto;
-import no.nav.vedtak.mapper.json.DefaultJsonMapper;
 
 /**
  * Konsistens test for å verifiser at seralisering og deseralisering av DTO ikke endrer seg og fungere som forventet
@@ -74,9 +77,9 @@ class MeldekortUtbetalingsgrunnlagSakDtoSeraliseringOgDeseraliseringTest {
     }
 
     @Test
-    void konsistenstestForÅSjekkeAtDeseraliseringFungereUavhengigAvSeralisering() {
+    void konsistenstestForÅSjekkeAtDeseraliseringFungereUavhengigAvSeralisering() throws JsonProcessingException {
         var seralisertStreng = hardkodetSeralisertStreng();
-        var testA = DefaultJsonMapper.fromJson(seralisertStreng, MeldekortUtbetalingsgrunnlagSakDto.class);
+        var testA = DefaultJsonMapper.MAPPER.readValue(seralisertStreng, MeldekortUtbetalingsgrunnlagSakDto.class);
         assertThat(testA).isEqualTo(getMeldekortUtbetalingsgrunnlagSakDto());
     }
 

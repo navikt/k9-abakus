@@ -1,9 +1,6 @@
 package no.nav.k9.abakus.registerdata.callback;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,24 +15,20 @@ import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
 import no.nav.k9.abakus.kobling.Kobling;
 import no.nav.k9.abakus.kobling.KoblingTjeneste;
 import no.nav.k9.abakus.kobling.TaskConstants;
-import no.nav.vedtak.exception.TekniskException;
-import no.nav.vedtak.felles.integrasjon.rest.RestClient;
-import no.nav.vedtak.felles.integrasjon.rest.RestConfig;
-import no.nav.vedtak.felles.integrasjon.rest.RestRequest;
-import no.nav.vedtak.felles.integrasjon.rest.TokenFlow;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTask;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskData;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskHandler;
+import no.nav.k9.felles.integrasjon.rest.OidcRestClient;
+import no.nav.k9.felles.integrasjon.rest.ScopedRestIntegration;
+import no.nav.k9.prosesstask.api.ProsessTask;
+import no.nav.k9.prosesstask.api.ProsessTaskData;
+import no.nav.k9.prosesstask.api.ProsessTaskHandler;
 
 @ApplicationScoped
 @ProsessTask("registerdata.callback")
+@ScopedRestIntegration(scopeKey = "k9sak.scopes", defaultScope = "api://prod-fss.k9-sak.k9saksbehandling/.default")
 public class CallbackTask implements ProsessTaskHandler {
 
     public static final String EKSISTERENDE_GRUNNLAG_REF = "grunnlag.ref.old";
 
-    private static final Map<String, RestConfig> CALLBACK_MAP = new LinkedHashMap<>(2);
-
-    private RestClient restClient;
+    private OidcRestClient restClient;
     private KoblingTjeneste koblingTjeneste;
     private InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste;
 
@@ -43,8 +36,8 @@ public class CallbackTask implements ProsessTaskHandler {
     }
 
     @Inject
-    public CallbackTask(KoblingTjeneste koblingTjeneste, InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste) {
-        this.restClient = RestClient.client();
+    public CallbackTask(OidcRestClient restClient, KoblingTjeneste koblingTjeneste, InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste) {
+        this.restClient = restClient;
         this.koblingTjeneste = koblingTjeneste;
         this.inntektArbeidYtelseTjeneste = inntektArbeidYtelseTjeneste;
     }
@@ -53,9 +46,8 @@ public class CallbackTask implements ProsessTaskHandler {
     @Override
     public void doTask(ProsessTaskData data) {
         String callbackUrl = data.getPropertyValue(TaskConstants.CALLBACK_URL);
-        String callbackScope = data.getPropertyValue(TaskConstants.CALLBACK_SCOPE);
         String nyKoblingId = data.getPropertyValue(TaskConstants.NY_KOBLING_ID);
-        Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : data.getBehandlingIdAsLong();
+        Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : Long.valueOf(data.getBehandlingId());
         Kobling kobling = koblingTjeneste.hent(koblingId);
 
         CallbackDto callbackDto = new CallbackDto();
@@ -65,8 +57,7 @@ public class CallbackTask implements ProsessTaskHandler {
         setInformasjonOmEksisterendeGrunnlag(data, callbackDto);
         setInformasjonOmNyttGrunnlag(kobling, data, callbackDto);
 
-        var restConfig = getRestConfigFor(callbackUrl, callbackScope);
-        restClient.sendReturnOptional(RestRequest.newPOSTJson(callbackDto, restConfig.endpoint(), restConfig), String.class);
+        restClient.postReturnsOptional(URI.create(callbackUrl), callbackDto, String.class);
     }
 
     private void setInformasjonOmAvsenderRef(Kobling kobling, CallbackDto callbackDto) {
@@ -96,19 +87,5 @@ public class CallbackTask implements ProsessTaskHandler {
         if (grunnlag.isEmpty()) {
             callbackDto.setOpprettetTidspunkt(data.getSistKjørt());
         }
-    }
-
-    private RestConfig getRestConfigFor(String url, String scope) {
-        var key = url + scope;
-        if (CALLBACK_MAP.get(key) == null) {
-            try {
-                var uri = new URI(url);
-                var restConfig = new RestConfig(TokenFlow.ADAPTIVE, uri, scope, null);
-                CALLBACK_MAP.put(key, restConfig);
-            } catch (URISyntaxException e) {
-                throw new TekniskException("FP-349977", String.format("Ugyldig callback url ved callback etter registerinnhenting: %s", url));
-            }
-        }
-        return CALLBACK_MAP.get(key);
     }
 }

@@ -23,7 +23,7 @@ import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
 import no.nav.k9.abakus.felles.jpa.BaseEntitet;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.typer.Stillingsprosent;
-import no.nav.vedtak.konfig.Tid;
+import no.nav.k9.felles.konfigurasjon.konfig.Tid;
 
 @Table(name = "IAY_AKTIVITETS_AVTALE")
 @Entity(name = "AktivitetsAvtale")

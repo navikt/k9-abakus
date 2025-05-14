@@ -21,27 +21,27 @@
 	<dependencies>
 		<dependency>
 			<!-- Trengs for implementasjon av TaskManager -->
-			<groupId>no.nav.foreldrepenger.felles</groupId>
-			<artifactId>felles-db</artifactId>
+            <groupId>no.nav.k9.felles</groupId>
+            <artifactId>k9-felles-db</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>no.nav.foreldrepenger.felles</groupId>
-			<artifactId>felles-log</artifactId>
+            <groupId>no.nav.k9.felles</groupId>
+            <artifactId>k9-felles-log</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>no.nav.foreldrepenger.felles</groupId>
-			<artifactId>felles-feil</artifactId>
+            <groupId>no.nav.k9.felles</groupId>
+            <artifactId>k9-felles-feil</artifactId>
 		</dependency>
         <dependency>
-            <groupId>no.nav.vedtak.prosesstask</groupId>
-            <artifactId>prosesstask-kontekst</artifactId>
+            <groupId>no.nav.k9.prosesstask</groupId>
+            <artifactId>prosesstask-legacy</artifactId>
         </dependency>
 
 		<!-- Test -->
 		<dependency>
-			<groupId>no.nav.foreldrepenger.felles</groupId>
-			<artifactId>felles-testutilities</artifactId>
+            <groupId>no.nav.k9.felles</groupId>
+			<artifactId>k9-felles-testutilities</artifactId>
 			<scope>test</scope>
 		</dependency>
         <dependency>

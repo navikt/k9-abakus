@@ -13,7 +13,7 @@ import no.nav.abakus.iaygrunnlag.JsonObjectMapper;
 import no.nav.abakus.iaygrunnlag.Periode;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.abakus.iaygrunnlag.request.InnhentRegisterdataRequest;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskData;
+import no.nav.k9.prosesstask.api.ProsessTaskData;
 
 class RegisterdataTaskTest {
 

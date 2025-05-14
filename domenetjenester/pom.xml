@@ -23,8 +23,8 @@
     <dependencies>
         <!-- TEST trenges av testutilities -->
         <dependency>
-            <groupId>no.nav.foreldrepenger.felles</groupId>
-            <artifactId>felles-testutilities</artifactId>
+            <groupId>no.nav.k9.felles</groupId>
+            <artifactId>k9-felles-testutilities</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -49,8 +49,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty.ee10</groupId>
-            <artifactId>jetty-ee10-plus</artifactId>
+            <groupId>org.eclipse.jetty.ee9</groupId>
+            <artifactId>jetty-ee9-plus</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

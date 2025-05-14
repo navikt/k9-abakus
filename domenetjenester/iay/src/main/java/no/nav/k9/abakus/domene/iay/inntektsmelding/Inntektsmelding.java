@@ -36,7 +36,7 @@ import no.nav.k9.abakus.iay.jpa.InntektsmeldingInnsendingsårsakKodeverdiConvert
 import no.nav.k9.abakus.typer.Beløp;
 import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
 import no.nav.k9.abakus.typer.JournalpostId;
-import no.nav.vedtak.felles.jpa.converters.BooleanToStringConverter;
+import no.nav.k9.felles.jpa.converters.BooleanToStringConverter;
 
 @Entity(name = "Inntektsmelding")
 @Table(name = "IAY_INNTEKTSMELDING")

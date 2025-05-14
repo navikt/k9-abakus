@@ -13,8 +13,8 @@ import no.nav.k9.abakus.dbstoette.JpaExtension;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.vedtak.domene.VedtakYtelseRepository;
 import no.nav.k9.abakus.vedtak.extract.v1.ExtractFromYtelseV1;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskData;
-import no.nav.vedtak.felles.prosesstask.api.ProsessTaskDataBuilder;
+import no.nav.k9.prosesstask.api.ProsessTaskData;
+import no.nav.k9.prosesstask.api.ProsessTaskDataBuilder;
 
 class LagreVedtakTaskTest {
 

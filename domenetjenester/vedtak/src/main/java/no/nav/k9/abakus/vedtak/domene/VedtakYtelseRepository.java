@@ -19,7 +19,7 @@ import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.Saksnummer;
-import no.nav.vedtak.felles.jpa.HibernateVerktøy;
+import no.nav.k9.felles.jpa.HibernateVerktøy;
 
 @ApplicationScoped
 public class VedtakYtelseRepository {

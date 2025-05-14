@@ -1,7 +1,7 @@
 package no.nav.k9.abakus.registerdata;
 
-import static no.nav.vedtak.konfig.Tid.TIDENES_BEGYNNELSE;
-import static no.nav.vedtak.konfig.Tid.TIDENES_ENDE;
+import static no.nav.k9.felles.konfigurasjon.konfig.Tid.TIDENES_BEGYNNELSE;
+import static no.nav.k9.felles.konfigurasjon.konfig.Tid.TIDENES_ENDE;
 
 import java.time.LocalDate;
 import java.util.Comparator;

@@ -25,7 +25,7 @@ import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.iay.jpa.LandKodeKodeverdiConverter;
 import no.nav.k9.abakus.iay.jpa.VirksomhetTypeKodeverdiConverter;
 import no.nav.k9.abakus.typer.OrgNummer;
-import no.nav.vedtak.felles.jpa.converters.BooleanToStringConverter;
+import no.nav.k9.felles.jpa.converters.BooleanToStringConverter;
 
 
 @Table(name = "IAY_EGEN_NAERING")
