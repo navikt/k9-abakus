@@ -58,7 +58,7 @@
     "FPABAKUS_IT_PS_SCOPE": "api://dev-fss.k9saksbehandling.k9-infotrygd-grunnlag-paaroerende-sykdom/.default",
     "FPABAKUS_IT_SP_SCOPE": "api://dev-fss.teamforeldrepenger.fp-infotrygd-sykepenger/.default",
     "K9SAK_SCOPE": "api://dev-fss.k9saksbehandling.k9-sak/.default",
-    "UNGSAK_SCOPE":"api://dev-fss.k9saksbehandling.ung-sak/.default",
+    "UNGSAK_SCOPE":"api://dev-gcp.k9saksbehandling.ung-sak/.default",
     "SPOKELSE_GRUNNLAG_URL": "https://spokelse.intern.dev.nav.no/grunnlag",
     "SPOKELSE_GRUNNLAG_SCOPE": "api://dev-gcp.tbd.spokelse/.default",
     "ORGANISASJON_RS_URL": "https://ereg-services.dev.intern.nav.no/api/v2/organisasjon",
