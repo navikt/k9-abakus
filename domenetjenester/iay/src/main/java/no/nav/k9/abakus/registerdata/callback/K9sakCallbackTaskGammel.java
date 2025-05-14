@@ -22,9 +22,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @ApplicationScoped
-@ProsessTask("registerdata.ungsak.callback")
-@ScopedRestIntegration(scopeKey = "ungsak.scope", defaultScope = "api://prod-fss.ung-sak.k9saksbehandling/.default")
-public class UngsakCallbackTask implements ProsessTaskHandler {
+@ProsessTask("registerdata.callback")
+@ScopedRestIntegration(scopeKey = "k9sak.scope", defaultScope = "api://prod-fss.k9-sak.k9saksbehandling/.default")
+public class K9sakCallbackTaskGammel implements ProsessTaskHandler {
 
     public static final String EKSISTERENDE_GRUNNLAG_REF = "grunnlag.ref.old";
 
@@ -32,11 +32,11 @@ public class UngsakCallbackTask implements ProsessTaskHandler {
     private KoblingTjeneste koblingTjeneste;
     private InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste;
 
-    UngsakCallbackTask() {
+    K9sakCallbackTaskGammel() {
     }
 
     @Inject
-    public UngsakCallbackTask(OidcRestClient restClient, KoblingTjeneste koblingTjeneste, InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste) {
+    public K9sakCallbackTaskGammel(OidcRestClient restClient, KoblingTjeneste koblingTjeneste, InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste) {
         this.restClient = restClient;
         this.koblingTjeneste = koblingTjeneste;
         this.inntektArbeidYtelseTjeneste = inntektArbeidYtelseTjeneste;
@@ -46,7 +46,6 @@ public class UngsakCallbackTask implements ProsessTaskHandler {
     @Override
     public void doTask(ProsessTaskData data) {
         String callbackUrl = data.getPropertyValue(TaskConstants.CALLBACK_URL);
-
         String nyKoblingId = data.getPropertyValue(TaskConstants.NY_KOBLING_ID);
         Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : Long.valueOf(data.getBehandlingId());
         Kobling kobling = koblingTjeneste.hent(koblingId);

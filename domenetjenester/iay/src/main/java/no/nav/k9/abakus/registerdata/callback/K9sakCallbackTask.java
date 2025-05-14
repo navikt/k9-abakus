@@ -22,7 +22,7 @@ import no.nav.k9.prosesstask.api.ProsessTaskData;
 import no.nav.k9.prosesstask.api.ProsessTaskHandler;
 
 @ApplicationScoped
-@ProsessTask("registerdata.callback")
+@ProsessTask("registerdata.k9sak.callback")
 @ScopedRestIntegration(scopeKey = "k9sak.scope", defaultScope = "api://prod-fss.k9-sak.k9saksbehandling/.default")
 public class K9sakCallbackTask implements ProsessTaskHandler {
 
