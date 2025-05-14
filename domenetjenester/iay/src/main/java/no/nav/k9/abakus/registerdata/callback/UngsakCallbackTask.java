@@ -23,7 +23,7 @@ import java.util.UUID;
 
 @ApplicationScoped
 @ProsessTask("registerdata.ungsak.callback")
-@ScopedRestIntegration(scopeKey = "ungsak.scope", defaultScope = "api://prod-fss.ung-sak.k9saksbehandling/.default")
+@ScopedRestIntegration(scopeKey = "ungsak.scope", defaultScope = "api://prod-gcp.ung-sak.k9saksbehandling/.default")
 public class UngsakCallbackTask implements ProsessTaskHandler {
 
     public static final String EKSISTERENDE_GRUNNLAG_REF = "grunnlag.ref.old";
