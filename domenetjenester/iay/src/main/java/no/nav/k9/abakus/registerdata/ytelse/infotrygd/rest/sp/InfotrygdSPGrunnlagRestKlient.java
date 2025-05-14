@@ -21,7 +21,7 @@ import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 @SP
 @Dependent
-@ScopedRestIntegration(scopeKey = "fpabakus.it.sp.scopes", defaultScope = "api://prod-fss.teamforeldrepenger.fp-infotrygd-sykepenger/.default")
+@ScopedRestIntegration(scopeKey = "fpabakus.it.sp.scope", defaultScope = "api://prod-fss.teamforeldrepenger.fp-infotrygd-sykepenger/.default")
 public class InfotrygdSPGrunnlagRestKlient implements InfotrygdGrunnlag {
 
     private static final Logger LOG = LoggerFactory.getLogger(InfotrygdSPGrunnlagRestKlient.class);

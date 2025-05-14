@@ -34,7 +34,7 @@ import no.nav.tjenester.aordningen.inntektsinformasjon.tilleggsinformasjondetalj
 import no.nav.tjenester.aordningen.inntektsinformasjon.tilleggsinformasjondetaljer.TilleggsinformasjonDetaljerType;
 
 @ApplicationScoped
-@ScopedRestIntegration(scopeKey = "hentinntektlistebolk.scopes", defaultScope = "api://prod-fss.team-inntekt.ikomp/.default")
+@ScopedRestIntegration(scopeKey = "hentinntektlistebolk.scope", defaultScope = "api://prod-fss.team-inntekt.ikomp/.default")
 public class InntektTjeneste {
 
     // Dato for eldste request til inntk - det er av og til noen ES saker som spør lenger tilbake i tid

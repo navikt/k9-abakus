@@ -23,7 +23,7 @@ import no.nav.k9.prosesstask.api.ProsessTaskHandler;
 
 @ApplicationScoped
 @ProsessTask("registerdata.callback")
-@ScopedRestIntegration(scopeKey = "k9sak.scopes", defaultScope = "api://prod-fss.k9-sak.k9saksbehandling/.default")
+@ScopedRestIntegration(scopeKey = "k9sak.scope", defaultScope = "api://prod-fss.k9-sak.k9saksbehandling/.default")
 public class CallbackTask implements ProsessTaskHandler {
 
     public static final String EKSISTERENDE_GRUNNLAG_REF = "grunnlag.ref.old";
