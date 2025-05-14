@@ -1,6 +1,6 @@
 package no.nav.k9.abakus.registerdata.tjeneste;
 
-import static no.nav.k9.abakus.registerdata.callback.CallbackTask.EKSISTERENDE_GRUNNLAG_REF;
+import static no.nav.k9.abakus.registerdata.callback.K9sakCallbackTask.EKSISTERENDE_GRUNNLAG_REF;
 
 import java.util.Map;
 import java.util.Optional;
@@ -26,7 +26,8 @@ import no.nav.k9.abakus.kobling.KoblingReferanse;
 import no.nav.k9.abakus.kobling.KoblingTjeneste;
 import no.nav.k9.abakus.kobling.TaskConstants;
 import no.nav.k9.abakus.registerdata.RegisterdataInnhentingTask;
-import no.nav.k9.abakus.registerdata.callback.CallbackTask;
+import no.nav.k9.abakus.registerdata.callback.K9sakCallbackTask;
+import no.nav.k9.abakus.registerdata.callback.UngsakCallbackTask;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.Saksnummer;
 import no.nav.k9.prosesstask.api.ProsessTaskData;
@@ -110,7 +111,7 @@ public class InnhentRegisterdataTjeneste {
 
         ProsessTaskGruppe taskGruppe = new ProsessTaskGruppe();
         var innhentingTask = ProsessTaskData.forProsessTask(RegisterdataInnhentingTask.class);
-        var callbackTask = ProsessTaskData.forProsessTask(CallbackTask.class);
+        var callbackTask = kobling.getYtelseType() == YtelseType.UNGDOMSYTELSE ? ProsessTaskData.forProsessTask(UngsakCallbackTask.class) : ProsessTaskData.forProsessTask(K9sakCallbackTask.class);
         innhentingTask.setAktørId(kobling.getAktørId().getId());
         innhentingTask.setProperty(TaskConstants.GAMMEL_KOBLING_ID, kobling.getId().toString());
         innhentingTask.setProperty(TaskConstants.NY_KOBLING_ID, kobling.getId().toString());
@@ -128,7 +129,6 @@ public class InnhentRegisterdataTjeneste {
             .ifPresent(ref -> callbackTask.setProperty(EKSISTERENDE_GRUNNLAG_REF, ref.toString()));
 
         callbackTask.setProperty(TaskConstants.CALLBACK_URL, dto.getCallbackUrl());
-        callbackTask.setProperty(TaskConstants.CALLBACK_SCOPE, dto.getCallbackScope());
 
         taskGruppe.addNesteSekvensiell(innhentingTask);
         taskGruppe.addNesteSekvensiell(callbackTask);

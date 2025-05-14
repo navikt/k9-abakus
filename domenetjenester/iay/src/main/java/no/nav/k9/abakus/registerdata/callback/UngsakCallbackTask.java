@@ -1,9 +1,5 @@
 package no.nav.k9.abakus.registerdata.callback;
 
-import java.net.URI;
-import java.util.Optional;
-import java.util.UUID;
-
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -21,10 +17,14 @@ import no.nav.k9.prosesstask.api.ProsessTask;
 import no.nav.k9.prosesstask.api.ProsessTaskData;
 import no.nav.k9.prosesstask.api.ProsessTaskHandler;
 
+import java.net.URI;
+import java.util.Optional;
+import java.util.UUID;
+
 @ApplicationScoped
-@ProsessTask("registerdata.callback")
-@ScopedRestIntegration(scopeKey = "k9sak.scope", defaultScope = "api://prod-fss.k9-sak.k9saksbehandling/.default")
-public class CallbackTask implements ProsessTaskHandler {
+@ProsessTask("registerdata.ungsak.callback")
+@ScopedRestIntegration(scopeKey = "ungsak.scope", defaultScope = "api://prod-fss.ung-sak.k9saksbehandling/.default")
+public class UngsakCallbackTask implements ProsessTaskHandler {
 
     public static final String EKSISTERENDE_GRUNNLAG_REF = "grunnlag.ref.old";
 
@@ -32,11 +32,11 @@ public class CallbackTask implements ProsessTaskHandler {
     private KoblingTjeneste koblingTjeneste;
     private InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste;
 
-    CallbackTask() {
+    UngsakCallbackTask() {
     }
 
     @Inject
-    public CallbackTask(OidcRestClient restClient, KoblingTjeneste koblingTjeneste, InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste) {
+    public UngsakCallbackTask(OidcRestClient restClient, KoblingTjeneste koblingTjeneste, InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste) {
         this.restClient = restClient;
         this.koblingTjeneste = koblingTjeneste;
         this.inntektArbeidYtelseTjeneste = inntektArbeidYtelseTjeneste;
@@ -46,6 +46,7 @@ public class CallbackTask implements ProsessTaskHandler {
     @Override
     public void doTask(ProsessTaskData data) {
         String callbackUrl = data.getPropertyValue(TaskConstants.CALLBACK_URL);
+
         String nyKoblingId = data.getPropertyValue(TaskConstants.NY_KOBLING_ID);
         Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : Long.valueOf(data.getBehandlingId());
         Kobling kobling = koblingTjeneste.hent(koblingId);
