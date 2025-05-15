@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import no.nav.k9.felles.konfigurasjon.env.Environment;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,6 +51,7 @@ public class InntektTjeneste {
 
     private SystemUserOidcRestClient oidcRestClient;
     private String url;
+    private static final Environment ENV = Environment.current();
 
 
     InntektTjeneste() {
@@ -57,7 +60,7 @@ public class InntektTjeneste {
 
     @Inject
     public InntektTjeneste(SystemUserOidcRestClient oidcRestClient,
-                          @KonfigVerdi(value = "hentinntektlistebolk.url", defaultVerdi = "http://ikomp.team-inntekt/rs/api/v1/hentinntektlistebolk") String url) {
+                           @KonfigVerdi(value = "hentinntektlistebolk.url", defaultVerdi = "http://ikomp.team-inntekt/rs/api/v1/hentinntektlistebolk") String url) {
         this.oidcRestClient = oidcRestClient;
         this.url = url;
         this.kildeTilFilter = Map.of(InntektskildeType.INNTEKT_OPPTJENING, InntektsFilter.OPPTJENINGSGRUNNLAG, InntektskildeType.INNTEKT_BEREGNING,
@@ -77,6 +80,10 @@ public class InntektTjeneste {
         HentInntektListeBolkResponse response;
         try {
             response = oidcRestClient.post(URI.create(url), request, HentInntektListeBolkResponse.class);
+            if (ENV.isDev()) {
+                LOG.info("HentInntektListeBolkRequest: {}", request);
+                LOG.info("HentInntektListeBolkResponse: {}", response);
+            }
         } catch (RuntimeException e) {
             throw new IntegrasjonException("FP-824246",
                 "Feil ved kall til inntektstjenesten. Meld til #team_registre og #produksjonshendelser hvis dette skjer over lengre tidsperiode.", e);
