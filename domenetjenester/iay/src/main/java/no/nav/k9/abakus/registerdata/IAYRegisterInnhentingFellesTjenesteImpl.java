@@ -56,7 +56,7 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
     public static final Map<RegisterdataElement, InntektskildeType> ELEMENT_TIL_INNTEKTS_KILDE_MAP = Map.of(
         RegisterdataElement.INNTEKT_PENSJONSGIVENDE, InntektskildeType.INNTEKT_OPPTJENING, RegisterdataElement.INNTEKT_BEREGNINGSGRUNNLAG,
         InntektskildeType.INNTEKT_BEREGNING, RegisterdataElement.INNTEKT_SAMMENLIGNINGSGRUNNLAG, InntektskildeType.INNTEKT_SAMMENLIGNING,
-        RegisterdataElement.INNTEKT_UNGDOMSYTELSEGRUNNLAG, InntektskildeType.INNTEKT_UNGDOMSYTELSEN);
+        RegisterdataElement.INNTEKT_UNGDOMSYTELSEGRUNNLAG, InntektskildeType.INNTEKT_UNGDOMSYTELSE);
     private static final Logger LOG = LoggerFactory.getLogger(IAYRegisterInnhentingFellesTjenesteImpl.class);
 
     protected InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste;
@@ -239,7 +239,7 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
                                                                          InntektArbeidYtelseAggregatBuilder builder,
                                                                          Set<RegisterdataElement> informasjonsElementer) {
         var inntektselementer = Set.of(RegisterdataElement.INNTEKT_PENSJONSGIVENDE, RegisterdataElement.INNTEKT_BEREGNINGSGRUNNLAG,
-            RegisterdataElement.INNTEKT_SAMMENLIGNINGSGRUNNLAG);
+            RegisterdataElement.INNTEKT_SAMMENLIGNINGSGRUNNLAG, RegisterdataElement.INNTEKT_UNGDOMSYTELSEGRUNNLAG);
 
         if (informasjonsElementer.stream().noneMatch(inntektselementer::contains) && !informasjonsElementer.contains(
             RegisterdataElement.ARBEIDSFORHOLD)) {
