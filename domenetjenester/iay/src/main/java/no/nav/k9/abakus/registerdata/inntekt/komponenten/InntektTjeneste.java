@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import no.nav.k9.felles.konfigurasjon.env.Environment;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +49,6 @@ public class InntektTjeneste {
 
     private SystemUserOidcRestClient oidcRestClient;
     private String url;
-    private static final Environment ENV = Environment.current();
 
 
     InntektTjeneste() {
@@ -80,10 +77,6 @@ public class InntektTjeneste {
         HentInntektListeBolkResponse response;
         try {
             response = oidcRestClient.post(URI.create(url), request, HentInntektListeBolkResponse.class);
-            if (ENV.isDev()) {
-                LOG.info("HentInntektListeBolkRequest: {}", request);
-                LOG.info("HentInntektListeBolkResponse: {}", response);
-            }
         } catch (RuntimeException e) {
             throw new IntegrasjonException("FP-824246",
                 "Feil ved kall til inntektstjenesten. Meld til #team_registre og #produksjonshendelser hvis dette skjer over lengre tidsperiode.", e);
@@ -137,9 +130,7 @@ public class InntektTjeneste {
         return new InntektsInformasjon(månedsinntekter, kilde);
     }
 
-    private void oversettInntekter(List<Månedsinntekt> månedsinntekter,
-                                                        ArbeidsInntektMaaned arbeidsInntektMaaned,
-                                                        InntektskildeType kilde) {
+    private void oversettInntekter(List<Månedsinntekt> månedsinntekter, ArbeidsInntektMaaned arbeidsInntektMaaned, InntektskildeType kilde) {
         var arbeidsInntektInformasjon = arbeidsInntektMaaned.getArbeidsInntektInformasjon();
 
         if (arbeidsInntektInformasjon != null && arbeidsInntektInformasjon.getInntektListe() != null) {
