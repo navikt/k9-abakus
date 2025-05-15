@@ -13,7 +13,7 @@ public class PropertiesUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(PropertiesUtils.class);
 
-    private static String VTP_FILNAVN_LOCAL = "application-vtp.properties";
+    private static String VTP_FILNAVN_LOCAL = "app-vtp.properties";
 
     private PropertiesUtils() {
     }

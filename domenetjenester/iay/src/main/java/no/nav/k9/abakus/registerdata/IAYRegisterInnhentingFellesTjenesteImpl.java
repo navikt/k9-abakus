@@ -239,7 +239,7 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
                                                                          InntektArbeidYtelseAggregatBuilder builder,
                                                                          Set<RegisterdataElement> informasjonsElementer) {
         var inntektselementer = Set.of(RegisterdataElement.INNTEKT_PENSJONSGIVENDE, RegisterdataElement.INNTEKT_BEREGNINGSGRUNNLAG,
-            RegisterdataElement.INNTEKT_SAMMENLIGNINGSGRUNNLAG);
+            RegisterdataElement.INNTEKT_SAMMENLIGNINGSGRUNNLAG, RegisterdataElement.INNTEKT_UNGDOMSYTELSEGRUNNLAG);
 
         if (informasjonsElementer.stream().noneMatch(inntektselementer::contains) && !informasjonsElementer.contains(
             RegisterdataElement.ARBEIDSFORHOLD)) {
