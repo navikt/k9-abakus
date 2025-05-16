@@ -10,6 +10,8 @@ import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 import no.nav.k9.felles.sikkerhet.abac.Decision;
 import no.nav.sif.abac.kontrakt.abac.dto.SaksinformasjonOgPersonerTilgangskontrollInputDto;
 
+import no.nav.sif.abac.kontrakt.abac.resultat.Tilgangsbeslutning;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,17 +33,17 @@ public class SifAbacPdpUngRestKlient {
 
     @Inject
     public SifAbacPdpUngRestKlient(OidcRestClient restClient,
-                                   @KonfigVerdi(value = "sif.abac.pdp.ung.url", defaultVerdi = "http://sif-abac-pdp:8913/sif/sif-abac-pdp/api/tilgangskontroll/ung") String urlSifAbacPdpUng) {
+                                   @KonfigVerdi(value = "sif.abac.pdp.ung.url", defaultVerdi = "http://sif-abac-pdp:8913/sif/sif-abac-pdp/api/tilgangskontroll/v2/ung") String urlSifAbacPdpUng) {
         this.restClient = restClient;
         this.uriTilgangskontrollSaksinformasjonUng = tilUri(urlSifAbacPdpUng, "saksinformasjon");
     }
 
     @WithSpan
-    public Decision sjekkTilgangForInnloggetBrukerUng(SaksinformasjonOgPersonerTilgangskontrollInputDto input) {
+    public Tilgangsbeslutning sjekkTilgangForInnloggetBrukerUng(SaksinformasjonOgPersonerTilgangskontrollInputDto input) {
         if (Environment.current().isDev()) {
             LOG.info("POST ung: {}", uriTilgangskontrollSaksinformasjonUng);
         }
-        return restClient.post(uriTilgangskontrollSaksinformasjonUng, input, Decision.class);
+        return restClient.post(uriTilgangskontrollSaksinformasjonUng, input, Tilgangsbeslutning.class);
     }
 
     private static URI tilUri(String baseUrl, String path) {

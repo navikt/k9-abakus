@@ -46,13 +46,18 @@ public class AppPdpKlient implements PdpKlient {
     public Tilgangsbeslutning forespørTilgang(PdpRequest pdpRequest) {
         return switch (konfigurasjon) {
             case "abac-k9" -> forespørTilgangGammel(pdpRequest);
-            case "sif-abac-pdp" -> forespørTilgangNy(pdpRequest);
+            case "sif-abac-pdp" -> {
+                no.nav.sif.abac.kontrakt.abac.resultat.Tilgangsbeslutning resultat = forespørTilgangNy(pdpRequest);
+                yield  new Tilgangsbeslutning(resultat.harTilgang(), Set.of(), pdpRequest, TilgangType.INTERNBRUKER);
+            }
             case "begge" -> {
                 Tilgangsbeslutning resultat = forespørTilgangGammel(pdpRequest);
                 try {
-                    Tilgangsbeslutning resultatNy = forespørTilgangNy(pdpRequest);
-                    if (resultatNy.fikkTilgang() != resultat.fikkTilgang()) {
-                        LOGGER.warn("Ulikt resultat for ny/gammel tilgangskontroll. Ny {}, gammel {}", resultatNy.fikkTilgang(),
+                    no.nav.sif.abac.kontrakt.abac.resultat.Tilgangsbeslutning resultatNy = forespørTilgangNy(pdpRequest);
+                    if (resultatNy.harTilgang() != resultat.fikkTilgang()) {
+                        LOGGER.warn("Ulikt resultat for ny/gammel tilgangskontroll. Ny {} årsaker {}, gammel {}",
+                            resultatNy.harTilgang(),
+                            resultatNy.årsakerForIkkeTilgang(),
                             resultat.fikkTilgang());
                     }
                 } catch (Exception e) {
@@ -70,13 +75,12 @@ public class AppPdpKlient implements PdpKlient {
     }
 
     @WithSpan
-    public Tilgangsbeslutning forespørTilgangNy(PdpRequest pdpRequest) {
+    public no.nav.sif.abac.kontrakt.abac.resultat.Tilgangsbeslutning forespørTilgangNy(PdpRequest pdpRequest) {
         //TODO bør gjøre kall som k9/ung isdf å alltid kalle som k9 her. Det har ingenting å si i praksis p.t.
         //men dersom vi går over til å kalle med behandlingUuid/saksnummer må vi kalle med riktig domene
         //se k9-oppdrag for hvordan det gjøres der
 
         SaksinformasjonOgPersonerTilgangskontrollInputDto tilgangskontrollInput = PdpRequestMapper.map(pdpRequest);
-        Decision decision = sifAbacPdpK9RestKlient.sjekkTilgangForInnloggetBrukerK9(tilgangskontrollInput);
-        return new Tilgangsbeslutning(decision == Decision.Permit, Set.of(), pdpRequest, TilgangType.INTERNBRUKER);
+        return sifAbacPdpK9RestKlient.sjekkTilgangForInnloggetBrukerK9(tilgangskontrollInput);
     }
 }

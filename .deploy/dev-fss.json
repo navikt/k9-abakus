@@ -71,9 +71,9 @@
 
     "VALGT_PDP" : "begge",
     "SIF_ABAC_PDP_K9_SCOPE": "api://dev-fss.k9saksbehandling.sif-abac-pdp/.default",
-    "SIF_ABAC_PDP_K9_URL": "http://sif-abac-pdp/sif/sif-abac-pdp/api/tilgangskontroll/k9",
+    "SIF_ABAC_PDP_K9_URL": "http://sif-abac-pdp/sif/sif-abac-pdp/api/tilgangskontroll/v2/k9",
     "SIF_ABAC_PDP_UNG_SCOPE": "api://dev-gcp.k9saksbehandling.sif-abac-pdp/.default",
-    "SIF_ABAC_PDP_UNG_URL": "https://sif-abac-pdp-gcp.intern.dev.nav.no/sif/sif-abac-pdp/api/tilgangskontroll/ung",
+    "SIF_ABAC_PDP_UNG_URL": "https://sif-abac-pdp-gcp.intern.dev.nav.no/sif/sif-abac-pdp/api/tilgangskontroll/v2/ung",
 
     "SERVER_PORT":"8080",
     "CONTEXT_PATH":"/k9/abakus",
