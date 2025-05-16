@@ -2,23 +2,20 @@ package no.nav.k9.abakus.web.jetty.abac;
 
 import java.util.Set;
 
-import no.nav.abakus.iaygrunnlag.AktørIdPersonident;
-
-import no.nav.sif.abac.kontrakt.abac.AbacBehandlingStatus;
-
-import no.nav.sif.abac.kontrakt.abac.AbacFagsakStatus;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.annotation.Priority;
 import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Alternative;
+import no.nav.abakus.iaygrunnlag.AktørIdPersonident;
 import no.nav.k9.felles.sikkerhet.abac.AbacAttributtSamling;
 import no.nav.k9.felles.sikkerhet.abac.PdpKlient;
 import no.nav.k9.felles.sikkerhet.abac.PdpRequest;
 import no.nav.k9.felles.sikkerhet.abac.PdpRequestBuilder;
 import no.nav.k9.felles.sikkerhet.abac.StandardAbacAttributtType;
+import no.nav.sif.abac.kontrakt.abac.AbacBehandlingStatus;
+import no.nav.sif.abac.kontrakt.abac.AbacFagsakStatus;
 
 /**
  * Implementasjon av PDP request for denne applikasjonen.
