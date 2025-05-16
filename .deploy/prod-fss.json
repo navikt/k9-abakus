@@ -64,6 +64,12 @@
     "FPWSPROXY_SCOPE":"api://prod-fss.teamforeldrepenger.fpwsproxy/.default",
     "CLIENT_SCOPE": "api://prod-fss.k9saksbehandling.k9-abakus/.default",
 
+    "VALGT_PDP" : "begge",
+    "SIF_ABAC_PDP_K9_SCOPE": "api://prod-fss.k9saksbehandling.sif-abac-pdp/.default",
+    "SIF_ABAC_PDP_K9_URL": "http://sif-abac-pdp/sif/sif-abac-pdp/api/tilgangskontroll/v2/k9",
+    "SIF_ABAC_PDP_UNG_SCOPE": "api://prod-gcp.k9saksbehandling.sif-abac-pdp/.default",
+    "SIF_ABAC_PDP_UNG_URL": "https://sif-abac-pdp-gcp.intern.nav.no/sif/sif-abac-pdp/api/tilgangskontroll/v2/ung",
+
     "SERVER_PORT":"8080",
     "CONTEXT_PATH":"/k9/abakus",
     "APPLICATION_NAME":"k9-abakus",

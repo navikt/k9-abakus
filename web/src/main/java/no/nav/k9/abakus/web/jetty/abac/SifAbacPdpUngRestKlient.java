@@ -19,31 +19,31 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 @Dependent
-@ScopedRestIntegration(scopeKey = "sif.abac.pdp.k9.scope", defaultScope = "api://prod-fss.k9saksbehandling.sif-abac-pdp/.default")
-public class SifAbacPdpK9RestKlient {
+@ScopedRestIntegration(scopeKey = "sif.abac.pdp.ung.scope", defaultScope = "api://prod-gcp.k9saksbehandling.sif-abac-pdp/.default")
+public class SifAbacPdpUngRestKlient {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SifAbacPdpK9RestKlient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(SifAbacPdpUngRestKlient.class);
 
     private OidcRestClient restClient;
-    private URI uriTilgangskontrollSaksinformasjonK9;
+    private URI uriTilgangskontrollSaksinformasjonUng;
 
-    SifAbacPdpK9RestKlient() {
+    SifAbacPdpUngRestKlient() {
         // for CDI proxy
     }
 
     @Inject
-    public SifAbacPdpK9RestKlient(OidcRestClient restClient,
-                                  @KonfigVerdi(value = "sif.abac.pdp.k9.url", defaultVerdi = "http://sif-abac-pdp:8913/sif/sif-abac-pdp/api/tilgangskontroll/v2/k9") String urlSifAbacPdpk9) {
+    public SifAbacPdpUngRestKlient(OidcRestClient restClient,
+                                   @KonfigVerdi(value = "sif.abac.pdp.ung.url", defaultVerdi = "http://sif-abac-pdp:8913/sif/sif-abac-pdp/api/tilgangskontroll/v2/ung") String urlSifAbacPdpUng) {
         this.restClient = restClient;
-        this.uriTilgangskontrollSaksinformasjonK9 = tilUri(urlSifAbacPdpk9, "saksinformasjon");
+        this.uriTilgangskontrollSaksinformasjonUng = tilUri(urlSifAbacPdpUng, "saksinformasjon");
     }
 
     @WithSpan
-    public Tilgangsbeslutning sjekkTilgangForInnloggetBrukerK9(SaksinformasjonOgPersonerTilgangskontrollInputDto input) {
+    public Tilgangsbeslutning sjekkTilgangForInnloggetBrukerUng(SaksinformasjonOgPersonerTilgangskontrollInputDto input) {
         if (Environment.current().isDev()) {
-            LOG.info("POST k9: {}", uriTilgangskontrollSaksinformasjonK9);
+            LOG.info("POST ung: {}", uriTilgangskontrollSaksinformasjonUng);
         }
-        return restClient.post(uriTilgangskontrollSaksinformasjonK9, input, Tilgangsbeslutning.class);
+        return restClient.post(uriTilgangskontrollSaksinformasjonUng, input, Tilgangsbeslutning.class);
     }
 
     private static URI tilUri(String baseUrl, String path) {
