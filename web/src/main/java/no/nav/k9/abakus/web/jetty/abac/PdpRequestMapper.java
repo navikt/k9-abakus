@@ -22,8 +22,12 @@ public class PdpRequestMapper {
         Set<AktørIdPersonident> aktørIder = (Set<AktørIdPersonident>) pdpRequest.get(FellesAbacAttributter.RESOURCE_FELLES_PERSON_AKTOERID_RESOURCE);
         Set<AktørIdPersonident> fødselsnumre = (Set<AktørIdPersonident>) pdpRequest.get(FellesAbacAttributter.RESOURCE_FELLES_PERSON_FNR);
         OperasjonDto operasjon = operasjon(pdpRequest);
-        List<AktørId> mappetAktørId = aktørIder.stream().map(it -> new AktørId(it.getIdent())).toList();
-        List<PersonIdent> mappetPersonIdent = fødselsnumre.stream().map(it -> new PersonIdent(it.getIdent())).toList();
+        List<AktørId> mappetAktørId = aktørIder != null
+            ? aktørIder.stream().map(it -> new AktørId(it.getIdent())).toList()
+            : List.of();
+        List<PersonIdent> mappetPersonIdent = fødselsnumre != null
+            ? fødselsnumre.stream().map(it -> new PersonIdent(it.getIdent())).toList()
+            : List.of();
         //TODO saksinformasjon bør komme fra k9-sak/ung-sak og ikke hardkodes her
         SaksinformasjonDto saksinformasjon = new SaksinformasjonDto(null, AbacBehandlingStatus.UTREDES, AbacFagsakStatus.UNDER_BEHANDLING, Set.of());
         return new SaksinformasjonOgPersonerTilgangskontrollInputDto(mappetAktørId, mappetPersonIdent, operasjon, saksinformasjon);
