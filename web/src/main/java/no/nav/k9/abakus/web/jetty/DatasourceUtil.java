@@ -1,5 +1,6 @@
 package no.nav.k9.abakus.web.jetty;
 
+import java.util.Objects;
 import java.util.Properties;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -14,6 +15,7 @@ class DatasourceUtil {
 
     public static HikariDataSource createDatasource(String datasourceName, DatasourceRole role, EnvironmentClass environmentClass, int maxPoolSize) {
         String rolePrefix = getRolePrefix(datasourceName);
+        Objects.requireNonNull(rolePrefix, "rolePrefix");
         if (EnvironmentClass.LOCALHOST.equals(environmentClass)) {
             final HikariConfig config = initConnectionPoolConfig(datasourceName, null, maxPoolSize);
             final String password = Environment.current().getProperty(datasourceName + ".password");
