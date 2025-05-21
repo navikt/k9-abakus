@@ -19,14 +19,14 @@ import no.nav.sif.abac.kontrakt.person.PersonIdent;
 public class PdpRequestMapper {
 
     public static SaksinformasjonOgPersonerTilgangskontrollInputDto map(PdpRequest pdpRequest) {
-        Set<AktørIdPersonident> aktørIder = (Set<AktørIdPersonident>) pdpRequest.get(FellesAbacAttributter.RESOURCE_FELLES_PERSON_AKTOERID_RESOURCE);
-        Set<AktørIdPersonident> fødselsnumre = (Set<AktørIdPersonident>) pdpRequest.get(FellesAbacAttributter.RESOURCE_FELLES_PERSON_FNR);
+        Set<String> aktørIder = (Set<String>) pdpRequest.get(FellesAbacAttributter.RESOURCE_FELLES_PERSON_AKTOERID_RESOURCE);
+        Set<String> fødselsnumre = (Set<String>) pdpRequest.get(FellesAbacAttributter.RESOURCE_FELLES_PERSON_FNR);
         OperasjonDto operasjon = operasjon(pdpRequest);
         List<AktørId> mappetAktørId = aktørIder != null
-            ? aktørIder.stream().map(it -> new AktørId(it.getIdent())).toList()
+            ? aktørIder.stream().map(AktørId::new).toList()
             : List.of();
         List<PersonIdent> mappetPersonIdent = fødselsnumre != null
-            ? fødselsnumre.stream().map(it -> new PersonIdent(it.getIdent())).toList()
+            ? fødselsnumre.stream().map(PersonIdent::new).toList()
             : List.of();
         //TODO saksinformasjon bør komme fra k9-sak/ung-sak og ikke hardkodes her
         SaksinformasjonDto saksinformasjon = new SaksinformasjonDto(null, AbacBehandlingStatus.UTREDES, AbacFagsakStatus.UNDER_BEHANDLING, Set.of());
