@@ -36,13 +36,13 @@ public class PdpRequestBuilderImpl implements PdpRequestBuilder {
         pdpRequest.put(FellesAbacAttributter.RESOURCE_FELLES_DOMENE, abacDomain);
         pdpRequest.put(FellesAbacAttributter.RESOURCE_FELLES_RESOURCE_TYPE, attributter.getResource());
 
-        Set<AktørIdPersonident> aktørIder = attributter.getVerdier(StandardAbacAttributtType.AKTØR_ID);
-        Set<AktørIdPersonident> fødselsnumre = attributter.getVerdier(StandardAbacAttributtType.FNR);
+        Set<String> aktørIder = attributter.getVerdier(StandardAbacAttributtType.AKTØR_ID);
+        Set<String> fødselsnumre = attributter.getVerdier(StandardAbacAttributtType.FNR);
 
-        if (!aktørIder.isEmpty()){
+        if (!aktørIder.isEmpty()) {
             pdpRequest.put(FellesAbacAttributter.RESOURCE_FELLES_PERSON_AKTOERID_RESOURCE, aktørIder);
         }
-        if (!fødselsnumre.isEmpty()){
+        if (!fødselsnumre.isEmpty()) {
             pdpRequest.put(FellesAbacAttributter.RESOURCE_FELLES_PERSON_FNR, fødselsnumre);
         }
 
