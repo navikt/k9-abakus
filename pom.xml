@@ -31,7 +31,7 @@
         <kontrakt.java.version>21</kontrakt.java.version>
 
         <felles.version>4.6.0</felles.version>
-        <kontrakter.version>9.3.2</kontrakter.version>
+        <kontrakter.version>9.3.5</kontrakter.version>
         <tidsserie.version>2.7.3</tidsserie.version>
         <flyway.version>11.8.2</flyway.version>
         <jetty.version>12.0.21</jetty.version>
