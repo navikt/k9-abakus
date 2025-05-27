@@ -31,6 +31,10 @@ spec:
     enabled: true
     path: /k9/abakus/internal/metrics/prometheus
   observability:
+    logging:
+      destinations:
+        - id: loki
+        - id: elastic
     autoInstrumentation:
       enabled: true
       runtime: java
