@@ -35,7 +35,7 @@ public class AppPdpKlient implements PdpKlient {
     public AppPdpKlient(SifAbacPdpK9RestKlient sifAbacPdpK9RestKlient,
                         SifAbacPdpUngRestKlient sifAbacPdpUngRestKlient,
                         PdpKlientImpl abacK9Klient,
-                        @KonfigVerdi(value = "VALGT_PDP", required = false, defaultVerdi = "abac-k9") String konfigurasjon) {
+                        @KonfigVerdi(value = "VALGT_PDP", required = false, defaultVerdi = "sif-abac-pdp") String konfigurasjon) {
         this.sifAbacPdpK9RestKlient = sifAbacPdpK9RestKlient;
         this.sifAbacPdpUngRestKlient = sifAbacPdpUngRestKlient;
         this.klientAbacK9 = abacK9Klient;

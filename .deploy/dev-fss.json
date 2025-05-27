@@ -69,7 +69,7 @@
     "FPWSPROXY_SCOPE": "api://dev-fss.teamforeldrepenger.fpwsproxy/.default",
     "CLIENT_SCOPE": "api://dev-fss.k9saksbehandling.k9-abakus/.default",
 
-    "VALGT_PDP" : "begge",
+    "VALGT_PDP" : "sif-abac-pdp",
     "SIF_ABAC_PDP_K9_SCOPE": "api://dev-fss.k9saksbehandling.sif-abac-pdp/.default",
     "SIF_ABAC_PDP_K9_URL": "http://sif-abac-pdp/sif/sif-abac-pdp/api/tilgangskontroll/v2/k9",
     "SIF_ABAC_PDP_UNG_SCOPE": "api://dev-gcp.k9saksbehandling.sif-abac-pdp/.default",
