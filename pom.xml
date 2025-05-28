@@ -112,7 +112,7 @@
             <dependency>
                 <groupId>org.glassfish.jersey</groupId>
                 <artifactId>jersey-bom</artifactId>
-                <version>3.0.15</version>
+                <version>3.0.17</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -305,7 +305,7 @@
             <dependency>
                 <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-micrometer</artifactId>
-                <version>6.6.15.Final</version>
+                <version>7.0.0.Final</version>
             </dependency>
             <dependency>
                 <groupId>net.logstash.logback</groupId>
@@ -489,7 +489,7 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>exec-maven-plugin</artifactId>
-                    <version>3.5.0</version>
+                    <version>3.5.1</version>
                 </plugin>
                 <plugin>
                     <groupId>org.flywaydb</groupId>
