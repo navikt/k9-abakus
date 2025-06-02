@@ -47,6 +47,8 @@ import no.nav.k9.felles.konfigurasjon.env.Environment;
 import no.nav.k9.felles.oidc.OidcApplication;
 import no.nav.k9.felles.sikkerhet.jaspic.OidcAuthModule;
 
+import org.slf4j.bridge.SLF4JBridgeHandler;
+
 public class JettyServer {
 
     private static final Logger log = LoggerFactory.getLogger(JettyServer.class);
@@ -66,6 +68,10 @@ public class JettyServer {
     }
 
     public static void main(String[] args) throws Exception {
+        // konfigurerer java.util.logging til å logge til logback via slf4j
+        SLF4JBridgeHandler.removeHandlersForRootLogger();
+        SLF4JBridgeHandler.install();
+
         System.setProperty(NAIS_CLUSTER_NAME, ENV.clusterName());
         JettyServer jettyServer;
         if (args.length > 0) {
