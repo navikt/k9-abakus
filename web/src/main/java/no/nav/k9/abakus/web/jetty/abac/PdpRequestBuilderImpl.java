@@ -2,6 +2,8 @@ package no.nav.k9.abakus.web.jetty.abac;
 
 import java.util.Set;
 
+import no.nav.k9.abakus.felles.sikkerhet.AbakusAbacAttributtType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,6 +37,11 @@ public class PdpRequestBuilderImpl implements PdpRequestBuilder {
         pdpRequest.put(FellesAbacAttributter.XACML_1_0_ACTION_ACTION_ID, attributter.getActionType().getEksternKode());
         pdpRequest.put(FellesAbacAttributter.RESOURCE_FELLES_DOMENE, abacDomain);
         pdpRequest.put(FellesAbacAttributter.RESOURCE_FELLES_RESOURCE_TYPE, attributter.getResource());
+
+        Set<String> ytelseTypeKoder = attributter.getVerdier(AbakusAbacAttributtType.YTELSETYPE);
+        if (ytelseTypeKoder != null && !ytelseTypeKoder.isEmpty()) {
+            pdpRequest.put(FellesAbacAttributter.YTELSE_TYPE, ytelseTypeKoder);
+        }
 
         Set<String> aktørIder = attributter.getVerdier(StandardAbacAttributtType.AKTØR_ID);
         Set<String> fødselsnumre = attributter.getVerdier(StandardAbacAttributtType.FNR);
