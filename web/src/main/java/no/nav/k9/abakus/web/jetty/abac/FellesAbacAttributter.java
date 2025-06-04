@@ -8,4 +8,6 @@ public class FellesAbacAttributter {
     public static final String RESOURCE_FELLES_DOMENE = "no.nav.abac.attributter.resource.felles.domene";
     public static final String RESOURCE_FELLES_RESOURCE_TYPE = "no.nav.abac.attributter.resource.felles.resource_type";
 
+    public static final String YTELSE_TYPE = "no.nav.abac.attributter.resource.ytelsetype";
+
 }

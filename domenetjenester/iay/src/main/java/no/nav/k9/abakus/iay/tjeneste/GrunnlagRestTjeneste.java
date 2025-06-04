@@ -66,6 +66,7 @@ import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlag;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
 import no.nav.k9.abakus.felles.LoggUtil;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
+import no.nav.k9.abakus.felles.sikkerhet.AbakusAbacAttributtType;
 import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
 import no.nav.k9.abakus.iay.tjeneste.dto.iay.IAYFraDtoMapper;
 import no.nav.k9.abakus.iay.tjeneste.dto.iay.IAYTilDtoMapper;
@@ -97,6 +98,14 @@ public class GrunnlagRestTjeneste {
     public GrunnlagRestTjeneste(InntektArbeidYtelseTjeneste iayTjeneste, KoblingTjeneste koblingTjeneste) {
         this.iayTjeneste = iayTjeneste;
         this.koblingTjeneste = koblingTjeneste;
+    }
+
+    private static AbacDataAttributter lagAbacAttributter(PersonIdent person, YtelseType ytelseType) {
+        AbacDataAttributter attributter = lagAbacAttributter(person);
+        if (ytelseType != null) {
+            attributter.leggTil(AbakusAbacAttributtType.YTELSETYPE, ytelseType.getKode());
+        }
+        return attributter;
     }
 
     private static AbacDataAttributter lagAbacAttributter(PersonIdent person) {
@@ -460,7 +469,7 @@ public class GrunnlagRestTjeneste {
 
         @Override
         public AbacDataAttributter abacAttributter() {
-            return lagAbacAttributter(getPerson());
+            return lagAbacAttributter(getPerson(), getYtelseType());
         }
 
     }
@@ -486,7 +495,7 @@ public class GrunnlagRestTjeneste {
 
         @Override
         public AbacDataAttributter abacAttributter() {
-            return lagAbacAttributter(getAktør());
+            return lagAbacAttributter(getAktør(), getYtelseType());
         }
     }
 
@@ -509,7 +518,7 @@ public class GrunnlagRestTjeneste {
 
         @Override
         public AbacDataAttributter abacAttributter() {
-            return lagAbacAttributter(getPerson());
+            return lagAbacAttributter(getPerson(), getYtelseType());
         }
     }
 
@@ -533,7 +542,7 @@ public class GrunnlagRestTjeneste {
 
         @Override
         public AbacDataAttributter abacAttributter() {
-            return lagAbacAttributter(getPerson());
+            return lagAbacAttributter(getPerson(), getYtelseType());
         }
     }
 
