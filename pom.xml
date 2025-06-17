@@ -306,7 +306,7 @@
             <dependency>
                 <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-micrometer</artifactId>
-                <version>7.0.1.Final</version>
+                <version>6.6.17.Final</version>
             </dependency>
             <dependency>
                 <groupId>net.logstash.logback</groupId>
