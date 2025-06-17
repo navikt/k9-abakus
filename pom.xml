@@ -33,12 +33,12 @@
         <felles.version>4.6.0</felles.version>
         <kontrakter.version>9.3.6</kontrakter.version>
         <tidsserie.version>2.7.3</tidsserie.version>
-        <flyway.version>11.9.0</flyway.version>
+        <flyway.version>11.9.1</flyway.version>
         <jetty.version>12.0.22</jetty.version>
         <jandex.version>3.3.1</jandex.version>
 
         <junit.version>5.13.0</junit.version>
-        <junit.platform.version>1.13.0</junit.platform.version>
+        <junit.platform.version>1.13.1</junit.platform.version>
 
         <!-- Forteller til maven-deploy-plugin at artefaktet ikke skal deployes.
         Arves og overstyrres i de enkelte artefakter. -->
@@ -229,7 +229,7 @@
             <dependency>
                 <groupId>io.opentelemetry</groupId>
                 <artifactId>opentelemetry-api</artifactId>
-                <version>1.50.0</version>
+                <version>1.51.0</version>
             </dependency>
 
             <!-- NAV tjenestespesifikasjoner -->
@@ -301,7 +301,7 @@
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-annotations-jakarta</artifactId>
-                <version>2.2.32</version>
+                <version>2.2.33</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.orm</groupId>
@@ -317,12 +317,12 @@
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-core-jakarta</artifactId>
-                <version>2.2.32</version>
+                <version>2.2.33</version>
             </dependency>
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
                 <artifactId>swagger-jaxrs2-jakarta</artifactId>
-                <version>2.2.32</version>
+                <version>2.2.33</version>
             </dependency>
 
 
@@ -335,7 +335,7 @@
             <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-core</artifactId>
-                <version>1.15.0</version>
+                <version>1.15.1</version>
             </dependency>
             <dependency>
                 <groupId>org.yaml</groupId>
