@@ -43,6 +43,7 @@ import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
 import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
 import no.nav.k9.abakus.domene.iay.inntektsmelding.Inntektsmelding;
 import no.nav.k9.abakus.felles.LoggUtil;
+import no.nav.k9.abakus.felles.sikkerhet.AbakusAbacAttributtType;
 import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
 import no.nav.k9.abakus.iay.InntektsmeldingerTjeneste;
 import no.nav.k9.abakus.iay.tjeneste.dto.iay.MapInntektsmeldinger;
@@ -204,6 +205,7 @@ public class InntektsmeldingerRestTjeneste {
         @Override
         public AbacDataAttributter abacAttributter() {
             final var abacDataAttributter = AbacDataAttributter.opprett();
+            abacDataAttributter.leggTil(AbakusAbacAttributtType.YTELSETYPE, getYtelseType());
             if (FnrPersonident.IDENT_TYPE.equals(getPerson().getIdentType())) {
                 return abacDataAttributter.leggTil(StandardAbacAttributtType.FNR, getPerson().getIdent());
             } else if (AktørIdPersonident.IDENT_TYPE.equals(getPerson().getIdentType())) {
