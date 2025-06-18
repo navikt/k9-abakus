@@ -205,7 +205,10 @@ public class InntektsmeldingerRestTjeneste {
         @Override
         public AbacDataAttributter abacAttributter() {
             final var abacDataAttributter = AbacDataAttributter.opprett();
-            abacDataAttributter.leggTil(AbakusAbacAttributtType.YTELSETYPE, getYtelseType());
+            YtelseType ytelseType = getYtelseType();
+            if (ytelseType != null) {
+                abacDataAttributter.leggTil(AbakusAbacAttributtType.YTELSETYPE, ytelseType.getKode());
+            }
             if (FnrPersonident.IDENT_TYPE.equals(getPerson().getIdentType())) {
                 return abacDataAttributter.leggTil(StandardAbacAttributtType.FNR, getPerson().getIdent());
             } else if (AktørIdPersonident.IDENT_TYPE.equals(getPerson().getIdentType())) {
