@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import no.nav.k9.felles.konfigurasjon.env.Environment;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +13,7 @@ import jakarta.enterprise.context.Dependent;
 import jakarta.enterprise.inject.Alternative;
 import jakarta.inject.Inject;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
+import no.nav.k9.felles.konfigurasjon.env.Environment;
 import no.nav.k9.felles.sikkerhet.abac.PdpKlient;
 import no.nav.k9.felles.sikkerhet.abac.PdpRequest;
 import no.nav.k9.felles.sikkerhet.abac.TilgangType;
@@ -30,50 +28,19 @@ public class AppPdpKlient implements PdpKlient {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(AppPdpKlient.class);
 
-    private final PdpKlientImpl klientAbacK9;
-    private final String konfigurasjon;
     private final SifAbacPdpK9RestKlient sifAbacPdpK9RestKlient;
     private final SifAbacPdpUngRestKlient sifAbacPdpUngRestKlient;
 
     @Inject
-    public AppPdpKlient(SifAbacPdpK9RestKlient sifAbacPdpK9RestKlient,
-                        SifAbacPdpUngRestKlient sifAbacPdpUngRestKlient,
-                        PdpKlientImpl abacK9Klient,
-                        @KonfigVerdi(value = "VALGT_PDP", required = false, defaultVerdi = "abac-k9") String konfigurasjon) {
+    public AppPdpKlient(SifAbacPdpK9RestKlient sifAbacPdpK9RestKlient, SifAbacPdpUngRestKlient sifAbacPdpUngRestKlient) {
         this.sifAbacPdpK9RestKlient = sifAbacPdpK9RestKlient;
         this.sifAbacPdpUngRestKlient = sifAbacPdpUngRestKlient;
-        this.klientAbacK9 = abacK9Klient;
-        this.konfigurasjon = konfigurasjon;
     }
 
     @Override
     public Tilgangsbeslutning forespørTilgang(PdpRequest pdpRequest) {
-        return switch (konfigurasjon) {
-            case "abac-k9" -> forespørTilgangGammel(pdpRequest);
-            case "sif-abac-pdp" -> {
-                no.nav.sif.abac.kontrakt.abac.resultat.Tilgangsbeslutning resultat = forespørTilgangNy(pdpRequest);
-                yield new Tilgangsbeslutning(resultat.harTilgang(), Set.of(), pdpRequest, TilgangType.INTERNBRUKER);
-            }
-            case "begge" -> {
-                Tilgangsbeslutning resultat = forespørTilgangGammel(pdpRequest);
-                try {
-                    no.nav.sif.abac.kontrakt.abac.resultat.Tilgangsbeslutning resultatNy = forespørTilgangNy(pdpRequest);
-                    if (resultatNy.harTilgang() != resultat.fikkTilgang()) {
-                        LOGGER.warn("Ulikt resultat for ny/gammel tilgangskontroll. Ny {} årsaker {}, gammel {}", resultatNy.harTilgang(),
-                            resultatNy.årsakerForIkkeTilgang(), resultat.fikkTilgang());
-                    }
-                } catch (Exception e) {
-                    LOGGER.warn("Ny tilgangskontroll feilet, bruker resultat fra gammel tilgangskontroll", e);
-                }
-                yield resultat;
-            }
-            default -> throw new IllegalStateException("Ugyldig konfigurasjon for VALGT_PDP: " + konfigurasjon);
-        };
-    }
-
-    @WithSpan
-    private Tilgangsbeslutning forespørTilgangGammel(PdpRequest pdpRequest) {
-        return klientAbacK9.forespørTilgang(pdpRequest);
+        no.nav.sif.abac.kontrakt.abac.resultat.Tilgangsbeslutning resultat = forespørTilgangNy(pdpRequest);
+        return new Tilgangsbeslutning(resultat.harTilgang(), Set.of(), pdpRequest, TilgangType.INTERNBRUKER);
     }
 
     @WithSpan

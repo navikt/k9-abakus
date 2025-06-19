@@ -69,7 +69,6 @@
     "FPWSPROXY_SCOPE":"api://prod-fss.teamforeldrepenger.fpwsproxy/.default",
     "CLIENT_SCOPE": "api://prod-fss.k9saksbehandling.k9-abakus/.default",
 
-    "VALGT_PDP" : "begge",
     "SIF_ABAC_PDP_K9_SCOPE": "api://prod-fss.k9saksbehandling.sif-abac-pdp/.default",
     "SIF_ABAC_PDP_K9_URL": "http://sif-abac-pdp/sif/sif-abac-pdp/api/tilgangskontroll/v2/k9",
     "SIF_ABAC_PDP_UNG_SCOPE": "api://prod-gcp.k9saksbehandling.sif-abac-pdp/.default",
@@ -82,7 +81,6 @@
     "AUDITLOGGER_ENABLED":"true",
     "AUDITLOGGER_VENDOR":"k9",
     "AUDITLOGGER_PRODUCT":"k9-abakus",
-    "ABAC_PDP_ENDPOINT_URL":"http://abac-k9.k9saksbehandling/application/authorize",
     "ABAC_ATTRIBUTT_DRIFT":"no.nav.abac.attributter.k9.drift",
     "KAFKA_FATTEVEDTAK_TOPIC":"teamforeldrepenger.familie-vedtakfattet-v1",
     "FPABAKUS_IT_PS_GRUNNLAG_URL":"http://k9-infotrygd-grunnlag-paaroerende-sykdom/paaroerendeSykdom/grunnlag",
