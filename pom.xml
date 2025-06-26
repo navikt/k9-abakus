@@ -91,7 +91,7 @@
             <dependency>
                 <groupId>no.nav.k9.prosesstask</groupId>
                 <artifactId>prosesstask-root</artifactId>
-                <version>2.7.16</version>
+                <version>2.7.17</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -217,7 +217,7 @@
             <dependency>
                 <groupId>no.nav.sif.abac</groupId>
                 <artifactId>kontrakt</artifactId>
-                <version>1.4.1</version>
+                <version>1.6.0</version>
             </dependency>
 
             <!-- obeservability -->
