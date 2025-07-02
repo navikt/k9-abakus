@@ -1,13 +1,14 @@
 package no.nav.k9.abakus.web.jetty.abac;
 
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import no.nav.abakus.iaygrunnlag.AktørIdPersonident;
 import no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt;
 import no.nav.k9.felles.sikkerhet.abac.PdpRequest;
 import no.nav.sif.abac.kontrakt.abac.AbacBehandlingStatus;
 import no.nav.sif.abac.kontrakt.abac.AbacFagsakStatus;
+import no.nav.sif.abac.kontrakt.abac.AksjonspunktType;
 import no.nav.sif.abac.kontrakt.abac.BeskyttetRessursActionAttributt;
 import no.nav.sif.abac.kontrakt.abac.ResourceType;
 import no.nav.sif.abac.kontrakt.abac.dto.OperasjonDto;
@@ -22,12 +23,8 @@ public class PdpRequestMapper {
         Set<String> aktørIder = (Set<String>) pdpRequest.get(FellesAbacAttributter.RESOURCE_FELLES_PERSON_AKTOERID_RESOURCE);
         Set<String> fødselsnumre = (Set<String>) pdpRequest.get(FellesAbacAttributter.RESOURCE_FELLES_PERSON_FNR);
         OperasjonDto operasjon = operasjon(pdpRequest);
-        List<AktørId> mappetAktørId = aktørIder != null
-            ? aktørIder.stream().map(AktørId::new).toList()
-            : List.of();
-        List<PersonIdent> mappetPersonIdent = fødselsnumre != null
-            ? fødselsnumre.stream().map(PersonIdent::new).toList()
-            : List.of();
+        List<AktørId> mappetAktørId = aktørIder != null ? aktørIder.stream().map(AktørId::new).toList() : List.of();
+        List<PersonIdent> mappetPersonIdent = fødselsnumre != null ? fødselsnumre.stream().map(PersonIdent::new).toList() : List.of();
         //TODO saksinformasjon bør komme fra k9-sak/ung-sak og ikke hardkodes her
         SaksinformasjonDto saksinformasjon = new SaksinformasjonDto(null, AbacBehandlingStatus.UTREDES, AbacFagsakStatus.UNDER_BEHANDLING, Set.of());
         return new SaksinformasjonOgPersonerTilgangskontrollInputDto(mappetAktørId, mappetPersonIdent, operasjon, saksinformasjon);
@@ -35,7 +32,10 @@ public class PdpRequestMapper {
 
     public static OperasjonDto operasjon(PdpRequest pdpRequest) {
         ResourceType resource = resourceTypeFraKode(pdpRequest.getString(AbacAttributter.RESOURCE_FELLES_RESOURCE_TYPE));
-        return new OperasjonDto(resource, actionFraKode(pdpRequest.getString(AbacAttributter.XACML_1_0_ACTION_ACTION_ID)));
+        return new OperasjonDto(
+            resource,
+            actionFraKode(pdpRequest.getString(AbacAttributter.XACML_1_0_ACTION_ACTION_ID)),
+            Set.of()); // Abakus har ikkje noko forhold til aksjonspunkttyper, så vi sender tom mengde
     }
 
     static ResourceType resourceTypeFraKode(String kode) {
