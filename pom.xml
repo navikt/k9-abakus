@@ -34,7 +34,7 @@
         <kontrakter.version>9.3.7</kontrakter.version>
         <tidsserie.version>2.7.3</tidsserie.version>
         <flyway.version>11.10.0</flyway.version>
-        <jetty.version>12.0.22</jetty.version>
+        <jetty.version>12.0.23</jetty.version>
         <jandex.version>3.3.1</jandex.version>
 
         <!-- JUnit versjoner, desse må vere i sync -->
@@ -600,7 +600,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.5.0</version>
+                <version>3.6.0</version>
                 <executions>
                     <execution>
                         <id>default-cli</id>
