@@ -33,9 +33,9 @@
         <felles.version>5.0.0</felles.version>
         <kontrakter.version>9.3.7</kontrakter.version>
         <tidsserie.version>2.7.3</tidsserie.version>
-        <flyway.version>11.10.0</flyway.version>
+        <flyway.version>11.10.1</flyway.version>
         <jetty.version>12.0.23</jetty.version>
-        <jandex.version>3.3.1</jandex.version>
+        <jandex.version>3.3.2</jandex.version>
 
         <!-- JUnit versjoner, desse må vere i sync -->
         <junit.version>5.13.2</junit.version>
