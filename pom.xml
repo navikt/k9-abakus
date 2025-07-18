@@ -30,7 +30,7 @@
         <java.version>21</java.version>
         <kontrakt.java.version>21</kontrakt.java.version>
 
-        <felles.version>5.0.0</felles.version>
+        <felles.version>5.1.0</felles.version>
         <kontrakter.version>9.3.8</kontrakter.version>
         <tidsserie.version>2.7.3</tidsserie.version>
         <flyway.version>11.10.2</flyway.version>
@@ -92,7 +92,7 @@
             <dependency>
                 <groupId>no.nav.k9.prosesstask</groupId>
                 <artifactId>prosesstask-root</artifactId>
-                <version>2.7.19</version>
+                <version>2.7.20</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
