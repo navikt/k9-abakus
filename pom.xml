@@ -38,7 +38,7 @@
         <jandex.version>3.3.2</jandex.version>
 
         <!-- JUnit versjoner, desse må vere i sync -->
-        <junit.version>5.13.3</junit.version>
+        <junit.version>5.13.4</junit.version>
         <junit.platform.version>1.13.3</junit.platform.version>
 
         <!-- Forteller til maven-deploy-plugin at artefaktet ikke skal deployes.
