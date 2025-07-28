@@ -33,13 +33,13 @@
         <felles.version>5.0.0</felles.version>
         <kontrakter.version>9.3.8</kontrakter.version>
         <tidsserie.version>2.7.3</tidsserie.version>
-        <flyway.version>11.10.2</flyway.version>
+        <flyway.version>11.10.3</flyway.version>
         <jetty.version>12.0.23</jetty.version>
-        <jandex.version>3.3.2</jandex.version>
+        <jandex.version>3.4.0</jandex.version>
 
         <!-- JUnit versjoner, desse må vere i sync -->
         <junit.version>5.13.4</junit.version>
-        <junit.platform.version>1.13.3</junit.platform.version>
+        <junit.platform.version>1.13.4</junit.platform.version>
 
         <!-- Forteller til maven-deploy-plugin at artefaktet ikke skal deployes.
         Arves og overstyrres i de enkelte artefakter. -->
@@ -225,7 +225,7 @@
             <dependency>
                 <groupId>io.opentelemetry.instrumentation</groupId>
                 <artifactId>opentelemetry-instrumentation-annotations</artifactId>
-                <version>2.17.1</version>
+                <version>2.18.1</version>
             </dependency>
             <dependency>
                 <groupId>io.opentelemetry</groupId>
@@ -253,7 +253,7 @@
             <dependency>
                 <groupId>io.opentelemetry.instrumentation</groupId>
                 <artifactId>opentelemetry-instrumentation-annotations</artifactId>
-                <version>2.17.1</version>
+                <version>2.18.1</version>
             </dependency>
 
             <dependency>
@@ -282,7 +282,7 @@
             <dependency>
                 <groupId>com.zaxxer</groupId>
                 <artifactId>HikariCP</artifactId>
-                <version>6.3.0</version>
+                <version>6.3.1</version>
             </dependency>
             <dependency>
                 <groupId>no.nav</groupId>
@@ -307,7 +307,7 @@
             <dependency>
                 <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-micrometer</artifactId>
-                <version>7.0.6.Final</version>
+                <version>7.0.7.Final</version>
             </dependency>
             <dependency>
                 <groupId>net.logstash.logback</groupId>
@@ -600,7 +600,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-enforcer-plugin</artifactId>
-                <version>3.6.0</version>
+                <version>3.6.1</version>
                 <executions>
                     <execution>
                         <id>default-cli</id>
