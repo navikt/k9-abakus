@@ -92,7 +92,7 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
     @ChangeTracked
     private InternArbeidsforholdRef arbeidsforholdRef;
 
-    @Column(name = "start_dato_permisjon", updatable = false, nullable = false)
+    @Column(name = "start_dato_permisjon", updatable = false)
     @ChangeTracked
     private LocalDate startDatoPermisjon;
 
