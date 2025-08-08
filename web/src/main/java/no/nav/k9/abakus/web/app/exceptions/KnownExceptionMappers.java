@@ -7,6 +7,7 @@ import java.util.Map;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.ext.ExceptionMapper;
 
 public class KnownExceptionMappers {
@@ -19,6 +20,8 @@ public class KnownExceptionMappers {
         // NB pass på rekkefølge dersom exceptions arver (håndter minst spesifikk til slutt)
         register(JsonMappingException.class, new JsonMappingExceptionMapper());
         register(JsonParseException.class, new JsonParseExceptionMapper());
+        register(ConstraintViolationException.class, new ConstraintViolationMapper());
+        register(Throwable.class, new GeneralRestExceptionMapper());
     }
 
     @SuppressWarnings("rawtypes")
