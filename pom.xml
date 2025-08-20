@@ -34,7 +34,7 @@
         <kontrakter.version>9.3.8</kontrakter.version>
         <tidsserie.version>2.7.3</tidsserie.version>
         <flyway.version>11.11.1</flyway.version>
-        <jetty.version>12.0.25</jetty.version>
+        <jetty.version>12.1.0</jetty.version>
         <jandex.version>3.4.0</jandex.version>
 
         <!-- JUnit versjoner, desse må vere i sync -->
@@ -282,7 +282,7 @@
             <dependency>
                 <groupId>com.zaxxer</groupId>
                 <artifactId>HikariCP</artifactId>
-                <version>7.0.1</version>
+                <version>7.0.2</version>
             </dependency>
             <dependency>
                 <groupId>no.nav</groupId>
