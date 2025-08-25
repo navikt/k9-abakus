@@ -30,7 +30,7 @@
         <java.version>21</java.version>
         <kontrakt.java.version>21</kontrakt.java.version>
 
-        <felles.version>5.1.0</felles.version>
+        <felles.version>6.0.0</felles.version>
         <kontrakter.version>9.3.8</kontrakter.version>
         <tidsserie.version>2.7.3</tidsserie.version>
         <flyway.version>11.11.2</flyway.version>
