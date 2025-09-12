@@ -18,7 +18,6 @@ import no.nav.k9.felles.sikkerhet.abac.PdpKlient;
 import no.nav.k9.felles.sikkerhet.abac.PdpRequest;
 import no.nav.k9.felles.sikkerhet.abac.TilgangType;
 import no.nav.k9.felles.sikkerhet.abac.Tilgangsbeslutning;
-import no.nav.k9.felles.sikkerhet.pdp.PdpKlientImpl;
 import no.nav.sif.abac.kontrakt.abac.dto.SaksinformasjonOgPersonerTilgangskontrollInputDto;
 
 @Dependent
