@@ -39,7 +39,7 @@ public class AppPdpKlient implements PdpKlient {
     @Override
     public Tilgangsbeslutning forespørTilgang(PdpRequest pdpRequest) {
         no.nav.sif.abac.kontrakt.abac.resultat.Tilgangsbeslutning resultat = forespørTilgangNy(pdpRequest);
-        return new Tilgangsbeslutning(resultat.harTilgang(), Set.of(), pdpRequest, TilgangType.INTERNBRUKER);
+        return new Tilgangsbeslutning(resultat.harTilgang(), pdpRequest, TilgangType.INTERNBRUKER);
     }
 
     @WithSpan
