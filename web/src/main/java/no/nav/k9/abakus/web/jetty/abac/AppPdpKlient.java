@@ -18,7 +18,6 @@ import no.nav.k9.felles.sikkerhet.abac.PdpKlient;
 import no.nav.k9.felles.sikkerhet.abac.PdpRequest;
 import no.nav.k9.felles.sikkerhet.abac.TilgangType;
 import no.nav.k9.felles.sikkerhet.abac.Tilgangsbeslutning;
-import no.nav.k9.felles.sikkerhet.pdp.PdpKlientImpl;
 import no.nav.sif.abac.kontrakt.abac.dto.SaksinformasjonOgPersonerTilgangskontrollInputDto;
 
 @Dependent
@@ -40,7 +39,7 @@ public class AppPdpKlient implements PdpKlient {
     @Override
     public Tilgangsbeslutning forespørTilgang(PdpRequest pdpRequest) {
         no.nav.sif.abac.kontrakt.abac.resultat.Tilgangsbeslutning resultat = forespørTilgangNy(pdpRequest);
-        return new Tilgangsbeslutning(resultat.harTilgang(), Set.of(), pdpRequest, TilgangType.INTERNBRUKER);
+        return new Tilgangsbeslutning(resultat.harTilgang(), pdpRequest, TilgangType.INTERNBRUKER);
     }
 
     @WithSpan
