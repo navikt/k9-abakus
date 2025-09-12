@@ -10,6 +10,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(value = Include.NON_ABSENT, content = Include.NON_EMPTY)
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.NONE, getterVisibility = JsonAutoDetect.Visibility.NONE, setterVisibility = JsonAutoDetect.Visibility.NONE, isGetterVisibility = JsonAutoDetect.Visibility.NONE, creatorVisibility = JsonAutoDetect.Visibility.NONE)
@@ -34,5 +36,15 @@ public class AktørIdPersonident extends PersonIdent {
     @Override
     public String getIdentType() {
         return IDENT_TYPE;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        return o instanceof AktørIdPersonident annen && ident.equals(annen.ident);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ident);
     }
 }
