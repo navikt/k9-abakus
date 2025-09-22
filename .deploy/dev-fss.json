@@ -81,7 +81,6 @@
     "AUDITLOGGER_ENABLED":"true",
     "AUDITLOGGER_VENDOR":"k9",
     "AUDITLOGGER_PRODUCT":"k9-abakus",
-    "ABAC_ATTRIBUTT_DRIFT":"no.nav.abac.attributter.k9.drift",
     "KAFKA_FATTEVEDTAK_TOPIC":"teamforeldrepenger.familie-vedtakfattet-v1",
     "FPABAKUS_IT_PS_GRUNNLAG_URL":"http://k9-infotrygd-grunnlag-paaroerende-sykdom/paaroerendeSykdom/grunnlag",
     "FPABAKUS_IT_SP_GRUNNLAG_URL":"http://fp-infotrygd-sykepenger.teamforeldrepenger/grunnlag",
