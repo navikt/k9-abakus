@@ -21,13 +21,13 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.aktor.AktørTjeneste;
-import no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt;
 import no.nav.k9.abakus.kobling.repository.KoblingRepository;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.Saksnummer;
 import no.nav.k9.felles.sikkerhet.abac.AbacDataAttributter;
 import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessurs;
-import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionAttributt;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionType;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursResourceType;
 import no.nav.k9.felles.sikkerhet.abac.StandardAbacAttributtType;
 import no.nav.k9.felles.sikkerhet.abac.TilpassetAbacAttributt;
 
@@ -60,7 +60,7 @@ public class DiagnostikkRestTjeneste {
     @Path("/grunnlag")
     @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     @Operation(description = "Henter en dump av info for debugging og analyse av en sak. Logger hvem som har hatt innsyn", summary = ("Henter en dump av info for debugging og analyse av en sak"), tags = "forvaltning")
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.READ, resource = AbakusBeskyttetRessursAttributt.DRIFT)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.READ, resource = BeskyttetRessursResourceType.DRIFT)
     public Response dumpSak(@NotNull @QueryParam("saksnummer") @Parameter(description = "saksnummer") @Valid @TilpassetAbacAttributt(supplierClass = AbacNoopSupplier.class) SaksnummerDto saksnummerDto,
                             @NotNull @QueryParam("aktørId") @Parameter(description = "aktørId") @Valid @TilpassetAbacAttributt(supplierClass = AbacAktørIdSupplier.class) AktørId aktørId,
                             @NotNull @QueryParam("ytelseType") @Parameter(description = "ytelseType") @Valid @TilpassetAbacAttributt(supplierClass = AbacNoopSupplier.class) YtelseType ytelseType) {

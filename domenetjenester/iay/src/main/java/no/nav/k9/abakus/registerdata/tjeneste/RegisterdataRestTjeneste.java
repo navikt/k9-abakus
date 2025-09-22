@@ -1,7 +1,5 @@
 package no.nav.k9.abakus.registerdata.tjeneste;
 
-import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.FAGSAK;
-
 import java.net.HttpURLConnection;
 import java.util.Optional;
 import java.util.Set;
@@ -47,7 +45,8 @@ import no.nav.k9.abakus.registerdata.tjeneste.dto.TaskResponsDto;
 import no.nav.k9.felles.sikkerhet.abac.AbacDataAttributter;
 import no.nav.k9.felles.sikkerhet.abac.AbacDto;
 import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessurs;
-import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionAttributt;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionType;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursResourceType;
 import no.nav.k9.felles.sikkerhet.abac.StandardAbacAttributtType;
 
 @OpenAPIDefinition(tags = @Tag(name = "registerinnhenting"))
@@ -73,7 +72,7 @@ public class RegisterdataRestTjeneste {
     @Path("/innhent/async")
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(description = "Trigger registerinnhenting for en gitt id", tags = "registerinnhenting")
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.CREATE, resource = FAGSAK)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.CREATE, resource = BeskyttetRessursResourceType.FAGSAK)
     @SuppressWarnings({"findsecbugs:JAXRS_ENDPOINT", "resource"})
     public Response innhentOgLagreRegisterdataAsync(@Parameter(name = "innhent") @Valid InnhentRegisterdataAbacDto dto) {
         Response response;
@@ -98,7 +97,7 @@ public class RegisterdataRestTjeneste {
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(description = "Sjekker innhentingFerdig på async innhenting og gir siste referanseid på grunnlaget når tasken er ferdig. "
         + "Hvis ikke innhentingFerdig", tags = "registerinnhenting")
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.READ, resource = FAGSAK)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.READ, resource = BeskyttetRessursResourceType.FAGSAK)
     @SuppressWarnings({"findsecbugs:JAXRS_ENDPOINT", "resource"})
     public Response innhentAsyncStatus(@Parameter(name = "status") @Valid SjekkStatusAbacDto dto) {
         Response response;

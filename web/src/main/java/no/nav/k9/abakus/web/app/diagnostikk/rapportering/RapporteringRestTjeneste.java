@@ -7,6 +7,8 @@ import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursResourceType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,9 +32,8 @@ import jakarta.ws.rs.core.Response;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.web.app.diagnostikk.DumpOutput;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
-import no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt;
 import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessurs;
-import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionAttributt;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionType;
 import no.nav.k9.felles.sikkerhet.abac.TilpassetAbacAttributt;
 import no.nav.k9.prosesstask.rest.AbacEmptySupplier;
 
@@ -63,7 +64,7 @@ public class RapporteringRestTjeneste {
     @Path("/generer")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Operation(description = "Dumper en rapport av data", summary = ("Henter en dump av info for debugging og analyse av en sak"), tags = "rapportering")
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.READ, resource = AbakusBeskyttetRessursAttributt.DRIFT)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.READ, resource = BeskyttetRessursResourceType.DRIFT)
     public Response genererRapportForYtelse(@NotNull @FormParam("ytelseType") @Parameter(description = "ytelseType", required = true) @Valid @TilpassetAbacAttributt(supplierClass = AbacEmptySupplier.class) YtelseTypeKode ytelseTypeKode,
                                             @NotNull @FormParam("rapport") @Parameter(description = "rapport", required = true) @Valid @TilpassetAbacAttributt(supplierClass = AbacEmptySupplier.class) RapportType rapportType,
                                             @NotNull @FormParam("periode") @Parameter(description = "periode", required = true, example = "2020-01-01/2020-12-31") @Valid @TilpassetAbacAttributt(supplierClass = AbacEmptySupplier.class) IsoPeriode periode) {
