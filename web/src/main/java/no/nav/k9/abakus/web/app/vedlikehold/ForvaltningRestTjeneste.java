@@ -1,8 +1,6 @@
 package no.nav.k9.abakus.web.app.vedlikehold;
 
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
-import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.DRIFT;
-import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.FAGSAK;
 
 import java.util.List;
 import java.util.function.Function;
@@ -32,7 +30,8 @@ import no.nav.k9.abakus.typer.JournalpostId;
 import no.nav.k9.abakus.typer.OrgNummer;
 import no.nav.k9.felles.sikkerhet.abac.AbacDataAttributter;
 import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessurs;
-import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionAttributt;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionType;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursResourceType;
 import no.nav.k9.felles.sikkerhet.abac.StandardAbacAttributtType;
 import no.nav.k9.felles.sikkerhet.abac.TilpassetAbacAttributt;
 
@@ -63,7 +62,7 @@ public class ForvaltningRestTjeneste {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Operation(description = "Vasker begrunnelse for ugyldige tegn", tags = "FORVALTNING", responses = {@ApiResponse(responseCode = "200", description = "Forekomster av egen næring med vasket begrunnelse")})
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.CREATE, resource = DRIFT)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.CREATE, resource = BeskyttetRessursResourceType.DRIFT)
     public Response vaskBegrunnelse(@TilpassetAbacAttributt(supplierClass = ForvaltningRestTjeneste.AbacDataSupplier.class) @NotNull @Valid UuidDto eksternReferanse) {
         var iayAggregat = iayTjeneste.hentAggregat(new KoblingReferanse(eksternReferanse.getReferanse()));
         var oppgittOpptjening = iayAggregat.getOppgittOpptjeningAggregat().stream().flatMap(oo -> oo.getOppgitteOpptjeninger().stream()).toList();
@@ -86,7 +85,7 @@ public class ForvaltningRestTjeneste {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Operation(description = "Setter oppgitt opptjening til å være varig endring", tags = "FORVALTNING", responses = {@ApiResponse(responseCode = "200", description = "Forekomster av utgått aktørid erstattet.")})
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.UPDATE, resource = FAGSAK)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.UPDATE, resource = BeskyttetRessursResourceType.FAGSAK)
     public Response setVarigEndring(@TilpassetAbacAttributt(supplierClass = ForvaltningRestTjeneste.AbacDataSupplier.class) @NotNull @Valid VarigEndringRequest request) {
         var oppgittOpptjeningEksternReferanse = request.getEksternReferanse().toUuidReferanse();
         var org = new OrgNummer(request.getOrgnummer());
@@ -110,7 +109,7 @@ public class ForvaltningRestTjeneste {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Operation(description = "Fjerner angitt inntektsmelding/journalpost fra grunnlag", tags = "FORVALTNING", responses = {@ApiResponse(responseCode = "200", description = "Inntektsmelding eliminert.")})
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.UPDATE, resource = FAGSAK)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.UPDATE, resource = BeskyttetRessursResourceType.FAGSAK)
     public Response eliminerInntektsmelding(@TilpassetAbacAttributt(supplierClass = ForvaltningRestTjeneste.AbacDataSupplier.class) @NotNull @Valid EliminerInntektsmeldingRequest request) {
         var koblingReferanse = new KoblingReferanse(request.getEksternReferanse().toUuidReferanse());
         var journalpost = new JournalpostId(request.getJournalpostId());
@@ -142,7 +141,7 @@ public class ForvaltningRestTjeneste {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Operation(description = "MERGE: Oppdaterer aktørid for bruker i nødvendige tabeller", tags = "FORVALTNING", responses = {@ApiResponse(responseCode = "200", description = "Forekomster av utgått aktørid erstattet.")})
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.CREATE, resource = DRIFT)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.CREATE, resource = BeskyttetRessursResourceType.DRIFT)
     public Response oppdaterAktoerId(@TilpassetAbacAttributt(supplierClass = ForvaltningRestTjeneste.AktørRequestAbacDataSupplier.class) @NotNull @Valid ByttAktørRequest request) {
         int antall = oppdaterAktørIdFor(request.getUtgåttAktør().getVerdi(), request.getGyldigAktør().getVerdi());
         return Response.ok(antall).build();

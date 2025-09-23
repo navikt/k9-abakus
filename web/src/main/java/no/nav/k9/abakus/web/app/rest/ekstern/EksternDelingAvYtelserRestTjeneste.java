@@ -1,6 +1,5 @@
 package no.nav.k9.abakus.web.app.rest.ekstern;
 
-import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.APPLIKASJON;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,6 +11,8 @@ import java.util.UUID;
 import java.util.function.Function;
 
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.request.GrunnlagRequest;
+
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursResourceType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,7 @@ import no.nav.k9.abakus.vedtak.extract.v1.ConvertToYtelseV1;
 import no.nav.k9.felles.konfigurasjon.konfig.Tid;
 import no.nav.k9.felles.sikkerhet.abac.AbacDataAttributter;
 import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessurs;
-import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionAttributt;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionType;
 import no.nav.k9.felles.sikkerhet.abac.StandardAbacAttributtType;
 import no.nav.k9.felles.sikkerhet.abac.TilpassetAbacAttributt;
 
@@ -98,7 +99,7 @@ public class EksternDelingAvYtelserRestTjeneste {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     @Operation(description = "Henter alle vedtak for en gitt person, evt med periode etter en fom", tags = "ytelse")
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.READ, resource = APPLIKASJON) //, availabilityType = AvailabilityType.ALL)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.READ, resource = BeskyttetRessursResourceType.APPLIKASJON) //, availabilityType = AvailabilityType.ALL)
     @SuppressWarnings("findsecbugs:JAXRS_ENDPOINT")
     public List<Ytelse> hentVedtakYtelse(@NotNull @TilpassetAbacAttributt(supplierClass = EksternDelingAvYtelserRestTjeneste.VedtakForPeriodeRequestAbacDataSupplier.class) @Valid VedtakForPeriodeRequest request) {
         LOG.info("ABAKUS VEDTAK ekstern /hent-ytelse-vedtak for ytelser {}", request.getYtelser());

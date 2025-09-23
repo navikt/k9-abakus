@@ -1,7 +1,5 @@
 package no.nav.k9.abakus.iay.tjeneste;
 
-import static no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt.FAGSAK;
-
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -24,7 +22,6 @@ import no.nav.abakus.iaygrunnlag.request.OppgittOpptjeningMottattRequest;
 import no.nav.k9.abakus.domene.iay.GrunnlagReferanse;
 import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningBuilder;
 import no.nav.k9.abakus.felles.LoggUtil;
-import no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt;
 import no.nav.k9.abakus.iay.OppgittOpptjeningTjeneste;
 import no.nav.k9.abakus.iay.tjeneste.dto.iay.MapOppgittOpptjening;
 import no.nav.k9.abakus.kobling.KoblingReferanse;
@@ -33,7 +30,8 @@ import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.Saksnummer;
 import no.nav.k9.felles.sikkerhet.abac.AbacDataAttributter;
 import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessurs;
-import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionAttributt;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionType;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursResourceType;
 import no.nav.k9.felles.sikkerhet.abac.StandardAbacAttributtType;
 import no.nav.k9.felles.sikkerhet.abac.TilpassetAbacAttributt;
 
@@ -58,7 +56,7 @@ public class OppgittOpptjeningRestTjeneste {
     @POST
     @Path("/motta")
     @Operation(description = "Lagrer ned mottatt oppgitt opptjening", tags = "oppgitt opptjening", responses = {@ApiResponse(description = "Oppdatert grunnlagreferanse", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UuidDto.class)))})
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.CREATE, resource = AbakusBeskyttetRessursAttributt.FAGSAK)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.CREATE, resource = BeskyttetRessursResourceType.FAGSAK)
     @SuppressWarnings({"findsecbugs:JAXRS_ENDPOINT", "resource"})
     public Response lagreOppgittOpptjening(@NotNull @TilpassetAbacAttributt(supplierClass = AbacDataSupplier.class) @Valid OppgittOpptjeningMottattRequest mottattRequest) {
         LoggUtil.setupLogMdc(mottattRequest.getYtelseType(), mottattRequest.getSaksnummer(), mottattRequest.getKoblingReferanse());
@@ -94,7 +92,7 @@ public class OppgittOpptjeningRestTjeneste {
     @POST
     @Path("/overstyr")
     @Operation(description = "Lagrer ned mottatt oppgitt opptjening", tags = "oppgitt opptjening", responses = {@ApiResponse(description = "Oppdatert grunnlagreferanse", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UuidDto.class)))})
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.UPDATE, resource = FAGSAK)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.UPDATE, resource = BeskyttetRessursResourceType.FAGSAK)
     @SuppressWarnings({"findsecbugs:JAXRS_ENDPOINT", "resource"})
     public Response lagreOverstyrtOppgittOpptjening(@NotNull @TilpassetAbacAttributt(supplierClass = AbacDataSupplier.class) @Valid OppgittOpptjeningMottattRequest mottattRequest) {
         Response response;
@@ -123,7 +121,7 @@ public class OppgittOpptjeningRestTjeneste {
     @POST
     @Path("/motta-og-nullstill-overstyring")
     @Operation(description = "Lagrer ned mottatt oppgitt opptjening og fjerner overstyring om den finnes", tags = "oppgitt opptjening", responses = {@ApiResponse(description = "Oppdatert grunnlagreferanse", content = @Content(mediaType = "application/json", schema = @Schema(implementation = UuidDto.class)))})
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.UPDATE, resource = FAGSAK)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.UPDATE, resource = BeskyttetRessursResourceType.FAGSAK)
     @SuppressWarnings({"findsecbugs:JAXRS_ENDPOINT", "resource"})
     public Response lagreOppgittOpptjeningOgNullstillOverstyring(@NotNull @TilpassetAbacAttributt(supplierClass = AbacDataSupplier.class) @Valid OppgittOpptjeningMottattRequest mottattRequest) {
         Response response;

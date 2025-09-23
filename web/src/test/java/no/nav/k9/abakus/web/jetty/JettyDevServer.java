@@ -17,7 +17,6 @@ public class JettyDevServer extends JettyServer {
     private static final Logger log = LoggerFactory.getLogger(JettyDevServer.class);
 
     public static void main(String[] args) throws Exception {
-        System.setProperty("abac.attributt.drift", "no.nav.abac.attributter.k9.oppdrag.drift");
         JettyDevServer devServer = new JettyDevServer();
         Server server = devServer.bootStrap();
         server.join();
