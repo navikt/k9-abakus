@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektsmeldingInnsendingsårsakType;
+import no.nav.abakus.iaygrunnlag.kodeverk.InntektsmeldingType;
 import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
 import no.nav.k9.abakus.typer.Beløp;
 import no.nav.k9.abakus.typer.EksternArbeidsforholdRef;
@@ -109,6 +110,12 @@ public class InntektsmeldingBuilder {
     public InntektsmeldingBuilder medKanalreferanse(String kanalreferanse) {
         precondition();
         kladd.setKanalreferanse(kanalreferanse);
+        return this;
+    }
+
+    public InntektsmeldingBuilder medInntektsmeldingType(InntektsmeldingType inntektsmeldingType) {
+        precondition();
+        kladd.setInntektsmeldingType(inntektsmeldingType);
         return this;
     }
 

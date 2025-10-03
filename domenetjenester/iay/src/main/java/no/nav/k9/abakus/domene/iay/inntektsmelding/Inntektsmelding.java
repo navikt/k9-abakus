@@ -27,6 +27,7 @@ import jakarta.persistence.Version;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektsmeldingInnsendingsårsakType;
+import no.nav.abakus.iaygrunnlag.kodeverk.InntektsmeldingType;
 import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
 import no.nav.k9.abakus.domene.iay.InntektsmeldingAggregat;
 import no.nav.k9.abakus.felles.diff.ChangeTracked;
@@ -138,6 +139,9 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
     @ChangeTracked
     private InntektsmeldingInnsendingsårsakType innsendingsårsak = InntektsmeldingInnsendingsårsakType.UDEFINERT;
 
+    @Column(name = "inntektsmelding_type")
+    private InntektsmeldingType inntektsmeldingType;
+
     @Version
     @Column(name = "versjon", nullable = false)
     private long versjon;
@@ -227,6 +231,14 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
 
     void setInnsendingstidspunkt(LocalDateTime innsendingstidspunkt) {
         this.innsendingstidspunkt = innsendingstidspunkt;
+    }
+
+    public InntektsmeldingType getInntektsmeldingType() {
+        return inntektsmeldingType;
+    }
+
+    void setInntektsmeldingType(InntektsmeldingType inntektsmeldingType) {
+        this.inntektsmeldingType = inntektsmeldingType;
     }
 
     public String getKanalreferanse() {
