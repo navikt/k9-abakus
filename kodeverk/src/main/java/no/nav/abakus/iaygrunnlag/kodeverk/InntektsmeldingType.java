@@ -14,8 +14,7 @@ public enum InntektsmeldingType implements Kodeverdi {
     ORDINÆR("ORDINÆR", "Ordinær"),
     OMSORGSPENGER_REFUSJON("OMSORGSPENGER_REFUSJON", "Omsorgspenger refusjon"),
     ARBEIDSGIVERINITIERT_NYANSATT("ARBEIDSGIVERINITIERT_NYANSATT", "Arbeidsgiverinitiert nyansatt"),
-    ARBEIDSGIVERINITIERT_UREGISTRERT("ARBEIDSGIVERINITIERT_UREGISTRERT", "Arbeidsgiverinitiert uregistrert"),
-    UDEFINERT("-", "Ikke definert");
+    ARBEIDSGIVERINITIERT_UREGISTRERT("ARBEIDSGIVERINITIERT_UREGISTRERT", "Arbeidsgiverinitiert uregistrert");
 
     private static final Map<String, InntektsmeldingType> KODER = new LinkedHashMap<>();
 
