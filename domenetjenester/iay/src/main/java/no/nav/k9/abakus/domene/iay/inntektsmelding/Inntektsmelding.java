@@ -34,6 +34,7 @@ import no.nav.k9.abakus.felles.diff.ChangeTracked;
 import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
 import no.nav.k9.abakus.felles.jpa.BaseEntitet;
 import no.nav.k9.abakus.iay.jpa.InntektsmeldingInnsendingsårsakKodeverdiConverter;
+import no.nav.k9.abakus.iay.jpa.InntektsmeldingTypeKodeverdiConverter;
 import no.nav.k9.abakus.typer.Beløp;
 import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
 import no.nav.k9.abakus.typer.JournalpostId;
@@ -139,6 +140,7 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
     @ChangeTracked
     private InntektsmeldingInnsendingsårsakType innsendingsårsak = InntektsmeldingInnsendingsårsakType.UDEFINERT;
 
+    @Convert(converter = InntektsmeldingTypeKodeverdiConverter.class)
     @Column(name = "inntektsmelding_type", updatable = false)
     private InntektsmeldingType inntektsmeldingType;
 
