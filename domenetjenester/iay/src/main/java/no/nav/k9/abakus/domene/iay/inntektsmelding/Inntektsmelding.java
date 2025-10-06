@@ -139,7 +139,7 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
     @ChangeTracked
     private InntektsmeldingInnsendingsårsakType innsendingsårsak = InntektsmeldingInnsendingsårsakType.UDEFINERT;
 
-    @Column(name = "inntektsmelding_type")
+    @Column(name = "inntektsmelding_type", updatable = false)
     private InntektsmeldingType inntektsmeldingType;
 
     @Version
@@ -166,6 +166,7 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
         this.kanalreferanse = inntektsmelding.getKanalreferanse();
         this.kildesystem = inntektsmelding.getKildesystem();
         this.mottattDato = inntektsmelding.getMottattDato();
+        this.inntektsmeldingType = inntektsmelding.getInntektsmeldingType();
 
         this.graderinger = inntektsmelding.getGraderinger().stream().map(g -> {
             var data = new Gradering(g);
