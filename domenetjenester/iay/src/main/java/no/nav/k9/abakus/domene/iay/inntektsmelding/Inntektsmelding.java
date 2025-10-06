@@ -469,11 +469,23 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "<" + "id=" + id + ", virksomhet=" + arbeidsgiver + ", arbeidsforholdId='" + arbeidsforholdRef + '\''
-            + ", startDatoPermisjon=" + startDatoPermisjon + ", nærRelasjon=" + nærRelasjon + ", journalpostId=" + journalpostId + ", inntektBeløp="
-            + inntektBeløp + ", refusjonBeløpPerMnd=" + refusjonBeløpPerMnd + ", refusjonOpphører=" + refusjonOpphører + ", innsendingsårsak= "
-            + innsendingsårsak + ", innsendingstidspunkt= " + innsendingstidspunkt + ", kanalreferanse=" + kanalreferanse + ", kildesystem="
-            + kildesystem + ", mottattDato=" + mottattDato + '>';
+        return getClass().getSimpleName()
+            + "<" + "id=" + id
+            + ", virksomhet=" + arbeidsgiver
+            + ", arbeidsforholdId='" + arbeidsforholdRef + '\''
+            + ", startDatoPermisjon=" + startDatoPermisjon
+            + ", nærRelasjon=" + nærRelasjon
+            + ", journalpostId=" + journalpostId
+            + ", inntektBeløp=" + inntektBeløp
+            + ", refusjonBeløpPerMnd=" + refusjonBeløpPerMnd
+            + ", refusjonOpphører=" + refusjonOpphører
+            + ", innsendingsårsak= " + innsendingsårsak
+            + ", innsendingstidspunkt= " + innsendingstidspunkt
+            + ", kanalreferanse=" + kanalreferanse
+            + ", kildesystem=" + kildesystem
+            + ", mottattDato=" + mottattDato
+            + ", inntektsmeldingType=" + inntektsmeldingType
+            + '>';
     }
 
 }
