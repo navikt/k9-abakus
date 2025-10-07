@@ -27,7 +27,7 @@
         <sonar.projectName>k9-abakus</sonar.projectName>
         <sonar.projectKey>navikt_k9-abakus</sonar.projectKey>
 
-        <java.version>21</java.version>
+        <java.version>25</java.version>
         <kontrakt.java.version>21</kontrakt.java.version>
 
         <felles.version>7.1.1</felles.version>
