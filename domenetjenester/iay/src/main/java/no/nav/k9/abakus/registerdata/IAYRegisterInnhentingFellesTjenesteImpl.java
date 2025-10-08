@@ -5,6 +5,7 @@ import static no.nav.k9.abakus.registerdata.ByggLønnsinntektInntektTjeneste.map
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -14,7 +15,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.StructuredTaskScope;
 import java.util.stream.Collectors;
+
+import no.nav.k9.abakus.registerdata.inntekt.SystemuserThreadLogin;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -67,6 +75,7 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
     private ByggYrkesaktiviteterTjeneste byggYrkesaktiviteterTjeneste;
     private AktørTjeneste aktørConsumer;
     private SigrunTjeneste sigrunTjeneste;
+    private SystemuserThreadLogin systemuserThreadLogin;
 
     protected IAYRegisterInnhentingFellesTjenesteImpl() {
     }
@@ -76,12 +85,14 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
                                                       InnhentingSamletTjeneste innhentingSamletTjeneste,
                                                       AktørTjeneste aktørConsumer,
                                                       SigrunTjeneste sigrunTjeneste,
-                                                      VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste) {
+                                                      VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste,
+                                                      SystemuserThreadLogin systemuserThreadLogin) {
         this.inntektArbeidYtelseTjeneste = inntektArbeidYtelseTjeneste;
         this.virksomhetTjeneste = virksomhetTjeneste;
         this.innhentingSamletTjeneste = innhentingSamletTjeneste;
         this.aktørConsumer = aktørConsumer;
         this.sigrunTjeneste = sigrunTjeneste;
+        this.systemuserThreadLogin = systemuserThreadLogin;
         this.ytelseRegisterInnhenting = new YtelseRegisterInnhenting(innhentingSamletTjeneste, vedtattYtelseInnhentingTjeneste);
         this.byggYrkesaktiviteterTjeneste = new ByggYrkesaktiviteterTjeneste();
     }
@@ -222,9 +233,9 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         }
         int length = arbeidsgiverIdentifikator.length();
         if (length <= 4) {
-            return "*" .repeat(length);
+            return "*".repeat(length);
         }
-        return "*" .repeat(length - 4) + arbeidsgiverIdentifikator.substring(length - 4);
+        return "*".repeat(length - 4) + arbeidsgiverIdentifikator.substring(length - 4);
     }
 
     private LocalDate finnHentedatoForJuridisk(Set<YearMonth> inntekterForMåneder) {
@@ -265,10 +276,17 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         }
 
         if (informasjonsElementer.stream().anyMatch(inntektselementer::contains)) {
-            informasjonsElementer.stream()
-                .filter(ELEMENT_TIL_INNTEKTS_KILDE_MAP::containsKey)
-                .forEach(registerdataElement -> innhentInntektsopplysningFor(kobling, aktørId, opplysningsPeriode, builder, informasjonsElementer,
-                    registerdataElement));
+            try (var scope = StructuredTaskScope.open()){
+                informasjonsElementer.stream()
+                    .filter(ELEMENT_TIL_INNTEKTS_KILDE_MAP::containsKey)
+                    .forEach(registerdataElement -> systemuserThreadLogin.fork(scope,
+                        () -> innhentInntektsopplysningFor(kobling, aktørId, opplysningsPeriode, builder, informasjonsElementer,registerdataElement)));
+                try {
+                    scope.join();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
         } else {
             Set.of(RegisterdataElement.INNTEKT_PENSJONSGIVENDE)
                 .forEach(registerdataElement -> innhentInntektsopplysningFor(kobling, aktørId, opplysningsPeriode, builder, informasjonsElementer,
@@ -288,7 +306,10 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
             kobling.getYtelseType());
 
         if (informasjonsElementer.contains(registerdataElement)) {
-            leggTilInntekter(aktørId, builder, inntektsInformasjon);
+            //synchronized på builder da den ikke er thread-safe, og denne funksjonen kalles asynkront
+            synchronized (builder) {
+                leggTilInntekter(aktørId, builder, inntektsInformasjon);
+            }
         }
     }
 

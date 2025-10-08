@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +52,10 @@ public class InntektTjeneste {
     private SystemUserOidcRestClient oidcRestClient;
     private String url;
 
+    //bruker semafor for å begrense antall samtidige kall til inntektskomponenten
+    //regner ikke med å ha så mange i praksis pga bare 3 tråder brukes for å kjøre tasker, og hver av disse kaller inntil en håndfull ganger
+    private Semaphore semaphore = new Semaphore(15);
+
 
     InntektTjeneste() {
         // For CDI proxy
@@ -73,15 +79,19 @@ public class InntektTjeneste {
 
     public HentInntektListeBolkResponse finnInntektRaw(FinnInntektRequest finnInntektRequest, InntektskildeType kilde, YtelseType ytelse) {
         var request = lagRequest(finnInntektRequest, kilde, ytelse);
-
-        HentInntektListeBolkResponse response;
         try {
-            response = oidcRestClient.post(URI.create(url), request, HentInntektListeBolkResponse.class);
-        } catch (RuntimeException e) {
-            throw new IntegrasjonException("FP-824246",
-                "Feil ved kall til inntektstjenesten. Meld til #team_registre og #produksjonshendelser hvis dette skjer over lengre tidsperiode.", e);
+            boolean ledigPlass = semaphore.tryAcquire(30, TimeUnit.SECONDS);
+            if (!ledigPlass) {
+                throw new IllegalStateException("Fikk timeout på venting av semafor for kall til inntektskomponenten. Underøk om tjenesten er nede, vurder å øke antall tillatelser i semaforen.");
+            }
+        } catch (InterruptedException e) {
+            throw new IllegalStateException("Henting fra inntektskomponenten ble avbrutt", e);
         }
-        return response;
+        try {
+            return oidcRestClient.post(URI.create(url), request, HentInntektListeBolkResponse.class);
+        } catch (RuntimeException e) {
+            throw new IntegrasjonException("FP-824246", "Feil ved kall til inntektstjenesten. Meld til #team_registre og #produksjonshendelser hvis dette skjer over lengre tidsperiode.", e);
+        }
     }
 
     private HentInntektListeBolkRequest lagRequest(FinnInntektRequest finnInntektRequest, InntektskildeType kilde, YtelseType ytelse) {

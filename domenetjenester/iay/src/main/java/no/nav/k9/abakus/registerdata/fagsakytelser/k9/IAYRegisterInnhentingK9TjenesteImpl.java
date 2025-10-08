@@ -12,6 +12,7 @@ import no.nav.k9.abakus.registerdata.IAYRegisterInnhentingFellesTjenesteImpl;
 import no.nav.k9.abakus.registerdata.InnhentingSamletTjeneste;
 import no.nav.k9.abakus.registerdata.VedtattYtelseInnhentingTjeneste;
 import no.nav.k9.abakus.registerdata.arbeidsgiver.virksomhet.VirksomhetTjeneste;
+import no.nav.k9.abakus.registerdata.inntekt.SystemuserThreadLogin;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.SigrunTjeneste;
 
 @ApplicationScoped
@@ -31,9 +32,10 @@ public class IAYRegisterInnhentingK9TjenesteImpl extends IAYRegisterInnhentingFe
                                                InnhentingSamletTjeneste innhentingSamletTjeneste,
                                                AktørTjeneste aktørConsumer,
                                                SigrunTjeneste sigrunTjeneste,
-                                               VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste) {
+                                               VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste,
+                                               SystemuserThreadLogin systemuserThreadLogin) {
         super(inntektArbeidYtelseTjeneste, virksomhetTjeneste, innhentingSamletTjeneste, aktørConsumer, sigrunTjeneste,
-            vedtattYtelseInnhentingTjeneste);
+            vedtattYtelseInnhentingTjeneste, systemuserThreadLogin);
     }
 
     // Skal alltid innhente næringsinntekter om det ligger i informasjonselementer, dette for å støtte 8-47.
