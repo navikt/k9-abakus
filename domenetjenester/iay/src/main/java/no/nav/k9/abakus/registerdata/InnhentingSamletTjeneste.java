@@ -1,26 +1,35 @@
 package no.nav.k9.abakus.registerdata;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseStatus;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
+import no.nav.fpsak.tidsserie.LocalDateInterval;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.Arbeidsforhold;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdTjeneste;
+import no.nav.k9.abakus.registerdata.inntekt.SystemuserThreadLogin;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.FinnInntektRequest;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.Månedsinntekt;
 import no.nav.k9.abakus.registerdata.ytelse.arena.FpwsproxyKlient;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.InnhentingInfotrygdTjeneste;
@@ -40,6 +49,7 @@ public class InnhentingSamletTjeneste {
     private InntektTjeneste inntektTjeneste;
     private FpwsproxyKlient fpwsproxyKlient;
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
+    private SystemuserThreadLogin systemuserThreadLogin;
 
     InnhentingSamletTjeneste() {
         //CDI
@@ -49,20 +59,57 @@ public class InnhentingSamletTjeneste {
     public InnhentingSamletTjeneste(ArbeidsforholdTjeneste arbeidsforholdTjeneste,
 
                                     InntektTjeneste inntektTjeneste,
-                                    InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste, FpwsproxyKlient fpwsproxyKlient) {
+                                    InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste, FpwsproxyKlient fpwsproxyKlient,
+                                    SystemuserThreadLogin systemuserThreadLogin) {
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
+        this.systemuserThreadLogin = systemuserThreadLogin;
     }
 
     public InntektsInformasjon getInntektsInformasjon(AktørId aktørId, IntervallEntitet periode, InntektskildeType kilde, YtelseType ytelse) {
-        FinnInntektRequest.FinnInntektRequestBuilder builder = FinnInntektRequest.builder(YearMonth.from(periode.getFomDato()),
-            YearMonth.from(periode.getTomDato()));
+        // inntektskomponenten splitter opp perioden i hele 12-månedersbolker og gjør sekvensielle kall bakover
+        // vi splitter heller opp perioden her og gjør parallelle kall
+        List<InntektsInformasjon> svarene = Collections.synchronizedList(new ArrayList<>());
+        List<Future<?>> futures = new ArrayList<>();
+        try (ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()) {
+            for (IntervallEntitet p : splittHver12Måned(periode)) {
+                FinnInntektRequest.FinnInntektRequestBuilder builder = FinnInntektRequest.builder(YearMonth.from(p.getFomDato()), YearMonth.from(p.getTomDato()));
+                builder.medAktørId(aktørId.getId());
+                futures.add(systemuserThreadLogin.submitToExecutorService(executorService, () -> svarene.add(inntektTjeneste.finnInntekt(builder.build(), kilde, ytelse))));
+            }
+        }
+        for (Future<?> future : futures) {
+            try {
+                //ikke fjern, må kalle på future for å oppdage exceptions dersom et eller flere av kallene feiler
+                //ved evt. overgang til structured concurrency kan dette fjernes
+                future.get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
-        builder.medAktørId(aktørId.getId());
+        List<Månedsinntekt> alleMånedsinntekter = svarene.stream()
+            .flatMap(it -> it.getMånedsinntekter().stream())
+            .sorted(Comparator.comparing(Månedsinntekt::getMåned))
+            .toList();
+        return new InntektsInformasjon(alleMånedsinntekter, kilde);
 
-        return inntektTjeneste.finnInntekt(builder.build(), kilde, ytelse);
+    }
+
+    static List<IntervallEntitet> splittHver12Måned(IntervallEntitet periode) {
+        LocalDateInterval helePerioden = new LocalDateInterval(periode.getFomDato(), periode.getTomDato());
+        LocalDate startFørsteMåned = helePerioden.getFomDato().withDayOfMonth(1);
+        LocalDateInterval år = new LocalDateInterval(startFørsteMåned, startFørsteMåned.plusYears(1).minusDays(1));
+
+        List<IntervallEntitet> splittedePerioder = new ArrayList<>();
+        while (helePerioden.overlaps(år)) {
+            LocalDateInterval overlapp = helePerioden.overlap(år).get();
+            splittedePerioder.add(IntervallEntitet.fraOgMedTilOgMed(overlapp.getFomDato(), overlapp.getTomDato()));
+            år = new LocalDateInterval(år.getFomDato().plusYears(1), år.getFomDato().plusYears(2).minusDays(1));
+        }
+        return splittedePerioder;
     }
 
     public Map<ArbeidsforholdIdentifikator, List<Arbeidsforhold>> getArbeidsforhold(AktørId aktørId,
