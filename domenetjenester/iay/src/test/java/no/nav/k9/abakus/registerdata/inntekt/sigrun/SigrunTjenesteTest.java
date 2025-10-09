@@ -3,7 +3,6 @@ package no.nav.k9.abakus.registerdata.inntekt.sigrun;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.math.BigDecimal;
-import java.net.SocketException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.MonthDay;
@@ -11,7 +10,7 @@ import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
-import no.nav.k9.abakus.registerdata.inntekt.SystemuserThreadLogin;
+import no.nav.k9.abakus.felles.samtidighet.SystemuserThreadLogin;
 
 import no.nav.k9.felles.exception.HttpStatuskodeException;
 

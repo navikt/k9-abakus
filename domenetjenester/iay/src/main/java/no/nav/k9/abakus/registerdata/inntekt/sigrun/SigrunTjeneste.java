@@ -19,7 +19,8 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektspostType;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
-import no.nav.k9.abakus.registerdata.inntekt.SystemuserThreadLogin;
+import no.nav.k9.abakus.felles.samtidighet.SystemuserThreadLogin;
+import no.nav.k9.abakus.felles.samtidighet.UncheckedInterruptException;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.PgiFolketrygdenResponse;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.SigrunPgiFolketrygdenMapper;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.SigrunRestClient;
@@ -69,7 +70,8 @@ public class SigrunTjeneste {
             try {
                 scope.join();
             } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+                Thread.currentThread().interrupt();
+                throw new UncheckedInterruptException("En tråd ble interrupted mens den hentet PGI fra Sigrun",e);
             }
         }
         svarene.sort(Comparator.comparing(PgiFolketrygdenResponse::inntektsaar).reversed());

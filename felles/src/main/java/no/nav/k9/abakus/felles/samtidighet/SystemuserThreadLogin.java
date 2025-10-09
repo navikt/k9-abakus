@@ -1,4 +1,4 @@
-package no.nav.k9.abakus.registerdata.inntekt;
+package no.nav.k9.abakus.felles.samtidighet;
 
 import java.util.concurrent.StructuredTaskScope;
 

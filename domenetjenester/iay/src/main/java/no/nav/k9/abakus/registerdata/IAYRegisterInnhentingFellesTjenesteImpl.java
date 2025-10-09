@@ -5,7 +5,6 @@ import static no.nav.k9.abakus.registerdata.ByggLønnsinntektInntektTjeneste.map
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.YearMonth;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -15,14 +14,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.StructuredTaskScope;
 import java.util.stream.Collectors;
 
-import no.nav.k9.abakus.registerdata.inntekt.SystemuserThreadLogin;
+import no.nav.k9.abakus.felles.samtidighet.SystemuserThreadLogin;
+
+import no.nav.k9.abakus.felles.samtidighet.UncheckedInterruptException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -284,7 +281,8 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
                 try {
                     scope.join();
                 } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                    Thread.currentThread().interrupt();
+                    throw new UncheckedInterruptException("En tråd ble interrupted mens den hentet inntektsopplysninger", e);
                 }
             }
         } else {

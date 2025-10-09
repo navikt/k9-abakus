@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+import no.nav.k9.abakus.felles.samtidighet.UncheckedInterruptException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -85,7 +87,8 @@ public class InntektTjeneste {
                 throw new IllegalStateException("Fikk timeout på venting av semafor for kall til inntektskomponenten. Underøk om tjenesten er nede, vurder å øke antall tillatelser i semaforen.");
             }
         } catch (InterruptedException e) {
-            throw new IllegalStateException("Henting fra inntektskomponenten ble avbrutt", e);
+            Thread.currentThread().interrupt();
+            throw new UncheckedInterruptException("En tråd ble interrupted mens den ventet på å få semafor",e);
         }
         try {
             return oidcRestClient.post(URI.create(url), request, HentInntektListeBolkResponse.class);
