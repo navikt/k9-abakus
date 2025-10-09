@@ -1,8 +1,5 @@
 package no.nav.k9.abakus.registerdata.inntekt;
 
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.concurrent.StructuredTaskScope;
 
 import org.slf4j.MDC;
@@ -25,22 +22,6 @@ public class SystemuserThreadLogin {
     public SystemuserThreadLogin(ContextTokenProvider tokenProvider, @KonfigVerdi(value = "CLIENT_SCOPE", required = false) String clientScope) {
         this.tokenProvider = tokenProvider;
         this.clientScope = clientScope;
-    }
-
-    public <T> Future<T> submitToExecutorService(ExecutorService executorService, Callable<T> task) {
-        //MDC er for å få med logg kontekst (saksnummer etc)
-        //wrap er for å ta med opentelemetry context
-        //login er for å kjøre som systembruker
-
-        String parentMdcContext = MDC.get("prosess");
-        Callable<T> wrappedLoggedInTask = Context.current().wrap(() -> {
-            MDC.put("prosess", parentMdcContext);
-            login();
-            T resultat = task.call();
-            logout();
-            return resultat;
-        });
-        return executorService.submit(wrappedLoggedInTask);
     }
 
     protected void login() {
