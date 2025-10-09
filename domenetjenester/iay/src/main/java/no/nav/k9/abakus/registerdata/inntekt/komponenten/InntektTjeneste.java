@@ -91,6 +91,8 @@ public class InntektTjeneste {
             return oidcRestClient.post(URI.create(url), request, HentInntektListeBolkResponse.class);
         } catch (RuntimeException e) {
             throw new IntegrasjonException("FP-824246", "Feil ved kall til inntektstjenesten. Meld til #team_registre og #produksjonshendelser hvis dette skjer over lengre tidsperiode.", e);
+        } finally {
+            semaphore.release();
         }
     }
 
