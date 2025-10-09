@@ -5,7 +5,8 @@ ENV TZ=Europe/Oslo
 
 ENV JAVA_OPTS="-Djava.security.egd=file:/dev/urandom \
     -XX:-OmitStackTraceInFastThrow \
-    -Dlogback.configurationFile=conf/logback.xml"
+    -Dlogback.configurationFile=conf/logback.xml \
+    --enable-preview"
 
 # Application Start Konfigurasjon
 COPY build/init-app.sh /init-scripts/init-app.sh

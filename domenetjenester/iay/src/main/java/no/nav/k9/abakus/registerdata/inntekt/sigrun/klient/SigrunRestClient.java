@@ -5,6 +5,10 @@ import java.net.URI;
 import java.time.Year;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+
+import no.nav.k9.abakus.felles.samtidighet.UncheckedInterruptException;
 
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
@@ -32,6 +36,10 @@ public class SigrunRestClient {
     private SystemUserOidcRestClient oidcRestClient;
     private String url;
 
+    //bruker semafor for å begrense antall samtidige kall til Sigrun
+    //regner ikke med å ha så mange i praksis pga bare 3 tråder brukes for å kjøre tasker, og hver av disse kaller inntil en håndfull ganger
+    private Semaphore semaphore = new Semaphore(15);
+
     SigrunRestClient() {
         //for CDI proxy
     }
@@ -55,6 +63,16 @@ public class SigrunRestClient {
             new BasicHeader(INNTEKTSAAR, år.toString()));
 
         try {
+            boolean ledigPlass = semaphore.tryAcquire(30, TimeUnit.SECONDS);
+            if (!ledigPlass) {
+                throw new IllegalStateException("Fikk timeout på venting av semafor for kall til Sigrun. Underøk om tjenesten er nede, vurder å øke antall tillatelser i semaforen.");
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new UncheckedInterruptException("En tråd ble interrupted mens den ventet på å få semafor",e);
+        }
+
+        try {
             return oidcRestClient.getReturnsOptional(URI.create(url), headere, Set.of(), PgiFolketrygdenResponse.class);
         } catch (HttpStatuskodeException statuskodeException){
             if (statuskodeException.getHttpStatuskode() == HttpURLConnection.HTTP_NOT_FOUND) {
@@ -62,6 +80,8 @@ public class SigrunRestClient {
                 return Optional.empty();
             }
             throw statuskodeException;
+        } finally {
+            semaphore.release();
         }
 
     }
