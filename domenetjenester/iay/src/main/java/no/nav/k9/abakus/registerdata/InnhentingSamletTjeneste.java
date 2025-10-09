@@ -49,9 +49,8 @@ public class InnhentingSamletTjeneste {
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
     private SystemuserThreadLogin systemuserThreadLogin;
 
-    InnhentingSamletTjeneste(SystemuserThreadLogin systemuserThreadLogin) {
+    InnhentingSamletTjeneste() {
         //CDI
-        this.systemuserThreadLogin = systemuserThreadLogin;
     }
 
     @Inject
