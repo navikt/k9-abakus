@@ -11,6 +11,7 @@ import no.nav.k9.abakus.registerdata.IAYRegisterInnhentingFellesTjenesteImpl;
 import no.nav.k9.abakus.registerdata.InnhentingSamletTjeneste;
 import no.nav.k9.abakus.registerdata.VedtattYtelseInnhentingTjeneste;
 import no.nav.k9.abakus.registerdata.arbeidsgiver.virksomhet.VirksomhetTjeneste;
+import no.nav.k9.abakus.felles.samtidighet.SystemuserThreadLogin;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.SigrunTjeneste;
 
 @ApplicationScoped
@@ -27,9 +28,10 @@ public class IAYRegisterInnhentingUngdomsytelseTjenesteImpl extends IAYRegisterI
                                                           InnhentingSamletTjeneste innhentingSamletTjeneste,
                                                           AktørTjeneste aktørConsumer,
                                                           SigrunTjeneste sigrunTjeneste,
-                                                          VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste) {
+                                                          VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste,
+                                                          SystemuserThreadLogin systemuserThreadLogin) {
         super(inntektArbeidYtelseTjeneste, virksomhetTjeneste, innhentingSamletTjeneste, aktørConsumer, sigrunTjeneste,
-            vedtattYtelseInnhentingTjeneste);
+            vedtattYtelseInnhentingTjeneste, systemuserThreadLogin);
     }
 
     @Override
