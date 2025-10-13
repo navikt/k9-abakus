@@ -7,11 +7,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.StructuredTaskScope;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import no.nav.k9.abakus.felles.samtidighet.SystemuserThreadLogin;
 
 import no.nav.k9.abakus.felles.samtidighet.UncheckedInterruptException;
+
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektV2Tjeneste;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +52,7 @@ public class InnhentingSamletTjeneste {
 
     private ArbeidsforholdTjeneste arbeidsforholdTjeneste;
     private InntektTjeneste inntektTjeneste;
+    private InntektV2Tjeneste inntektV2Tjeneste;
     private FpwsproxyKlient fpwsproxyKlient;
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
     private SystemuserThreadLogin systemuserThreadLogin;
@@ -59,40 +65,65 @@ public class InnhentingSamletTjeneste {
     public InnhentingSamletTjeneste(ArbeidsforholdTjeneste arbeidsforholdTjeneste,
 
                                     InntektTjeneste inntektTjeneste,
+                                    InntektV2Tjeneste inntektV2Tjeneste,
                                     InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste,
                                     FpwsproxyKlient fpwsproxyKlient,
                                     SystemuserThreadLogin systemuserThreadLogin) {
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
+        this.inntektV2Tjeneste = inntektV2Tjeneste;
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
         this.systemuserThreadLogin = systemuserThreadLogin;
     }
 
-    public InntektsInformasjon getInntektsInformasjon(AktørId aktørId, IntervallEntitet periode, InntektskildeType kilde, YtelseType ytelse) {
-        // inntektskomponenten splitter opp perioden i hele 12-månedersbolker og gjør sekvensielle kall bakover
-        // vi splitter heller opp perioden her og gjør parallelle kall
-        List<InntektsInformasjon> svarene = Collections.synchronizedList(new ArrayList<>());
+    public InntektsInformasjon getInntektsInformasjonV1(AktørId aktørId, IntervallEntitet periode, InntektskildeType kilde, YtelseType ytelse) {
+        FinnInntektRequest.FinnInntektRequestBuilder builder = FinnInntektRequest.builder(YearMonth.from(periode.getFomDato()),
+            YearMonth.from(periode.getTomDato()));
+
+        builder.medAktørId(aktørId.getId());
+
+        return inntektTjeneste.finnInntekt(builder.build(), kilde, ytelse);
+    }
+
+
+    public Map<InntektskildeType, InntektsInformasjon> getInntektsInformasjonV2(AktørId aktørId,
+                                                                                IntervallEntitet periode,
+                                                                                Set<InntektskildeType> kilder,
+                                                                                YtelseType ytelseType) {
+        // Inntektskomponenten splitter opp perioden i hele 12-månedersbolker (siden skatteetaten ikke støtter lenger perioder i API-et)
+        // og gjør sekvensielle kall bakover. Vi splitter heller opp perioden her og gjør parallelle kall, for å få lavere responstid.
+        // dette kan forenkles når/om inntektskompenenten gjør dette selv.
+        Map<InntektskildeType, List<InntektsInformasjon>> svarene = kilder.stream()
+            .collect(Collectors.toMap(Function.identity(), k -> Collections.synchronizedList(new ArrayList<>())));
         try (var scope = StructuredTaskScope.open()) {
             for (IntervallEntitet p : splittHver12Måned(periode)) {
-                FinnInntektRequest.FinnInntektRequestBuilder builder = FinnInntektRequest.builder(YearMonth.from(p.getFomDato()), YearMonth.from(p.getTomDato()));
+                FinnInntektRequest.FinnInntektRequestBuilder builder = FinnInntektRequest.builder(YearMonth.from(p.getFomDato()),
+                    YearMonth.from(p.getTomDato()));
                 builder.medAktørId(aktørId.getId());
-                systemuserThreadLogin.fork(scope, () -> svarene.add(inntektTjeneste.finnInntekt(builder.build(), kilde, ytelse)));
+                systemuserThreadLogin.fork(scope, () -> {
+                    inntektV2Tjeneste.finnInntekt(builder.build(), kilder, ytelseType).forEach((key, value) -> svarene.get(key).add(value));
+                });
             }
+
             try {
                 scope.join();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                throw new UncheckedInterruptException("En tråd ble interrupted mens den hentet inntektsopplysninger",e);
+                throw new UncheckedInterruptException("En tråd ble interrupted mens den hentet inntektsopplysnigner",e);
             }
         }
 
-        List<Månedsinntekt> alleMånedsinntekter = svarene.stream()
+        return svarene.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> slåSammenInntektsinformasjonForSammeKilde(e.getValue(), e.getKey())));
+
+    }
+
+    private static InntektsInformasjon slåSammenInntektsinformasjonForSammeKilde(List<InntektsInformasjon> input, InntektskildeType kilde) {
+        List<Månedsinntekt> alleMånedsinntekter = input.stream()
             .flatMap(it -> it.getMånedsinntekter().stream())
             .sorted(Comparator.comparing(Månedsinntekt::getMåned))
             .toList();
         return new InntektsInformasjon(alleMånedsinntekter, kilde);
-
     }
 
     static List<IntervallEntitet> splittHver12Måned(IntervallEntitet periode) {
