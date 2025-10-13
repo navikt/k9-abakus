@@ -10,10 +10,8 @@ RUN ["java", "scripts/RyddBiblioteker", "DUPLIKAT", "/app/lib", "/build/lib"]
 FROM ghcr.io/navikt/k9-felles/felles-java-25:7.1.3
 LABEL org.opencontainers.image.source=https://github.com/navikt/k9-abakus
 
-ENV JAVA_OPTS="-Djava.security.egd=file:/dev/urandom \
-    -XX:-OmitStackTraceInFastThrow \
-    -Dlogback.configurationFile=conf/logback.xml \
-    --enable-preview"
+ENV JAVA_OPTS="-Dlogback.configurationFile=conf/logback.xml \
+               --enable-preview"
 
 COPY --link --from=duplikatfjerner /build/lib/ /app/lib/
 USER root
