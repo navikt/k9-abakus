@@ -2,6 +2,8 @@ package no.nav.k9.abakus.felles.samtidighet;
 
 import java.util.concurrent.StructuredTaskScope;
 
+import no.nav.k9.felles.log.mdc.MDCOperations;
+
 import org.slf4j.MDC;
 
 import io.opentelemetry.context.Context;
@@ -44,8 +46,10 @@ public class SystemuserThreadLogin {
         //login er for å kjøre som systembruker
 
         String parentMdcContext = MDC.get("prosess");
+        String callId = MDCOperations.getCallId();
         Runnable wrappedLoggedInTask = Context.current().wrap(() -> {
             MDC.put("prosess", parentMdcContext);
+            MDC.put("callId", callId);
             login();
             task.run();
             logout();
