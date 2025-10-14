@@ -51,6 +51,8 @@
     "OIDC_STS_WELL_KNOWN_URL":"https://security-token-service.nais.adeo.no/.well-known/openid-configuration",
     "HENTINNTEKTLISTEBOLK_URL":"http://ikomp.team-inntekt/rs/api/v1/hentinntektlistebolk",
     "HENTINNTEKTLISTEBOLK_SCOPE":"api://prod-fss.team-inntekt.ikomp/.default",
+    "INNTEKTSKOMPONENTEN_HENTINNTEKTBULK_URL" : "http://ikomp.team-inntekt/rest/v2/inntekt/bulk",
+    "INNTEKTSKOMPONENTEN_SCOPE" : "api://prod-fss.team-inntekt.ikomp/.default",
     "AAREG_RS_URL":"http://aareg-services-nais.arbeidsforhold/api/v1/arbeidstaker",
     "AAREG_SCOPE":"api://prod-fss.arbeidsforhold.aareg-services-nais/.default",
     "SIGRUNPGI_RS_URL":"http://sigrun.team-inntekt/api/v1/pensjonsgivendeinntektforfolketrygden",

@@ -32,10 +32,9 @@ public class IAYRegisterInnhentingK9TjenesteImpl extends IAYRegisterInnhentingFe
                                                InnhentingSamletTjeneste innhentingSamletTjeneste,
                                                AktørTjeneste aktørConsumer,
                                                SigrunTjeneste sigrunTjeneste,
-                                               VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste,
-                                               SystemuserThreadLogin systemuserThreadLogin) {
+                                               VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste) {
         super(inntektArbeidYtelseTjeneste, virksomhetTjeneste, innhentingSamletTjeneste, aktørConsumer, sigrunTjeneste,
-            vedtattYtelseInnhentingTjeneste, systemuserThreadLogin);
+            vedtattYtelseInnhentingTjeneste);
     }
 
     // Skal alltid innhente næringsinntekter om det ligger i informasjonselementer, dette for å støtte 8-47.
