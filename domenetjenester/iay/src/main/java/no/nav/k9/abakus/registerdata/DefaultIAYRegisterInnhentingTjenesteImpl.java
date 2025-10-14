@@ -32,10 +32,9 @@ public class DefaultIAYRegisterInnhentingTjenesteImpl extends IAYRegisterInnhent
                                                     InnhentingSamletTjeneste innhentingSamletTjeneste,
                                                     AktørTjeneste aktørConsumer,
                                                     SigrunTjeneste sigrunTjeneste,
-                                                    VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste,
-                                                    SystemuserThreadLogin systemuserThreadLogin) {
+                                                    VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste) {
         super(inntektArbeidYtelseTjeneste, virksomhetTjeneste, innhentingSamletTjeneste, aktørConsumer, sigrunTjeneste,
-            vedtattYtelseInnhentingTjeneste, systemuserThreadLogin);
+            vedtattYtelseInnhentingTjeneste);
     }
 
     @Override

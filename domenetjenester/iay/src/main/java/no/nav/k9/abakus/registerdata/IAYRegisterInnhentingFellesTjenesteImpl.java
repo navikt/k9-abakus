@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -72,8 +73,6 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
     private ByggYrkesaktiviteterTjeneste byggYrkesaktiviteterTjeneste;
     private AktørTjeneste aktørConsumer;
     private SigrunTjeneste sigrunTjeneste;
-    private SystemuserThreadLogin systemuserThreadLogin;
-
     protected IAYRegisterInnhentingFellesTjenesteImpl() {
     }
 
@@ -82,14 +81,12 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
                                                       InnhentingSamletTjeneste innhentingSamletTjeneste,
                                                       AktørTjeneste aktørConsumer,
                                                       SigrunTjeneste sigrunTjeneste,
-                                                      VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste,
-                                                      SystemuserThreadLogin systemuserThreadLogin) {
+                                                      VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste) {
         this.inntektArbeidYtelseTjeneste = inntektArbeidYtelseTjeneste;
         this.virksomhetTjeneste = virksomhetTjeneste;
         this.innhentingSamletTjeneste = innhentingSamletTjeneste;
         this.aktørConsumer = aktørConsumer;
         this.sigrunTjeneste = sigrunTjeneste;
-        this.systemuserThreadLogin = systemuserThreadLogin;
         this.ytelseRegisterInnhenting = new YtelseRegisterInnhenting(innhentingSamletTjeneste, vedtattYtelseInnhentingTjeneste);
         this.byggYrkesaktiviteterTjeneste = new ByggYrkesaktiviteterTjeneste();
     }
@@ -272,23 +269,27 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
             arbeidsforholdList.addAll(arbeidsforhold.keySet());
         }
 
+        Map<InntektskildeType, InntektsInformasjon> innhentetV2 = new LinkedHashMap<>();
+        try {
+            var kilder = informasjonsElementer.stream()
+                .filter(ELEMENT_TIL_INNTEKTS_KILDE_MAP::containsKey)
+                .map(ELEMENT_TIL_INNTEKTS_KILDE_MAP::get)
+                .collect(Collectors.toSet());
+            var brukKilder = kilder.isEmpty() ? Set.of(InntektskildeType.INNTEKT_OPPTJENING) : kilder; //siden RegisterdataElement.INNTEKT_PENSJONSGIVENDE mappes til INNTEKT_OPPTJENING
+            innhentetV2.putAll(innhentingSamletTjeneste.getInntektsInformasjonV2(aktørId, opplysningsPeriode, brukKilder, kobling.getYtelseType()));
+        } catch (Exception e) {
+            LOG.info("IKOMPV2: Feil ved henting av inntektsinformasjon fra Inntekt V2 for saksnummer {}. Fortsetter uten inntekter fra V2.", kobling.getSaksnummer().getVerdi(), e);
+        }
+
         if (informasjonsElementer.stream().anyMatch(inntektselementer::contains)) {
-            try (var scope = StructuredTaskScope.open()){
-                informasjonsElementer.stream()
-                    .filter(ELEMENT_TIL_INNTEKTS_KILDE_MAP::containsKey)
-                    .forEach(registerdataElement -> systemuserThreadLogin.fork(scope,
-                        () -> innhentInntektsopplysningFor(kobling, aktørId, opplysningsPeriode, builder, informasjonsElementer,registerdataElement)));
-                try {
-                    scope.join();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    throw new UncheckedInterruptException("En tråd ble interrupted mens den hentet inntektsopplysninger", e);
-                }
-            }
+            informasjonsElementer.stream()
+                .filter(ELEMENT_TIL_INNTEKTS_KILDE_MAP::containsKey)
+                .forEach(registerdataElement -> innhentInntektsopplysningFor(kobling, aktørId, opplysningsPeriode, builder, informasjonsElementer,
+                    registerdataElement, innhentetV2));
         } else {
             Set.of(RegisterdataElement.INNTEKT_PENSJONSGIVENDE)
                 .forEach(registerdataElement -> innhentInntektsopplysningFor(kobling, aktørId, opplysningsPeriode, builder, informasjonsElementer,
-                    registerdataElement));
+                    registerdataElement, innhentetV2));
         }
         return arbeidsforholdList;
     }
@@ -298,16 +299,30 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
                                               IntervallEntitet opplysningsPeriode,
                                               InntektArbeidYtelseAggregatBuilder builder,
                                               Set<RegisterdataElement> informasjonsElementer,
-                                              RegisterdataElement registerdataElement) {
+                                              RegisterdataElement registerdataElement,
+                                              Map<InntektskildeType, InntektsInformasjon> innhentetV2) {
         var inntektsKilde = ELEMENT_TIL_INNTEKTS_KILDE_MAP.get(registerdataElement);
-        var inntektsInformasjon = innhentingSamletTjeneste.getInntektsInformasjon(aktørId, opplysningsPeriode, inntektsKilde,
-            kobling.getYtelseType());
+        var inntektsInformasjon = innhentingSamletTjeneste.getInntektsInformasjonV1(aktørId, opplysningsPeriode, inntektsKilde, kobling.getYtelseType());
+        sammenlignInntekter(kobling, inntektsKilde, inntektsInformasjon, innhentetV2.get(inntektsKilde));
 
         if (informasjonsElementer.contains(registerdataElement)) {
-            //synchronized på builder da den ikke er thread-safe, og denne funksjonen kalles asynkront
-            synchronized (builder) {
-                leggTilInntekter(aktørId, builder, inntektsInformasjon);
+            leggTilInntekter(aktørId, builder, inntektsInformasjon);
+        }
+    }
+
+    public void sammenlignInntekter(Kobling kobling, InntektskildeType kilde, InntektsInformasjon v1, InntektsInformasjon v2) {
+        try {
+            if (v2 == null) {
+                LOG.info("IKOMPV2: Mangler data for saksnummer {} kilde {}. Gammel: {}", kobling.getSaksnummer().getVerdi(), kilde, v1.getMånedsinntekter());
+            } else if (v2.getMånedsinntekter().size() != v1.getMånedsinntekter().size()) {
+                LOG.info("IKOMPV2: Ulik antall i inntektsinformasjon for saksnummer {} kilde {}. Gammel: {}, ny: {}", kobling.getSaksnummer().getVerdi(), kilde, v1.getMånedsinntekter(), v2.getMånedsinntekter());
+            } else if (!InntektsInformasjon.erLik(v1, v2)) {
+                LOG.info("IKOMPV2: Ulik innhold i inntektsinformasjon for saksnummer {} kilde {}. Gammel: {}, ny: {}", kobling.getSaksnummer().getVerdi(), kilde, v1.getMånedsinntekter(), v2.getMånedsinntekter());
+            } else {
+                LOG.info("IKOMPV2: like svar kilde {}", kilde);
             }
+        } catch (Exception e) {
+            LOG.info("IKOMPV2: Feil ved sammenligning av inntektstjenester for saksnummer {} ", kobling.getSaksnummer().getVerdi(), e);
         }
     }
 
