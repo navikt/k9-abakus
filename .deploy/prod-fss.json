@@ -49,8 +49,6 @@
   "env": {
     "OTEL_RESOURCE_ATTRIBUTES": "service.name=k9-abakus,service.namespace=k9saksbehandling,deployment.environment=p,nais.backend=elastic-apm;grafana-lgtm",
     "OIDC_STS_WELL_KNOWN_URL":"https://security-token-service.nais.adeo.no/.well-known/openid-configuration",
-    "HENTINNTEKTLISTEBOLK_URL":"http://ikomp.team-inntekt/rs/api/v1/hentinntektlistebolk",
-    "HENTINNTEKTLISTEBOLK_SCOPE":"api://prod-fss.team-inntekt.ikomp/.default",
     "INNTEKTSKOMPONENTEN_HENTINNTEKTBULK_URL" : "http://ikomp.team-inntekt/rest/v2/inntekt/bulk",
     "INNTEKTSKOMPONENTEN_SCOPE" : "api://prod-fss.team-inntekt.ikomp/.default",
     "AAREG_RS_URL":"http://aareg-services-nais.arbeidsforhold/api/v1/arbeidstaker",

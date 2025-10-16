@@ -9,18 +9,12 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.StructuredTaskScope;
 import java.util.stream.Collectors;
-
-import no.nav.k9.abakus.felles.samtidighet.SystemuserThreadLogin;
-
-import no.nav.k9.abakus.felles.samtidighet.UncheckedInterruptException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -269,61 +263,17 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
             arbeidsforholdList.addAll(arbeidsforhold.keySet());
         }
 
-        Map<InntektskildeType, InntektsInformasjon> innhentetV2 = new LinkedHashMap<>();
-        try {
-            var kilder = informasjonsElementer.stream()
-                .filter(ELEMENT_TIL_INNTEKTS_KILDE_MAP::containsKey)
-                .map(ELEMENT_TIL_INNTEKTS_KILDE_MAP::get)
-                .collect(Collectors.toSet());
-            var brukKilder = kilder.isEmpty() ? Set.of(InntektskildeType.INNTEKT_OPPTJENING) : kilder; //siden RegisterdataElement.INNTEKT_PENSJONSGIVENDE mappes til INNTEKT_OPPTJENING
-            innhentetV2.putAll(innhentingSamletTjeneste.getInntektsInformasjonV2(aktørId, opplysningsPeriode, brukKilder, kobling.getYtelseType()));
-        } catch (Exception e) {
-            LOG.info("IKOMPV2: Feil ved henting av inntektsinformasjon fra Inntekt V2 for saksnummer {}. Fortsetter uten inntekter fra V2.", kobling.getSaksnummer().getVerdi(), e);
-        }
+        var kilder = informasjonsElementer.stream()
+            .filter(ELEMENT_TIL_INNTEKTS_KILDE_MAP::containsKey)
+            .map(ELEMENT_TIL_INNTEKTS_KILDE_MAP::get)
+            .collect(Collectors.toSet());
+        var brukKilder = kilder.isEmpty() ? Set.of(InntektskildeType.INNTEKT_OPPTJENING) : kilder; //siden RegisterdataElement.INNTEKT_PENSJONSGIVENDE mappes til INNTEKT_OPPTJENING
+        Map<InntektskildeType, InntektsInformasjon> innhentetInntekter = innhentingSamletTjeneste.getInntektsInformasjon(aktørId, opplysningsPeriode, brukKilder, kobling.getYtelseType());
 
-        if (informasjonsElementer.stream().anyMatch(inntektselementer::contains)) {
-            informasjonsElementer.stream()
-                .filter(ELEMENT_TIL_INNTEKTS_KILDE_MAP::containsKey)
-                .forEach(registerdataElement -> innhentInntektsopplysningFor(kobling, aktørId, opplysningsPeriode, builder, informasjonsElementer,
-                    registerdataElement, innhentetV2));
-        } else {
-            Set.of(RegisterdataElement.INNTEKT_PENSJONSGIVENDE)
-                .forEach(registerdataElement -> innhentInntektsopplysningFor(kobling, aktørId, opplysningsPeriode, builder, informasjonsElementer,
-                    registerdataElement, innhentetV2));
+        for (var innhenteInntekt : innhentetInntekter.values()) {
+            leggTilInntekter(aktørId, builder, innhenteInntekt);
         }
         return arbeidsforholdList;
-    }
-
-    private void innhentInntektsopplysningFor(Kobling kobling,
-                                              AktørId aktørId,
-                                              IntervallEntitet opplysningsPeriode,
-                                              InntektArbeidYtelseAggregatBuilder builder,
-                                              Set<RegisterdataElement> informasjonsElementer,
-                                              RegisterdataElement registerdataElement,
-                                              Map<InntektskildeType, InntektsInformasjon> innhentetV2) {
-        var inntektsKilde = ELEMENT_TIL_INNTEKTS_KILDE_MAP.get(registerdataElement);
-        var inntektsInformasjon = innhentingSamletTjeneste.getInntektsInformasjonV1(aktørId, opplysningsPeriode, inntektsKilde, kobling.getYtelseType());
-        sammenlignInntekter(kobling, inntektsKilde, inntektsInformasjon, innhentetV2.get(inntektsKilde));
-
-        if (informasjonsElementer.contains(registerdataElement)) {
-            leggTilInntekter(aktørId, builder, inntektsInformasjon);
-        }
-    }
-
-    public void sammenlignInntekter(Kobling kobling, InntektskildeType kilde, InntektsInformasjon v1, InntektsInformasjon v2) {
-        try {
-            if (v2 == null) {
-                LOG.info("IKOMPV2: Mangler data for saksnummer {} kilde {}. Gammel: {}", kobling.getSaksnummer().getVerdi(), kilde, v1.getMånedsinntekter());
-            } else if (v2.getMånedsinntekter().size() != v1.getMånedsinntekter().size()) {
-                LOG.info("IKOMPV2: Ulik antall i inntektsinformasjon for saksnummer {} kilde {}. Gammel: {}, ny: {}", kobling.getSaksnummer().getVerdi(), kilde, v1.getMånedsinntekter(), v2.getMånedsinntekter());
-            } else if (!InntektsInformasjon.erLik(v1, v2)) {
-                LOG.info("IKOMPV2: Ulik innhold i inntektsinformasjon for saksnummer {} kilde {}. Gammel: {}, ny: {}", kobling.getSaksnummer().getVerdi(), kilde, v1.getMånedsinntekter(), v2.getMånedsinntekter());
-            } else {
-                LOG.info("IKOMPV2: like svar kilde {}", kilde);
-            }
-        } catch (Exception e) {
-            LOG.info("IKOMPV2: Feil ved sammenligning av inntektstjenester for saksnummer {} ", kobling.getSaksnummer().getVerdi(), e);
-        }
     }
 
     private Optional<InternArbeidsforholdRef> finnReferanseFor(KoblingReferanse koblingReferanse,
