@@ -55,7 +55,6 @@ public class InnhentingSamletTjeneste {
     private InntektV2Tjeneste inntektV2Tjeneste;
     private FpwsproxyKlient fpwsproxyKlient;
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
-    private SystemuserThreadLogin systemuserThreadLogin;
 
     InnhentingSamletTjeneste() {
         //CDI
@@ -67,14 +66,12 @@ public class InnhentingSamletTjeneste {
                                     InntektTjeneste inntektTjeneste,
                                     InntektV2Tjeneste inntektV2Tjeneste,
                                     InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste,
-                                    FpwsproxyKlient fpwsproxyKlient,
-                                    SystemuserThreadLogin systemuserThreadLogin) {
+                                    FpwsproxyKlient fpwsproxyKlient) {
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
         this.inntektV2Tjeneste = inntektV2Tjeneste;
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
-        this.systemuserThreadLogin = systemuserThreadLogin;
     }
 
     public InntektsInformasjon getInntektsInformasjonV1(AktørId aktørId, IntervallEntitet periode, InntektskildeType kilde, YtelseType ytelse) {
@@ -91,53 +88,10 @@ public class InnhentingSamletTjeneste {
                                                                                 IntervallEntitet periode,
                                                                                 Set<InntektskildeType> kilder,
                                                                                 YtelseType ytelseType) {
-        // Inntektskomponenten splitter opp perioden i hele 12-månedersbolker (siden skatteetaten ikke støtter lenger perioder i API-et)
-        // og gjør sekvensielle kall bakover. Vi splitter heller opp perioden her og gjør parallelle kall, for å få lavere responstid.
-        // dette kan forenkles når/om inntektskompenenten gjør dette selv.
-        Map<InntektskildeType, List<InntektsInformasjon>> svarene = kilder.stream()
-            .collect(Collectors.toMap(Function.identity(), k -> Collections.synchronizedList(new ArrayList<>())));
-        try (var scope = StructuredTaskScope.open()) {
-            for (IntervallEntitet p : splittHver12Måned(periode)) {
-                FinnInntektRequest.FinnInntektRequestBuilder builder = FinnInntektRequest.builder(YearMonth.from(p.getFomDato()),
-                    YearMonth.from(p.getTomDato()));
-                builder.medAktørId(aktørId.getId());
-                systemuserThreadLogin.fork(scope, () -> {
-                    inntektV2Tjeneste.finnInntekt(builder.build(), kilder, ytelseType).forEach((key, value) -> svarene.get(key).add(value));
-                });
-            }
 
-            try {
-                scope.join();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw new UncheckedInterruptException("En tråd ble interrupted mens den hentet inntektsopplysnigner",e);
-            }
-        }
-
-        return svarene.entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, e -> slåSammenInntektsinformasjonForSammeKilde(e.getValue(), e.getKey())));
-
-    }
-
-    private static InntektsInformasjon slåSammenInntektsinformasjonForSammeKilde(List<InntektsInformasjon> input, InntektskildeType kilde) {
-        List<Månedsinntekt> alleMånedsinntekter = input.stream()
-            .flatMap(it -> it.getMånedsinntekter().stream())
-            .sorted(Comparator.comparing(Månedsinntekt::getMåned))
-            .toList();
-        return new InntektsInformasjon(alleMånedsinntekter, kilde);
-    }
-
-    static List<IntervallEntitet> splittHver12Måned(IntervallEntitet periode) {
-        LocalDateInterval helePerioden = new LocalDateInterval(periode.getFomDato(), periode.getTomDato());
-        LocalDate startFørsteMåned = helePerioden.getFomDato().withDayOfMonth(1);
-        LocalDateInterval år = new LocalDateInterval(startFørsteMåned, startFørsteMåned.plusYears(1).minusDays(1));
-
-        List<IntervallEntitet> splittedePerioder = new ArrayList<>();
-        while (helePerioden.overlaps(år)) {
-            LocalDateInterval overlapp = helePerioden.overlap(år).get();
-            splittedePerioder.add(IntervallEntitet.fraOgMedTilOgMed(overlapp.getFomDato(), overlapp.getTomDato()));
-            år = new LocalDateInterval(år.getFomDato().plusYears(1), år.getFomDato().plusYears(2).minusDays(1));
-        }
-        return splittedePerioder;
+        FinnInntektRequest.FinnInntektRequestBuilder builder = FinnInntektRequest.builder(YearMonth.from(periode.getFomDato()), YearMonth.from(periode.getTomDato()));
+        builder.medAktørId(aktørId.getId());
+        return inntektV2Tjeneste.finnInntekt(builder.build(), kilder, ytelseType);
     }
 
     public Map<ArbeidsforholdIdentifikator, List<Arbeidsforhold>> getArbeidsforhold(AktørId aktørId,
