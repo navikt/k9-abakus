@@ -33,7 +33,7 @@
         <felles.version>8.0.0</felles.version>
         <kontrakter.version>9.4.3</kontrakter.version>
         <tidsserie.version>2.7.3</tidsserie.version>
-        <flyway.version>11.14.0</flyway.version>
+        <flyway.version>11.14.1</flyway.version>
         <jetty.version>12.1.2</jetty.version>
         <jandex.version>3.5.0</jandex.version>
 
