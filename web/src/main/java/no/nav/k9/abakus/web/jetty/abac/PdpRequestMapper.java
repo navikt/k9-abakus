@@ -4,11 +4,11 @@ import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 
-import no.nav.k9.abakus.felles.sikkerhet.AbakusBeskyttetRessursAttributt;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionType;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursResourceType;
 import no.nav.k9.felles.sikkerhet.abac.PdpRequest;
 import no.nav.sif.abac.kontrakt.abac.AbacBehandlingStatus;
 import no.nav.sif.abac.kontrakt.abac.AbacFagsakStatus;
-import no.nav.sif.abac.kontrakt.abac.AksjonspunktType;
 import no.nav.sif.abac.kontrakt.abac.BeskyttetRessursActionAttributt;
 import no.nav.sif.abac.kontrakt.abac.ResourceType;
 import no.nav.sif.abac.kontrakt.abac.dto.OperasjonDto;
@@ -20,38 +20,36 @@ import no.nav.sif.abac.kontrakt.person.PersonIdent;
 public class PdpRequestMapper {
 
     public static SaksinformasjonOgPersonerTilgangskontrollInputDto map(PdpRequest pdpRequest) {
-        Set<String> aktørIder = (Set<String>) pdpRequest.get(FellesAbacAttributter.RESOURCE_FELLES_PERSON_AKTOERID_RESOURCE);
-        Set<String> fødselsnumre = (Set<String>) pdpRequest.get(FellesAbacAttributter.RESOURCE_FELLES_PERSON_FNR);
         OperasjonDto operasjon = operasjon(pdpRequest);
-        List<AktørId> mappetAktørId = aktørIder != null ? aktørIder.stream().map(AktørId::new).toList() : List.of();
-        List<PersonIdent> mappetPersonIdent = fødselsnumre != null ? fødselsnumre.stream().map(PersonIdent::new).toList() : List.of();
+        List<AktørId> mappetAktørId = pdpRequest.getAktørIder().stream().map(it -> new AktørId(it.aktørId())).toList();
+        List<PersonIdent> mappetPersonIdent = pdpRequest.getFødselsnumre().stream().map(it -> new PersonIdent(it.fnr())).toList();
         //TODO saksinformasjon bør komme fra k9-sak/ung-sak og ikke hardkodes her
         SaksinformasjonDto saksinformasjon = new SaksinformasjonDto(null, AbacBehandlingStatus.UTREDES, AbacFagsakStatus.UNDER_BEHANDLING, Set.of());
         return new SaksinformasjonOgPersonerTilgangskontrollInputDto(mappetAktørId, mappetPersonIdent, operasjon, saksinformasjon);
     }
 
     public static OperasjonDto operasjon(PdpRequest pdpRequest) {
-        ResourceType resource = resourceTypeFraKode(pdpRequest.getString(AbacAttributter.RESOURCE_FELLES_RESOURCE_TYPE));
         return new OperasjonDto(
-            resource,
-            actionFraKode(pdpRequest.getString(AbacAttributter.XACML_1_0_ACTION_ACTION_ID)),
+            resourceTypeFraKode(pdpRequest.getResourceType()),
+            mapAction(pdpRequest.getActionType()),
             Set.of()); // Abakus har ikkje noko forhold til aksjonspunkttyper, så vi sender tom mengde
     }
 
-    static ResourceType resourceTypeFraKode(String kode) {
+    static ResourceType resourceTypeFraKode(BeskyttetRessursResourceType kode) {
         return switch (kode) {
-            case AbakusBeskyttetRessursAttributt.APPLIKASJON -> ResourceType.APPLIKASJON;
-            case AbakusBeskyttetRessursAttributt.FAGSAK -> ResourceType.FAGSAK;
-            case AbakusBeskyttetRessursAttributt.DRIFT -> ResourceType.DRIFT;
+            case APPLIKASJON -> ResourceType.APPLIKASJON;
+            case FAGSAK -> ResourceType.FAGSAK;
+            case DRIFT -> ResourceType.DRIFT;
+            case VENTEFRIST -> ResourceType.VENTEFRIST;
             default -> throw new IllegalArgumentException("Ikke-støttet verdi: " + kode);
         };
     }
 
-    static BeskyttetRessursActionAttributt actionFraKode(String kode) {
+    static no.nav.sif.abac.kontrakt.abac.BeskyttetRessursActionAttributt mapAction(BeskyttetRessursActionType kode) {
         return switch (kode) {
-            case "read" -> BeskyttetRessursActionAttributt.READ;
-            case "update" -> BeskyttetRessursActionAttributt.UPDATE;
-            case "create" -> BeskyttetRessursActionAttributt.CREATE;
+            case READ -> BeskyttetRessursActionAttributt.READ;
+            case UPDATE -> BeskyttetRessursActionAttributt.UPDATE;
+            case CREATE -> BeskyttetRessursActionAttributt.CREATE;
             default -> throw new IllegalArgumentException("Ikke-styttet verdi: " + kode);
         };
     }

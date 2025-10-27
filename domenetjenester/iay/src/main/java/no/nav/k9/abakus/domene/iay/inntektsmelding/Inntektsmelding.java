@@ -27,12 +27,14 @@ import jakarta.persistence.Version;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.IndexKey;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektsmeldingInnsendingsårsakType;
+import no.nav.abakus.iaygrunnlag.kodeverk.InntektsmeldingType;
 import no.nav.k9.abakus.domene.iay.Arbeidsgiver;
 import no.nav.k9.abakus.domene.iay.InntektsmeldingAggregat;
 import no.nav.k9.abakus.felles.diff.ChangeTracked;
 import no.nav.k9.abakus.felles.diff.IndexKeyComposer;
 import no.nav.k9.abakus.felles.jpa.BaseEntitet;
 import no.nav.k9.abakus.iay.jpa.InntektsmeldingInnsendingsårsakKodeverdiConverter;
+import no.nav.k9.abakus.iay.jpa.InntektsmeldingTypeKodeverdiConverter;
 import no.nav.k9.abakus.typer.Beløp;
 import no.nav.k9.abakus.typer.InternArbeidsforholdRef;
 import no.nav.k9.abakus.typer.JournalpostId;
@@ -138,6 +140,10 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
     @ChangeTracked
     private InntektsmeldingInnsendingsårsakType innsendingsårsak = InntektsmeldingInnsendingsårsakType.UDEFINERT;
 
+    @Convert(converter = InntektsmeldingTypeKodeverdiConverter.class)
+    @Column(name = "inntektsmelding_type", updatable = false)
+    private InntektsmeldingType inntektsmeldingType;
+
     @Version
     @Column(name = "versjon", nullable = false)
     private long versjon;
@@ -162,6 +168,7 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
         this.kanalreferanse = inntektsmelding.getKanalreferanse();
         this.kildesystem = inntektsmelding.getKildesystem();
         this.mottattDato = inntektsmelding.getMottattDato();
+        this.inntektsmeldingType = inntektsmelding.getInntektsmeldingType();
 
         this.graderinger = inntektsmelding.getGraderinger().stream().map(g -> {
             var data = new Gradering(g);
@@ -227,6 +234,14 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
 
     void setInnsendingstidspunkt(LocalDateTime innsendingstidspunkt) {
         this.innsendingstidspunkt = innsendingstidspunkt;
+    }
+
+    public InntektsmeldingType getInntektsmeldingType() {
+        return inntektsmeldingType;
+    }
+
+    void setInntektsmeldingType(InntektsmeldingType inntektsmeldingType) {
+        this.inntektsmeldingType = inntektsmeldingType;
     }
 
     public String getKanalreferanse() {
@@ -456,11 +471,23 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "<" + "id=" + id + ", virksomhet=" + arbeidsgiver + ", arbeidsforholdId='" + arbeidsforholdRef + '\''
-            + ", startDatoPermisjon=" + startDatoPermisjon + ", nærRelasjon=" + nærRelasjon + ", journalpostId=" + journalpostId + ", inntektBeløp="
-            + inntektBeløp + ", refusjonBeløpPerMnd=" + refusjonBeløpPerMnd + ", refusjonOpphører=" + refusjonOpphører + ", innsendingsårsak= "
-            + innsendingsårsak + ", innsendingstidspunkt= " + innsendingstidspunkt + ", kanalreferanse=" + kanalreferanse + ", kildesystem="
-            + kildesystem + ", mottattDato=" + mottattDato + '>';
+        return getClass().getSimpleName()
+            + "<" + "id=" + id
+            + ", virksomhet=" + arbeidsgiver
+            + ", arbeidsforholdId='" + arbeidsforholdRef + '\''
+            + ", startDatoPermisjon=" + startDatoPermisjon
+            + ", nærRelasjon=" + nærRelasjon
+            + ", journalpostId=" + journalpostId
+            + ", inntektBeløp=" + inntektBeløp
+            + ", refusjonBeløpPerMnd=" + refusjonBeløpPerMnd
+            + ", refusjonOpphører=" + refusjonOpphører
+            + ", innsendingsårsak= " + innsendingsårsak
+            + ", innsendingstidspunkt= " + innsendingstidspunkt
+            + ", kanalreferanse=" + kanalreferanse
+            + ", kildesystem=" + kildesystem
+            + ", mottattDato=" + mottattDato
+            + ", inntektsmeldingType=" + inntektsmeldingType
+            + '>';
     }
 
 }

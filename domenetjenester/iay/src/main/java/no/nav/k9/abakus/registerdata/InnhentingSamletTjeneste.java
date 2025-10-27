@@ -4,13 +4,15 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseStatus;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
@@ -18,8 +20,6 @@ import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.Arbeidsforhold;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdTjeneste;
-import no.nav.k9.abakus.registerdata.inntekt.komponenten.FinnInntektRequest;
-import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
 import no.nav.k9.abakus.registerdata.ytelse.arena.FpwsproxyKlient;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
@@ -47,22 +47,24 @@ public class InnhentingSamletTjeneste {
 
     @Inject
     public InnhentingSamletTjeneste(ArbeidsforholdTjeneste arbeidsforholdTjeneste,
-
                                     InntektTjeneste inntektTjeneste,
-                                    InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste, FpwsproxyKlient fpwsproxyKlient) {
+                                    InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste,
+                                    FpwsproxyKlient fpwsproxyKlient) {
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
     }
 
-    public InntektsInformasjon getInntektsInformasjon(AktørId aktørId, IntervallEntitet periode, InntektskildeType kilde, YtelseType ytelse) {
-        FinnInntektRequest.FinnInntektRequestBuilder builder = FinnInntektRequest.builder(YearMonth.from(periode.getFomDato()),
+
+    public Map<InntektskildeType, InntektsInformasjon> getInntektsInformasjon(AktørId aktørId,
+                                                                              IntervallEntitet periode,
+                                                                              Set<InntektskildeType> kilder,
+                                                                              YtelseType ytelseType) {
+        InntektTjeneste.YearMonthPeriode månedsperiode = new InntektTjeneste.YearMonthPeriode(
+            YearMonth.from(periode.getFomDato()),
             YearMonth.from(periode.getTomDato()));
-
-        builder.medAktørId(aktørId.getId());
-
-        return inntektTjeneste.finnInntekt(builder.build(), kilde, ytelse);
+        return inntektTjeneste.finnInntekt(aktørId, månedsperiode, kilder, ytelseType);
     }
 
     public Map<ArbeidsforholdIdentifikator, List<Arbeidsforhold>> getArbeidsforhold(AktørId aktørId,

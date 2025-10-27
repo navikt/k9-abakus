@@ -1,18 +1,27 @@
-FROM ghcr.io/navikt/sif-baseimages/java-21:2025.08.07.1124Z
+# syntax=docker/dockerfile:1.7.0-labs
+FROM ghcr.io/navikt/k9-felles/felles-java-25:8.0.1 AS duplikatfjerner
 
+COPY --link --exclude=no.nav.k9.abakus* web/target/lib/ /build/lib/
+USER root
+RUN ["java", "scripts/RyddBiblioteker", "DUPLIKAT", "/app/lib", "/build/lib"]
+
+
+
+FROM ghcr.io/navikt/k9-felles/felles-java-25:8.0.1
 LABEL org.opencontainers.image.source=https://github.com/navikt/k9-abakus
-ENV TZ=Europe/Oslo
 
-ENV JAVA_OPTS="-Djava.security.egd=file:/dev/urandom \
-    -XX:-OmitStackTraceInFastThrow \
-    -Dlogback.configurationFile=conf/logback.xml"
+ENV JAVA_OPTS="-Dlogback.configurationFile=conf/logback.xml \
+               --enable-preview"
 
-# Application Start Konfigurasjon
-COPY build/init-app.sh /init-scripts/init-app.sh
+COPY --link --from=duplikatfjerner /build/lib/ /app/lib/
+USER root
+RUN ["java", "scripts/RyddBiblioteker", "UBRUKT", "/app/lib"]
+USER apprunner
 
-# Config
-COPY web/target/classes/logback*.xml ./conf/
+COPY --link build/init-app.sh /init-scripts/init-app.sh
+COPY --link web/target/classes/logback*.xml /app/conf/
+##kopier prosjektets moduler
+COPY --link web/target/lib/no.nav.k9.abakus* /app/lib/
+COPY --link web/target/app.jar /app/
 
-# Application Container (Jetty)
-COPY web/target/lib/*.jar ./lib/
-COPY web/target/app.jar ./
+EXPOSE 8015

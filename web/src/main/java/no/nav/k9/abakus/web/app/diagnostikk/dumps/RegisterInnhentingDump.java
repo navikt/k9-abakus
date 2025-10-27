@@ -5,41 +5,42 @@ import java.io.StringWriter;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.k9.abakus.web.app.diagnostikk.DebugDump;
-import no.nav.k9.abakus.web.app.diagnostikk.DumpKontekst;
-import no.nav.k9.abakus.web.app.diagnostikk.DumpOutput;
-import no.nav.k9.abakus.web.app.jackson.JacksonJsonConfig;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.kobling.kontroll.YtelseTypeRef;
 import no.nav.k9.abakus.registerdata.IAYRegisterInnhentingFellesTjenesteImpl;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.rest.AaregRestKlient;
-import no.nav.k9.abakus.registerdata.inntekt.komponenten.FinnInntektRequest;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.SpøkelseKlient;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.felles.InfotrygdGrunnlagAggregator;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.rest.sp.dto.grunnlag.respons.Grunnlag;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.PersonIdent;
+import no.nav.k9.abakus.web.app.diagnostikk.DebugDump;
+import no.nav.k9.abakus.web.app.diagnostikk.DumpKontekst;
+import no.nav.k9.abakus.web.app.diagnostikk.DumpOutput;
+import no.nav.k9.abakus.web.app.jackson.JacksonJsonConfig;
 
 @ApplicationScoped
 @YtelseTypeRef
 public class RegisterInnhentingDump implements DebugDump {
 
-    private static final Collection<InntektskildeType> INNTEKTSKILDER = IAYRegisterInnhentingFellesTjenesteImpl.ELEMENT_TIL_INNTEKTS_KILDE_MAP.values();
+    private static final Set<InntektskildeType> INNTEKTSKILDER = EnumSet.copyOf(IAYRegisterInnhentingFellesTjenesteImpl.ELEMENT_TIL_INNTEKTS_KILDE_MAP.values());
     private static final String PREFIKS = "register-innhenting";
     private InntektTjeneste inntektTjeneste;
     private AaregRestKlient aaregKlient;
@@ -68,7 +69,7 @@ public class RegisterInnhentingDump implements DebugDump {
         try {
             var future = submit(dumpKontekst, this::dumpRegister);
             return future.get(120, TimeUnit.SECONDS);
-        }  catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             return lagOutputForException(e);
         } catch (Exception e) {
@@ -104,12 +105,12 @@ public class RegisterInnhentingDump implements DebugDump {
         var dumps = new ArrayList<DumpOutput>();
         var fom = periode.getFomDato();
         var tom = periode.getTomDato();
-        INNTEKTSKILDER.forEach(inntektsKilde -> {
-            var request = FinnInntektRequest.builder(YearMonth.from(fom), YearMonth.from(tom)).medAktørId(aktørId.getId()).build();
-
-            dumps.add(dumpJsonOutput(PREFIKS + "-inntekt-" + inntektsKilde.getKode(), () -> inntektTjeneste.finnInntektRaw(request, inntektsKilde, ytelseType)));
-        });
-        return dumps;
+        InntektTjeneste.YearMonthPeriode månedsperiode = new InntektTjeneste.YearMonthPeriode(YearMonth.from(fom), YearMonth.from(tom));
+        Map<InntektskildeType, InntektsInformasjon> inntekter = inntektTjeneste.finnInntekt(aktørId, månedsperiode, INNTEKTSKILDER, ytelseType);
+        for (var entry : inntekter.entrySet()) {
+            InntektskildeType inntektskilde = entry.getKey();
+            dumps.add(dumpJsonOutput(PREFIKS + "-inntekt-" + inntektskilde.getKode(), entry::getValue));
+        } return dumps;
     }
 
     private List<DumpOutput> innhentAareg(PersonIdent ident, IntervallEntitet periode) {

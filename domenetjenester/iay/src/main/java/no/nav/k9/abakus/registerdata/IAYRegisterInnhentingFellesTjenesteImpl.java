@@ -67,7 +67,6 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
     private ByggYrkesaktiviteterTjeneste byggYrkesaktiviteterTjeneste;
     private AktørTjeneste aktørConsumer;
     private SigrunTjeneste sigrunTjeneste;
-
     protected IAYRegisterInnhentingFellesTjenesteImpl() {
     }
 
@@ -222,9 +221,9 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         }
         int length = arbeidsgiverIdentifikator.length();
         if (length <= 4) {
-            return "*" .repeat(length);
+            return "*".repeat(length);
         }
-        return "*" .repeat(length - 4) + arbeidsgiverIdentifikator.substring(length - 4);
+        return "*".repeat(length - 4) + arbeidsgiverIdentifikator.substring(length - 4);
     }
 
     private LocalDate finnHentedatoForJuridisk(Set<YearMonth> inntekterForMåneder) {
@@ -264,32 +263,17 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
             arbeidsforholdList.addAll(arbeidsforhold.keySet());
         }
 
-        if (informasjonsElementer.stream().anyMatch(inntektselementer::contains)) {
-            informasjonsElementer.stream()
-                .filter(ELEMENT_TIL_INNTEKTS_KILDE_MAP::containsKey)
-                .forEach(registerdataElement -> innhentInntektsopplysningFor(kobling, aktørId, opplysningsPeriode, builder, informasjonsElementer,
-                    registerdataElement));
-        } else {
-            Set.of(RegisterdataElement.INNTEKT_PENSJONSGIVENDE)
-                .forEach(registerdataElement -> innhentInntektsopplysningFor(kobling, aktørId, opplysningsPeriode, builder, informasjonsElementer,
-                    registerdataElement));
+        var kilder = informasjonsElementer.stream()
+            .filter(ELEMENT_TIL_INNTEKTS_KILDE_MAP::containsKey)
+            .map(ELEMENT_TIL_INNTEKTS_KILDE_MAP::get)
+            .collect(Collectors.toSet());
+        var brukKilder = kilder.isEmpty() ? Set.of(InntektskildeType.INNTEKT_OPPTJENING) : kilder; //siden RegisterdataElement.INNTEKT_PENSJONSGIVENDE mappes til INNTEKT_OPPTJENING
+        Map<InntektskildeType, InntektsInformasjon> innhentetInntekter = innhentingSamletTjeneste.getInntektsInformasjon(aktørId, opplysningsPeriode, brukKilder, kobling.getYtelseType());
+
+        for (var innhenteInntekt : innhentetInntekter.values()) {
+            leggTilInntekter(aktørId, builder, innhenteInntekt);
         }
         return arbeidsforholdList;
-    }
-
-    private void innhentInntektsopplysningFor(Kobling kobling,
-                                              AktørId aktørId,
-                                              IntervallEntitet opplysningsPeriode,
-                                              InntektArbeidYtelseAggregatBuilder builder,
-                                              Set<RegisterdataElement> informasjonsElementer,
-                                              RegisterdataElement registerdataElement) {
-        var inntektsKilde = ELEMENT_TIL_INNTEKTS_KILDE_MAP.get(registerdataElement);
-        var inntektsInformasjon = innhentingSamletTjeneste.getInntektsInformasjon(aktørId, opplysningsPeriode, inntektsKilde,
-            kobling.getYtelseType());
-
-        if (informasjonsElementer.contains(registerdataElement)) {
-            leggTilInntekter(aktørId, builder, inntektsInformasjon);
-        }
     }
 
     private Optional<InternArbeidsforholdRef> finnReferanseFor(KoblingReferanse koblingReferanse,

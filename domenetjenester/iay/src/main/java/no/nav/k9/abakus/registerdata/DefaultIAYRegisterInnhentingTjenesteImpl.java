@@ -7,6 +7,7 @@ import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
 import no.nav.k9.abakus.kobling.Kobling;
 import no.nav.k9.abakus.kobling.kontroll.YtelseTypeRef;
 import no.nav.k9.abakus.registerdata.arbeidsgiver.virksomhet.VirksomhetTjeneste;
+import no.nav.k9.abakus.felles.samtidighet.SystemuserThreadLogin;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.SigrunTjeneste;
 
 import jakarta.enterprise.context.ApplicationScoped;

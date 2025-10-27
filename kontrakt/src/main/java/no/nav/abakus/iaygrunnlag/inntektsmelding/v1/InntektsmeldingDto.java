@@ -15,6 +15,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import no.nav.abakus.iaygrunnlag.kodeverk.InntektsmeldingType;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -112,6 +113,9 @@ public class InntektsmeldingDto {
     @NotNull
     private InntektsmeldingInnsendingsårsakType innsendingsårsak;
 
+    @JsonProperty(value = "inntektsmeldingType")
+    private InntektsmeldingType inntektsmeldingType;
+
     public InntektsmeldingDto(Aktør arbeidsgiver, JournalpostId journalpostId, LocalDateTime innsendingstidspunkt, LocalDate mottattDato) {
         Objects.requireNonNull(arbeidsgiver, "arbeidsgiver");
         Objects.requireNonNull(journalpostId, "journalpostId");
@@ -185,6 +189,14 @@ public class InntektsmeldingDto {
 
     public void setKanalreferanse(String kanalreferanse) {
         this.kanalreferanse = kanalreferanse;
+    }
+
+    public InntektsmeldingType getInntektsmeldingType() {
+        return inntektsmeldingType;
+    }
+
+    public void setInntektsmeldingType(InntektsmeldingType inntektsmeldingType) {
+        this.inntektsmeldingType = inntektsmeldingType;
     }
 
     public String getKildesystem() {
@@ -292,6 +304,11 @@ public class InntektsmeldingDto {
 
     public InntektsmeldingDto medKildesystem(String kildesystem) {
         setKildesystem(kildesystem);
+        return this;
+    }
+
+    public InntektsmeldingDto medInntektsmeldingType(InntektsmeldingType inntektsmeldingType) {
+        setInntektsmeldingType(inntektsmeldingType);
         return this;
     }
 
