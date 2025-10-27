@@ -17,7 +17,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Tuple;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -28,7 +27,6 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.StreamingOutput;
-import no.nav.abakus.iaygrunnlag.Periode;
 import no.nav.abakus.iaygrunnlag.UuidDto;
 import no.nav.abakus.iaygrunnlag.request.ByttAktørRequest;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
@@ -40,11 +38,9 @@ import no.nav.k9.abakus.kobling.KoblingReferanse;
 import no.nav.k9.abakus.typer.Beløp;
 import no.nav.k9.abakus.typer.JournalpostId;
 import no.nav.k9.abakus.typer.OrgNummer;
-import no.nav.k9.abakus.typer.Saksnummer;
 import no.nav.k9.abakus.vedtak.domene.VedtakYtelse;
 import no.nav.k9.abakus.vedtak.domene.feil.VedtakYtelseFeilRepository;
 import no.nav.k9.abakus.web.app.diagnostikk.CsvOutput;
-import no.nav.k9.abakus.web.app.diagnostikk.DumpKontekst;
 import no.nav.k9.abakus.web.app.diagnostikk.DumpOutput;
 import no.nav.k9.felles.sikkerhet.abac.AbacDataAttributter;
 import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessurs;
@@ -91,7 +87,7 @@ public class ForvaltningRestTjeneste {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Operation(description = "Lagrer dump av vedtak med feil", tags = "FORVALTNING", responses = {@ApiResponse(responseCode = "200", description = "Antall dumpede vedtak med feil")})
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.CREATE, resource = DRIFT)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.CREATE, resource = BeskyttetRessursResourceType.DRIFT)
     public Response lagreVedtakMedFeil() {
         List<VedtakYtelse> vedtakMedFeil = vedtakYtelseFeilRepository.hentVedtakMedFeil();
         ProsessTaskGruppe prosessTaskGruppe = new ProsessTaskGruppe();
@@ -118,7 +114,7 @@ public class ForvaltningRestTjeneste {
     @Path("/dump-vedtak-med-feil")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     @Operation(description = "Henter dump av vedtak med feil", tags = "FORVALTNING", responses = {@ApiResponse(responseCode = "200", description = "Dumpede vedtak med feil")})
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.READ, resource = DRIFT)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.READ, resource = BeskyttetRessursResourceType.DRIFT)
     public Response dumpVedtakMedFeil() {
         StreamingOutput streamingOutput = dump();
         return Response.ok(streamingOutput)
@@ -158,7 +154,7 @@ public class ForvaltningRestTjeneste {
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
     @Operation(description = "Finner antall vedtak med feil", tags = "FORVALTNING", responses = {@ApiResponse(responseCode = "200", description = "Antall dumpede vedtak med feil")})
-    @BeskyttetRessurs(action = BeskyttetRessursActionAttributt.CREATE, resource = DRIFT)
+    @BeskyttetRessurs(action = BeskyttetRessursActionType.READ, resource = BeskyttetRessursResourceType.DRIFT)
     public Response antallVedtakMedFeil() {
         List<VedtakYtelse> vedtakMedFeil = vedtakYtelseFeilRepository.hentVedtakMedFeil();
         return Response.ok(vedtakMedFeil.size()).build();
