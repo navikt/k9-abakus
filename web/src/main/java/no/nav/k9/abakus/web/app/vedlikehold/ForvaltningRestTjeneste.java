@@ -123,7 +123,7 @@ public class ForvaltningRestTjeneste {
             .build();
     }
 
-    public StreamingOutput dump() {
+    private StreamingOutput dump() {
         return outputStream -> {
             try (var zipOut = new ZipOutputStream(new BufferedOutputStream(outputStream));) {
                 var results = vedtakYtelseFeilRepository.hentDump();
