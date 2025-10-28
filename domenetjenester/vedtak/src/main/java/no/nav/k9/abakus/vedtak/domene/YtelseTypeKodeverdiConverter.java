@@ -6,7 +6,7 @@ import jakarta.persistence.Converter;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 
 @Converter(autoApply = true)
-class YtelseTypeKodeverdiConverter implements AttributeConverter<YtelseType, String> {
+public class YtelseTypeKodeverdiConverter implements AttributeConverter<YtelseType, String> {
     @Override
     public String convertToDatabaseColumn(YtelseType attribute) {
         return attribute == null ? null : attribute.getKode();

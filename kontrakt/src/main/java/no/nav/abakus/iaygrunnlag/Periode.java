@@ -27,14 +27,17 @@ public class Periode {
 
     @JsonCreator
     public Periode(@JsonProperty(value = "fom") LocalDate fom, @JsonProperty(value = "tom") LocalDate tom) {
-        if (fom == null && tom == null) {
-            throw new IllegalArgumentException("Både fom og tom er null");
-        } else if (fom != null && tom != null && fom.isAfter(tom)) {
-            throw new IllegalArgumentException("Input data gir umulig periode (fom > tom): [" + fom + ", " + tom + "]");
-
-        }
+        validerGyldig(fom, tom);
         this.fom = fom;
         this.tom = tom;
+    }
+
+    public Periode(String iso8601) {
+        verifiserKanVæreGyldigPeriode(iso8601);
+        String[] split = iso8601.split("/");
+        this.fom = parseLocalDate(split[0]);
+        this.tom = parseLocalDate(split[1]);
+        validerGyldig(this.fom, this.tom);
     }
 
     public LocalDate getFom() {
@@ -66,5 +69,27 @@ public class Periode {
     public int hashCode() {
         return Objects.hash(getFom(), getTom());
     }
+
+    private static void verifiserKanVæreGyldigPeriode(String iso8601) {
+        if (iso8601 == null || iso8601.split("/").length != 2) {
+            throw new IllegalArgumentException("Periode på ugylig format '" + iso8601 + "'.");
+        }
+    }
+
+    private static LocalDate parseLocalDate(String iso8601) {
+        if ("..".equals(iso8601))
+            return null;
+        else
+            return LocalDate.parse(iso8601);
+    }
+
+    private static void validerGyldig(LocalDate fom, LocalDate tom) {
+        if (fom == null && tom == null) {
+            throw new IllegalArgumentException("Både fom og tom er null");
+        } else if (fom != null && tom != null && fom.isAfter(tom)) {
+            throw new IllegalArgumentException("Input data gir umulig periode (fom > tom): [" + fom + ", " + tom + "]");
+        }
+    }
+
 
 }

@@ -8,11 +8,16 @@
     <sequence-generator name="SEQ_VEDTAK_YTELSE" allocation-size="50" sequence-name="SEQ_VEDTAK_YTELSE" />
     <sequence-generator name="SEQ_VEDTAK_YTELSE_ANVIST" allocation-size="50" sequence-name="SEQ_VEDTAK_YTELSE_ANVIST" />
     <sequence-generator name="SEQ_VE_YTELSE_ANDEL" allocation-size="50" sequence-name="SEQ_VE_YTELSE_ANDEL" />
+    <sequence-generator name="SEQ_VEDTAK_YTELSE_FEIL_DUMP" allocation-size="50" sequence-name="SEQ_VEDTAK_YTELSE_FEIL_DUMP" />
+
 
     <!-- InntektArbeidYtelser aggregat og grunnlag -->
     <entity class="no.nav.k9.abakus.vedtak.domene.VedtakYtelse" />
     <entity class="no.nav.k9.abakus.vedtak.domene.YtelseAnvist" />
     <entity class="no.nav.k9.abakus.vedtak.domene.VedtakYtelseAndel" />
+
+    <entity class="no.nav.k9.abakus.vedtak.domene.feil.VedtakYtelseFeilDump" />
+
 
 
 </entity-mappings>
