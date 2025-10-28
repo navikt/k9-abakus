@@ -9,15 +9,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.eclipse.jetty.ee9.security.ConstraintSecurityHandler;
-import org.eclipse.jetty.ee9.security.jaspi.DefaultAuthConfigFactory;
-import org.eclipse.jetty.ee9.security.jaspi.JaspiAuthenticatorFactory;
-import org.eclipse.jetty.ee9.security.jaspi.provider.JaspiAuthConfigProvider;
-import org.eclipse.jetty.ee9.webapp.MetaData;
-import org.eclipse.jetty.ee9.webapp.MetaInfConfiguration;
-import org.eclipse.jetty.ee9.webapp.WebAppContext;
+import org.eclipse.jetty.ee11.security.jaspi.DefaultAuthConfigFactory;
+import org.eclipse.jetty.ee11.security.jaspi.JaspiAuthenticatorFactory;
+import org.eclipse.jetty.ee11.security.jaspi.provider.JaspiAuthConfigProvider;
+import org.eclipse.jetty.ee11.servlet.security.ConstraintSecurityHandler;
+import org.eclipse.jetty.ee11.webapp.MetaData;
+import org.eclipse.jetty.ee11.webapp.MetaInfConfiguration;
+import org.eclipse.jetty.ee11.webapp.WebAppContext;
 import org.eclipse.jetty.plus.jndi.EnvEntry;
 import org.eclipse.jetty.security.DefaultIdentityService;
+import org.eclipse.jetty.security.SecurityHandler;
 import org.eclipse.jetty.security.jaas.JAASLoginService;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Handler;
@@ -34,6 +35,7 @@ import org.eclipse.jetty.util.thread.QueuedThreadPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
 import com.zaxxer.hikari.HikariDataSource;
 
@@ -46,8 +48,6 @@ import no.nav.k9.abakus.web.jetty.db.EnvironmentClass;
 import no.nav.k9.felles.konfigurasjon.env.Environment;
 import no.nav.k9.felles.oidc.OidcApplication;
 import no.nav.k9.felles.sikkerhet.jaspic.OidcAuthModule;
-
-import org.slf4j.bridge.SLF4JBridgeHandler;
 
 public class JettyServer {
 
@@ -106,10 +106,7 @@ public class JettyServer {
 
         server.setConnectors(createConnectors(appKonfigurasjon, server).toArray(new Connector[]{}));
         WebAppContext webAppContext = createContext(appKonfigurasjon, server);
-        server.setHandler(new Handler.Sequence(
-            new ClearMdcHandler(),
-            webAppContext.get()
-        ));
+        server.setHandler(new Handler.Sequence(new ClearMdcHandler(), webAppContext));
         server.start();
         return server;
     }
@@ -214,7 +211,7 @@ public class JettyServer {
         return httpConfig;
     }
 
-    private org.eclipse.jetty.ee9.security.SecurityHandler createSecurityHandler() {
+    private SecurityHandler createSecurityHandler() {
         ConstraintSecurityHandler securityHandler = new ConstraintSecurityHandler();
         securityHandler.setAuthenticatorFactory(new JaspiAuthenticatorFactory());
 
@@ -232,7 +229,7 @@ public class JettyServer {
         List<Class<?>> appClasses = getApplicationClasses();
 
         List<Resource> resources = appClasses.stream()
-            .map(c ->ResourceFactory.of(server).newResource(c.getProtectionDomain().getCodeSource().getLocation()))
+            .map(c -> ResourceFactory.of(server).newResource(c.getProtectionDomain().getCodeSource().getLocation()))
             .collect(Collectors.toList());
 
         metaData.setWebInfClassesResources(resources);
@@ -249,7 +246,7 @@ public class JettyServer {
     /**
      * brukes for å slette tilstand i MDC på starten av en request
      */
-    private static class ClearMdcHandler extends Handler.Abstract{
+    private static class ClearMdcHandler extends Handler.Abstract {
         @Override
         public boolean handle(Request request, Response response, Callback callback) {
             MDC.clear();

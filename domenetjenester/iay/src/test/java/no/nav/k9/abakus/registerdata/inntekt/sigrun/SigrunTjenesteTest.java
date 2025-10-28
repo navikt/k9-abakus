@@ -10,6 +10,7 @@ import java.time.Year;
 import java.util.List;
 import java.util.Optional;
 
+import jakarta.enterprise.inject.Alternative;
 import no.nav.k9.abakus.felles.samtidighet.SystemuserThreadLogin;
 
 import no.nav.k9.felles.exception.HttpStatuskodeException;
@@ -101,6 +102,7 @@ class SigrunTjenesteTest {
         return IntervallEntitet.fraOgMedTilOgMed(LocalDate.now().with(år).withDayOfYear(1), LocalDate.now().with(år).withDayOfYear(år.length()));
     }
 
+    @Alternative
     private static class DummyThreadLogin extends SystemuserThreadLogin {
 
         public DummyThreadLogin() {

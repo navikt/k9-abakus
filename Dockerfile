@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.7.0-labs
-FROM ghcr.io/navikt/k9-felles/felles-java-25:8.0.1 AS duplikatfjerner
+FROM ghcr.io/navikt/k9-felles/felles-java-25:9.0.0 AS duplikatfjerner
 
 COPY --link --exclude=no.nav.k9.abakus* web/target/lib/ /build/lib/
 USER root
@@ -7,7 +7,7 @@ RUN ["java", "scripts/RyddBiblioteker", "DUPLIKAT", "/app/lib", "/build/lib"]
 
 
 
-FROM ghcr.io/navikt/k9-felles/felles-java-25:8.0.1
+FROM ghcr.io/navikt/k9-felles/felles-java-25:9.0.0
 LABEL org.opencontainers.image.source=https://github.com/navikt/k9-abakus
 
 ENV JAVA_OPTS="-Dlogback.configurationFile=conf/logback.xml \
