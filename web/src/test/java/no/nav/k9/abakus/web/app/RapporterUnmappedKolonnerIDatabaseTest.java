@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.model.relational.Database;
 import org.hibernate.boot.model.relational.Namespace;
+import org.hibernate.boot.spi.BootstrapContext;
 import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.jpa.boot.spi.IntegratorProvider;
 import org.hibernate.service.spi.SessionFactoryServiceRegistry;
@@ -158,7 +159,7 @@ class RapporterUnmappedKolonnerIDatabaseTest {
         }
 
         @Override
-        public void integrate(Metadata metadata, SessionFactoryImplementor sessionFactory, SessionFactoryServiceRegistry serviceRegistry) {
+        public void integrate(Metadata metadata, BootstrapContext bootstrapContext, SessionFactoryImplementor sessionFactory) {
             database = metadata.getDatabase();
         }
 

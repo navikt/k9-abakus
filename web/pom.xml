@@ -114,17 +114,17 @@
             <artifactId>jackson-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty.ee9</groupId>
-            <artifactId>jetty-ee9-plus</artifactId>
+            <groupId>org.eclipse.jetty.ee11</groupId>
+            <artifactId>jetty-ee11-plus</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.eclipse.jetty.ee9</groupId>
-            <artifactId>jetty-ee9-cdi</artifactId>
+            <groupId>org.eclipse.jetty.ee11</groupId>
+            <artifactId>jetty-ee11-cdi</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>org.eclipse.jetty.ee9</groupId>
-            <artifactId>jetty-ee9-webapp</artifactId>
+            <groupId>org.eclipse.jetty.ee11</groupId>
+            <artifactId>jetty-ee11-webapp</artifactId>
         </dependency>
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
