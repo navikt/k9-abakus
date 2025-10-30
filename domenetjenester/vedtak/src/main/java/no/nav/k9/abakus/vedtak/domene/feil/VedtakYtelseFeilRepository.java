@@ -43,7 +43,7 @@ public class VedtakYtelseFeilRepository {
 
     public List<VedtakYtelse> hentVedtakMedFeil() {
         Query query = entityManager.createNativeQuery("""
-            SELECT v FROM VEDTAK_YTELSE v
+            SELECT v.* FROM VEDTAK_YTELSE v
             inner join VE_YTELSE_ANVIST va on v.id = va.ytelse_id
             WHERE va.utbetalingsgrad_prosent = 0 and va.dagsats > 0
             AND v.aktiv = 'J' and v.ytelse_type in ('PSB', 'PPN')
