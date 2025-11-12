@@ -6,7 +6,7 @@
   "maxReplicas": "6",
   "limits": {
     "cpu": "2",
-    "mem": "2048Mi"
+    "mem": "4096Mi"
   },
   "requests": {
     "cpu": "500m",
