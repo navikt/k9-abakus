@@ -31,7 +31,7 @@
         <kontrakt.java.version>21</kontrakt.java.version>
 
         <felles.version>9.1.5</felles.version>
-        <kontrakter.version>9.4.3</kontrakter.version>
+        <fp-kontrakter.version>9.4.12</fp-kontrakter.version>
         <tidsserie.version>2.7.3</tidsserie.version>
         <flyway.version>11.15.0</flyway.version>
         <jetty.version>12.1.4</jetty.version>
@@ -121,23 +121,21 @@
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter</groupId>
                 <artifactId>fp-kontrakter-root</artifactId>
-                <version>${kontrakter.version}</version>
+                <version>${fp-kontrakter.version}</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
             <dependency>
                 <groupId>no.nav.foreldrepenger.kontrakter</groupId>
                 <artifactId>fp-ws-proxy-v1</artifactId>
-                <version>${kontrakter.version}</version>
+                <version>${fp-kontrakter.version}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>no.nav.fpsak.tidsserie</groupId>
                 <artifactId>fpsak-tidsserie</artifactId>
                 <version>${tidsserie.version}</version>
             </dependency>
-
 
             <dependency>
                 <groupId>no.nav.k9.abakus</groupId>
@@ -300,6 +298,11 @@
                 <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-micrometer</artifactId>
                 <version>7.1.8.Final</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>9.1.0.Final</version>
             </dependency>
             <dependency>
                 <groupId>net.logstash.logback</groupId>
