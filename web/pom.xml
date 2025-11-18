@@ -57,10 +57,6 @@
 
         <!-- Server Provided Libraries. Transitive avhengigheter som ikke burde vært her da de trekkes inn av server. -->
         <dependency>
-            <groupId>no.nav.k9.felles.sikkerhet</groupId>
-            <artifactId>k9-felles-sikkerhet</artifactId>
-        </dependency>
-        <dependency>
             <groupId>no.nav.k9.felles</groupId>
             <artifactId>k9-felles-util</artifactId>
         </dependency>
