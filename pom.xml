@@ -309,6 +309,11 @@
                 <artifactId>logstash-logback-encoder</artifactId>
                 <version>9.0</version>
             </dependency>
+            <dependency>
+                <groupId>org.glassfish.expressly</groupId>
+                <artifactId>expressly</artifactId>
+                <version>6.0.0</version>
+            </dependency>
 
             <dependency>
                 <groupId>io.swagger.core.v3</groupId>
