@@ -57,11 +57,6 @@ public class SigrunRestClient {
             return Optional.empty();
         }
 
-        Set<Header> headere = Set.of(
-            new BasicHeader("Nav-Personident", fnr),
-            new BasicHeader(RETTIGHETSPAKKE, PLEIE_OG_OMSORGSPENGER),
-            new BasicHeader(INNTEKTSAAR, år.toString()));
-
         try {
             boolean ledigPlass = semaphore.tryAcquire(30, TimeUnit.SECONDS);
             if (!ledigPlass) {
@@ -73,7 +68,8 @@ public class SigrunRestClient {
         }
 
         try {
-            return oidcRestClient.getReturnsOptional(URI.create(url), headere, Set.of(), PgiFolketrygdenResponse.class);
+            var request = new PensjonsgivendeInntektForFolketrygdenRequest(fnr, år.toString());
+            return oidcRestClient.postReturnsOptional(URI.create(url), request, PgiFolketrygdenResponse.class);
         } catch (HttpStatuskodeException statuskodeException){
             if (statuskodeException.getHttpStatuskode() == HttpURLConnection.HTTP_NOT_FOUND) {
                 // Håndtere konvensjon om 404 for tilfelle som ikke finnes hos SKE.
