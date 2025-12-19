@@ -1,15 +1,15 @@
 package no.nav.k9.abakus.web.app.vedlikehold;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import no.nav.abakus.iaygrunnlag.UuidDto;
+import no.nav.k9.abakus.typer.JournalpostId;
 
 
 /**
@@ -27,7 +27,7 @@ public class EliminerInntektsmeldingRequest {
     @JsonProperty(value = "journalpostId", required = true)
     @NotNull
     @Valid
-    private String journalpostId;
+    private JournalpostId journalpostId;
 
     public EliminerInntektsmeldingRequest() {
         // Jackson
@@ -37,7 +37,7 @@ public class EliminerInntektsmeldingRequest {
         return eksternReferanse;
     }
 
-    public String getJournalpostId() {
+    public JournalpostId getJournalpostId() {
         return journalpostId;
     }
 }

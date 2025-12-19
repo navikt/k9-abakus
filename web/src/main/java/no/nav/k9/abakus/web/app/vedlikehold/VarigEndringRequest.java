@@ -1,20 +1,21 @@
 package no.nav.k9.abakus.web.app.vedlikehold;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import no.nav.abakus.iaygrunnlag.UuidDto;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import jakarta.validation.constraints.Size;
+import no.nav.abakus.iaygrunnlag.UuidDto;
+import no.nav.k9.felles.validering.InputValideringRegex;
 
 /**
  * Input request for å bytte en utgått aktørid med en aktiv
@@ -41,6 +42,8 @@ public class VarigEndringRequest {
     private BigDecimal bruttoInntekt;
 
     @JsonProperty(value = "endringBegrunnelse")
+    @Pattern(regexp = InputValideringRegex.FRITEKST)
+    @Size(max = 4000)
     private String endringBegrunnelse;
 
     public VarigEndringRequest() {

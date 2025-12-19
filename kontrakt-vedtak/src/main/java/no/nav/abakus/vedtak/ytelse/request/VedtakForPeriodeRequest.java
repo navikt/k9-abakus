@@ -36,7 +36,7 @@ public class VedtakForPeriodeRequest {
     private Periode periode;
 
     @JsonProperty(value = "ytelser")
-    private Set<Ytelser> ytelser = ALLE_YTELSER;
+    private Set<@Valid Ytelser> ytelser = ALLE_YTELSER;
 
     private VedtakForPeriodeRequest() {
     }

@@ -34,16 +34,13 @@ public class OppgittOpptjeningDto {
     private OffsetDateTime innsendingstidspunkt;
 
     @JsonProperty(value = "arbeidsforhold")
-    @Valid
-    private List<OppgittArbeidsforholdDto> arbeidsforhold;
+    private List<@Valid OppgittArbeidsforholdDto> arbeidsforhold;
 
     @JsonProperty(value = "egenNæring")
-    @Valid
-    private List<OppgittEgenNæringDto> egenNæring;
+    private List<@Valid OppgittEgenNæringDto> egenNæring;
 
     @JsonProperty(value = "annenAktivitet")
-    @Valid
-    private List<OppgittAnnenAktivitetDto> annenAktivitet;
+    private List<@Valid OppgittAnnenAktivitetDto> annenAktivitet;
 
     @JsonProperty(value = "frilans")
     @Valid
@@ -86,7 +83,7 @@ public class OppgittOpptjeningDto {
     }
 
     @AssertTrue(message = "Må oppgi minst en av arbeidsforhold, egenNæring, annenAktivitet eller frilans")
-    private boolean isOk() {
+    boolean isOk() {
         return (arbeidsforhold != null && !arbeidsforhold.isEmpty()) || (egenNæring != null && !egenNæring.isEmpty()) || (annenAktivitet != null
             && !annenAktivitet.isEmpty()) || (frilans != null);
     }
