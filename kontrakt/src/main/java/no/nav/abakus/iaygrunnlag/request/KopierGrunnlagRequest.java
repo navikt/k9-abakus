@@ -26,8 +26,7 @@ import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 public class KopierGrunnlagRequest {
 
     @JsonProperty("dataset")
-    @Valid
-    public Set<Dataset> dataset = EnumSet.of(Dataset.OPPGITT_OPPTJENING, Dataset.REGISTER, Dataset.OVERSTYRT, Dataset.INNTEKTSMELDING);
+    public Set<@Valid Dataset> dataset = EnumSet.of(Dataset.OPPGITT_OPPTJENING, Dataset.REGISTER, Dataset.OVERSTYRT, Dataset.INNTEKTSMELDING);
     /**
      * Saksnummer alle grunnlag og koblinger er linket til.
      */

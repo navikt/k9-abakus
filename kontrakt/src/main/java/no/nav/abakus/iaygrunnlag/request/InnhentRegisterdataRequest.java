@@ -68,8 +68,7 @@ public class InnhentRegisterdataRequest {
     private Periode opptjeningsperiode;
 
     @JsonProperty(value = "elementer")
-    @Valid
-    private Set<RegisterdataType> elementer = Set.of(RegisterdataType.ARBEIDSFORHOLD, RegisterdataType.INNTEKT_PENSJONSGIVENDE,
+    private Set<@Valid RegisterdataType> elementer = Set.of(RegisterdataType.ARBEIDSFORHOLD, RegisterdataType.INNTEKT_PENSJONSGIVENDE,
         RegisterdataType.YTELSE);
 
     @JsonProperty(value = "callbackUrl")

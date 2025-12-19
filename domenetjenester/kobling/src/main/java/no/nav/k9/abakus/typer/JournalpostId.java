@@ -22,6 +22,7 @@ public class JournalpostId implements Serializable, IndexKey {
     private static final Pattern INVALID = Pattern.compile("[^" + CHARS + "]+", Pattern.DOTALL | Pattern.CASE_INSENSITIVE);
 
     @JsonValue
+    @jakarta.validation.constraints.Pattern(regexp = "^[\\p{L}\\p{N}_\\.\\-:|]+$", message = "JournalpostId [${validatedValue}] matcher ikke tillatt pattern")
     @Column(name = "journalpost_id", updatable = false)
     private String journalpostId;  // NOSONAR
 
