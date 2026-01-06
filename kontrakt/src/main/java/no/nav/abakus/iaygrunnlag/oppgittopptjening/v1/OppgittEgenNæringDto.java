@@ -21,6 +21,7 @@ import no.nav.abakus.iaygrunnlag.Organisasjon;
 import no.nav.abakus.iaygrunnlag.Periode;
 import no.nav.abakus.iaygrunnlag.kodeverk.Landkode;
 import no.nav.abakus.iaygrunnlag.kodeverk.VirksomhetType;
+import no.nav.k9.felles.validering.InputValideringRegex;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(value = Include.ALWAYS, content = Include.NON_EMPTY)
@@ -71,6 +72,7 @@ public class OppgittEgenNæringDto {
 
     @JsonProperty(value = "endringBegrunnelse")
     @Size(max=10000)
+    @Pattern(regexp = InputValideringRegex.FRITEKST)
     private String endringBegrunnelse;
 
     /**

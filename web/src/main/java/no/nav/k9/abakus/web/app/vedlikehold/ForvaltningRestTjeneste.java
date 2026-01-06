@@ -216,7 +216,7 @@ public class ForvaltningRestTjeneste {
     @BeskyttetRessurs(action = BeskyttetRessursActionType.UPDATE, resource = BeskyttetRessursResourceType.FAGSAK)
     public Response eliminerInntektsmelding(@TilpassetAbacAttributt(supplierClass = ForvaltningRestTjeneste.AbacDataSupplier.class) @NotNull @Valid EliminerInntektsmeldingRequest request) {
         var koblingReferanse = new KoblingReferanse(request.getEksternReferanse().toUuidReferanse());
-        var journalpost = new JournalpostId(request.getJournalpostId());
+        var journalpost = request.getJournalpostId();
         var eksisterende = iayTjeneste.hentGrunnlagFor(koblingReferanse).orElseThrow();
         var grunnlagBuilder = InntektArbeidYtelseGrunnlagBuilder.oppdatere(eksisterende);
         var sammeJpId = eksisterende.getInntektsmeldinger()
