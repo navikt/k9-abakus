@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.constraints.Size;
 import no.nav.abakus.iaygrunnlag.Aktør;
 import no.nav.abakus.iaygrunnlag.ArbeidsforholdRefDto;
 import no.nav.abakus.iaygrunnlag.kodeverk.ArbeidType;
@@ -37,14 +38,13 @@ public class YrkesaktivitetDto {
     private ArbeidType arbeidType;
 
     @JsonProperty("aktivitetsAvtaler")
-    @Valid
-    private List<AktivitetsAvtaleDto> aktivitetsAvtaler;
+    private List<@Valid AktivitetsAvtaleDto> aktivitetsAvtaler;
 
     @JsonProperty("permisjoner")
-    @Valid
-    private List<PermisjonDto> permisjoner;
+    private List<@Valid PermisjonDto> permisjoner;
 
     @JsonProperty("navnArbeidsgiverUtland")
+    @Size(max = 1000)
     @Pattern(regexp = "^[\\p{Graph}\\p{Space}\\p{Sc}\\p{L}\\p{M}\\p{N}]+$", message = "Yrkesaktivitet#navnArbeidsgiverUtland [${validatedValue}] matcher ikke tillatt pattern [{regexp}]")
     @Valid
     private String navnArbeidsgiverUtland;
@@ -63,7 +63,7 @@ public class YrkesaktivitetDto {
     }
 
     @AssertTrue(message = "Må ha minst en av aktivitetsAvtaler eller permisjoner")
-    private boolean isOk() {
+    boolean isOk() {
         boolean ok = (aktivitetsAvtaler != null && !aktivitetsAvtaler.isEmpty()) || (permisjoner != null && !permisjoner.isEmpty());
         return ok;
     }

@@ -87,7 +87,7 @@ public class InntektArbeidYtelseGrunnlagRequest {
     }
 
     @AssertTrue(message = "grunnlagReferanse eller koblingReferanse eller saksnummer må spesifiseres")
-    private boolean isOk() {
+    boolean isOk() {
         return grunnlagReferanse != null || koblingReferanse != null || saksnummer != null;
     }
 
