@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.enterprise.context.ApplicationScoped;
-import no.nav.vedtak.felles.integrasjon.rest.NavHeaders;
 import no.nav.vedtak.felles.integrasjon.rest.RestClient;
 import no.nav.vedtak.felles.integrasjon.rest.RestClientConfig;
 import no.nav.vedtak.felles.integrasjon.rest.RestConfig;
@@ -27,8 +26,6 @@ import no.nav.vedtak.felles.integrasjon.rest.TokenFlow;
     scopesProperty = "sigrunpgi.scopes", scopesDefault = "api://prod-fss.team-inntekt.sigrun/.default")
 public class SigrunRestClient {
 
-    private static final String INNTEKTSAAR = "inntektsaar";
-    private static final String RETTIGHETSPAKKE = "rettighetspakke";
     private static final String PLEIE_OG_OMSORGSPENGER = "navPleieOgOmsorgspenger";
 
     private static final Year FØRSTE_PGI = Year.of(2017);
@@ -47,10 +44,7 @@ public class SigrunRestClient {
         if (år.isBefore(FØRSTE_PGI)) {
             return Optional.empty();
         }
-        var request = RestRequest.newGET(restConfig.endpoint(), restConfig)
-            .header(NavHeaders.HEADER_NAV_PERSONIDENT, fnr)
-            .header(RETTIGHETSPAKKE, PLEIE_OG_OMSORGSPENGER)
-            .header(INNTEKTSAAR, år.toString());
+        var request = RestRequest.newPOSTJson(new PgiFolketrygdenRequest(fnr, år.toString(), PLEIE_OG_OMSORGSPENGER), restConfig.endpoint(), restConfig);
 
         HttpResponse<String> response = client.sendReturnUnhandled(request);
         return handleResponse(response).map(r -> DefaultJsonMapper.fromJson(r, PgiFolketrygdenResponse.class));
