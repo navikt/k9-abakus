@@ -86,6 +86,12 @@ public class RestApiInputValideringDtoTest extends RestApiTester {
             put(LocalDate.class, singletonList(emptyList()));
             put(LocalDateTime.class, singletonList(emptyList()));
 
+            // dette er hva k9-sak krever for BigDecimal, men abakus delegerer bare videre til mottaker noen steder
+            //            put(BigDecimal.class, asList(
+            //                asList(Min.class, Max.class, Digits.class),
+            //                asList(DecimalMin.class, DecimalMax.class, Digits.class)));
+            put(BigDecimal.class, singletonList(emptyList()));
+
             // Enforces av UUID selv
             put(UUID.class, singletonList(emptyList()));
 
@@ -109,15 +115,6 @@ public class RestApiInputValideringDtoTest extends RestApiTester {
                 asList(Min.class, Max.class)));
             put(int.class, singletonList(
                 asList(Min.class, Max.class)));
-// dette er hva k9-sak validerer for BigDecimal
-//            put(BigDecimal.class, asList(
-//                asList(Min.class, Max.class, Digits.class),
-//                asList(DecimalMin.class, DecimalMax.class, Digits.class)));
-
-            //her krever vi kun Minimum (bør ta vurdering på om vi skal sette en øvre grense også)
-            put(BigDecimal.class, asList(
-                asList(Min.class),
-                asList(DecimalMin.class)));
 
             putAll(UNNTATT_FRA_VALIDERING);
         }

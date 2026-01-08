@@ -11,8 +11,11 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import no.nav.abakus.iaygrunnlag.Aktør;
 import no.nav.abakus.iaygrunnlag.kodeverk.Inntektskategori;
+import no.nav.k9.felles.validering.InputValideringRegex;
 
 /**
  * Angir størrelse for ytelse på arbeidsforholdnivå.
@@ -30,6 +33,8 @@ public class AnvistAndelDto {
 
     @JsonProperty(value = "arbeidsforholdId")
     @Valid
+    @Size(max = 1000)
+    @Pattern(regexp = InputValideringRegex.FRITEKST)
     private String arbeidsforholdId;
 
     @JsonProperty(value = "dagsats", required = true)
