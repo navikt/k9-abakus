@@ -33,12 +33,12 @@
         <felles.version>10.0.0</felles.version>
         <fp-kontrakter.version>9.4.21</fp-kontrakter.version>
         <tidsserie.version>2.7.3</tidsserie.version>
-        <flyway.version>11.20.0</flyway.version>
+        <flyway.version>11.20.1</flyway.version>
         <jetty.version>12.1.5</jetty.version>
         <jandex.version>3.5.3</jandex.version>
 
         <!-- JUnit versjoner, desse må vere i sync -->
-        <junit.version>6.0.1</junit.version>
+        <junit.version>6.0.2</junit.version>
 
         <!-- Forteller til maven-deploy-plugin at artefaktet ikke skal deployes.
         Arves og overstyrres i de enkelte artefakter. -->
@@ -227,7 +227,7 @@
             <dependency>
                 <groupId>io.opentelemetry</groupId>
                 <artifactId>opentelemetry-api</artifactId>
-                <version>1.57.0</version>
+                <version>1.58.0</version>
             </dependency>
 
             <!-- NAV tjenestespesifikasjoner -->
