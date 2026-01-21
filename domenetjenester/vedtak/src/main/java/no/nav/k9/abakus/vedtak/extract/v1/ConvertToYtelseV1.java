@@ -89,6 +89,7 @@ public final class ConvertToYtelseV1 {
         return switch (fagsystem) {
             case FPSAK -> Kildesystem.FPSAK;
             case K9SAK, INFOTRYGD -> Kildesystem.K9SAK;
+            case UNGSAK -> Kildesystem.UNGSAK;
             default -> null;
         };
     }
