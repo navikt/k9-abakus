@@ -1,10 +1,15 @@
 version: 2
 registries:
-  maven-github:
+  k9-felles:
     type: maven-repository
     url: https://maven.pkg.github.com/navikt/k9-felles
     username: x-access-token
-    password: ${{ secrets.READER_TOKEN }}
+    password: ${{secrets.READER_TOKEN}}
+  k9-prosesstask:
+    type: maven-repository
+    url: https://maven.pkg.github.com/navikt/k9-prosesstask
+    username: x-access-token
+    password: ${{secrets.READER_TOKEN}}
   ghcr:
     type: docker-registry
     url: ghcr.io
@@ -21,7 +26,8 @@ updates:
   - package-ecosystem: maven
     directory: "/"
     registries:
-      - maven-github
+      - k9-felles
+      - k9-prosesstask
     schedule:
       interval: daily
     cooldown:
@@ -32,17 +38,14 @@ updates:
     allow:
       - dependency-type: "all"
     groups:
-      prod-deps:
-        dependency-type: "production"
-        exclude-patterns:
-          - "no.nav.*"
-      dev-deps:
-        dependency-type: "development"
-        exclude-patterns:
-          - "no.nav.*"
-      interne-deps:
+      nav-deps:
         patterns:
-          - "no.nav.*"
+          - "*no.nav*"
+      annet-deps:
+        patterns:
+          - "*"
+        exclude-patterns:
+          - "*no.nav*"
   - package-ecosystem: docker
     directory: "/"
     schedule:
