@@ -33,7 +33,7 @@
         <felles.version>10.0.0</felles.version>
         <fp-kontrakter.version>9.4.23</fp-kontrakter.version>
         <tidsserie.version>2.7.3</tidsserie.version>
-        <flyway.version>11.20.1</flyway.version>
+        <flyway.version>11.20.2</flyway.version>
         <jetty.version>12.1.5</jetty.version>
         <jandex.version>3.5.3</jandex.version>
 
@@ -297,7 +297,7 @@
             <dependency>
                 <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-micrometer</artifactId>
-                <version>7.2.0.Final</version>
+                <version>7.2.1.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
