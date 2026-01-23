@@ -297,7 +297,7 @@
             <dependency>
                 <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-micrometer</artifactId>
-                <version>7.2.0.Final</version>
+                <version>7.2.1.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
