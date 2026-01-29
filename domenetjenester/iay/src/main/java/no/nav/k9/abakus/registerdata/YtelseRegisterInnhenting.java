@@ -1,11 +1,13 @@
 package no.nav.k9.abakus.registerdata;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
-import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
 import no.nav.k9.abakus.domene.iay.YtelseBuilder;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
@@ -13,6 +15,7 @@ import no.nav.k9.abakus.kobling.Kobling;
 import no.nav.k9.abakus.registerdata.infotrygd.InfotrygdgrunnlagYtelseMapper;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagMeldekort;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerBeregnetPeriode;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseGrunnlag;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.PersonIdent;
@@ -51,14 +54,18 @@ public class YtelseRegisterInnhenting {
         List<InfotrygdYtelseGrunnlag> ghosts = innhentingSamletTjeneste.innhentSpokelseGrunnlag(ident, opplysningsPeriode);
         ghosts.forEach(grunnlag -> oversettSpokelseYtelseGrunnlagTilYtelse(aktørYtelseBuilder, grunnlag));
 
-        List<MeldekortUtbetalingsgrunnlagSak> arena = innhentingSamletTjeneste.hentDagpengerAAP(ident, opplysningsPeriode);
+        List<MeldekortUtbetalingsgrunnlagSak> aap = innhentingSamletTjeneste.hentAAP(ident, opplysningsPeriode);
 
         var aapsaker = arena.stream().filter(s -> YtelseType.ARBEIDSAVKLARINGSPENGER.equals(s.getYtelseType())).toList();
         innhentingSamletTjeneste.innhentMaksimumAAP(ident, opplysningsPeriode, behandling.getSaksnummer(), aapsaker, skjæringstidspunkt);
 
-        for (MeldekortUtbetalingsgrunnlagSak sak : arena) {
+        for (MeldekortUtbetalingsgrunnlagSak sak : aap) {
             oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
         }
+
+        var dagpenger = innhentingSamletTjeneste.hentDagpengerBeregninger(ident, opplysningsPeriode);
+        dagpenger.forEach(rettighetsperiode -> oversettDagpengerTilAktørYtelse(aktørYtelseBuilder, rettighetsperiode));
+
 
         inntektArbeidYtelseAggregatBuilder.leggTilAktørYtelse(aktørYtelseBuilder);
     }
@@ -76,6 +83,38 @@ public class YtelseRegisterInnhenting {
             ytelseBuilder.leggtilYtelseAnvist(
                 ytelseBuilder.getAnvistBuilder().medAnvistPeriode(intervall).medUtbetalingsgradProsent(vedtak.getUtbetalingsgrad()).build());
         });
+    }
+
+    void oversettDagpengerTilAktørYtelse(InntektArbeidYtelseAggregatBuilder.AktørYtelseBuilder aktørYtelseBuilder,
+                                                 DagpengerBeregnetPeriode dagpengerUtbetaling) {
+        var ytelseperiode = IntervallEntitet.fraOgMedTilOgMed(dagpengerUtbetaling.getFraOgMedDato(), dagpengerUtbetaling.getTilOgMedDato());
+        // Perioder fra Arena vil alltid bestå av 14 dager, derfor er det alltid 10 arbeidsdager
+        // Perider fra dp-sak vil som oftest ha fem dager (fordi vi slår enkeldager sammen tidligere), men kan være kortere
+        var antDagerPeriode = dagpengerUtbetaling.getKilde().equals(Fagsystem.ARENA) ? BigDecimal.valueOf(10) : finnAntallDagerForPeriode(ytelseperiode);
+        // sats fra dp-sak må deles på antall dager, fordi den ble summert da segmentene ble slått sammen. Satsen kan variere per dag, så vi ønsker snittet.
+        // for data fra Arena er den allerde per dag
+        var satsPerDag = dagpengerUtbetaling.getKilde().equals(Fagsystem.ARENA) ? BigDecimal.valueOf(dagpengerUtbetaling.getsats()) :
+            BigDecimal.valueOf(dagpengerUtbetaling.getsats()).divide(antDagerPeriode, RoundingMode.HALF_UP);
+        var beløp = BigDecimal.valueOf(dagpengerUtbetaling.getUtbetaltBeløp());
+        var utbetalingsgrad = beløp
+            .multiply(BigDecimal.valueOf(100)) // ganger opp med 100 først for å beholde mest mulig presisjon
+            .divide(antDagerPeriode, RoundingMode.HALF_UP)
+            .divide(satsPerDag, RoundingMode.HALF_UP);
+
+        YtelseBuilder ytelseBuilder =
+            aktørYtelseBuilder.getYtelselseBuilderForType(dagpengerUtbetaling.getKilde(), YtelseType.DAGPENGER, null, ytelseperiode, Optional.of(ytelseperiode.getFomDato()));
+        ytelseBuilder.medPeriode(ytelseperiode)
+            .medStatus(YtelseStatus.LØPENDE)
+            .medYtelseGrunnlag(ytelseBuilder.getGrunnlagBuilder()
+                .medVedtaksDagsats(satsPerDag)
+                .build());
+
+        ytelseBuilder.leggtilYtelseAnvist(ytelseBuilder.getAnvistBuilder()
+            .medAnvistPeriode(ytelseperiode)
+            .medBeløp(beløp)
+            .medDagsats(satsPerDag)
+            .medUtbetalingsgradProsent(utbetalingsgrad)
+            .build());
         aktørYtelseBuilder.leggTilYtelse(ytelseBuilder);
     }
 
@@ -87,9 +126,7 @@ public class YtelseRegisterInnhenting {
             periode, førsteMeldekortFom);
         ytelseBuilder.medPeriode(periode)
             .medStatus(ytelse.getYtelseTilstand())
-            .medVedtattTidspunkt(ytelse.getVedtattDato().atStartOfDay())
             .medYtelseGrunnlag(ytelseBuilder.getGrunnlagBuilder()
-                .medOpprinneligIdentdato(ytelse.getKravMottattDato())
                 .medVedtaksDagsats(ytelse.getVedtaksDagsats())
                 .build());
         for (MeldekortUtbetalingsgrunnlagMeldekort meldekort : ytelse.getMeldekortene()) {
@@ -127,6 +164,23 @@ public class YtelseRegisterInnhenting {
 
     private Optional<LocalDate> finnFørsteMeldekortFom(MeldekortUtbetalingsgrunnlagSak sak) {
         return sak.getMeldekortene().stream().map(MeldekortUtbetalingsgrunnlagMeldekort::getMeldekortFom).min(LocalDate::compareTo);
+    }
+
+    private static BigDecimal finnAntallDagerForPeriode(IntervallEntitet ytelsePeriode) {
+        var dager = ChronoUnit.DAYS.between(ytelsePeriode.getFomDato(), ytelsePeriode.getTomDato().plusDays(1));
+        if(dager < 6) {
+            return BigDecimal.valueOf(dager);
+        } if (dager < 8) {
+            return BigDecimal.valueOf(5);
+        }
+        var førsteDag = ytelsePeriode.getFomDato().getDayOfWeek().getValue();
+
+        var antEkstraDager = dager % 7;
+
+
+
+
+
     }
 
 }
