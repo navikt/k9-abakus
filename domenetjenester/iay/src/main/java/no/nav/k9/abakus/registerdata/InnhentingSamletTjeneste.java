@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import graphql.com.google.common.collect.ImmutableList;
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
+import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
 import no.nav.k9.abakus.registerdata.ytelse.arena.FpwsproxyKlient;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DpSakRestKlient;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.InnhentingInfotrygdTjeneste;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseGrunnlag;
 import no.nav.k9.abakus.registerdata.ytelse.kelvin.KelvinRestKlient;
@@ -47,6 +49,8 @@ public class InnhentingSamletTjeneste {
     private ArbeidsforholdTjeneste arbeidsforholdTjeneste;
     private InntektTjeneste inntektTjeneste;
     private FpwsproxyKlient fpwsproxyKlient;
+    private DpSakRestKlient dpSakRestKlient;
+    private boolean skalHenteDagpengerFraDpSak;
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
     private KelvinRestKlient kelvinRestKlient;
 
@@ -59,14 +63,17 @@ public class InnhentingSamletTjeneste {
                                     InntektTjeneste inntektTjeneste,
                                     InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste,
                                     FpwsproxyKlient fpwsproxyKlient,
-                                    KelvinRestKlient kelvinRestKlient
-    ) {
-
+                                    KelvinRestKlient kelvinRestKlient,
+                                    DpSakRestKlient dpSakRestKlient,
+                                    @KonfigVerdi(value = "SKAL_HENTE_DAGPEMGER_FRA_DPSAK", defaultVerdi = "false") boolean skalHenteDagpengerFraDpSak) {
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
         this.kelvinRestKlient = kelvinRestKlient;
+        this.dpSakRestKlient = dpSakRestKlient;
+
+        this.skalHenteDagpengerFraDpSak = skalHenteDagpengerFraDpSak;
     }
 
 
@@ -139,7 +146,15 @@ public class InnhentingSamletTjeneste {
         var fom = opplysningsPeriode.getFomDato();
         var tom = opplysningsPeriode.getTomDato();
         var saker = fpwsproxyKlient.hentDagpengerAAP(ident, fom, tom);
-        return filtrerYtelserTjenester(saker);
+
+        if (!skalHenteDagpengerFraDpSak) {
+            return filtrerYtelserTjenester(saker);
+        }
+        saker = saker.stream().filter(sak -> !sak.getYtelseType().equals(YtelseType.DAGPENGER)).collect(Collectors.toList());
+        var filtrerteYtelser = filtrerYtelserTjenester(saker);
+        var dagpenger = dpSakRestKlient.hentRettighetsperioder(ident, fom, tom);
+        filtrerteYtelser.addAll(dagpenger);
+        return filtrerteYtelser;
     }
 
     private List<MeldekortUtbetalingsgrunnlagSak> filtrerYtelserTjenester(List<MeldekortUtbetalingsgrunnlagSak> saker) {
