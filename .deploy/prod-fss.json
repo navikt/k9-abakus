@@ -67,6 +67,8 @@
     "DEFAULTDS_URL":"jdbc:postgresql://a01dbvl034.adeo.no:5432/k9-abakus",
     "FPWSPROXY_OVERRIDE_URL":"http://fpwsproxy.teamforeldrepenger/fpwsproxy",
     "FPWSPROXY_SCOPE":"api://prod-fss.teamforeldrepenger.fpwsproxy/.default",
+    "DAGPENGERDATADELING_SCOPE": "api://prod-gcp.teamdagpenger.dp-datadeling/.default",
+    "DAGPENGERDATADELING_URL": "https://dp-datadeling.intern.nav.no",
     "CLIENT_SCOPE": "api://prod-fss.k9saksbehandling.k9-abakus/.default",
 
     "SIF_ABAC_PDP_K9_SCOPE": "api://prod-fss.k9saksbehandling.sif-abac-pdp/.default",
@@ -84,7 +86,8 @@
     "PDL_BASE_URL":"http://pdl-api.pdl/graphql",
     "PDL_TEMA":"OMS",
     "LOADBALANCER_URL": "https://k9-abakus.intern.nav.no",
-    "LOADBALANCER_ALTERNATIVE_URL": "https://k9-abakus.prod-fss-pub.nais.io"
+    "LOADBALANCER_ALTERNATIVE_URL": "https://k9-abakus.prod-fss-pub.nais.io",
 
+    "SKAL_HENTE_DAGPEMGER_FRA_DPSAK": "false"
   }
 }

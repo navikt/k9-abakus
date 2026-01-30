@@ -1,12 +1,17 @@
 package no.nav.k9.abakus.registerdata;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerRettighetsperiode;
+import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +28,7 @@ import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdTjeneste;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
 import no.nav.k9.abakus.registerdata.ytelse.arena.FpwsproxyKlient;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DpSakRestKlient;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.InnhentingInfotrygdTjeneste;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseGrunnlag;
 import no.nav.k9.abakus.typer.AktørId;
@@ -39,6 +45,8 @@ public class InnhentingSamletTjeneste {
     private ArbeidsforholdTjeneste arbeidsforholdTjeneste;
     private InntektTjeneste inntektTjeneste;
     private FpwsproxyKlient fpwsproxyKlient;
+    private DpSakRestKlient dpSakRestKlient;
+    private boolean skalHenteDagpengerFraDpSak;
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
 
     InnhentingSamletTjeneste() {
@@ -49,11 +57,16 @@ public class InnhentingSamletTjeneste {
     public InnhentingSamletTjeneste(ArbeidsforholdTjeneste arbeidsforholdTjeneste,
                                     InntektTjeneste inntektTjeneste,
                                     InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste,
-                                    FpwsproxyKlient fpwsproxyKlient) {
+                                    FpwsproxyKlient fpwsproxyKlient,
+                                    DpSakRestKlient dpSakRestKlient,
+                                    @KonfigVerdi(value = "SKAL_HENTE_DAGPEMGER_FRA_DPSAK", defaultVerdi = "false") boolean skalHenteDagpengerFraDpSak) {
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
+        this.dpSakRestKlient = dpSakRestKlient;
+
+        this.skalHenteDagpengerFraDpSak = skalHenteDagpengerFraDpSak;
     }
 
 
@@ -90,11 +103,25 @@ public class InnhentingSamletTjeneste {
         return innhentingInfotrygdTjeneste.getSPøkelseYtelser(ident, periode.getFomDato());
     }
 
-    public List<MeldekortUtbetalingsgrunnlagSak> hentDagpengerAAP(PersonIdent ident, IntervallEntitet opplysningsPeriode) {
+    public List<DagpengerRettighetsperiode> hentDagpengerRettighetsperioder(PersonIdent personIdent, IntervallEntitet opplysningsPeriode) {
+        if (skalHenteDagpengerFraDpSak) {
+            var fom = opplysningsPeriode.getFomDato();
+            var tom = opplysningsPeriode.getTomDato();
+            return dpSakRestKlient.hentRettighetsperioder(personIdent, fom, tom);
+        }
+        return Collections.emptyList();
+    }
+
+    public List<MeldekortUtbetalingsgrunnlagSak> hentAAP(PersonIdent ident, IntervallEntitet opplysningsPeriode) {
         var fom = opplysningsPeriode.getFomDato();
         var tom = opplysningsPeriode.getTomDato();
-        var saker = fpwsproxyKlient.hentDagpengerAAP(ident, fom, tom);
-        return filtrerYtelserTjenester(saker);
+        var dagpengerOgAAP = fpwsproxyKlient.hentDagpengerAAP(ident, fom, tom);
+
+        if (!skalHenteDagpengerFraDpSak) {
+            return filtrerYtelserTjenester(dagpengerOgAAP);
+        }
+        var aap = dagpengerOgAAP.stream().filter(sak -> !sak.getYtelseType().equals(YtelseType.DAGPENGER)).collect(Collectors.toList());
+        return filtrerYtelserTjenester(aap);
     }
 
     private List<MeldekortUtbetalingsgrunnlagSak> filtrerYtelserTjenester(List<MeldekortUtbetalingsgrunnlagSak> saker) {
