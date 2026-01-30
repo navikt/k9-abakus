@@ -1,10 +1,13 @@
 package no.nav.k9.abakus.registerdata;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
+import no.nav.abakus.iaygrunnlag.kodeverk.YtelseStatus;
+import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
 import no.nav.k9.abakus.domene.iay.YtelseBuilder;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
@@ -12,6 +15,9 @@ import no.nav.k9.abakus.kobling.Kobling;
 import no.nav.k9.abakus.registerdata.infotrygd.InfotrygdgrunnlagYtelseMapper;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagMeldekort;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerKilde;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerRettighetsperiode;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerRettighetsperioderDto;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseGrunnlag;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.PersonIdent;
@@ -50,10 +56,14 @@ public class YtelseRegisterInnhenting {
         List<InfotrygdYtelseGrunnlag> ghosts = innhentingSamletTjeneste.innhentSpokelseGrunnlag(ident, opplysningsPeriode);
         ghosts.forEach(grunnlag -> oversettSpokelseYtelseGrunnlagTilYtelse(aktørYtelseBuilder, grunnlag));
 
-        List<MeldekortUtbetalingsgrunnlagSak> arena = innhentingSamletTjeneste.hentDagpengerAAP(ident, opplysningsPeriode);
-        for (MeldekortUtbetalingsgrunnlagSak sak : arena) {
+        List<MeldekortUtbetalingsgrunnlagSak> aap = innhentingSamletTjeneste.hentAAP(ident, opplysningsPeriode);
+        for (MeldekortUtbetalingsgrunnlagSak sak : aap) {
             oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
         }
+
+        var dagpenger = innhentingSamletTjeneste.hentDagpengerRettighetsperioder(ident, opplysningsPeriode);
+        dagpenger.forEach(rettighetsperiode -> oversettDagpengerTilYtelse(aktørYtelseBuilder, rettighetsperiode));
+
 
         inntektArbeidYtelseAggregatBuilder.leggTilAktørYtelse(aktørYtelseBuilder);
     }
@@ -71,6 +81,28 @@ public class YtelseRegisterInnhenting {
             ytelseBuilder.leggtilYtelseAnvist(
                 ytelseBuilder.getAnvistBuilder().medAnvistPeriode(intervall).medUtbetalingsgradProsent(vedtak.getUtbetalingsgrad()).build());
         });
+    }
+
+    private void oversettDagpengerTilYtelse(InntektArbeidYtelseAggregatBuilder.AktørYtelseBuilder aktørYtelseBuilder,
+                                            DagpengerRettighetsperiode rettighetsperiode) {
+        var ytelseperiode = IntervallEntitet.fraOgMedTilOgMed(rettighetsperiode.getFraOgMedDato(), rettighetsperiode.getTilOgMedDato());
+        var kilde = rettighetsperiode.getKilde().equals(DagpengerKilde.DP_SAK) ? Fagsystem.DP_SAK : Fagsystem.ARENA;
+        YtelseBuilder ytelseBuilder =
+            aktørYtelseBuilder.getYtelselseBuilderForType(kilde, YtelseType.DAGPENGER, null, ytelseperiode, Optional.of(rettighetsperiode.getFraOgMedDato()));
+        ytelseBuilder.medPeriode(ytelseperiode)
+            .medStatus(YtelseStatus.LØPENDE) // TODO vi mottar ikke tilstanden lenger, så da gir det kanskje mest mening at de vi mottar er løpende
+//            .medVedtattTidspunkt(ytelse.getVedtattDato().atStartOfDay()) // TODO vi har ikke lenger denne verdien
+            .medYtelseGrunnlag(ytelseBuilder.getGrunnlagBuilder()
+//                .medOpprinneligIdentdato(ytelse.getKravMottattDato()) // TODO vi har ikke lenger denne verdien
+                .medVedtaksDagsats(BigDecimal.valueOf(rettighetsperiode.getSats()))
+                .build());
+
+        ytelseBuilder.leggtilYtelseAnvist(ytelseBuilder.getAnvistBuilder()
+            .medAnvistPeriode(ytelseperiode)
+            .medBeløp(BigDecimal.valueOf(rettighetsperiode.getUtbetaltBeløp()))
+            .medDagsats(BigDecimal.valueOf(rettighetsperiode.getSats()))
+//            .medUtbetalingsgradProsent(meldekort.getUtbetalingsgrad()) // TODO vi har ikke lenger denne verdien, mulig det alltid er 100% på dagpenger?
+            .build());
         aktørYtelseBuilder.leggTilYtelse(ytelseBuilder);
     }
 
