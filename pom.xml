@@ -31,8 +31,8 @@
         <kontrakt.java.version>21</kontrakt.java.version>
 
         <felles.version>10.0.0</felles.version>
-        <fp-kontrakter.version>9.4.23</fp-kontrakter.version>
-        <tidsserie.version>2.7.3</tidsserie.version>
+        <fp-kontrakter.version>9.4.24</fp-kontrakter.version>
+        <tidsserie.version>2.7.4</tidsserie.version>
         <flyway.version>11.20.2</flyway.version>
         <jetty.version>12.1.5</jetty.version>
         <jandex.version>3.5.3</jandex.version>
@@ -215,7 +215,7 @@
             <dependency>
                 <groupId>no.nav.sif.abac</groupId>
                 <artifactId>kontrakt</artifactId>
-                <version>1.6.0</version>
+                <version>1.7.0</version>
             </dependency>
 
             <!-- obeservability -->
