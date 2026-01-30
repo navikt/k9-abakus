@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import graphql.com.google.common.collect.ImmutableList;
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerRettighetsperiode;
 import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 import org.slf4j.Logger;
@@ -142,19 +143,25 @@ public class InnhentingSamletTjeneste {
         return Collections.emptyList();
     }
 
-    public List<MeldekortUtbetalingsgrunnlagSak> hentDagpengerAAP(PersonIdent ident, IntervallEntitet opplysningsPeriode) {
+    public List<DagpengerRettighetsperiode> hentDagpengerRettighetsperioder(PersonIdent personIdent, IntervallEntitet opplysningsPeriode) {
+        if (skalHenteDagpengerFraDpSak) {
+            var fom = opplysningsPeriode.getFomDato();
+            var tom = opplysningsPeriode.getTomDato();
+            return dpSakRestKlient.hentRettighetsperioder(personIdent, fom, tom);
+        }
+        return Collections.emptyList();
+    }
+
+    public List<MeldekortUtbetalingsgrunnlagSak> hentAAP(PersonIdent ident, IntervallEntitet opplysningsPeriode) {
         var fom = opplysningsPeriode.getFomDato();
         var tom = opplysningsPeriode.getTomDato();
-        var saker = fpwsproxyKlient.hentDagpengerAAP(ident, fom, tom);
+        var dagpengerOgAAP = fpwsproxyKlient.hentDagpengerAAP(ident, fom, tom);
 
         if (!skalHenteDagpengerFraDpSak) {
-            return filtrerYtelserTjenester(saker);
+            return filtrerYtelserTjenester(dagpengerOgAAP);
         }
-        saker = saker.stream().filter(sak -> !sak.getYtelseType().equals(YtelseType.DAGPENGER)).collect(Collectors.toList());
-        var filtrerteYtelser = filtrerYtelserTjenester(saker);
-        var dagpenger = dpSakRestKlient.hentRettighetsperioder(ident, fom, tom);
-        filtrerteYtelser.addAll(dagpenger);
-        return filtrerteYtelser;
+        var aap = dagpengerOgAAP.stream().filter(sak -> !sak.getYtelseType().equals(YtelseType.DAGPENGER)).collect(Collectors.toList());
+        return filtrerYtelserTjenester(aap);
     }
 
     private List<MeldekortUtbetalingsgrunnlagSak> filtrerYtelserTjenester(List<MeldekortUtbetalingsgrunnlagSak> saker) {
