@@ -33,7 +33,7 @@
         <felles.version>10.0.0</felles.version>
         <fp-kontrakter.version>9.4.24</fp-kontrakter.version>
         <tidsserie.version>2.7.4</tidsserie.version>
-        <flyway.version>11.20.2</flyway.version>
+        <flyway.version>11.20.3</flyway.version>
         <jetty.version>12.1.5</jetty.version>
         <jandex.version>3.5.3</jandex.version>
 
@@ -113,7 +113,7 @@
             <dependency>
                 <groupId>org.glassfish.jersey</groupId>
                 <artifactId>jersey-bom</artifactId>
-                <version>4.0.0</version>
+                <version>4.0.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
