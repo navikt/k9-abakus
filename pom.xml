@@ -33,8 +33,8 @@
         <felles.version>10.0.0</felles.version>
         <fp-kontrakter.version>9.4.24</fp-kontrakter.version>
         <tidsserie.version>2.7.4</tidsserie.version>
-        <flyway.version>11.20.2</flyway.version>
-        <jetty.version>12.1.5</jetty.version>
+        <flyway.version>11.20.3</flyway.version>
+        <jetty.version>12.1.6</jetty.version>
         <jandex.version>3.5.3</jandex.version>
 
         <!-- JUnit versjoner, desse må vere i sync -->
@@ -113,7 +113,7 @@
             <dependency>
                 <groupId>org.glassfish.jersey</groupId>
                 <artifactId>jersey-bom</artifactId>
-                <version>4.0.0</version>
+                <version>4.0.1</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -297,7 +297,7 @@
             <dependency>
                 <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-micrometer</artifactId>
-                <version>7.2.1.Final</version>
+                <version>7.2.2.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
@@ -331,7 +331,7 @@
             <dependency>
                 <groupId>org.jboss.logging</groupId>
                 <artifactId>jboss-logging</artifactId>
-                <version>3.6.1.Final</version>
+                <version>3.6.2.Final</version>
             </dependency>
             <dependency>
                 <groupId>io.micrometer</groupId>
@@ -484,7 +484,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.14.1</version>
+                    <version>3.15.0</version>
                 </plugin>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
