@@ -1,16 +1,9 @@
 package no.nav.k9.abakus.registerdata.ytelse.dagpenger;
 
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
-import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
-
 import java.time.LocalDate;
 import java.util.List;
 
-public record DagpengerRettighetsperioderDto(
-    @NotNull @Pattern(regexp = "^\\d{11}$", message = "Fnr har ikke gyldig verdi (pattern '{regexp}')") String personIdent,
+public record DagpengerBruttoUtbetalingerDto(
     List<RettighetsperiodeDto> perioder) {
 
     public record RettighetsperiodeDto(
@@ -20,8 +13,8 @@ public record DagpengerRettighetsperioderDto(
         int utbetaltBeløp,
         int gjenståendeDager,
         DagpengerKilde kilde) {
-        public DagpengerRettighetsperiode tilDomeneModell() {
-            return DagpengerRettighetsperiode.DagpengerRettighetsperiodeBuilder.ny()
+        public DagpengerBruttoUtbetaling tilDomeneModell() {
+            return DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
                 .medKilde(kilde)
                 .medTilOgMedDato(tilOgMedDato)
                 .medFraOgMedDato(fraOgMedDato)
