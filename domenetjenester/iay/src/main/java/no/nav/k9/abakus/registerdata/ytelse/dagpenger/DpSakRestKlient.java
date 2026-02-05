@@ -17,24 +17,25 @@ import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 @ScopedRestIntegration(scopeKey = "dagpenger.scope", defaultScope = "api://prod-gcp.teamdagpenger.dp-datadeling/.default/.default")
 public class DpSakRestKlient {
 
-    private  URI perioderEndpoint;
+    private URI beregningerEndpoint;
 
-    private  SystemUserOidcRestClient restClient;
+    private SystemUserOidcRestClient restClient;
 
     @Inject
     public DpSakRestKlient(SystemUserOidcRestClient restClient, @KonfigVerdi(value = "dagpengerdatadeling.base.url") URI dagpengerUrl) {
-        perioderEndpoint = UriBuilder.fromUri(dagpengerUrl).path("/dagpenger/datadeling/v1/perioder").build();
+        beregningerEndpoint = UriBuilder.fromUri(dagpengerUrl).path("/dagpenger/datadeling/v1/beregninger").build();
         this.restClient = restClient;
     }
 
-    public DpSakRestKlient() {}
+    public DpSakRestKlient() {
+    }
 
 
-    public List<DagpengerRettighetsperiode> hentRettighetsperioder(PersonIdent personIdent, LocalDate fom, LocalDate tom) {
+    public List<DagpengerBruttoUtbetaling> hentBruttoUtbetalinger(PersonIdent personIdent, LocalDate fom, LocalDate tom) {
         var prequest = new PersonRequest(personIdent.getIdent(), fom, tom);
         try {
-            var result = restClient.post(perioderEndpoint, prequest, DagpengerRettighetsperioderDto.class);
-            return result.perioder().stream().map(DagpengerRettighetsperioderDto.RettighetsperiodeDto::tilDomeneModell).toList();
+            var result = restClient.post(beregningerEndpoint, prequest, DagpengerBruttoUtbetalingerDto.class);
+            return result.perioder().stream().map(DagpengerBruttoUtbetalingerDto.RettighetsperiodeDto::tilDomeneModell).toList();
         } catch (UriBuilderException | IllegalArgumentException e) {
             throw new IllegalArgumentException("Utviklerfeil syntax-exception for hentDagpenger fra dp-sak");
         }
