@@ -4,10 +4,10 @@ import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
+import graphql.com.google.common.collect.ImmutableList;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.UriBuilder;
-import no.nav.abakus.iaygrunnlag.kodeverk.YtelseStatus;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
 import no.nav.k9.abakus.typer.PersonIdent;
 import no.nav.k9.abakus.typer.Saksnummer;
@@ -42,8 +42,10 @@ public class KelvinRestKlient {
         var arenaVedtak = result.vedtak().stream().filter(v -> ArbeidsavklaringspengerResponse.Kildesystem.ARENA.equals(v.kildesystem())).toList();
         var kelvinMapped = KelvinMapper.mapTilMeldekortAclKelvin(kelvinVedtak, saksnummer);
         var arenaMapped = ArenaMapper.mapTilMeldekortAclArena(arenaVedtak, fom);
-        kelvinMapped.addAll(arenaMapped);
-        return kelvinMapped;
+        return ImmutableList.<MeldekortUtbetalingsgrunnlagSak>builder()
+            .addAll(kelvinMapped)
+            .addAll(arenaMapped)
+            .build();
     }
 
     public record KelvinRequest(String personidentifikator, LocalDate fraOgMedDato, LocalDate tilOgMedDato) { }
