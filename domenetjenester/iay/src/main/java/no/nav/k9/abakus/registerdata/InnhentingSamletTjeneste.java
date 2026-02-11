@@ -2,11 +2,10 @@ package no.nav.k9.abakus.registerdata;
 
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,15 +19,18 @@ import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.Arbeidsforhold;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdTjeneste;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
 import no.nav.k9.abakus.registerdata.ytelse.arena.FpwsproxyKlient;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.InnhentingInfotrygdTjeneste;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseGrunnlag;
+import no.nav.k9.abakus.registerdata.ytelse.kelvin.KelvinRestKlient;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.PersonIdent;
 import no.nav.k9.abakus.typer.Saksnummer;
 import no.nav.k9.felles.konfigurasjon.env.Environment;
+import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 @ApplicationScoped
 public class InnhentingSamletTjeneste {
@@ -40,6 +42,8 @@ public class InnhentingSamletTjeneste {
     private InntektTjeneste inntektTjeneste;
     private FpwsproxyKlient fpwsproxyKlient;
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
+    private KelvinRestKlient kelvinRestKlient;
+    private boolean henterDataFraKelvin;
 
     InnhentingSamletTjeneste() {
         //CDI
@@ -49,11 +53,17 @@ public class InnhentingSamletTjeneste {
     public InnhentingSamletTjeneste(ArbeidsforholdTjeneste arbeidsforholdTjeneste,
                                     InntektTjeneste inntektTjeneste,
                                     InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste,
-                                    FpwsproxyKlient fpwsproxyKlient) {
+                                    FpwsproxyKlient fpwsproxyKlient,
+                                    KelvinRestKlient kelvinRestKlient,
+                                    @KonfigVerdi(value = "henter.data.fra.kelvin", defaultVerdi = "false") boolean henterDataFraKelvin
+                                    ) {
+
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
+        this.kelvinRestKlient = kelvinRestKlient;
+        this.henterDataFraKelvin = henterDataFraKelvin;
     }
 
 
@@ -88,6 +98,19 @@ public class InnhentingSamletTjeneste {
 
     public List<InfotrygdYtelseGrunnlag> innhentSpokelseGrunnlag(PersonIdent ident, @SuppressWarnings("unused") IntervallEntitet periode) {
         return innhentingInfotrygdTjeneste.getSPøkelseYtelser(ident, periode.getFomDato());
+    }
+
+    public List<MeldekortUtbetalingsgrunnlagSak> innhentMaksimumAAP(
+        PersonIdent ident,
+        IntervallEntitet opplysningsPeriode,
+        Saksnummer saksnummer) {
+        if (!henterDataFraKelvin) {
+            return Collections.emptyList();
+        }
+        var fom = opplysningsPeriode.getFomDato();
+        var tom = opplysningsPeriode.getTomDato();
+
+        return kelvinRestKlient.hentAAP(ident, fom, tom, saksnummer);
     }
 
     public List<MeldekortUtbetalingsgrunnlagSak> hentDagpengerAAP(PersonIdent ident, IntervallEntitet opplysningsPeriode) {
