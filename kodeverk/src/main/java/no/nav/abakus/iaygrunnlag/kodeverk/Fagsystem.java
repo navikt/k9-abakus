@@ -37,7 +37,7 @@ public enum Fagsystem implements Kodeverdi {
     UNNTAK("UNNTAK", "Unntak", "UFM"),
     ØKONOMI("ØKONOMI", "Økonomi", "OKO"),
     ØVRIG("ØVRIG", "ØVRIG", "OVR"),
-    DP_SAK("DP_SAK", "dp-sak", "DP_SAK"),
+    DPSAK("DPSAK", "dp-sak", "DPSAK"),
 
     /**
      * Alle kodeverk må ha en verdi, det kan ikke være null i databasen. Denne koden gjør samme nytten.

@@ -183,7 +183,7 @@ public class InnhentingSamletTjeneste {
         // "Perioder" fra dp-sak består av bare 1 dag, så vi slår de sammen, det er opphold for helg, så periodene blir stort
         // sett fem dager lange. Arenadataene er allerede 14 dager, så de trengs ikke å slås mer sammen.
         return (lhs, rhs) ->
-            lhs.getKilde().equals(Fagsystem.DP_SAK) && lhs.getKilde().equals(rhs.getKilde());
+            lhs.getKilde().equals(Fagsystem.DPSAK) && lhs.getKilde().equals(rhs.getKilde());
     }
 
 }
