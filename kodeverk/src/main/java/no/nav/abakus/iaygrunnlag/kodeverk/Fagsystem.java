@@ -24,6 +24,7 @@ public enum Fagsystem implements Kodeverdi {
     INFOTRYGD("INFOTRYGD", "Infotrygd", "IT01"),
     ARENA("ARENA", "Arena", "AO01"),
     KELVIN("KELVIN", "Kelvin", "KELVIN"),
+    DPSAK("DPSAK", "dp-sak", "DPSAK"),
     INNTEKT("INNTEKT", "INNTEKT", "FS28"),
     MEDL("MEDL", "MEDL", "FS18"),
     GOSYS("GOSYS", "Gosys", "FS22"),
