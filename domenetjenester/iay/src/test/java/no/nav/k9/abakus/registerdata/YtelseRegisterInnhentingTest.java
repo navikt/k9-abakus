@@ -28,7 +28,7 @@ class YtelseRegisterInnhentingTest {
     @Test
     public void skal_oversette_dagpenger_fra_dp_sak_til_ytelse_riktig() {
         var dagpengerUtbetaling = DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
-            .medKilde(Fagsystem.DP_SAK)
+            .medKilde(Fagsystem.DPSAK)
             .medFraOgMedDato(LocalDate.of(2026, 2, 2))
             .medTilOgMedDato(LocalDate.of(2026, 2, 6))
             .medSats(500)

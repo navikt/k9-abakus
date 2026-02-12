@@ -68,7 +68,7 @@ public class DagpengerBruttoUtbetaling {
         }
 
         public DagpengerBruttoUtbetalingerBuilder medKilde(DagpengerKilde kilde) {
-            this.bruttoUtbetaling.kilde = kilde.equals(DagpengerKilde.DP_SAK) ? Fagsystem.DP_SAK : Fagsystem.ARENA;
+            this.bruttoUtbetaling.kilde = kilde.equals(DagpengerKilde.DP_SAK) ? Fagsystem.DPSAK : Fagsystem.ARENA;
             return this;
         }
 
