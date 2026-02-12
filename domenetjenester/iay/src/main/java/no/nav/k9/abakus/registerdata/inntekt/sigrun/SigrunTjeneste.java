@@ -3,6 +3,7 @@ package no.nav.k9.abakus.registerdata.inntekt.sigrun;
 import static java.time.temporal.ChronoUnit.YEARS;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.MonthDay;
 import java.time.Year;
@@ -47,8 +48,9 @@ public class SigrunTjeneste {
 
 
     public Map<IntervallEntitet, Map<InntektspostType, BigDecimal>> hentPensjonsgivende(PersonIdent fnr,
-                                                                                        IntervallEntitet opplysningsperiodeSkattegrunnlag) {
-        var svarene = pensjonsgivendeInntektForFolketrygden(fnr.getIdent(), opplysningsperiodeSkattegrunnlag);
+                                                                                        IntervallEntitet opplysningsperiodeSkattegrunnlag,
+                                                                                        LocalDate skattegrunnlagFastsattFrist) {
+        var svarene = pensjonsgivendeInntektForFolketrygden(fnr.getIdent(), opplysningsperiodeSkattegrunnlag, skattegrunnlagFastsattFrist);
         return SigrunPgiFolketrygdenMapper.mapFraPgiResponseTilIntern(svarene)
             .entrySet()
             .stream()
@@ -56,17 +58,17 @@ public class SigrunTjeneste {
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private List<PgiFolketrygdenResponse> pensjonsgivendeInntektForFolketrygden(String fnr, IntervallEntitet opplysningsperiode) {
+    private List<PgiFolketrygdenResponse> pensjonsgivendeInntektForFolketrygden(String fnr, IntervallEntitet opplysningsperiode, LocalDate skattegrunnlagFastsattFrist) {
         var senesteÅr = utledSenesteÅr(opplysningsperiode);
         List<PgiFolketrygdenResponse> svarene = Collections.synchronizedList(new ArrayList<>());
 
-        var svarSenesteÅr = svarForSenesteÅr(fnr, senesteÅr);
+        var svarSenesteÅr = svarForSenesteÅr(fnr, senesteÅr, skattegrunnlagFastsattFrist);
         svarSenesteÅr.ifPresent(it -> svarene.add(svarSenesteÅr.get()));
 
         try (var scope = StructuredTaskScope.open() ) {
             utledTidligereÅr(opplysningsperiode, senesteÅr, svarSenesteÅr.isPresent())
                 .forEach(år -> systemuserThreadLogin.fork(scope,
-                    () -> sigrunConsumer.hentPensjonsgivendeInntektForFolketrygden(fnr, år).ifPresent(svarene::add)));
+                    () -> hentPensjonsgivendeInntektForFolketrygden(fnr, år, skattegrunnlagFastsattFrist).ifPresent(svarene::add)));
             try {
                 scope.join();
             } catch (InterruptedException e) {
@@ -84,15 +86,26 @@ public class SigrunTjeneste {
         return oppgitt.isAfter(ifjor) ? ifjor : oppgitt;
     }
 
-    public Optional<PgiFolketrygdenResponse> svarForSenesteÅr(String fnr, Year senesteÅr) {
+    public Optional<PgiFolketrygdenResponse> svarForSenesteÅr(String fnr, Year senesteÅr, LocalDate skattegrunnlagFastsattFrist) {
         if (Year.now().minusYears(1).equals(senesteÅr) && MonthDay.now().isBefore(TIDLIGSTE_SJEKK_FJOR)) {
             return Optional.empty();
         }
         try {
-            return sigrunConsumer.hentPensjonsgivendeInntektForFolketrygden(fnr, senesteÅr);
+            return hentPensjonsgivendeInntektForFolketrygden(fnr, senesteÅr, skattegrunnlagFastsattFrist);
         } catch (Exception e) {
             return Optional.empty();
         }
+    }
+
+    private Optional<PgiFolketrygdenResponse> hentPensjonsgivendeInntektForFolketrygden(String fnr, Year senesteÅr, LocalDate skattegrunnlagFastsattFrist) {
+        return sigrunConsumer.hentPensjonsgivendeInntektForFolketrygden(fnr, senesteÅr)
+            .filter(it -> harKunPGIFastsattInnenFristen(skattegrunnlagFastsattFrist, it));
+    }
+
+    private static boolean harKunPGIFastsattInnenFristen(LocalDate skattegrunnlagFastsattFrist, PgiFolketrygdenResponse it) {
+        return it.safePensjonsgivendeInntekt().stream()
+            .map(PgiFolketrygdenResponse.Pgi::datoForFastsetting)
+            .noneMatch(d -> d.isAfter(skattegrunnlagFastsattFrist));
     }
 
     private List<Year> utledTidligereÅr(IntervallEntitet opplysningsperiode, Year senesteÅr, boolean harDataSenesteÅr) {

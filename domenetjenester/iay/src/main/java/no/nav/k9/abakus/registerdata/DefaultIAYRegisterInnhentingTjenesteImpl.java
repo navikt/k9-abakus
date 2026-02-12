@@ -1,5 +1,9 @@
 package no.nav.k9.abakus.registerdata;
 
+import java.util.Optional;
+
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import no.nav.k9.abakus.aktor.AktørTjeneste;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlag;
 import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjeningAggregat;
@@ -7,13 +11,7 @@ import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
 import no.nav.k9.abakus.kobling.Kobling;
 import no.nav.k9.abakus.kobling.kontroll.YtelseTypeRef;
 import no.nav.k9.abakus.registerdata.arbeidsgiver.virksomhet.VirksomhetTjeneste;
-import no.nav.k9.abakus.felles.samtidighet.SystemuserThreadLogin;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.SigrunTjeneste;
-
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-
-import java.util.Optional;
 
 /**
  * Standard IAY register innhenter.

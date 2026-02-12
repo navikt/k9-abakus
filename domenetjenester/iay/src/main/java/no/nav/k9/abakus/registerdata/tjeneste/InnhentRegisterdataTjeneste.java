@@ -94,6 +94,8 @@ public class InnhentRegisterdataTjeneste {
         mapPeriodeTilIntervall(dto.getOpplysningsperiode()).ifPresent(kobling::setOpplysningsperiode);
         mapPeriodeTilIntervall(dto.getOpplysningsperiodeSkattegrunnlag()).ifPresent(kobling::setOpplysningsperiodeSkattegrunnlag);
         mapPeriodeTilIntervall(dto.getOpptjeningsperiode()).ifPresent(kobling::setOpptjeningsperiode);
+        // Oppdaterer med frist for fastsettelse av skattegrunnlag
+        kobling.setSkattegrunnlagFastsattFrist(dto.getSkattegrunnlagFastsattFrist());
 
         // Diff & log endringer
         koblingTjeneste.lagre(kobling);
