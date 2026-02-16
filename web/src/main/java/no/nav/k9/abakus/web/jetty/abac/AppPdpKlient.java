@@ -49,13 +49,13 @@ public class AppPdpKlient implements PdpKlient {
 
             if (aktuelleYtelser.size() == 1 && aktuelleYtelser.contains(YtelseType.UNGDOMSYTELSE)) {
                 LOGGER.info("Aktuell ytelse er ungdomsprogramytelse");
-                SaksinformasjonOgPersonerTilgangskontrollInputDto tilgangskontrollInput = PdpRequestMapper.map(pdpRequest);
+                SaksinformasjonOgPersonerTilgangskontrollInputDto tilgangskontrollInput = PdpRequestMapper.map(abakusPdpRequest);
                 return sifAbacPdpUngRestKlient.sjekkTilgangForInnloggetBrukerUng(tilgangskontrollInput);
             } else {
                 if (Environment.current().isDev() || Environment.current().isLocal()) {
                     LOGGER.info("Aktuelle ytelser er {}", aktuelleYtelser);
                 }
-                SaksinformasjonOgPersonerTilgangskontrollInputDto tilgangskontrollInput = PdpRequestMapper.map(pdpRequest);
+                SaksinformasjonOgPersonerTilgangskontrollInputDto tilgangskontrollInput = PdpRequestMapper.map(abakusPdpRequest);
                 return sifAbacPdpK9RestKlient.sjekkTilgangForInnloggetBrukerK9(tilgangskontrollInput);
             }
         } else {
