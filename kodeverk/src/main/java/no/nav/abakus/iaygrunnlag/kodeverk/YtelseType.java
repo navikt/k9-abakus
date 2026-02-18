@@ -53,7 +53,7 @@ public enum YtelseType implements Kodeverdi {
      */
     ENSLIG_FORSØRGER("EF", "Enslig forsørger"),
 
-    UNGDOMSYTELSE("UNG", "Ungdomsytelse"),
+    UNGDOMSYTELSE("UNG", "Ungdomsprogramytelse"),
     AKTIVITETSPENGER("AKT", "Aktivitetspenger"),
 
 

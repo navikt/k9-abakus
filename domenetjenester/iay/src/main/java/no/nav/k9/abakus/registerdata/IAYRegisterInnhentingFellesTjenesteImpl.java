@@ -91,7 +91,7 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
 
         var personIdent = getFnrFraAktørId(kobling.getAktørId());
 
-        var map = sigrunTjeneste.hentPensjonsgivende(personIdent, Objects.requireNonNull(kobling.getOpplysningsperiodeSkattegrunnlag()));
+        var map = sigrunTjeneste.hentPensjonsgivende(personIdent, Objects.requireNonNull(kobling.getOpplysningsperiodeSkattegrunnlag()), kobling.getSkattegrunnlagFastsattFrist().orElse(LocalDate.MAX));
         var aktørInntektBuilder = inntektArbeidYtelseAggregatBuilder.getAktørInntektBuilder(kobling.getAktørId());
 
         var inntektBuilder = aktørInntektBuilder.getInntektBuilder(InntektskildeType.SIGRUN, null);
