@@ -24,6 +24,7 @@ import no.nav.sif.abac.kontrakt.abac.dto.SaksinformasjonOgPersonerTilgangskontro
 public class AppPdpKlient implements PdpKlient {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(AppPdpKlient.class);
+    public static final Set<YtelseType> UNGSAK_YTELSER = Set.of(YtelseType.UNGDOMSYTELSE, YtelseType.AKTIVITETSPENGER);
 
     private final SifAbacPdpK9RestKlient sifAbacPdpK9RestKlient;
     private final SifAbacPdpUngRestKlient sifAbacPdpUngRestKlient;
@@ -47,8 +48,8 @@ public class AppPdpKlient implements PdpKlient {
 
             sjekkYtelsetyper(aktuelleYtelser);
 
-            if (aktuelleYtelser.size() == 1 && aktuelleYtelser.contains(YtelseType.UNGDOMSYTELSE)) {
-                LOGGER.info("Aktuell ytelse er ungdomsprogramytelse");
+            if (aktuelleYtelser.size() == 1 && UNGSAK_YTELSER.contains(aktuelleYtelser.iterator().next())) {
+                LOGGER.info("Aktuell ytelse er " + aktuelleYtelser.iterator().next().getNavn());
                 SaksinformasjonOgPersonerTilgangskontrollInputDto tilgangskontrollInput = PdpRequestMapper.map(abakusPdpRequest);
                 return sifAbacPdpUngRestKlient.sjekkTilgangForInnloggetBrukerUng(tilgangskontrollInput);
             } else {
