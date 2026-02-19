@@ -38,6 +38,7 @@ import no.nav.k9.prosesstask.api.ProsessTaskTjeneste;
 public class InnhentRegisterdataTjeneste {
 
     private static final Map<RegisterdataType, RegisterdataElement> registerdataMapping = initMapping();
+    public static final Set<YtelseType> UNGSAK_YTELSER = Set.of(YtelseType.UNGDOMSYTELSE, YtelseType.AKTIVITETSPENGER);
     private InntektArbeidYtelseTjeneste iayTjeneste;
     private KoblingTjeneste koblingTjeneste;
     private ProsessTaskTjeneste taskTjeneste;
@@ -113,7 +114,7 @@ public class InnhentRegisterdataTjeneste {
 
         ProsessTaskGruppe taskGruppe = new ProsessTaskGruppe();
         var innhentingTask = ProsessTaskData.forProsessTask(RegisterdataInnhentingTask.class);
-        var callbackTask = kobling.getYtelseType() == YtelseType.UNGDOMSYTELSE ? ProsessTaskData.forProsessTask(UngsakCallbackTask.class) : ProsessTaskData.forProsessTask(K9sakCallbackTask.class);
+        var callbackTask = UNGSAK_YTELSER.contains(kobling.getYtelseType()) ? ProsessTaskData.forProsessTask(UngsakCallbackTask.class) : ProsessTaskData.forProsessTask(K9sakCallbackTask.class);
         innhentingTask.setAktørId(kobling.getAktørId().getId());
         innhentingTask.setProperty(TaskConstants.GAMMEL_KOBLING_ID, kobling.getId().toString());
         innhentingTask.setProperty(TaskConstants.NY_KOBLING_ID, kobling.getId().toString());
