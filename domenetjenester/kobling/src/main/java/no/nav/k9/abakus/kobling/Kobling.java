@@ -2,6 +2,7 @@ package no.nav.k9.abakus.kobling;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import jakarta.persistence.AttributeOverride;
@@ -71,6 +72,12 @@ public class Kobling extends BaseEntitet implements IndexKey {
     @AttributeOverrides({@AttributeOverride(name = "fomDato", column = @Column(name = "opplysning_periode_skattegrunnlag_fom")), @AttributeOverride(name = "tomDato", column = @Column(name = "opplysning_periode_skattegrunnlag_tom"))})
     private IntervallEntitet opplysningsperiodeSkattegrunnlag;
 
+    /**
+     * Bestemmer dato for når skattegrunnlag som skal innhentes må være fastsatt innen. Skattegrunnlag som er fastsatt etter denne datoen skal ikke innhentes. Dette låser innhenting til skatteoppgjør som var tilgjengelig på en gitt dato.
+     */
+    @ChangeTracked
+    @Column(name = "skattegrunnlag_fastsatt_frist", nullable = true)
+    private LocalDate skattegrunnlagFastsattFrist;
 
     /**
      * inaktive koblinger skal ikke brukes. må filtreres vekk.
@@ -160,6 +167,14 @@ public class Kobling extends BaseEntitet implements IndexKey {
 
     public long getVersjon() {
         return this.versjon;
+    }
+
+    public Optional<LocalDate> getSkattegrunnlagFastsattFrist() {
+        return Optional.ofNullable(skattegrunnlagFastsattFrist);
+    }
+
+    public void setSkattegrunnlagFastsattFrist(LocalDate fastsattSkattegrunnlagCutoffDato) {
+        this.skattegrunnlagFastsattFrist = fastsattSkattegrunnlagCutoffDato;
     }
 
     @Override

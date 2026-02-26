@@ -20,7 +20,7 @@ public class AbakusPdpRequest extends PdpRequestMedBerørtePersonerForAuditlogg 
     }
 
     public void setYtelseTypeKoder(Set<String> ytelseTypeKoder) {
-        this.ytelseTyper =ytelseTypeKoder.stream()
+        this.ytelseTyper = ytelseTypeKoder.stream()
             .map(YtelseType::fraKode)
             .collect(Collectors.toSet());
     }

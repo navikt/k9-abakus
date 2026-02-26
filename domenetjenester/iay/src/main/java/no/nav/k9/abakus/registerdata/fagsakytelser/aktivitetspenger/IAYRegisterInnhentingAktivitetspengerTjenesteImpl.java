@@ -1,4 +1,4 @@
-package no.nav.k9.abakus.registerdata.fagsakytelser.ungdomsytelse;
+package no.nav.k9.abakus.registerdata.fagsakytelser.aktivitetspenger;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -14,27 +14,27 @@ import no.nav.k9.abakus.registerdata.arbeidsgiver.virksomhet.VirksomhetTjeneste;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.SigrunTjeneste;
 
 @ApplicationScoped
-@YtelseTypeRef(YtelseType.UNGDOMSYTELSE)
-public class IAYRegisterInnhentingUngdomsytelseTjenesteImpl extends IAYRegisterInnhentingFellesTjenesteImpl {
+@YtelseTypeRef(YtelseType.AKTIVITETSPENGER)
+public class IAYRegisterInnhentingAktivitetspengerTjenesteImpl extends IAYRegisterInnhentingFellesTjenesteImpl {
 
-    protected IAYRegisterInnhentingUngdomsytelseTjenesteImpl() {
+    protected IAYRegisterInnhentingAktivitetspengerTjenesteImpl() {
         super();
     }
 
     @Inject
-    public IAYRegisterInnhentingUngdomsytelseTjenesteImpl(InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste,
-                                                          VirksomhetTjeneste virksomhetTjeneste,
-                                                          InnhentingSamletTjeneste innhentingSamletTjeneste,
-                                                          AktørTjeneste aktørConsumer,
-                                                          SigrunTjeneste sigrunTjeneste,
-                                                          VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste) {
+    public IAYRegisterInnhentingAktivitetspengerTjenesteImpl(InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste,
+                                                             VirksomhetTjeneste virksomhetTjeneste,
+                                                             InnhentingSamletTjeneste innhentingSamletTjeneste,
+                                                             AktørTjeneste aktørConsumer,
+                                                             SigrunTjeneste sigrunTjeneste,
+                                                             VedtattYtelseInnhentingTjeneste vedtattYtelseInnhentingTjeneste) {
         super(inntektArbeidYtelseTjeneste, virksomhetTjeneste, innhentingSamletTjeneste, aktørConsumer, sigrunTjeneste,
             vedtattYtelseInnhentingTjeneste);
     }
 
     @Override
     public boolean skalInnhenteNæringsInntekterFor(Kobling behandling) {
-        return false;
+        return true;
     }
 
     @Override

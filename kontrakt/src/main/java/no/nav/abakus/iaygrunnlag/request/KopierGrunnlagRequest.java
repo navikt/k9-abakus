@@ -1,5 +1,6 @@
 package no.nav.abakus.iaygrunnlag.request;
 
+import java.time.LocalDate;
 import java.util.EnumSet;
 import java.util.Set;
 import java.util.UUID;
@@ -48,6 +49,9 @@ public class KopierGrunnlagRequest {
     @JsonProperty(value = "opplysningsperiodeSkattegrunnlag")
     @Valid
     private Periode opplysningsperiodeSkattegrunnlag;
+    @JsonProperty(value = "skattegrunnlagFastsattFrist")
+    @Valid
+    private LocalDate skattegrunnlagFastsattFrist;
     @JsonProperty(value = "aktør", required = true)
     @NotNull
     @Valid
@@ -108,6 +112,14 @@ public class KopierGrunnlagRequest {
 
     public void setOpplysningsperiodeSkattegrunnlag(Periode opplysningsperiodeSkattegrunnlag) {
         this.opplysningsperiodeSkattegrunnlag = opplysningsperiodeSkattegrunnlag;
+    }
+
+    public LocalDate getSkattegrunnlagFastsattFrist() {
+        return skattegrunnlagFastsattFrist;
+    }
+
+    public void setSkattegrunnlagFastsattFrist(LocalDate skattegrunnlagFastsattFrist) {
+        this.skattegrunnlagFastsattFrist = skattegrunnlagFastsattFrist;
     }
 
     public Periode getOpptjeningsperiode() {
