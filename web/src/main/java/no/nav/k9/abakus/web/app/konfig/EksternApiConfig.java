@@ -22,7 +22,6 @@ import no.nav.k9.abakus.web.app.exceptions.GeneralRestExceptionMapper;
 import no.nav.k9.abakus.web.app.exceptions.JsonMappingExceptionMapper;
 import no.nav.k9.abakus.web.app.exceptions.JsonParseExceptionMapper;
 import no.nav.k9.abakus.web.app.jackson.JacksonJsonConfig;
-import no.nav.k9.abakus.web.app.rest.ekstern.EksternDelingAvYtelserRestTjeneste;
 import no.nav.k9.felles.konfigurasjon.env.Environment;
 import no.nav.k9.felles.exception.TekniskException;
 
@@ -60,7 +59,7 @@ public class EksternApiConfig extends Application {
     public Set<Class<?>> getClasses() {
         // eksponert grensesnitt
 
-        return Set.of(EksternDelingAvYtelserRestTjeneste.class,
+        return Set.of(
             // Applikasjonsoppsett
             JacksonJsonConfig.class,
             // Swagger
