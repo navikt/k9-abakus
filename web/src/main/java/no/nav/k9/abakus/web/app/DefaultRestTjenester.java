@@ -14,7 +14,6 @@ import no.nav.k9.abakus.registerdata.tjeneste.RegisterdataRestTjeneste;
 import no.nav.k9.abakus.vedtak.tjeneste.YtelseRestTjeneste;
 import no.nav.k9.abakus.web.app.diagnostikk.DiagnostikkRestTjeneste;
 import no.nav.k9.abakus.web.app.diagnostikk.rapportering.RapporteringRestTjeneste;
-import no.nav.k9.abakus.web.app.rest.ekstern.EksternDelingAvYtelserRestTjeneste;
 import no.nav.k9.abakus.web.app.vedlikehold.ForvaltningRestTjeneste;
 import no.nav.k9.prosesstask.rest.ProsessTaskRestTjeneste;
 
@@ -31,7 +30,6 @@ class DefaultRestTjenester implements RestClasses {
         Set<Class<?>> classes = new LinkedHashSet<>();
         classes.add(ArbeidsforholdRestTjeneste.class);
         classes.add(DiagnostikkRestTjeneste.class);
-        classes.add(EksternDelingAvYtelserRestTjeneste.class);
         classes.add(ForvaltningRestTjeneste.class);
         classes.add(GrunnlagRestTjeneste.class);
         classes.add(InntektsmeldingerRestTjeneste.class);
