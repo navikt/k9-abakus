@@ -1,5 +1,9 @@
 package no.nav.k9.abakus.registerdata;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.List;
 import java.util.Set;
 
 import io.opentelemetry.instrumentation.annotations.WithSpan;
@@ -7,6 +11,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Any;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
+
+import no.nav.k9.prosesstask.api.ProsessTaskRepository;
+
+import no.nav.k9.prosesstask.api.ProsessTaskStatus;
+
+import no.nav.k9.prosesstask.api.ProsessTaskTjeneste;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,7 +47,8 @@ public class RegisterdataInnhentingTask extends KoblingTask {
     private KoblingTjeneste koblingTjeneste;
     private InntektArbeidYtelseTjeneste iayTjeneste;
     private Instance<IAYRegisterInnhentingTjeneste> innhentTjenester;
-
+    private ProsessTaskRepository prosessTaskRepository;
+private ProsessTaskTjeneste prosessTaskTjeneste;
     RegisterdataInnhentingTask() {
     }
 
@@ -45,11 +56,13 @@ public class RegisterdataInnhentingTask extends KoblingTask {
     public RegisterdataInnhentingTask(LåsRepository låsRepository,
                                       KoblingTjeneste koblingTjeneste,
                                       InntektArbeidYtelseTjeneste iayTjeneste,
-                                      @Any Instance<IAYRegisterInnhentingTjeneste> innhentingTjeneste) {
+                                      @Any Instance<IAYRegisterInnhentingTjeneste> innhentingTjeneste,
+                                      ProsessTaskRepository prosessTaskRepository) {
         super(låsRepository);
         this.koblingTjeneste = koblingTjeneste;
         this.iayTjeneste = iayTjeneste;
         this.innhentTjenester = innhentingTjeneste;
+        this.prosessTaskRepository = prosessTaskRepository;
     }
 
     private IAYRegisterInnhentingTjeneste finnInnhenter(YtelseType ytelseType) {
@@ -81,5 +94,14 @@ public class RegisterdataInnhentingTask extends KoblingTask {
             kobling.getKoblingReferanse(), informasjonsElementer);
         InntektArbeidYtelseGrunnlagBuilder builder = finnInnhenter(kobling.getYtelseType()).innhentRegisterdata(kobling, informasjonsElementer);
         iayTjeneste.lagre(kobling.getKoblingReferanse(), builder);
+
+        //dersom vi har kommet hit, betyr det at registerdata kjørte uten exceptions
+        //vi oppretter en RestartTaskerTask som vil trigge restart av eventuelt feilede registerdata-tasker
+        //dette gjøres for at saker (i k9-sak, ung-sak) ikke skal måtte vente til periodisk rekjøring på faste tidspunkt
+        prosessTaskTjeneste.lagre(ProsessTaskData.forProsessTask(RestartTaskerTask.class)
+            .medGruppe("restart")
+            .medSekvens(prosessTaskData.getId().toString())
+        );
     }
+
 }
