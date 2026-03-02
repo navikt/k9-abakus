@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
 import no.nav.abakus.iaygrunnlag.kodeverk.Inntektskategori;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseStatus;
@@ -134,6 +133,7 @@ public class ExtractFromYtelseV1 implements ExtractFromYtelse<YtelseV1> {
             case FRISINN -> YtelseType.FRISINN;
 
             case UNGDOMSYTELSE -> YtelseType.UNGDOMSYTELSE;
+            case AKTIVITETSPENGER -> YtelseType.AKTIVITETSPENGER;
         };
     }
 
