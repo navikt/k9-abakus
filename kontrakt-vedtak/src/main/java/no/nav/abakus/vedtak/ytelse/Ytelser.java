@@ -26,6 +26,13 @@ public enum Ytelser {
     /**
      * Ungdomsytelse for personer mellom 18 og 29 år med deltakelse i ungdomsprogram
      */
-    UNGDOMSYTELSE
+    UNGDOMSYTELSE,
+
+
+
+    /**
+     * Aktivitetspenger
+     */
+    AKTIVITETSPENGER
 
     }
