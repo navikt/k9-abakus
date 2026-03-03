@@ -2,7 +2,7 @@ package no.nav.k9.abakus.registerdata;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
-import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerBruttoUtbetaling;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerBeregnetPeriode;
 import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DpSakRestKlient;
 
 import no.nav.k9.abakus.typer.PersonIdent;
@@ -37,67 +37,95 @@ class InnhentingSamletTjenesteTest {
 
     @Test
     void skalMappePerioderFraDagpengerRiktig() {
-        var utbetalinger = new ArrayList<DagpengerBruttoUtbetaling>();
-        utbetalinger.add(DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        var utbetalinger = new ArrayList<DagpengerBeregnetPeriode>();
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
             .medFraOgMedDato(LocalDate.of(2026, 2, 4))
             .medTilOgMedDato(LocalDate.of(2026, 2, 4))
             .medKilde(Fagsystem.DPSAK)
             .medSats(100)
             .medUtbetaltBeløp(50)
             .build());
-        utbetalinger.add(DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
             .medFraOgMedDato(LocalDate.of(2026, 2, 5))
             .medTilOgMedDato(LocalDate.of(2026, 2, 5))
             .medKilde(Fagsystem.DPSAK)
             .medSats(100)
             .medUtbetaltBeløp(50)
             .build());
-        utbetalinger.add(DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
             .medFraOgMedDato(LocalDate.of(2026, 2, 6))
             .medTilOgMedDato(LocalDate.of(2026, 2, 6))
             .medKilde(Fagsystem.DPSAK)
             .medSats(100)
             .medUtbetaltBeløp(50)
             .build());
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
+            .medFraOgMedDato(LocalDate.of(2026, 2, 7))
+            .medTilOgMedDato(LocalDate.of(2026, 2, 7))
+            .medKilde(Fagsystem.DPSAK)
+            .medSats(100)
+            .medUtbetaltBeløp(0)
+            .build());
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
+            .medFraOgMedDato(LocalDate.of(2026, 2, 8))
+            .medTilOgMedDato(LocalDate.of(2026, 2, 8))
+            .medKilde(Fagsystem.DPSAK)
+            .medSats(100)
+            .medUtbetaltBeløp(0)
+            .build());
 
 
-        utbetalinger.add(DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
             .medFraOgMedDato(LocalDate.of(2026, 2, 9))
             .medTilOgMedDato(LocalDate.of(2026, 2, 9))
             .medKilde(Fagsystem.DPSAK)
             .medSats(100)
             .medUtbetaltBeløp(50)
             .build());
-        utbetalinger.add(DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
             .medFraOgMedDato(LocalDate.of(2026, 2, 10))
             .medTilOgMedDato(LocalDate.of(2026, 2, 10))
             .medKilde(Fagsystem.DPSAK)
             .medSats(100)
             .medUtbetaltBeløp(50)
             .build());
-        utbetalinger.add(DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
             .medFraOgMedDato(LocalDate.of(2026, 2, 11))
             .medTilOgMedDato(LocalDate.of(2026, 2, 11))
             .medKilde(Fagsystem.DPSAK)
             .medSats(100)
             .medUtbetaltBeløp(50)
             .build());
-        utbetalinger.add(DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
             .medFraOgMedDato(LocalDate.of(2026, 2, 12))
             .medTilOgMedDato(LocalDate.of(2026, 2, 12))
             .medKilde(Fagsystem.DPSAK)
             .medSats(100)
             .medUtbetaltBeløp(50)
             .build());
-        utbetalinger.add(DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
             .medFraOgMedDato(LocalDate.of(2026, 2, 13))
             .medTilOgMedDato(LocalDate.of(2026, 2, 13))
             .medKilde(Fagsystem.DPSAK)
             .medSats(100)
             .medUtbetaltBeløp(50)
             .build());
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
+            .medFraOgMedDato(LocalDate.of(2026, 2, 14))
+            .medTilOgMedDato(LocalDate.of(2026, 2, 14))
+            .medKilde(Fagsystem.DPSAK)
+            .medSats(100)
+            .medUtbetaltBeløp(0)
+            .build());
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
+            .medFraOgMedDato(LocalDate.of(2026, 2, 15))
+            .medTilOgMedDato(LocalDate.of(2026, 2, 15))
+            .medKilde(Fagsystem.DPSAK)
+            .medSats(100)
+            .medUtbetaltBeløp(0)
+            .build());
 
-        utbetalinger.add(DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
             .medFraOgMedDato(LocalDate.of(2026, 2, 16))
             .medTilOgMedDato(LocalDate.of(2026, 3, 1))
             .medKilde(Fagsystem.ARENA)
@@ -105,17 +133,17 @@ class InnhentingSamletTjenesteTest {
             .medUtbetaltBeløp(200)
             .build());
 
-        utbetalinger.add(DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        utbetalinger.add(DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
             .medFraOgMedDato(LocalDate.of(2026, 3, 2))
             .medTilOgMedDato(LocalDate.of(2026, 3, 6))
-            .medKilde(Fagsystem.DPSAK)
+            .medKilde(Fagsystem.ARENA)
             .medSats(100)
             .medUtbetaltBeløp(50)
             .build());
 
         Mockito.when(klient.hentBruttoUtbetalinger(any(), any(), any())).thenReturn(utbetalinger);
 
-        var resultat = tjeneste.hentDagpengerRettighetsperioder(PersonIdent.fra("113"), new IntervallEntitet());
+        var resultat = tjeneste.hentDagpengerBeregninger(PersonIdent.fra("113"), new IntervallEntitet());
 
         assertThat(resultat.size()).isEqualTo(4);
         var resultatIterator = resultat.iterator();

@@ -31,11 +31,11 @@ public class DpSakRestKlient {
     }
 
 
-    public List<DagpengerBruttoUtbetaling> hentBruttoUtbetalinger(PersonIdent personIdent, LocalDate fom, LocalDate tom) {
+    public List<DagpengerBeregnetPeriode> hentBruttoUtbetalinger(PersonIdent personIdent, LocalDate fom, LocalDate tom) {
         var prequest = new PersonRequest(personIdent.getIdent(), fom, tom);
         try {
-            var result = restClient.post(beregningerEndpoint, prequest, DagpengerBruttoUtbetalingerDto.class);
-            return result.perioder().stream().map(DagpengerBruttoUtbetalingerDto.RettighetsperiodeDto::tilDomeneModell).toList();
+            var result = restClient.post(beregningerEndpoint, prequest, DagpengerBeregnetDagDto.class);
+            return result.perioder().stream().map(DagpengerBeregnetDagDto.RettighetsperiodeDto::tilDomeneModell).toList();
         } catch (UriBuilderException | IllegalArgumentException e) {
             throw new IllegalArgumentException("Utviklerfeil syntax-exception for hentDagpenger fra dp-sak");
         }

@@ -3,7 +3,7 @@ package no.nav.k9.abakus.registerdata;
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
 import no.nav.k9.abakus.domene.iay.VersjonType;
-import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerBruttoUtbetaling;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerBeregnetPeriode;
 
 import no.nav.k9.abakus.typer.AktørId;
 
@@ -27,7 +27,7 @@ class YtelseRegisterInnhentingTest {
 
     @Test
     public void skal_oversette_dagpenger_fra_dp_sak_til_ytelse_riktig() {
-        var dagpengerUtbetaling = DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        var dagpengerUtbetaling = DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
             .medKilde(Fagsystem.DPSAK)
             .medFraOgMedDato(LocalDate.of(2026, 2, 2))
             .medTilOgMedDato(LocalDate.of(2026, 2, 6))
@@ -52,7 +52,7 @@ class YtelseRegisterInnhentingTest {
 
     @Test
     public void skal_oversette_dagpenger_fra_arena_til_ytelse_riktig() {
-        var dagpengerUtbetaling = DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        var dagpengerUtbetaling = DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
             .medKilde(Fagsystem.ARENA)
             .medFraOgMedDato(LocalDate.of(2026, 2, 2))
             .medTilOgMedDato(LocalDate.of(2026, 2, 15))

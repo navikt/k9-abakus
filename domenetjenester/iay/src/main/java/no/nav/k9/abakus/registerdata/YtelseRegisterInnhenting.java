@@ -15,7 +15,7 @@ import no.nav.k9.abakus.kobling.Kobling;
 import no.nav.k9.abakus.registerdata.infotrygd.InfotrygdgrunnlagYtelseMapper;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagMeldekort;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
-import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerBruttoUtbetaling;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerBeregnetPeriode;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseGrunnlag;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.PersonIdent;
@@ -63,7 +63,7 @@ public class YtelseRegisterInnhenting {
             oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
         }
 
-        var dagpenger = innhentingSamletTjeneste.hentDagpengerRettighetsperioder(ident, opplysningsPeriode);
+        var dagpenger = innhentingSamletTjeneste.hentDagpengerBeregninger(ident, opplysningsPeriode);
         dagpenger.forEach(rettighetsperiode -> oversettDagpengerTilAktørYtelse(aktørYtelseBuilder, rettighetsperiode));
 
 
@@ -86,11 +86,11 @@ public class YtelseRegisterInnhenting {
     }
 
     void oversettDagpengerTilAktørYtelse(InntektArbeidYtelseAggregatBuilder.AktørYtelseBuilder aktørYtelseBuilder,
-                                                 DagpengerBruttoUtbetaling dagpengerUtbetaling) {
+                                                 DagpengerBeregnetPeriode dagpengerUtbetaling) {
         var ytelseperiode = IntervallEntitet.fraOgMedTilOgMed(dagpengerUtbetaling.getFraOgMedDato(), dagpengerUtbetaling.getTilOgMedDato());
         // Perioder fra Arena vil alltid bestå av 14 dager, derfor er det alltid 10 arbeidsdager
         // Perider fra dp-sak vil som oftest ha fem dager (fordi vi slår enkeldager sammen tidligere), men kan være kortere
-        var antDagerPeriode = dagpengerUtbetaling.getKilde().equals(Fagsystem.ARENA) ? BigDecimal.valueOf(10) : finnDagerForPeriode(ytelseperiode);
+        var antDagerPeriode = dagpengerUtbetaling.getKilde().equals(Fagsystem.ARENA) ? BigDecimal.valueOf(10) : finnAntallDagerForPeriode(ytelseperiode);
         // sats fra dp-sak må deles på antall dager, fordi den ble summert da segmentene ble slått sammen. Satsen kan variere per dag, så vi ønsker snittet.
         // for data fra Arena er den allerde per dag
         var satsPerDag = dagpengerUtbetaling.getKilde().equals(Fagsystem.ARENA) ? BigDecimal.valueOf(dagpengerUtbetaling.getsats()) :
@@ -166,8 +166,21 @@ public class YtelseRegisterInnhenting {
         return sak.getMeldekortene().stream().map(MeldekortUtbetalingsgrunnlagMeldekort::getMeldekortFom).min(LocalDate::compareTo);
     }
 
-    private static BigDecimal finnDagerForPeriode(IntervallEntitet ytelsePeriode) {
-        return BigDecimal.valueOf(ChronoUnit.DAYS.between(ytelsePeriode.getFomDato(), ytelsePeriode.getTomDato().plusDays(1)));
+    private static BigDecimal finnAntallDagerForPeriode(IntervallEntitet ytelsePeriode) {
+        var dager = ChronoUnit.DAYS.between(ytelsePeriode.getFomDato(), ytelsePeriode.getTomDato().plusDays(1));
+        if(dager < 6) {
+            return BigDecimal.valueOf(dager);
+        } if (dager < 8) {
+            return BigDecimal.valueOf(5);
+        }
+        var førsteDag = ytelsePeriode.getFomDato().getDayOfWeek().getValue();
+
+        var antEkstraDager = dager % 7;
+
+
+
+
+
     }
 
 }

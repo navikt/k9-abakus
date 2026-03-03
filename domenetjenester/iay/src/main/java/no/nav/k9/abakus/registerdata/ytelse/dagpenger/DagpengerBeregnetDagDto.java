@@ -1,9 +1,11 @@
 package no.nav.k9.abakus.registerdata.ytelse.dagpenger;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 
-public record DagpengerBruttoUtbetalingerDto(
+public record DagpengerBeregnetDagDto(
     List<RettighetsperiodeDto> perioder) {
 
     public record RettighetsperiodeDto(
@@ -13,14 +15,15 @@ public record DagpengerBruttoUtbetalingerDto(
         int utbetaltBeløp,
         int gjenståendeDager,
         DagpengerKilde kilde) {
-        public DagpengerBruttoUtbetaling tilDomeneModell() {
-            return DagpengerBruttoUtbetaling.DagpengerBruttoUtbetalingerBuilder.ny()
+        public DagpengerBeregnetPeriode tilDomeneModell() {
+            return DagpengerBeregnetPeriode.DagpengerBeregnetPeriodeBuilder.ny()
                 .medKilde(kilde)
                 .medTilOgMedDato(tilOgMedDato)
                 .medFraOgMedDato(fraOgMedDato)
                 .medSats(sats)
                 .medUtbetaltBeløp(utbetaltBeløp)
                 .medGjenståendeDager(gjenståendeDager)
+                .medUtbetalingsgrad((double) sats / (double)  utbetaltBeløp) // beholder desimaler
                 .build();
         }
     }
