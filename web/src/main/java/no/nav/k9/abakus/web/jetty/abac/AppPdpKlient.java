@@ -48,8 +48,8 @@ public class AppPdpKlient implements PdpKlient {
 
             sjekkYtelsetyper(aktuelleYtelser);
 
-            if (aktuelleYtelser.size() == 1 && UNGSAK_YTELSER.contains(aktuelleYtelser.iterator().next())) {
-                LOGGER.info("Aktuell ytelse er " + aktuelleYtelser.iterator().next().getNavn());
+            if (aktuelleYtelser.size() == 1 && aktuelleYtelser.contains(YtelseType.UNGDOMSYTELSE)) {
+                LOGGER.info("Aktuell ytelse er ungdomsprogramytelse");
                 SaksinformasjonOgPersonerTilgangskontrollInputDto tilgangskontrollInput = PdpRequestMapper.map(abakusPdpRequest);
                 return sifAbacPdpUngRestKlient.sjekkTilgangForInnloggetBrukerUng(tilgangskontrollInput);
             } else if (aktuelleYtelser.size() == 1 && aktuelleYtelser.contains(YtelseType.AKTIVITETSPENGER)) {
