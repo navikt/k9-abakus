@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
+import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
 import no.nav.k9.abakus.domene.iay.YtelseBuilder;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
@@ -51,6 +52,16 @@ public class YtelseRegisterInnhenting {
         ghosts.forEach(grunnlag -> oversettSpokelseYtelseGrunnlagTilYtelse(aktørYtelseBuilder, grunnlag));
 
         List<MeldekortUtbetalingsgrunnlagSak> arena = innhentingSamletTjeneste.hentDagpengerAAP(ident, opplysningsPeriode);
+
+        List<MeldekortUtbetalingsgrunnlagSak> aapGrunnlagFraKelvin = innhentingSamletTjeneste.innhentMaksimumAAP(ident, opplysningsPeriode, behandling.getSaksnummer());
+        for (MeldekortUtbetalingsgrunnlagSak sak : aapGrunnlagFraKelvin) {
+            oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
+        }
+
+        if (!aapGrunnlagFraKelvin.isEmpty()) { // har hentet AAP fra Kelvin, fjerner AAP fra Arena-resultat
+            arena = arena.stream().filter(meldekort ->  meldekort.getYtelseType().equals(YtelseType.DAGPENGER)).toList();
+        }
+
         for (MeldekortUtbetalingsgrunnlagSak sak : arena) {
             oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
         }
