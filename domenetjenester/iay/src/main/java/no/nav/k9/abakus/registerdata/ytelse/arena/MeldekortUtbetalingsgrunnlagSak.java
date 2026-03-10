@@ -1,6 +1,7 @@
 package no.nav.k9.abakus.registerdata.ytelse.arena;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +93,29 @@ public class MeldekortUtbetalingsgrunnlagSak {
             that.vedtakStatus) && Objects.equals(kravMottattDato, that.kravMottattDato) && Objects.equals(vedtattDato, that.vedtattDato)
             && Objects.equals(vedtaksPeriodeFom, that.vedtaksPeriodeFom) && Objects.equals(vedtaksPeriodeTom, that.vedtaksPeriodeTom)
             && Objects.equals(vedtaksDagsats, that.vedtaksDagsats);
+    }
+
+    public boolean likeNokVedtak(MeldekortUtbetalingsgrunnlagSak that) {
+        return type == that.type && kilde == that.kilde
+            && Objects.equals(vedtaksPeriodeFom, that.vedtaksPeriodeFom) && Objects.equals(vedtaksPeriodeTom, that.vedtaksPeriodeTom)
+            && likeTallVerdier(vedtaksDagsats, that.vedtaksDagsats);
+    }
+
+    private boolean likeTallVerdier(Beløp denne, Beløp andre) {
+        if (denne == null && andre == null) {
+            return true;
+        }
+        if (denne == null || andre == null) {
+            return false;
+        }
+        return MeldekortUtbetalingsgrunnlagMeldekort.likeTallVerdier(denne.getVerdi(), andre.getVerdi());
+    }
+
+    public String utskriftUtenMK() {
+        return "MeldekortUtbetalingsgrunnlagSak{" + "type=" + type + ", tilstand=" + tilstand + ", kilde=" + kilde
+            + ", saksnummer=" + saksnummer + ", kravMottattDato="
+            + kravMottattDato + ", vedtattDato=" + vedtattDato + ", vedtaksPeriodeFom=" + vedtaksPeriodeFom + ", vedtaksPeriodeTom="
+            + vedtaksPeriodeTom + ", vedtaksDagsats=" + vedtaksDagsats + '}';
     }
 
     private boolean erLikeMeldekort(List<MeldekortUtbetalingsgrunnlagMeldekort> l1, List<MeldekortUtbetalingsgrunnlagMeldekort> l2) {

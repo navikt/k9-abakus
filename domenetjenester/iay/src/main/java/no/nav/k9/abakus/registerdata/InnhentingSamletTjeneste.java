@@ -2,10 +2,14 @@ package no.nav.k9.abakus.registerdata;
 
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,14 +107,31 @@ public class InnhentingSamletTjeneste {
     public List<MeldekortUtbetalingsgrunnlagSak> innhentMaksimumAAP(
         PersonIdent ident,
         IntervallEntitet opplysningsPeriode,
-        Saksnummer saksnummer) {
+        Saksnummer saksnummer, List<MeldekortUtbetalingsgrunnlagSak> aapFraArena) {
         if (!henterDataFraKelvin) {
             return Collections.emptyList();
         }
-        var fom = opplysningsPeriode.getFomDato();
-        var tom = opplysningsPeriode.getTomDato();
 
-        return kelvinRestKlient.hentAAP(ident, fom, tom, saksnummer);
+        var aapGrunnlag =  kelvinRestKlient.hentAAP(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer);
+
+        var grunnlagFraKelvin = aapGrunnlag.stream().filter(grunnlag -> grunnlag.getKilde().equals(Fagsystem.KELVIN)).collect(Collectors.toSet());
+        var grunnlagFraArena = aapGrunnlag.stream().filter(grunnlag -> grunnlag.getKilde().equals(Fagsystem.ARENA)).collect(Collectors.toList());
+
+        try {
+            sammenligneArenaDirekteVsKelvin(aapFraArena, grunnlagFraArena);
+        } catch (Exception _) {
+            LOG.info("Maksimum AAP sammenligning av Arenadata for sak {} feilet", saksnummer.getVerdi());
+        }
+        var antattStp = opplysningsPeriode.getFomDato().plusMonths(17);
+        var overlappStp = grunnlagFraKelvin.stream().anyMatch(v -> v.getVedtaksPeriodeFom().isBefore(antattStp) && v.getVedtaksPeriodeTom().isAfter(antattStp));
+        if (overlappStp) {
+            var saksnumreAAP = grunnlagFraKelvin.stream()
+                .map(MeldekortUtbetalingsgrunnlagSak::getSaksnummer)
+                .map(Saksnummer::getVerdi)
+                .collect(Collectors.joining(", "));
+            LOG.warn("Sak {} har innhentet nye Arbeidsavklaringspenger fra Kelvin saker {}. Kontakt produkteier for validering", saksnummer.getVerdi(), saksnumreAAP);
+        }
+        return aapGrunnlag;
     }
 
     public List<MeldekortUtbetalingsgrunnlagSak> hentDagpengerAAP(PersonIdent ident, IntervallEntitet opplysningsPeriode) {
@@ -141,6 +162,32 @@ public class InnhentingSamletTjeneste {
             }
         }
         return filtrert;
+    }
+
+    private void sammenligneArenaDirekteVsKelvin(List<MeldekortUtbetalingsgrunnlagSak> arena, List<MeldekortUtbetalingsgrunnlagSak> kelvin) {
+        var arenaMK = arena.stream().map(MeldekortUtbetalingsgrunnlagSak::getMeldekortene).flatMap(Collection::stream).collect(Collectors.toSet());
+        var kelvinMK = kelvin.stream().map(MeldekortUtbetalingsgrunnlagSak::getMeldekortene).flatMap(Collection::stream).collect(Collectors.toSet());
+        var vAIkkeK = arena.stream().filter(a -> kelvin.stream().noneMatch(a::likeNokVedtak))
+            .map(MeldekortUtbetalingsgrunnlagSak::utskriftUtenMK).collect(Collectors.joining(", "));
+        var vKIkkeA = kelvin.stream().filter(a -> arena.stream().noneMatch(a::likeNokVedtak))
+            .map(MeldekortUtbetalingsgrunnlagSak::utskriftUtenMK).collect(Collectors.joining(", "));
+        var mAIkkeK = arenaMK.stream().filter(a -> kelvinMK.stream().noneMatch(a::equals)).collect(Collectors.toSet());
+        var mKIkkeA = kelvinMK.stream().filter(a -> arenaMK.stream().noneMatch(a::equals)).collect(Collectors.toSet());
+        if (arena.isEmpty() && kelvin.isEmpty()) {
+            return;
+        } else if (arena.isEmpty() || kelvin.isEmpty()) {
+            LOG.info("Maksimum AAP sammenligning ene er tom:  arena: {} mk {} kelvin: {} mk {}", vAIkkeK, mAIkkeK, vKIkkeA, mKIkkeA);
+        } else if (arena.size() != kelvin.size() || arenaMK.size() != kelvinMK.size()) {
+            LOG.info("Maksimum AAP sammenligning ulik størrelse:  arena: {} mk {} kelvin: {} mk {}", vAIkkeK, mAIkkeK, vKIkkeA, mKIkkeA);
+        } else {
+            var likeNokVedtak = arena.stream().allMatch(a -> kelvin.stream().anyMatch(a::likeNokVedtak));
+            var likeMk = kelvinMK.containsAll(arenaMK);
+            if (likeNokVedtak && likeMk) {
+                LOG.info("Maksimum AAP sammenligning likt svar fra arena og AAP-api");
+            } else {
+                LOG.info("Maksimum AAP sammenligning lik størrelse ulikt innhold: arena: {} mk {} kelvin: {} mk {}", vAIkkeK, mAIkkeK, vKIkkeA, mKIkkeA);
+            }
+        }
     }
 
     private void loggArenaIgnorert(String ignorert, Saksnummer saksnummer) {
