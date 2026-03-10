@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import graphql.com.google.common.collect.ImmutableList;
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
 
 import org.slf4j.Logger;
@@ -114,8 +115,8 @@ public class InnhentingSamletTjeneste {
 
         var aapGrunnlag =  kelvinRestKlient.hentAAP(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer);
 
-        var grunnlagFraKelvin = aapGrunnlag.stream().filter(grunnlag -> grunnlag.getKilde().equals(Fagsystem.KELVIN)).collect(Collectors.toSet());
-        var grunnlagFraArena = aapGrunnlag.stream().filter(grunnlag -> grunnlag.getKilde().equals(Fagsystem.ARENA)).collect(Collectors.toList());
+        var grunnlagFraKelvin = aapGrunnlag.get(Fagsystem.KELVIN);
+        var grunnlagFraArena = aapGrunnlag.get(Fagsystem.ARENA);
 
         try {
             sammenligneArenaDirekteVsKelvin(aapFraArena, grunnlagFraArena);
@@ -131,7 +132,10 @@ public class InnhentingSamletTjeneste {
                 .collect(Collectors.joining(", "));
             LOG.warn("Sak {} har innhentet nye Arbeidsavklaringspenger fra Kelvin saker {}. Kontakt produkteier for validering", saksnummer.getVerdi(), saksnumreAAP);
         }
-        return aapGrunnlag;
+        return ImmutableList.<MeldekortUtbetalingsgrunnlagSak>builder()
+            .addAll(grunnlagFraKelvin)
+            .addAll(grunnlagFraArena)
+            .build();
     }
 
     public List<MeldekortUtbetalingsgrunnlagSak> hentDagpengerAAP(PersonIdent ident, IntervallEntitet opplysningsPeriode) {

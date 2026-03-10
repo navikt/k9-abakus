@@ -3,11 +3,12 @@ package no.nav.k9.abakus.registerdata.ytelse.kelvin;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
-import graphql.com.google.common.collect.ImmutableList;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.UriBuilder;
+import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
 import no.nav.k9.abakus.typer.PersonIdent;
 import no.nav.k9.abakus.typer.Saksnummer;
@@ -34,7 +35,7 @@ public class KelvinRestKlient {
         this.endpointHentAAP = UriBuilder.fromUri(baseUrl).path("/maksimum").build();
     }
 
-    public List<MeldekortUtbetalingsgrunnlagSak> hentAAP(PersonIdent ident, LocalDate fom, LocalDate tom, Saksnummer saksnummer) {
+    public Map<Fagsystem, List<MeldekortUtbetalingsgrunnlagSak>> hentAAP(PersonIdent ident, LocalDate fom, LocalDate tom, Saksnummer saksnummer) {
         var body = new KelvinRequest(ident.getIdent(), fom, tom);
         var result = oidcRestClient.post(endpointHentAAP, body, ArbeidsavklaringspengerResponse.class);
 
@@ -42,10 +43,7 @@ public class KelvinRestKlient {
         var arenaVedtak = result.vedtak().stream().filter(v -> ArbeidsavklaringspengerResponse.Kildesystem.ARENA.equals(v.kildesystem())).toList();
         var kelvinMapped = KelvinMapper.mapTilMeldekortAclKelvin(kelvinVedtak, saksnummer);
         var arenaMapped = ArenaMapper.mapTilMeldekortAclArena(arenaVedtak, fom);
-        return ImmutableList.<MeldekortUtbetalingsgrunnlagSak>builder()
-            .addAll(kelvinMapped)
-            .addAll(arenaMapped)
-            .build();
+        return Map.of(Fagsystem.ARENA, arenaMapped, Fagsystem.KELVIN, kelvinMapped);
     }
 
     public record KelvinRequest(String personidentifikator, LocalDate fraOgMedDato, LocalDate tilOgMedDato) { }
