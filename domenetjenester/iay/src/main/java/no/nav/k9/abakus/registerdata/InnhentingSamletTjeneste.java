@@ -120,8 +120,8 @@ public class InnhentingSamletTjeneste {
 
         try {
             sammenligneArenaDirekteVsKelvin(aapFraArena, grunnlagFraArena);
-        } catch (Exception _) {
-            LOG.info("Maksimum AAP sammenligning av Arenadata for sak {} feilet", saksnummer.getVerdi());
+        } catch (Exception e) {
+            LOG.info("Maksimum AAP sammenligning av Arenadata for sak {} feilet med {}, {}", saksnummer.getVerdi(), e.getMessage(), e.getStackTrace());
         }
         var antattStp = opplysningsPeriode.getFomDato().plusMonths(17);
         var overlappStp = grunnlagFraKelvin.stream().anyMatch(v -> v.getVedtaksPeriodeFom().isBefore(antattStp) && v.getVedtaksPeriodeTom().isAfter(antattStp));

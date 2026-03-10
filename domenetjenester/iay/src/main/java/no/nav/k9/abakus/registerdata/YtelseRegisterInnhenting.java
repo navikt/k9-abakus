@@ -55,16 +55,19 @@ public class YtelseRegisterInnhenting {
 
         var aapsaker = arena.stream().filter(s -> YtelseType.ARBEIDSAVKLARINGSPENGER.equals(s.getYtelseType())).toList();
         List<MeldekortUtbetalingsgrunnlagSak> aapGrunnlagFraKelvin = innhentingSamletTjeneste.innhentMaksimumAAP(ident, opplysningsPeriode, behandling.getSaksnummer(), aapsaker);
-        for (MeldekortUtbetalingsgrunnlagSak sak : aapGrunnlagFraKelvin) {
-            oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
-        }
 
         if (!aapGrunnlagFraKelvin.isEmpty()) { // har hentet AAP fra Kelvin, fjerner AAP fra Arena-resultat
-            arena = arena.stream().filter(meldekort ->  meldekort.getYtelseType().equals(YtelseType.DAGPENGER)).toList();
-        }
-
-        for (MeldekortUtbetalingsgrunnlagSak sak : arena) {
-            oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
+            for (MeldekortUtbetalingsgrunnlagSak sak : aapGrunnlagFraKelvin) {
+                oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
+            }
+            var arenadataUtenAAP = arena.stream().filter(meldekort -> meldekort.getYtelseType().equals(YtelseType.DAGPENGER)).toList();
+            for (MeldekortUtbetalingsgrunnlagSak sak : arenadataUtenAAP) {
+                oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
+            }
+        } else {
+            for (MeldekortUtbetalingsgrunnlagSak sak : arena) {
+                oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
+            }
         }
 
         inntektArbeidYtelseAggregatBuilder.leggTilAktørYtelse(aktørYtelseBuilder);
