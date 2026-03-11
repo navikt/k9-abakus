@@ -1,5 +1,6 @@
 package no.nav.k9.abakus.registerdata;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -108,34 +109,39 @@ public class InnhentingSamletTjeneste {
     public List<MeldekortUtbetalingsgrunnlagSak> innhentMaksimumAAP(
         PersonIdent ident,
         IntervallEntitet opplysningsPeriode,
-        Saksnummer saksnummer, List<MeldekortUtbetalingsgrunnlagSak> aapFraArena) {
+        Saksnummer saksnummer, List<MeldekortUtbetalingsgrunnlagSak> aapFraArena,
+        LocalDate skjæringstidspunkt) {
         if (!henterDataFraKelvin) {
             return Collections.emptyList();
         }
 
-        var aapGrunnlag =  kelvinRestKlient.hentAAP(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer);
-
-        var grunnlagFraKelvin = aapGrunnlag.get(Fagsystem.KELVIN);
-        var grunnlagFraArena = aapGrunnlag.get(Fagsystem.ARENA);
-
         try {
-            sammenligneArenaDirekteVsKelvin(aapFraArena, grunnlagFraArena);
+            var aapGrunnlag = kelvinRestKlient.hentAAP(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer);
+
+            var grunnlagFraKelvin = aapGrunnlag.get(Fagsystem.KELVIN);
+            var arenaGrunnlagFraKelvin = aapGrunnlag.get(Fagsystem.ARENA);
+
+            try {
+                sammenligneArenaDirekteVsKelvin(aapFraArena, arenaGrunnlagFraKelvin);
+            } catch (Exception e) {
+                LOG.info("Maksimum AAP sammenligning av Arenadata for sak {} feilet med {}, {}", saksnummer.getVerdi(), e.getMessage(), e.getStackTrace());
+            }
+            var overlappStp = grunnlagFraKelvin.stream().anyMatch(v -> v.getVedtaksPeriodeFom().isBefore(skjæringstidspunkt) && v.getVedtaksPeriodeTom().isAfter(skjæringstidspunkt));
+            if (overlappStp) {
+                var saksnumreAAP = grunnlagFraKelvin.stream()
+                    .map(MeldekortUtbetalingsgrunnlagSak::getSaksnummer)
+                    .map(Saksnummer::getVerdi)
+                    .collect(Collectors.joining(", "));
+                LOG.warn("Sak {} har innhentet nye Arbeidsavklaringspenger fra Kelvin saker {}. Kontakt produkteier for validering", saksnummer.getVerdi(), saksnumreAAP);
+            }
+            return ImmutableList.<MeldekortUtbetalingsgrunnlagSak>builder()
+                .addAll(grunnlagFraKelvin)
+                .addAll(arenaGrunnlagFraKelvin)
+                .build();
         } catch (Exception e) {
-            LOG.info("Maksimum AAP sammenligning av Arenadata for sak {} feilet med {}, {}", saksnummer.getVerdi(), e.getMessage(), e.getStackTrace());
+            LOG.error("Sammenligning med Kelvin feilet.", e);
         }
-        var antattStp = opplysningsPeriode.getFomDato().plusMonths(17);
-        var overlappStp = grunnlagFraKelvin.stream().anyMatch(v -> v.getVedtaksPeriodeFom().isBefore(antattStp) && v.getVedtaksPeriodeTom().isAfter(antattStp));
-        if (overlappStp) {
-            var saksnumreAAP = grunnlagFraKelvin.stream()
-                .map(MeldekortUtbetalingsgrunnlagSak::getSaksnummer)
-                .map(Saksnummer::getVerdi)
-                .collect(Collectors.joining(", "));
-            LOG.warn("Sak {} har innhentet nye Arbeidsavklaringspenger fra Kelvin saker {}. Kontakt produkteier for validering", saksnummer.getVerdi(), saksnumreAAP);
-        }
-        return ImmutableList.<MeldekortUtbetalingsgrunnlagSak>builder()
-            .addAll(grunnlagFraKelvin)
-            .addAll(grunnlagFraArena)
-            .build();
+        return Collections.emptyList();
     }
 
     public List<MeldekortUtbetalingsgrunnlagSak> hentDagpengerAAP(PersonIdent ident, IntervallEntitet opplysningsPeriode) {

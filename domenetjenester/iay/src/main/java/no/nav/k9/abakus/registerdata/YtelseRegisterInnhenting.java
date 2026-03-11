@@ -32,7 +32,7 @@ public class YtelseRegisterInnhenting {
                      PersonIdent ident,
                      IntervallEntitet opplysningsPeriode,
                      InntektArbeidYtelseAggregatBuilder inntektArbeidYtelseAggregatBuilder,
-                     boolean medGrunnlag) {
+                     boolean medGrunnlag, LocalDate skjæringstidspunkt) {
 
         InntektArbeidYtelseAggregatBuilder.AktørYtelseBuilder aktørYtelseBuilder = inntektArbeidYtelseAggregatBuilder.getAktørYtelseBuilder(aktørId);
         aktørYtelseBuilder.tilbakestillYtelser();
@@ -54,20 +54,10 @@ public class YtelseRegisterInnhenting {
         List<MeldekortUtbetalingsgrunnlagSak> arena = innhentingSamletTjeneste.hentDagpengerAAP(ident, opplysningsPeriode);
 
         var aapsaker = arena.stream().filter(s -> YtelseType.ARBEIDSAVKLARINGSPENGER.equals(s.getYtelseType())).toList();
-        List<MeldekortUtbetalingsgrunnlagSak> aapGrunnlagFraKelvin = innhentingSamletTjeneste.innhentMaksimumAAP(ident, opplysningsPeriode, behandling.getSaksnummer(), aapsaker);
+        innhentingSamletTjeneste.innhentMaksimumAAP(ident, opplysningsPeriode, behandling.getSaksnummer(), aapsaker, skjæringstidspunkt);
 
-        if (!aapGrunnlagFraKelvin.isEmpty()) { // har hentet AAP fra Kelvin, fjerner AAP fra Arena-resultat
-            for (MeldekortUtbetalingsgrunnlagSak sak : aapGrunnlagFraKelvin) {
-                oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
-            }
-            var arenadataUtenAAP = arena.stream().filter(meldekort -> meldekort.getYtelseType().equals(YtelseType.DAGPENGER)).toList();
-            for (MeldekortUtbetalingsgrunnlagSak sak : arenadataUtenAAP) {
-                oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
-            }
-        } else {
-            for (MeldekortUtbetalingsgrunnlagSak sak : arena) {
-                oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
-            }
+        for (MeldekortUtbetalingsgrunnlagSak sak : arena) {
+            oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
         }
 
         inntektArbeidYtelseAggregatBuilder.leggTilAktørYtelse(aktørYtelseBuilder);
