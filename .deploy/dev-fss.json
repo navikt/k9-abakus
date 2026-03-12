@@ -85,7 +85,11 @@
     "PDL_BASE_URL":"http://pdl-api.pdl/graphql",
     "PDL_TEMA":"OMS",
     "LOADBALANCER_URL": "https://k9-abakus.dev.intern.nav.no",
-    "LOADBALANCER_ALTERNATIVE_URL": "https://k9-abakus.dev-fss-pub.nais.io"
+    "LOADBALANCER_ALTERNATIVE_URL": "https://k9-abakus.dev-fss-pub.nais.io",
 
+    "KELVIN_URL": "https://aap-api.intern.dev.nav.no",
+    "KELVIN_SCOPE": "api://dev-gcp.aap.api-intern/.default",
+
+    "HENTER_DATA_FRA_KELVIN": "true"
   }
 }

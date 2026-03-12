@@ -94,6 +94,29 @@ public class MeldekortUtbetalingsgrunnlagSak {
             && Objects.equals(vedtaksDagsats, that.vedtaksDagsats);
     }
 
+    public boolean likeNokVedtak(MeldekortUtbetalingsgrunnlagSak that) {
+        return type == that.type && kilde == that.kilde
+            && Objects.equals(vedtaksPeriodeFom, that.vedtaksPeriodeFom) && Objects.equals(vedtaksPeriodeTom, that.vedtaksPeriodeTom)
+            && likeTallVerdier(vedtaksDagsats, that.vedtaksDagsats);
+    }
+
+    private boolean likeTallVerdier(Beløp denne, Beløp andre) {
+        if (denne == null && andre == null) {
+            return true;
+        }
+        if (denne == null || andre == null) {
+            return false;
+        }
+        return MeldekortUtbetalingsgrunnlagMeldekort.likeTallVerdier(denne.getVerdi(), andre.getVerdi());
+    }
+
+    public String utskriftUtenMK() {
+        return "MeldekortUtbetalingsgrunnlagSak{" + "type=" + type + ", tilstand=" + tilstand + ", kilde=" + kilde
+            + ", saksnummer=" + saksnummer + ", kravMottattDato="
+            + kravMottattDato + ", vedtattDato=" + vedtattDato + ", vedtaksPeriodeFom=" + vedtaksPeriodeFom + ", vedtaksPeriodeTom="
+            + vedtaksPeriodeTom + ", vedtaksDagsats=" + vedtaksDagsats + '}';
+    }
+
     private boolean erLikeMeldekort(List<MeldekortUtbetalingsgrunnlagMeldekort> l1, List<MeldekortUtbetalingsgrunnlagMeldekort> l2) {
         if (l1 == null && l2 == null) {
             return true;
