@@ -1,12 +1,17 @@
 package no.nav.k9.abakus.registerdata;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
+import graphql.com.google.common.collect.ImmutableList;
+import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,15 +25,18 @@ import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.Arbeidsforhold;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdTjeneste;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
 import no.nav.k9.abakus.registerdata.ytelse.arena.FpwsproxyKlient;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.InnhentingInfotrygdTjeneste;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseGrunnlag;
+import no.nav.k9.abakus.registerdata.ytelse.kelvin.KelvinRestKlient;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.abakus.typer.PersonIdent;
 import no.nav.k9.abakus.typer.Saksnummer;
 import no.nav.k9.felles.konfigurasjon.env.Environment;
+import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 @ApplicationScoped
 public class InnhentingSamletTjeneste {
@@ -40,6 +48,8 @@ public class InnhentingSamletTjeneste {
     private InntektTjeneste inntektTjeneste;
     private FpwsproxyKlient fpwsproxyKlient;
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
+    private KelvinRestKlient kelvinRestKlient;
+    private boolean henterDataFraKelvin;
 
     InnhentingSamletTjeneste() {
         //CDI
@@ -49,11 +59,17 @@ public class InnhentingSamletTjeneste {
     public InnhentingSamletTjeneste(ArbeidsforholdTjeneste arbeidsforholdTjeneste,
                                     InntektTjeneste inntektTjeneste,
                                     InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste,
-                                    FpwsproxyKlient fpwsproxyKlient) {
+                                    FpwsproxyKlient fpwsproxyKlient,
+                                    KelvinRestKlient kelvinRestKlient,
+                                    @KonfigVerdi(value = "henter.data.fra.kelvin", defaultVerdi = "false") boolean henterDataFraKelvin
+                                    ) {
+
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
+        this.kelvinRestKlient = kelvinRestKlient;
+        this.henterDataFraKelvin = henterDataFraKelvin;
     }
 
 
@@ -90,6 +106,42 @@ public class InnhentingSamletTjeneste {
         return innhentingInfotrygdTjeneste.getSPøkelseYtelser(ident, periode.getFomDato());
     }
 
+    public List<MeldekortUtbetalingsgrunnlagSak> innhentMaksimumAAP(
+        PersonIdent ident,
+        IntervallEntitet opplysningsPeriode,
+        Saksnummer saksnummer, List<MeldekortUtbetalingsgrunnlagSak> aapFraArena,
+        LocalDate skjæringstidspunkt) {
+        if (!henterDataFraKelvin) {
+            return Collections.emptyList();
+        }
+
+        try {
+            var aapGrunnlag = kelvinRestKlient.hentAAP(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer);
+
+            var grunnlagFraKelvin = aapGrunnlag.get(Fagsystem.KELVIN);
+            var arenaGrunnlagFraKelvin = aapGrunnlag.get(Fagsystem.ARENA);
+
+
+            sammenligneArenaDirekteVsKelvin(aapFraArena, arenaGrunnlagFraKelvin, saksnummer);
+
+            var overlappStp = grunnlagFraKelvin.stream().anyMatch(v -> v.getVedtaksPeriodeFom().isBefore(skjæringstidspunkt) && v.getVedtaksPeriodeTom().isAfter(skjæringstidspunkt));
+            if (overlappStp) {
+                var saksnumreAAP = grunnlagFraKelvin.stream()
+                    .map(MeldekortUtbetalingsgrunnlagSak::getSaksnummer)
+                    .map(Saksnummer::getVerdi)
+                    .collect(Collectors.joining(", "));
+                LOG.warn("Sak {} har innhentet nye Arbeidsavklaringspenger fra Kelvin saker {}. Kontakt produkteier for validering", saksnummer.getVerdi(), saksnumreAAP);
+            }
+            return ImmutableList.<MeldekortUtbetalingsgrunnlagSak>builder()
+                .addAll(grunnlagFraKelvin)
+                .addAll(arenaGrunnlagFraKelvin)
+                .build();
+        } catch (Exception e) {
+            LOG.error("Sammenligning med Kelvin feilet.", e);
+        }
+        return Collections.emptyList();
+    }
+
     public List<MeldekortUtbetalingsgrunnlagSak> hentDagpengerAAP(PersonIdent ident, IntervallEntitet opplysningsPeriode) {
         var fom = opplysningsPeriode.getFomDato();
         var tom = opplysningsPeriode.getTomDato();
@@ -120,12 +172,40 @@ public class InnhentingSamletTjeneste {
         return filtrert;
     }
 
-    private void loggArenaIgnorert(String ignorert, Saksnummer saksnummer) {
-        LOG.info("FP-112843 Ignorerer Arena-sak uten {}, saksnummer: {}", ignorert, saksnummer);
+    private void sammenligneArenaDirekteVsKelvin(List<MeldekortUtbetalingsgrunnlagSak> arena, List<MeldekortUtbetalingsgrunnlagSak> kelvin, Saksnummer saksnummer) {
+        try {
+            var arenaMK = arena.stream().map(MeldekortUtbetalingsgrunnlagSak::getMeldekortene).flatMap(Collection::stream).collect(Collectors.toSet());
+            var kelvinMK = kelvin.stream().map(MeldekortUtbetalingsgrunnlagSak::getMeldekortene).flatMap(Collection::stream).collect(Collectors.toSet());
+            var vAIkkeK = arena.stream().filter(a -> kelvin.stream().noneMatch(a::likeNokVedtak))
+                .map(MeldekortUtbetalingsgrunnlagSak::utskriftUtenMK).collect(Collectors.joining(", "));
+            var vKIkkeA = kelvin.stream().filter(a -> arena.stream().noneMatch(a::likeNokVedtak))
+                .map(MeldekortUtbetalingsgrunnlagSak::utskriftUtenMK).collect(Collectors.joining(", "));
+            var mAIkkeK = arenaMK.stream().filter(a -> kelvinMK.stream().noneMatch(a::equals)).collect(Collectors.toSet());
+            var mKIkkeA = kelvinMK.stream().filter(a -> arenaMK.stream().noneMatch(a::equals)).collect(Collectors.toSet());
+            if (arena.isEmpty() ^ kelvin.isEmpty()) {
+                LOG.info("Maksimum AAP sammenligning ene er tom:  arena: {} mk {} kelvin: {} mk {}", vAIkkeK, mAIkkeK, vKIkkeA, mKIkkeA);
+            } else if (arena.size() != kelvin.size() || arenaMK.size() != kelvinMK.size()) {
+                LOG.info("Maksimum AAP sammenligning ulik størrelse:  arena: {} mk {} kelvin: {} mk {}", vAIkkeK, mAIkkeK, vKIkkeA, mKIkkeA);
+            } else if (!arena.isEmpty()) {
+                var likeNokVedtak = arena.stream().allMatch(a -> kelvin.stream().anyMatch(a::likeNokVedtak));
+                var likeMk = kelvinMK.containsAll(arenaMK);
+                if (likeNokVedtak && likeMk) {
+                    LOG.info("Maksimum AAP sammenligning likt svar fra arena og AAP-api");
+                } else {
+                    LOG.info("Maksimum AAP sammenligning lik størrelse ulikt innhold: arena: {} mk {} kelvin: {} mk {}", vAIkkeK, mAIkkeK, vKIkkeA, mKIkkeA);
+                }
+            }
+        } catch (Exception e) {
+            LOG.info("Maksimum AAP sammenligning av Arenadata for sak {} feilet med {}, {}", saksnummer.getVerdi(), e.getMessage(), e.getStackTrace());
+        }
     }
 
-    private void loggArenaTomFørFom(Saksnummer saksnummer) {
-        LOG.info("FP-597341 Ignorerer Arena-sak med vedtakTom før vedtakFom, saksnummer: {}", saksnummer);
-    }
+        private void loggArenaIgnorert (String ignorert, Saksnummer saksnummer){
+            LOG.info("FP-112843 Ignorerer Arena-sak uten {}, saksnummer: {}", ignorert, saksnummer);
+        }
 
-}
+        private void loggArenaTomFørFom (Saksnummer saksnummer){
+            LOG.info("FP-597341 Ignorerer Arena-sak med vedtakTom før vedtakFom, saksnummer: {}", saksnummer);
+        }
+
+    }
