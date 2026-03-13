@@ -40,9 +40,6 @@ public class SifAbacPdpK9RestKlient {
 
     @WithSpan
     public Tilgangsbeslutning sjekkTilgangForInnloggetBrukerK9(SaksinformasjonOgPersonerTilgangskontrollInputDto input) {
-        if (Environment.current().isDev()) {
-            LOG.info("POST k9: {}", uriTilgangskontrollSaksinformasjonK9);
-        }
         return restClient.post(uriTilgangskontrollSaksinformasjonK9, input, Tilgangsbeslutning.class);
     }
 
