@@ -5,7 +5,7 @@ import jakarta.enterprise.context.control.ActivateRequestContext;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
-import no.nav.k9.abakus.felles.kafka.KafkaMessageHandler;
+import no.nav.k9.felles.integrasjon.kafka.KafkaMessageHandler;
 
 import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
