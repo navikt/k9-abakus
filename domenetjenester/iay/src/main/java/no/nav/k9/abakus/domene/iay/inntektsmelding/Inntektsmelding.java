@@ -144,6 +144,10 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
     @Column(name = "inntektsmelding_type", updatable = false)
     private InntektsmeldingType inntektsmeldingType;
 
+    @Convert(converter = BooleanToStringConverter.class)
+    @Column(name = "har_utbetalt_pliktige_dager", updatable = false, nullable = false)
+    private boolean harUtbetaltPliktigeDager;
+
     @Version
     @Column(name = "versjon", nullable = false)
     private long versjon;
@@ -169,6 +173,7 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
         this.kildesystem = inntektsmelding.getKildesystem();
         this.mottattDato = inntektsmelding.getMottattDato();
         this.inntektsmeldingType = inntektsmelding.getInntektsmeldingType();
+        this.harUtbetaltPliktigeDager = inntektsmelding.getHarUtbetaltPliktigeDager();
 
         this.graderinger = inntektsmelding.getGraderinger().stream().map(g -> {
             var data = new Gradering(g);
@@ -242,6 +247,14 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
 
     void setInntektsmeldingType(InntektsmeldingType inntektsmeldingType) {
         this.inntektsmeldingType = inntektsmeldingType;
+    }
+
+    public boolean getHarUtbetaltPliktigeDager() {
+        return harUtbetaltPliktigeDager;
+    }
+
+    void setHarUtbetaltPliktigeDager(boolean harUtbetaltPliktigeDager) {
+        this.harUtbetaltPliktigeDager = harUtbetaltPliktigeDager;
     }
 
     public String getKanalreferanse() {
@@ -487,6 +500,7 @@ public class Inntektsmelding extends BaseEntitet implements IndexKey {
             + ", kildesystem=" + kildesystem
             + ", mottattDato=" + mottattDato
             + ", inntektsmeldingType=" + inntektsmeldingType
+            + ", harUtbetaltPliktigeDager=" + harUtbetaltPliktigeDager
             + '>';
     }
 
