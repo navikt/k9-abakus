@@ -68,11 +68,6 @@ public class ArenaMapper {
 
     private static MeldekortUtbetalingsgrunnlagMeldekort mapTilMeldekortMKAclArena(ArbeidsavklaringspengerResponse.AAPUtbetaling utbetaling) {
         var beregnetUtbetalingsgrad = regnUtArenaUtbetalingsgrad(utbetaling);
-        var utbetalingsgradFraUtbetaling = Optional.ofNullable(utbetaling.utbetalingsgrad()).map(BigDecimal::valueOf).orElse(BigDecimal.ZERO);
-        if (beregnetUtbetalingsgrad.compareTo(utbetalingsgradFraUtbetaling) != 0) {
-            LOG.info("Kelvin-saker arena avvik utbetalingsgrad utbetaling {}: beregnet {}, oppgitt {}",
-                utbetaling, beregnetUtbetalingsgrad, utbetaling.utbetalingsgrad());
-        }
         return MeldekortUtbetalingsgrunnlagMeldekort.MeldekortMeldekortBuilder.ny()
             .medMeldekortFom(utbetaling.periode().fraOgMedDato() != null ? utbetaling.periode().fraOgMedDato() : TIDENES_BEGYNNELSE)
             .medMeldekortTom(utbetaling.periode().tilOgMedDato() != null ? utbetaling.periode().tilOgMedDato() : TIDENES_ENDE)
@@ -83,8 +78,8 @@ public class ArenaMapper {
     }
 
     private static BigDecimal regnUtArenaUtbetalingsgrad(ArbeidsavklaringspengerResponse.AAPUtbetaling utbetaling) {
-        var beløp = Optional.ofNullable(utbetaling.belop()).map(BigDecimal::valueOf).orElse(BigDecimal.ZERO);
-        var dagsats = Optional.ofNullable(utbetaling.dagsats()).map(BigDecimal::valueOf).orElse(BigDecimal.ONE);
+        var beløp = BigDecimal.valueOf(utbetaling.belop());
+        var dagsats = BigDecimal.valueOf(utbetaling.dagsats());
         var virkedager = beregnVirkedager(utbetaling.periode().fraOgMedDato(), utbetaling.periode().tilOgMedDato());
         return beløp.multiply(BigDecimal.valueOf(200)).divide(dagsats.multiply(BigDecimal.valueOf(virkedager)), 1, RoundingMode.HALF_UP);
     }
@@ -97,8 +92,8 @@ public class ArenaMapper {
                 ChronoUnit.WEEKS.between(fom.minusDays(padBefore), tom.plusDays(padAfter).plusDays(1L)) * 5L);
             var virkedagerPadding = Math.min(padBefore, 5) + Math.max(padAfter - 2, 0);
             return virkedagerPadded - virkedagerPadding;
-        } catch (ArithmeticException var6) {
-            throw new UnsupportedOperationException("Perioden er for lang til å beregne virkedager.", var6);
+        } catch (ArithmeticException arithmeticException) {
+            throw new UnsupportedOperationException("Perioden er for lang til å beregne virkedager.", arithmeticException);
         }
     }
 }

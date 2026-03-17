@@ -49,7 +49,6 @@ public class InnhentingSamletTjeneste {
     private FpwsproxyKlient fpwsproxyKlient;
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
     private KelvinRestKlient kelvinRestKlient;
-    private boolean henterDataFraKelvin;
 
     InnhentingSamletTjeneste() {
         //CDI
@@ -60,16 +59,14 @@ public class InnhentingSamletTjeneste {
                                     InntektTjeneste inntektTjeneste,
                                     InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste,
                                     FpwsproxyKlient fpwsproxyKlient,
-                                    KelvinRestKlient kelvinRestKlient,
-                                    @KonfigVerdi(value = "henter.data.fra.kelvin", defaultVerdi = "false") boolean henterDataFraKelvin
-                                    ) {
+                                    KelvinRestKlient kelvinRestKlient
+    ) {
 
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
         this.kelvinRestKlient = kelvinRestKlient;
-        this.henterDataFraKelvin = henterDataFraKelvin;
     }
 
 
@@ -111,17 +108,11 @@ public class InnhentingSamletTjeneste {
         IntervallEntitet opplysningsPeriode,
         Saksnummer saksnummer, List<MeldekortUtbetalingsgrunnlagSak> aapFraArena,
         LocalDate skjæringstidspunkt) {
-        if (!henterDataFraKelvin) {
-            return Collections.emptyList();
-        }
 
         try {
             var aapGrunnlag = kelvinRestKlient.hentAAP(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer);
-
             var grunnlagFraKelvin = aapGrunnlag.get(Fagsystem.KELVIN);
             var arenaGrunnlagFraKelvin = aapGrunnlag.get(Fagsystem.ARENA);
-
-
             sammenligneArenaDirekteVsKelvin(aapFraArena, arenaGrunnlagFraKelvin, saksnummer);
 
             var overlappStp = grunnlagFraKelvin.stream().anyMatch(v -> v.getVedtaksPeriodeFom().isBefore(skjæringstidspunkt) && v.getVedtaksPeriodeTom().isAfter(skjæringstidspunkt));
@@ -200,12 +191,12 @@ public class InnhentingSamletTjeneste {
         }
     }
 
-        private void loggArenaIgnorert (String ignorert, Saksnummer saksnummer){
-            LOG.info("FP-112843 Ignorerer Arena-sak uten {}, saksnummer: {}", ignorert, saksnummer);
-        }
-
-        private void loggArenaTomFørFom (Saksnummer saksnummer){
-            LOG.info("FP-597341 Ignorerer Arena-sak med vedtakTom før vedtakFom, saksnummer: {}", saksnummer);
-        }
-
+    private void loggArenaIgnorert(String ignorert, Saksnummer saksnummer) {
+        LOG.info("FP-112843 Ignorerer Arena-sak uten {}, saksnummer: {}", ignorert, saksnummer);
     }
+
+    private void loggArenaTomFørFom(Saksnummer saksnummer) {
+        LOG.info("FP-597341 Ignorerer Arena-sak med vedtakTom før vedtakFom, saksnummer: {}", saksnummer);
+    }
+
+}
