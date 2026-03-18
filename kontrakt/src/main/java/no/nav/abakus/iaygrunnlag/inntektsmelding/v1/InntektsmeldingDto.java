@@ -112,6 +112,9 @@ public class InntektsmeldingDto {
     @JsonProperty(value = "inntektsmeldingType")
     private InntektsmeldingType inntektsmeldingType;
 
+    @JsonProperty(value = "harUtbetaltPliktigeDager")
+    private Boolean harUtbetaltPliktigeDager;
+
     public InntektsmeldingDto(Aktør arbeidsgiver, JournalpostId journalpostId, LocalDateTime innsendingstidspunkt, LocalDate mottattDato) {
         Objects.requireNonNull(arbeidsgiver, "arbeidsgiver");
         Objects.requireNonNull(journalpostId, "journalpostId");
@@ -193,6 +196,14 @@ public class InntektsmeldingDto {
 
     public void setInntektsmeldingType(InntektsmeldingType inntektsmeldingType) {
         this.inntektsmeldingType = inntektsmeldingType;
+    }
+
+    public Boolean getHarUtbetaltPliktigeDager() {
+        return harUtbetaltPliktigeDager;
+    }
+
+    public void setHarUtbetaltPliktigeDager(boolean harUtbetaltPliktigeDager) {
+        this.harUtbetaltPliktigeDager = harUtbetaltPliktigeDager;
     }
 
     public String getKildesystem() {
@@ -305,6 +316,11 @@ public class InntektsmeldingDto {
 
     public InntektsmeldingDto medInntektsmeldingType(InntektsmeldingType inntektsmeldingType) {
         setInntektsmeldingType(inntektsmeldingType);
+        return this;
+    }
+
+    public InntektsmeldingDto medHarUtbetaltPliktigeDager(boolean harUtbetaltPliktigeDager) {
+        setHarUtbetaltPliktigeDager(harUtbetaltPliktigeDager);
         return this;
     }
 

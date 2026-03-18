@@ -119,6 +119,12 @@ public class InntektsmeldingBuilder {
         return this;
     }
 
+    public InntektsmeldingBuilder medHarUtbetaltPliktigeDager(boolean harUtbetaltPliktigeDager) {
+        precondition();
+        kladd.setHarUtbetaltPliktigeDager(harUtbetaltPliktigeDager);
+        return this;
+    }
+
     public InntektsmeldingBuilder medMottattDato(LocalDate mottattDato) {
         precondition();
         kladd.setMottattDato(mottattDato);
