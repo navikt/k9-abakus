@@ -113,7 +113,9 @@ public class InnhentingSamletTjeneste {
             var aapGrunnlag = kelvinRestKlient.hentAAP(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer);
             var grunnlagFraKelvin = aapGrunnlag.get(Fagsystem.KELVIN);
             var arenaGrunnlagFraKelvin = aapGrunnlag.get(Fagsystem.ARENA);
-            sammenligneArenaDirekteVsKelvin(aapFraArena, arenaGrunnlagFraKelvin, saksnummer);
+            if (Environment.current().isProd()) {
+                sammenligneArenaDirekteVsKelvin(aapFraArena, arenaGrunnlagFraKelvin, saksnummer);
+            }
 
             var overlappStp = grunnlagFraKelvin.stream().anyMatch(v -> v.getVedtaksPeriodeFom().isBefore(skjæringstidspunkt) && v.getVedtaksPeriodeTom().isAfter(skjæringstidspunkt));
             if (overlappStp) {
