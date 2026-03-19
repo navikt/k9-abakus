@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import no.nav.k9.abakus.felles.kafka.KafkaConsumerManager;
+import no.nav.k9.felles.integrasjon.kafka.KafkaConsumerManager;
 import no.nav.k9.abakus.felles.server.LiveAndReadinessAware;
 import no.nav.k9.felles.apptjeneste.AppServiceHandler;
 
