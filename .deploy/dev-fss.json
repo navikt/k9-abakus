@@ -89,7 +89,5 @@
 
     "KELVIN_URL": "https://aap-api.intern.dev.nav.no",
     "KELVIN_SCOPE": "api://dev-gcp.aap.api-intern/.default",
-
-    "HENTER_DATA_FRA_KELVIN": "true"
   }
 }
