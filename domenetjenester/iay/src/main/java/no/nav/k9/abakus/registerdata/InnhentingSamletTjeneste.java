@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
+
+import no.nav.k9.abakus.registerdata.ytelse.dpsak.DpsakKlient;
+import no.nav.k9.abakus.registerdata.ytelse.dpsak.DpsakVedtak;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +49,7 @@ public class InnhentingSamletTjeneste {
     private FpwsproxyKlient fpwsproxyKlient;
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
     private KelvinRestKlient kelvinRestKlient;
+    private DpsakKlient dpsakKlient;
 
     InnhentingSamletTjeneste() {
         //CDI
@@ -55,14 +60,16 @@ public class InnhentingSamletTjeneste {
                                     InntektTjeneste inntektTjeneste,
                                     InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste,
                                     FpwsproxyKlient fpwsproxyKlient,
-                                    KelvinRestKlient kelvinRestKlient
-    ) {
+                                    KelvinRestKlient kelvinRestKlient,
+                                    DpsakKlient dpsakKlient
+                                    ) {
 
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
         this.kelvinRestKlient = kelvinRestKlient;
+        this.dpsakKlient = dpsakKlient;
     }
 
 
@@ -97,6 +104,20 @@ public class InnhentingSamletTjeneste {
 
     public List<InfotrygdYtelseGrunnlag> innhentSpokelseGrunnlag(PersonIdent ident, @SuppressWarnings("unused") IntervallEntitet periode) {
         return innhentingInfotrygdTjeneste.getSPøkelseYtelser(ident, periode.getFomDato());
+    }
+
+    public Map<Fagsystem, List<DpsakVedtak>> innhentDagpengerDpsak(PersonIdent ident, IntervallEntitet opplysningsPeriode,
+                                                                   Saksnummer saksnummer,
+                                                                   List<MeldekortUtbetalingsgrunnlagSak> grunnlagFraArena) {
+        var antallVedtak = grunnlagFraArena.size();
+        var antallMeldekort = grunnlagFraArena.stream()
+            .mapToInt(s -> Optional.ofNullable(s.getMeldekortene()).orElseGet(List::of).size())
+            .sum();
+        var vedtak = dpsakKlient.hentDagpenger(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer, antallVedtak, antallMeldekort);
+        if (!vedtak.getOrDefault(Fagsystem.DPSAK, List.of()).isEmpty()) {
+            LOG.info("DP-DATADELING vedtak {}", vedtak);
+        }
+        return vedtak;
     }
 
     public List<MeldekortUtbetalingsgrunnlagSak> hentAapFraKelvin(
