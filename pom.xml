@@ -84,11 +84,6 @@
                 <version>${felles.version}</version>
             </dependency>
             <dependency>
-                <groupId>no.nav.k9.felles.integrasjon</groupId>
-                <artifactId>k9-sensu-klient</artifactId>
-                <version>${felles.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>no.nav.k9.prosesstask</groupId>
                 <artifactId>prosesstask-root</artifactId>
                 <version>6.0.7</version>
