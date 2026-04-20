@@ -91,6 +91,6 @@
 
     "KELVIN_URL": "https://aap-api.intern.dev.nav.no",
     "KELVIN_SCOPE": "api://dev-gcp.aap.api-intern/.default",
-    "SKAL_HENTE_DAGPEMGER_FRA_DPSAK": "false"
+    "SKAL_HENTE_DAGPEMGER_FRA_DPSAK": "true"
   }
 }
