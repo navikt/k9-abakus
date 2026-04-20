@@ -23,7 +23,7 @@ class PgiFolketrygdenResponseTest {
     // Erstattet FASTLAND / "pensjonsgivendeInntektAvNaeringsinntektFraFiskeFangstEllerFamiliebarnehage": 85000 med null for testformål
     private static final String SKATT_EKSEMPEL = """
         {
-            "norskPersonidentifikator": "02116049964",
+            "norskPersonidentifikator": "01017000299",
             "inntektsaar": 2019,
             "pensjonsgivendeInntekt": [
                 {
