@@ -33,7 +33,7 @@ public class PdpRequestMapper {
         AbacFagsakYtelseType ytelseType = map(pdpRequest.getYtelseTyper());
 
         //TODO saksinformasjon bør komme fra k9-sak/ung-sak og ikke hardkodes her
-        SaksinformasjonDto saksinformasjon = new SaksinformasjonDto(null, AbacBehandlingStatus.UTREDES, AbacFagsakStatus.UNDER_BEHANDLING, ytelseType);
+        SaksinformasjonDto saksinformasjon = new SaksinformasjonDto((String) null, AbacBehandlingStatus.UTREDES, AbacFagsakStatus.UNDER_BEHANDLING, ytelseType);
         return new SaksinformasjonOgPersonerTilgangskontrollInputDto(mappetAktørId, mappetPersonIdent, operasjon, saksinformasjon);
     }
 
