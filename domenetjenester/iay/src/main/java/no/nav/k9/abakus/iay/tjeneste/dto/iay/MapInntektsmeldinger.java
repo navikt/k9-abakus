@@ -131,6 +131,7 @@ public class MapInntektsmeldinger {
                 .medKanalreferanse(im.getKanalreferanse())
                 .medKildesystem(im.getKildesystem())
                 .medInntektsmeldingType(im.getInntektsmeldingType())
+                .medHarUtbetaltPliktigeDager(im.getHarUtbetaltPliktigeDager())
                 .medRefusjonOpphører(im.getRefusjonOpphører())
                 .medRefusjonsBeløpPerMnd(im.getRefusjonBeløpPerMnd() == null ? null : im.getRefusjonBeløpPerMnd().getVerdi())
                 .medStartDatoPermisjon(im.getStartDatoPermisjon())
@@ -248,6 +249,7 @@ public class MapInntektsmeldinger {
                 .medNærRelasjon(dto.isNærRelasjon() == null ? false : dto.isNærRelasjon())
                 .medKildesystem(dto.getKildesystem())
                 .medInntektsmeldingType(dto.getInntektsmeldingType())
+                .medHarUtbetaltPliktigeDager(dto.getHarUtbetaltPliktigeDager() == null ? false : dto.getHarUtbetaltPliktigeDager())
                 .medMottattDato(dto.getMottattDato());
 
             dto.getEndringerRefusjon().stream().map(eir -> new Refusjon(eir.getRefusjonsbeløpMnd(), eir.getFom())).forEach(builder::leggTil);

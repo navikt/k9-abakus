@@ -57,9 +57,6 @@ public class AppPdpKlient implements PdpKlient {
                 SaksinformasjonOgPersonerTilgangskontrollInputDto tilgangskontrollInput = PdpRequestMapper.map(abakusPdpRequest);
                 return sifAbacPdpUngRestKlient.sjekkTilgangForInnloggetBrukerAktivitetspenger(tilgangskontrollInput);
             } else {
-                if (Environment.current().isDev() || Environment.current().isLocal()) {
-                    LOGGER.info("Aktuelle ytelser er {}", aktuelleYtelser);
-                }
                 SaksinformasjonOgPersonerTilgangskontrollInputDto tilgangskontrollInput = PdpRequestMapper.map(abakusPdpRequest);
                 return sifAbacPdpK9RestKlient.sjekkTilgangForInnloggetBrukerK9(tilgangskontrollInput);
             }

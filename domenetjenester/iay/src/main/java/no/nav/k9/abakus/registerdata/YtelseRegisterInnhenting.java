@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
+import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
 import no.nav.k9.abakus.domene.iay.YtelseBuilder;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
@@ -31,7 +32,7 @@ public class YtelseRegisterInnhenting {
                      PersonIdent ident,
                      IntervallEntitet opplysningsPeriode,
                      InntektArbeidYtelseAggregatBuilder inntektArbeidYtelseAggregatBuilder,
-                     boolean medGrunnlag) {
+                     boolean medGrunnlag, LocalDate skjæringstidspunkt) {
 
         InntektArbeidYtelseAggregatBuilder.AktørYtelseBuilder aktørYtelseBuilder = inntektArbeidYtelseAggregatBuilder.getAktørYtelseBuilder(aktørId);
         aktørYtelseBuilder.tilbakestillYtelser();
@@ -51,6 +52,10 @@ public class YtelseRegisterInnhenting {
         ghosts.forEach(grunnlag -> oversettSpokelseYtelseGrunnlagTilYtelse(aktørYtelseBuilder, grunnlag));
 
         List<MeldekortUtbetalingsgrunnlagSak> arena = innhentingSamletTjeneste.hentDagpengerAAP(ident, opplysningsPeriode);
+
+        var aapsaker = arena.stream().filter(s -> YtelseType.ARBEIDSAVKLARINGSPENGER.equals(s.getYtelseType())).toList();
+        innhentingSamletTjeneste.innhentMaksimumAAP(ident, opplysningsPeriode, behandling.getSaksnummer(), aapsaker, skjæringstidspunkt);
+
         for (MeldekortUtbetalingsgrunnlagSak sak : arena) {
             oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
         }

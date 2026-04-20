@@ -1,6 +1,7 @@
 package no.nav.k9.abakus.registerdata.ytelse.arena;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -46,6 +47,20 @@ public class MeldekortUtbetalingsgrunnlagMeldekort {
         MeldekortUtbetalingsgrunnlagMeldekort that = (MeldekortUtbetalingsgrunnlagMeldekort) o;
         return Objects.equals(meldekortFom, that.meldekortFom) && Objects.equals(meldekortTom, that.meldekortTom) && Objects.equals(dagsats,
             that.dagsats) && Objects.equals(beløp, that.beløp) && Objects.equals(utbetalingsgrad, that.utbetalingsgrad);
+    }
+
+    static boolean likeTallVerdier(BigDecimal denne, BigDecimal andre) {
+        if (denne == null && andre == null) {
+            return true;
+        }
+        if (denne == null || andre == null) {
+            return false;
+        }
+        return skalertVerdi(denne).compareTo(skalertVerdi(andre)) == 0;
+    }
+
+    private static BigDecimal skalertVerdi(BigDecimal verdi) {
+        return verdi == null ? null : verdi.setScale(1, RoundingMode.HALF_UP);
     }
 
     @Override

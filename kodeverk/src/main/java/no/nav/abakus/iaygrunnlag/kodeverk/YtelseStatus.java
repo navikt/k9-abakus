@@ -61,4 +61,15 @@ public enum YtelseStatus implements Kodeverdi {
         return kode;
     }
 
+    // https://github.com/navikt/aap-api-intern/blob/e1e4f20ac39e8cc527fb3bf0b0168db7d712ab6d/kontrakt/src/main/kotlin/SakStatus.kt#L15
+    public static YtelseStatus fra(String status) {
+        return switch (status) {
+            case "AVSLUTTET", "AVSLU" -> YtelseStatus.AVSLUTTET;
+            case "LØPENDE", "IVERK" -> YtelseStatus.LØPENDE;
+            case "UTREDES", "GODKJ", "INNST", "FORDE", "REGIS", "MOTAT", "KONT" -> YtelseStatus.UNDER_BEHANDLING;
+            case "OPPRETTET", "OPPRE" -> YtelseStatus.OPPRETTET;
+            case null, default -> YtelseStatus.UDEFINERT;
+        };
+    }
+
 }

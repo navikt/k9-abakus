@@ -55,8 +55,8 @@
         </dependency>
 
         <dependency>
-        <groupId>org.apache.kafka</groupId>
-        <artifactId>kafka-clients</artifactId>
+            <groupId>no.nav.k9.felles.integrasjon</groupId>
+            <artifactId>k9-kafka-klient</artifactId>
         </dependency>
 
 
