@@ -176,9 +176,9 @@ public class InnhentingSamletTjeneste {
             var mAIkkeK = arenaMK.stream().filter(a -> kelvinMK.stream().noneMatch(a::equals)).collect(Collectors.toSet());
             var mKIkkeA = kelvinMK.stream().filter(a -> arenaMK.stream().noneMatch(a::equals)).collect(Collectors.toSet());
             if (kelvin.isEmpty() && !arena.isEmpty()) {
-                LOG.info("Maksimum AAP; fikk meldekort fra Arena som ikke var i Kelvin: {}", vKIkkeA);
+                LOG.info("Maksimum AAP; fikk meldekort fra Arena som ikke var i Kelvin: {}", vAIkkeK);
             } else if (arena.size() > kelvin.size()) {
-                LOG.info("Maksimum AAP; fikk meldekort fra Arena som ikke er i Kelvin: {}",  vKIkkeA);
+                LOG.info("Maksimum AAP; fikk meldekort fra Arena som ikke er i Kelvin: {}",  vAIkkeK);
             } else if (!arena.isEmpty()) {
                 var likeNokVedtak = arena.stream().allMatch(a -> kelvin.stream().anyMatch(a::likeNokVedtak));
                 var likeMk = kelvinMK.containsAll(arenaMK);
