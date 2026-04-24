@@ -175,10 +175,10 @@ public class InnhentingSamletTjeneste {
                 .map(MeldekortUtbetalingsgrunnlagSak::utskriftUtenMK).collect(Collectors.joining(", "));
             var mAIkkeK = arenaMK.stream().filter(a -> kelvinMK.stream().noneMatch(a::equals)).collect(Collectors.toSet());
             var mKIkkeA = kelvinMK.stream().filter(a -> arenaMK.stream().noneMatch(a::equals)).collect(Collectors.toSet());
-            if (arena.isEmpty() ^ kelvin.isEmpty()) {
-                LOG.info("Maksimum AAP sammenligning ene er tom:  arena: {} mk {} kelvin: {} mk {}", vAIkkeK, mAIkkeK, vKIkkeA, mKIkkeA);
-            } else if (arena.size() != kelvin.size() || arenaMK.size() != kelvinMK.size()) {
-                LOG.info("Maksimum AAP sammenligning ulik størrelse:  arena: {} mk {} kelvin: {} mk {}", vAIkkeK, mAIkkeK, vKIkkeA, mKIkkeA);
+            if (kelvin.isEmpty() && !arena.isEmpty()) {
+                LOG.info("Maksimum AAP; fikk meldekort fra Arena som ikke var i Kelvin: {}", vKIkkeA);
+            } else if (arena.size() > kelvin.size()) {
+                LOG.info("Maksimum AAP; fikk meldekort fra Arena som ikke er i Kelvin: {}",  vKIkkeA);
             } else if (!arena.isEmpty()) {
                 var likeNokVedtak = arena.stream().allMatch(a -> kelvin.stream().anyMatch(a::likeNokVedtak));
                 var likeMk = kelvinMK.containsAll(arenaMK);
