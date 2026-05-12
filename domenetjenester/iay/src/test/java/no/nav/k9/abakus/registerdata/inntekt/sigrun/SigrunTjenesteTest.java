@@ -112,7 +112,7 @@ class SigrunTjenesteTest {
     }
 
     private static LocalDate getDatoForFastsetting(Year år) {
-        return LocalDate.of(år.plusYears(1).getValue(), 6, 1);
+        return LocalDate.of(år.plusYears(1).getValue(), 5, 1);
     }
 
     private IntervallEntitet intervallFor(Year år) {
