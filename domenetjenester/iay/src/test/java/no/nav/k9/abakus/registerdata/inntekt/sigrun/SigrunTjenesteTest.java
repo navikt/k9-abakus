@@ -56,7 +56,7 @@ class SigrunTjenesteTest {
         Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(2))).thenReturn(lagResponsFor(IFJOR.minusYears(2)));
         var opplysningsperiode = IntervallEntitet.fraOgMedTilOgMed(intervallFor(IFJOR.minusYears(2)).getFomDato(), intervallFor(IFJOR).getTomDato());
 
-        var inntekter = TJENESTE.hentPensjonsgivende(PERSONIDENT, opplysningsperiode, LocalDate.now());
+        var inntekter = TJENESTE.hentPensjonsgivende(PERSONIDENT, opplysningsperiode, LocalDate.of(Year.now().getValue(), Month.JULY, 1));
         assertThat(inntekter.keySet()).hasSize(3);
         assertThat(inntekter.get(intervallFor(IFJOR)).get(InntektspostType.LØNN).compareTo(new BigDecimal(1000L))).isZero();
         assertThat(inntekter.get(intervallFor(IFJOR.minusYears(2))).get(InntektspostType.LØNN).compareTo(new BigDecimal(1000L))).isZero();
@@ -112,7 +112,7 @@ class SigrunTjenesteTest {
     }
 
     private static LocalDate getDatoForFastsetting(Year år) {
-        return LocalDate.of(år.plusYears(1).getValue(), Month.MAY, 1);
+        return LocalDate.of(år.plusYears(1).getValue(), 6, 1);
     }
 
     private IntervallEntitet intervallFor(Year år) {
