@@ -50,7 +50,7 @@ class SigrunTjenesteTest {
     }
 
     @Test
-    void skal_ikke_hente_og_mappe_om_data_fra_sigrun_opplysningsperiode_dersom_fastsatt_etter_oppgitt_frist() {
+    void skal_ikke_hente_og_mappe_om_data_fra_sigrun_opplysningsperiode_dersom_fastsatt_før_oppgitt_frist() {
         Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR)).thenReturn(lagResponsFor(IFJOR));
         Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(1))).thenReturn(lagResponsFor(IFJOR.minusYears(1)));
         Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(2))).thenReturn(lagResponsFor(IFJOR.minusYears(2)));
