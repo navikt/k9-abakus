@@ -1,6 +1,5 @@
 package no.nav.k9.abakus.registerdata;
 
-import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -10,8 +9,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import no.nav.fpsak.tidsserie.LocalDateInterval;
+import no.nav.fpsak.tidsserie.LocalDateSegment;
+import no.nav.fpsak.tidsserie.LocalDateTimeline;
+import no.nav.k9.abakus.domene.Hjelpetidslinjer;
+import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DagpengerBeregnetPeriode;
 import graphql.com.google.common.collect.ImmutableList;
-import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
+import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +30,10 @@ import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.Arbeidsforhold;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdIdentifikator;
 import no.nav.k9.abakus.registerdata.arbeidsforhold.ArbeidsforholdTjeneste;
-import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
 import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsInformasjon;
 import no.nav.k9.abakus.registerdata.ytelse.arena.FpwsproxyKlient;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
+import no.nav.k9.abakus.registerdata.ytelse.dagpenger.DpSakRestKlient;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.InnhentingInfotrygdTjeneste;
 import no.nav.k9.abakus.registerdata.ytelse.infotrygd.dto.InfotrygdYtelseGrunnlag;
 import no.nav.k9.abakus.registerdata.ytelse.kelvin.KelvinRestKlient;
@@ -47,6 +52,8 @@ public class InnhentingSamletTjeneste {
     private ArbeidsforholdTjeneste arbeidsforholdTjeneste;
     private InntektTjeneste inntektTjeneste;
     private FpwsproxyKlient fpwsproxyKlient;
+    private DpSakRestKlient dpSakRestKlient;
+    private boolean skalHenteDagpengerFraDpSak;
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
     private KelvinRestKlient kelvinRestKlient;
 
@@ -59,14 +66,17 @@ public class InnhentingSamletTjeneste {
                                     InntektTjeneste inntektTjeneste,
                                     InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste,
                                     FpwsproxyKlient fpwsproxyKlient,
-                                    KelvinRestKlient kelvinRestKlient
-    ) {
-
+                                    KelvinRestKlient kelvinRestKlient,
+                                    DpSakRestKlient dpSakRestKlient,
+                                    @KonfigVerdi(value = "SKAL_HENTE_DAGPEMGER_FRA_DPSAK", defaultVerdi = "false") boolean skalHenteDagpengerFraDpSak) {
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
         this.kelvinRestKlient = kelvinRestKlient;
+        this.dpSakRestKlient = dpSakRestKlient;
+
+        this.skalHenteDagpengerFraDpSak = skalHenteDagpengerFraDpSak;
     }
 
 
@@ -135,11 +145,35 @@ public class InnhentingSamletTjeneste {
         return Collections.emptyList();
     }
 
-    public List<MeldekortUtbetalingsgrunnlagSak> hentDagpengerAAP(PersonIdent ident, IntervallEntitet opplysningsPeriode) {
+    public List<DagpengerBeregnetPeriode> hentDagpengerBeregninger(PersonIdent personIdent, IntervallEntitet opplysningsPeriode) {
+        if (!skalHenteDagpengerFraDpSak) {
+            return Collections.emptyList();
+        }
+        var utbetalinger = dpSakRestKlient.hentBruttoUtbetalinger(personIdent, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato());
+        var utbetalingTidslinjeSegmenter = utbetalinger.stream().map(bruttoUtbetaling ->
+            new LocalDateSegment<>(bruttoUtbetaling.getFraOgMedDato(), bruttoUtbetaling.getTilOgMedDato(), bruttoUtbetaling)).toList();
+        var utbetalingTidslinje = new LocalDateTimeline<>(utbetalingTidslinjeSegmenter);
+
+        var helger = Hjelpetidslinjer.lagTidslinjeMedKunHelger(utbetalingTidslinje);
+
+        var utbetalingerUtenHelger = utbetalingTidslinje.disjoint(helger);
+
+        return utbetalingerUtenHelger.compress(LocalDateInterval::abuts,
+                DagpengerBeregnetPeriode.getSammenligner(),
+                DagpengerBeregnetPeriode.getKombinator())
+            .stream().map(LocalDateSegment::getValue).collect(Collectors.toList());
+    }
+
+    public List<MeldekortUtbetalingsgrunnlagSak> hentAAP(PersonIdent ident, IntervallEntitet opplysningsPeriode) {
         var fom = opplysningsPeriode.getFomDato();
         var tom = opplysningsPeriode.getTomDato();
-        var saker = fpwsproxyKlient.hentDagpengerAAP(ident, fom, tom);
-        return filtrerYtelserTjenester(saker);
+        var dagpengerOgAAP = fpwsproxyKlient.hentDagpengerAAP(ident, fom, tom);
+
+        if (!skalHenteDagpengerFraDpSak) {
+            return filtrerYtelserTjenester(dagpengerOgAAP);
+        }
+        var aap = dagpengerOgAAP.stream().filter(sak -> !sak.getYtelseType().equals(YtelseType.DAGPENGER)).collect(Collectors.toList());
+        return filtrerYtelserTjenester(aap);
     }
 
     private List<MeldekortUtbetalingsgrunnlagSak> filtrerYtelserTjenester(List<MeldekortUtbetalingsgrunnlagSak> saker) {
