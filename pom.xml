@@ -34,7 +34,7 @@
         <fp-kontrakter.version>9.4.34</fp-kontrakter.version>
         <tidsserie.version>2.7.4</tidsserie.version>
         <flyway.version>12.7.0</flyway.version>
-        <jetty.version>12.1.9</jetty.version>
+        <jetty.version>12.1.10</jetty.version>
         <jandex.version>3.5.3</jandex.version>
 
         <!-- JUnit versjoner, desse må vere i sync -->
