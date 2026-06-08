@@ -37,7 +37,7 @@ jobs:
           echo "NAMESPACE=$(echo $ISSUE_BODY_INPUT | cut -d' ' -f3)" >> $GITHUB_ENV
 
       - name: Sjekk ut kode
-        uses: actions/checkout@v6
+        uses: actions/checkout@v6.0.2
         with:
           ref: ${{ env.TAG }}
 
