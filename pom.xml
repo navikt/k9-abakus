@@ -35,7 +35,7 @@
         <tidsserie.version>2.7.4</tidsserie.version>
         <flyway.version>12.8.1</flyway.version>
         <jetty.version>12.1.10</jetty.version>
-        <jandex.version>3.5.3</jandex.version>
+        <jandex.version>3.6.0</jandex.version>
 
         <!-- JUnit versjoner, desse må vere i sync -->
         <junit.version>6.1.0</junit.version>
@@ -222,7 +222,7 @@
             <dependency>
                 <groupId>io.opentelemetry</groupId>
                 <artifactId>opentelemetry-api</artifactId>
-                <version>1.62.0</version>
+                <version>1.63.0</version>
             </dependency>
 
             <!-- NAV tjenestespesifikasjoner -->
@@ -292,7 +292,7 @@
             <dependency>
                 <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-micrometer</artifactId>
-                <version>7.4.0.Final</version>
+                <version>7.4.1.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
@@ -337,7 +337,7 @@
             <dependency>
                 <groupId>io.micrometer</groupId>
                 <artifactId>micrometer-core</artifactId>
-                <version>1.16.5</version>
+                <version>1.17.0</version>
             </dependency>
             <dependency>
                 <groupId>org.yaml</groupId>
