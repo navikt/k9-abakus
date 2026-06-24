@@ -100,6 +100,21 @@ public class KelvinMapper {
         }
     }
 
+    private static LocalDateTimeline<MappedUtbetaling> mapDatadelingDpsakUtbetaling(List<ArbeidsavklaringspengerResponse.AAPUtbetaling> utbetalinger) {
+        var mapped = utbetalinger.stream()
+            .map(u -> new LocalDateSegment<>(new LocalDateInterval(u.periode().fraOgMedDato(), u.periode().tilOgMedDato()), new MappedUtbetaling(u)))
+            .collect(Collectors.collectingAndThen(Collectors.toList(), LocalDateTimeline::new));
+        // Slå sammen dager med lik sats og utbetalingsgrad. Utvide fredager til søndag pga filter over. Summer sumUtbetalt ved sammenslåing
+        return mapped.compress(LocalDateInterval::abutsWorkdays, MappedUtbetaling::equals, KelvinMapper::slåSammen);
+    }
+
+    private static LocalDateSegment<MappedUtbetaling> slåSammen(LocalDateInterval i,
+                                                                LocalDateSegment<MappedUtbetaling> lhs,
+                                                                LocalDateSegment<MappedUtbetaling> rhs) {
+        return new LocalDateSegment<>(i, new MappedUtbetaling(lhs.getValue().utbetalingProsent(), lhs.getValue().utbetaltForDag(),
+            lhs.getValue().sumUtbetalt() + rhs.getValue().sumUtbetalt()));
+    }
+
     private record MappedUtbetaling(Integer utbetalingProsent, Integer utbetaltForDag, Integer sumUtbetalt) implements Comparable<MappedUtbetaling> {
 
         MappedUtbetaling(ArbeidsavklaringspengerResponse.AAPUtbetaling utbetaling) {
@@ -123,20 +138,4 @@ public class KelvinMapper {
             return Objects.hash(utbetalingProsent, utbetaltForDag);
         }
     }
-
-    private static LocalDateTimeline<MappedUtbetaling> mapDatadelingDpsakUtbetaling(List<ArbeidsavklaringspengerResponse.AAPUtbetaling> utbetalinger) {
-        var mapped = utbetalinger.stream()
-            .map(u -> new LocalDateSegment<>(new LocalDateInterval(u.periode().fraOgMedDato(), u.periode().tilOgMedDato()), new MappedUtbetaling(u)))
-            .collect(Collectors.collectingAndThen(Collectors.toList(), LocalDateTimeline::new));
-        // Slå sammen dager med lik sats og utbetalingsgrad. Utvide fredager til søndag pga filter over. Summer sumUtbetalt ved sammenslåing
-        return mapped.compress(LocalDateInterval::abutsWorkdays, MappedUtbetaling::equals, KelvinMapper::slåSammen);
-    }
-
-    private static LocalDateSegment<MappedUtbetaling> slåSammen(LocalDateInterval i,
-                                                                LocalDateSegment<MappedUtbetaling> lhs,
-                                                                LocalDateSegment<MappedUtbetaling> rhs) {
-        return new LocalDateSegment<>(i, new MappedUtbetaling(lhs.getValue().utbetalingProsent(), lhs.getValue().utbetaltForDag(),
-            lhs.getValue().sumUtbetalt() + rhs.getValue().sumUtbetalt()));
-    }
-
 }
