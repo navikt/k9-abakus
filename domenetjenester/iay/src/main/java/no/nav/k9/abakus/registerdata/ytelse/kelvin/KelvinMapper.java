@@ -17,7 +17,6 @@ import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSa
 
 import no.nav.k9.abakus.typer.Saksnummer;
 
-import no.nav.k9.felles.konfigurasjon.konfig.Tid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
