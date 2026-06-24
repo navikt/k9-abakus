@@ -1,113 +1,109 @@
 package no.nav.k9.abakus.registerdata.ytelse.kelvin;
 
+import static java.time.temporal.TemporalAdjusters.next;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.List;
+
+import no.nav.k9.felles.integrasjon.rest.DefaultJsonMapper;
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
-import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagMeldekort;
-import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
 import no.nav.k9.abakus.typer.Saksnummer;
 
-// Alle tester er generert av Copilot, selve KelvinMapper er kopiert fra fp-abakus
+// Kopiert fra fp-abakus
 class KelvinMapperTest {
 
     @Test
-    void mapSingleVedtak_happyPath() {
-        var meldekortFom = LocalDate.of(2026, 1, 1);
-        var meldekortTom = LocalDate.of(2026, 1, 31);
+    void ingen_utbetalinger() {
+        var startdato = LocalDate.now().plusWeeks(1);
+        var periode = new ArbeidsavklaringspengerResponse.AAPVedtak(0, 0, 390000,
+            1000, 1000, ArbeidsavklaringspengerResponse.Kildesystem.KELVIN,
+            new ArbeidsavklaringspengerResponse.AAPPeriode(startdato, startdato.plusYears(1)),
+            "ABCDE", "LØPENDE", "vedtakid", startdato, List.of());
+        var vedtak = KelvinMapper.mapTilMeldekortAclKelvin(List.of(periode), new Saksnummer("VAARSAK"));
+        assertThat(vedtak).hasSize(1);
+        var v1 = vedtak.getFirst();
+        assertThat(v1.getVedtaksPeriodeFom()).isEqualTo(startdato);
+        assertThat(v1.getVedtaksDagsats().getVerdi().intValue()).isEqualTo(1000);
+        assertThat(v1.getMeldekortene()).isEmpty();
+    }
 
-        var utbetaling = new ArbeidsavklaringspengerResponse.AAPUtbetaling(
-            new ArbeidsavklaringspengerResponse.AAPPeriode(meldekortFom, meldekortTom),
-            1000,
-            100,
-            0,
-            null,
-            50
-        );
 
-        var vedtaksPeriodeFom = LocalDate.of(2026, 1, 1);
-        var vedtaksPeriodeTom = LocalDate.of(2026, 12, 31);
-
-        var vedtak = new ArbeidsavklaringspengerResponse.AAPVedtak(
-            null, // barnMedStonad
-            10,   // barnetillegg at vedtak-level
-            null, // beregningsgrunnlag
-            100,  // dagsats
-            null, // dagsatsEtterUføreReduksjon
-            ArbeidsavklaringspengerResponse.Kildesystem.KELVIN,
-            new ArbeidsavklaringspengerResponse.AAPPeriode(vedtaksPeriodeFom, vedtaksPeriodeTom),
-            "123",
-            "AVSLUTTET",
-            "v1",
-            LocalDate.of(2026, 2, 1),
-            List.of(utbetaling)
-        );
-
-        var mapped = KelvinMapper.mapTilMeldekortAclKelvin(List.of(vedtak), new Saksnummer("123"));
-
-        assertThat(mapped).hasSize(1);
-        MeldekortUtbetalingsgrunnlagSak sak = mapped.get(0);
-
-        assertThat(sak.getYtelseType()).isEqualTo(YtelseType.ARBEIDSAVKLARINGSPENGER);
-        assertThat(sak.getKilde()).isEqualTo(Fagsystem.KELVIN);
-        assertThat(sak.getSaksnummer()).isNotNull();
-        assertThat(sak.getSaksnummer().getVerdi()).isEqualTo("123");
-
-        // vedtaksdagsats = aktuellDagsats (100) + barnetillegg (10) => 110
-        assertThat(sak.getVedtaksDagsats().getVerdi()).isEqualByComparingTo(BigDecimal.valueOf(110));
-
-        assertThat(sak.getMeldekortene()).hasSize(1);
-        MeldekortUtbetalingsgrunnlagMeldekort mk = sak.getMeldekortene().get(0);
-        assertThat(mk.getMeldekortFom()).isEqualTo(meldekortFom);
-        assertThat(mk.getMeldekortTom()).isEqualTo(meldekortTom);
-
-        // utbetaling.dagsats (100) + barnetillegg (0) => 100
-        assertThat(mk.getDagsats()).isEqualByComparingTo(BigDecimal.valueOf(100));
-        assertThat(mk.getBeløp()).isEqualByComparingTo(BigDecimal.valueOf(1000));
-
-        // utbetalingsgrad should be preserved here (50)
-        assertThat(mk.getUtbetalingsgrad()).isEqualByComparingTo(BigDecimal.valueOf(50));
+    @Test
+    void barnetillegg_forsvinner_delvis_og_full_mapping() throws Exception {
+        var startdato1 = LocalDate.of(2025, Month.FEBRUARY,24);
+        var startdato2 = LocalDate.of(2025, Month.MARCH,7);
+        var sluttdato = LocalDate.of(2026, Month.APRIL,3);
+        try (var resource = KelvinMapper.class.getResourceAsStream("/kelvin/testcase1.json")) {
+            assertThat(resource).isNotNull();
+            var mapper = DefaultJsonMapper.getObjectMapper();
+            var aaprespons = mapper.readValue(new String(resource.readAllBytes()), ArbeidsavklaringspengerResponse.class);
+            var vedtak = KelvinMapper.mapTilMeldekortAclKelvin(aaprespons.vedtak(), new Saksnummer("VAARSAK"));
+            assertThat(vedtak).hasSize(2);
+            // Første del med barnetillegg til barn blir 18
+            var v1 = vedtak.getFirst();
+            // Andre del uten barnetillegg
+            var v2 = vedtak.getLast();
+            assertThat(v1.getVedtaksPeriodeFom()).isEqualTo(startdato1);
+            assertThat(v1.getVedtaksPeriodeTom()).isEqualTo(startdato2.minusDays(1));
+            assertThat(v1.getVedtaksDagsats().getVerdi().intValue()).isEqualTo(1435);
+            assertThat(v1.getMeldekortene()).hasSize(1);
+            var v1mk1 = v1.getMeldekortene().getFirst();
+            assertThat(v1mk1.getMeldekortFom()).isEqualTo(startdato1);
+            assertThat(v1mk1.getBeløp().intValue()).isEqualTo(9549);
+            assertThat(v1mk1.getDagsats().intValue()).isEqualTo(1435);
+            assertThat(v1mk1.getUtbetalingsgrad().intValue()).isEqualTo(74);
+            assertThat(v2.getVedtaksPeriodeFom()).isEqualTo(startdato2);
+            assertThat(v2.getVedtaksPeriodeTom()).isEqualTo(sluttdato);
+            assertThat(v2.getVedtaksDagsats().getVerdi().intValue()).isEqualTo(1398);
+            assertThat(v2.getMeldekortene()).hasSize(3);
+            var v2mk1 = v2.getMeldekortene().getFirst();
+            assertThat(v2mk1.getMeldekortFom()).isEqualTo(startdato2);
+            assertThat(v2mk1.getBeløp().intValue()).isEqualTo(1034);
+            assertThat(v2mk1.getDagsats().intValue()).isEqualTo(1398);
+            assertThat(v2mk1.getUtbetalingsgrad().intValue()).isEqualTo(74);
+            var v2mk2 = v2.getMeldekortene().get(1);
+            assertThat(v2mk2.getMeldekortFom()).isEqualTo(startdato2.with(next(DayOfWeek.MONDAY)));
+            assertThat(v2mk2.getBeløp().intValue()).isEqualTo(10620);
+            assertThat(v2mk2.getDagsats().intValue()).isEqualTo(1398);
+            assertThat(v2mk2.getUtbetalingsgrad().intValue()).isEqualTo(76);
+            // Periode på bortimot ett år - men ok siden samme sats og utbetalingsprosent.
+            var v2mk3 = v2.getMeldekortene().getLast();
+            assertThat(v2mk3.getMeldekortFom()).isEqualTo(startdato1.plusMonths(1));
+            assertThat(v2mk3.getBeløp().intValue()).isEqualTo(363480);
+            assertThat(v2mk3.getDagsats().intValue()).isEqualTo(1398);
+            assertThat(v2mk3.getUtbetalingsgrad().intValue()).isEqualTo(100);
+        }
     }
 
     @Test
-    void mapMultipleVedtak_sortedByVedtaksPeriodeFom() {
-        var earlierFrom = LocalDate.of(2021, 1, 1);
-        var earlierTo = LocalDate.of(2021, 1, 31);
-        var laterFrom = LocalDate.of(2026, 1, 1);
-        var laterTo = LocalDate.of(2026, 1, 31);
+    void samordning_uføre() throws Exception {
+        var startdato = LocalDate.of(2025, Month.SEPTEMBER,8);
+        var sluttdato = LocalDate.of(2026, Month.SEPTEMBER,7);
+        try (var resource = KelvinMapper.class.getResourceAsStream("/kelvin/testcase2.json")) {
+            assertThat(resource).isNotNull();
+            var mapper = DefaultJsonMapper.getObjectMapper();
+            var aaprespons = mapper.readValue(new String(resource.readAllBytes()), ArbeidsavklaringspengerResponse.class);
+            var vedtak = KelvinMapper.mapTilMeldekortAclKelvin(aaprespons.vedtak(), new Saksnummer("VAARSAK"));
+            assertThat(vedtak).hasSize(1);
+            // Skal bruke dagsatsen som gjelder AAP etter samordning med uføre og utbetaling relativt til den. 1031 = 60% av 1719
+            var v1 = vedtak.getFirst();
+            assertThat(v1.getVedtaksPeriodeFom()).isEqualTo(startdato);
+            assertThat(v1.getVedtaksPeriodeTom()).isEqualTo(sluttdato);
+            assertThat(v1.getVedtaksDagsats().getVerdi().intValue()).isEqualTo(1031);
+            assertThat(v1.getMeldekortene()).hasSize(1);
+            var v1mk1 = v1.getMeldekortene().getFirst();
+            assertThat(v1mk1.getMeldekortFom()).isEqualTo(startdato);
+            assertThat(v1mk1.getBeløp().intValue()).isEqualTo(41240);
+            assertThat(v1mk1.getDagsats().intValue()).isEqualTo(1031); // Etter Uføre
+            assertThat(v1mk1.getUtbetalingsgrad().intValue()).isEqualTo(100);
 
-        var utbetaling = new ArbeidsavklaringspengerResponse.AAPUtbetaling(
-            new ArbeidsavklaringspengerResponse.AAPPeriode(earlierFrom, earlierTo),
-            500,
-            50,
-            0,
-            null,
-            100
-        );
-
-        var vedtakEarlier = new ArbeidsavklaringspengerResponse.AAPVedtak(
-            null, 0, null, 50, null, ArbeidsavklaringspengerResponse.Kildesystem.KELVIN,
-            new ArbeidsavklaringspengerResponse.AAPPeriode(earlierFrom, earlierTo), null, "OPEN", "e1", LocalDate.of(2021, 2, 1), List.of(utbetaling)
-        );
-
-        var vedtakLater = new ArbeidsavklaringspengerResponse.AAPVedtak(
-            null, 0, null, 50, null, ArbeidsavklaringspengerResponse.Kildesystem.KELVIN,
-            new ArbeidsavklaringspengerResponse.AAPPeriode(laterFrom, laterTo), null, "OPEN", "e2", LocalDate.of(2026, 2, 1), List.of(utbetaling)
-        );
-
-        // provide in reverse order to ensure mapper sorts by vedtaksPeriodeFom
-        var mapped = KelvinMapper.mapTilMeldekortAclKelvin(List.of(vedtakLater, vedtakEarlier), new Saksnummer("X"));
-
-        assertThat(mapped).hasSize(2);
-        // first should be the earlier vedtak
-        assertThat(mapped.get(0).getVedtaksPeriodeFom()).isEqualTo(earlierFrom);
-        assertThat(mapped.get(1).getVedtaksPeriodeFom()).isEqualTo(laterFrom);
+        }
     }
-}
 
+
+}
