@@ -107,11 +107,7 @@ public class InnhentingSamletTjeneste {
 
         var aapGrunnlag = kelvinRestKlient.hentAAP(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer);
         if (Environment.current().isProd()) {
-            try {
-                sammenligneArenaDirekteVsKelvin(aapFraArena, aapGrunnlag.get(Fagsystem.ARENA), saksnummer);
-            } catch (Exception _) {
-                LOG.info("Maksimum AAP sammenligning av Arenadata for sak {} feilet", saksnummer.getVerdi());
-            }
+            sammenligneArenaDirekteVsKelvin(aapFraArena, aapGrunnlag.get(Fagsystem.ARENA), saksnummer);
         }
         return aapGrunnlag.getOrDefault(Fagsystem.KELVIN, List.of());
     }
@@ -168,7 +164,7 @@ public class InnhentingSamletTjeneste {
                 }
             }
         } catch (Exception e) {
-            LOG.info("Maksimum AAP sammenligning av Arenadata for sak {} feilet med {}, {}", saksnummer.getVerdi(), e.getMessage(), e.getStackTrace());
+            LOG.info("Maksimum AAP sammenligning av Arenadata for sak " + saksnummer + "feilet.", e);
         }
     }
 
