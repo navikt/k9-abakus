@@ -41,7 +41,7 @@ class KelvinMapperTest {
         try (var resource = KelvinMapper.class.getResourceAsStream("/kelvin/testcase1.json")) {
             assertThat(resource).isNotNull();
             var mapper = DefaultJsonMapper.getObjectMapper();
-            var aaprespons = mapper.readValue(new String(resource.readAllBytes()), ArbeidsavklaringspengerResponse.class);
+            var aaprespons = mapper.readValue(resource, ArbeidsavklaringspengerResponse.class);
             var vedtak = KelvinMapper.mapTilMeldekortAclKelvin(aaprespons.vedtak(), new Saksnummer("VAARSAK"));
             assertThat(vedtak).hasSize(2);
             // Første del med barnetillegg til barn blir 18
@@ -87,7 +87,7 @@ class KelvinMapperTest {
         try (var resource = KelvinMapper.class.getResourceAsStream("/kelvin/testcase2.json")) {
             assertThat(resource).isNotNull();
             var mapper = DefaultJsonMapper.getObjectMapper();
-            var aaprespons = mapper.readValue(new String(resource.readAllBytes()), ArbeidsavklaringspengerResponse.class);
+            var aaprespons = mapper.readValue(resource, ArbeidsavklaringspengerResponse.class);
             var vedtak = KelvinMapper.mapTilMeldekortAclKelvin(aaprespons.vedtak(), new Saksnummer("VAARSAK"));
             assertThat(vedtak).hasSize(1);
             // Skal bruke dagsatsen som gjelder AAP etter samordning med uføre og utbetaling relativt til den. 1031 = 60% av 1719
