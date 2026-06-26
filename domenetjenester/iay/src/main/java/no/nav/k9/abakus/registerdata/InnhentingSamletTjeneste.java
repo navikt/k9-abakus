@@ -106,7 +106,8 @@ public class InnhentingSamletTjeneste {
         return innhentingInfotrygdTjeneste.getSPøkelseYtelser(ident, periode.getFomDato());
     }
 
-    public Map<Fagsystem, List<DpsakVedtak>> innhentDagpengerDpsak(PersonIdent ident, IntervallEntitet opplysningsPeriode,
+    public Map<Fagsystem, List<DpsakVedtak>> innhentDagpengerDpsak(PersonIdent ident,
+                                                                   IntervallEntitet opplysningsPeriode,
                                                                    Saksnummer saksnummer,
                                                                    List<MeldekortUtbetalingsgrunnlagSak> grunnlagFraArena) {
         var antallVedtak = grunnlagFraArena.size();

@@ -41,11 +41,6 @@ public class DpsakKlient {
     public DpsakKlient() {
     }
 
-
-    public record PersonRequest(String personIdent, LocalDate fraOgMedDato, LocalDate tilOgMedDato) {
-    }
-
-
     public Map<Fagsystem, List<DpsakVedtak>> hentDagpenger(PersonIdent personIdent, LocalDate fom, LocalDate tom, Saksnummer sak,
                                                            int antallArenaVedtak, int antallArenaMeldekort) {
         try {
@@ -99,5 +94,8 @@ public class DpsakKlient {
             throw new IllegalArgumentException("Utviklerfeil syntax-exception for hentDagpenger fra dp-sak");
         }
     }
+
+    private record PersonRequest(String personIdent, LocalDate fraOgMedDato, LocalDate tilOgMedDato) { }
+
 
 }
