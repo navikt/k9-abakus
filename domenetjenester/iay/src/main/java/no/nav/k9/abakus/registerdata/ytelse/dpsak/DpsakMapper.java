@@ -13,6 +13,7 @@ import no.nav.fpsak.tidsserie.LocalDateSegment;
 import no.nav.fpsak.tidsserie.LocalDateTimeline;
 import no.nav.fpsak.tidsserie.StandardCombinators;
 
+// Kopiert fra dp-sak
 public class DpsakMapper {
 
     private DpsakMapper() {

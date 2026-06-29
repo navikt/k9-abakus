@@ -96,9 +96,10 @@ public class YtelseRegisterInnhenting {
         aktørYtelseBuilder.leggTilYtelse(ytelseBuilder);
     }
 
+    // Kpiert fra fp-abakus
     // Tolker bare dagpenger fra DP-sak. Dapenger fra Arena via dp-datadeling blir en egen vurdering senere.
     // Forutsetter: Utbetaling har lik dagsats og lik utbetaltBeløp for alle dager i perioden (vilkårlig lengde). sumUtbetalt = utbetaltBeløp * virkedager.
-    private void oversettDpsakTilYtelse(InntektArbeidYtelseAggregatBuilder.AktørYtelseBuilder aktørYtelseBuilder, DpsakVedtak dagpengerVedtak) {
+    void oversettDpsakTilYtelse(InntektArbeidYtelseAggregatBuilder.AktørYtelseBuilder aktørYtelseBuilder, DpsakVedtak dagpengerVedtak) {
         var førsteUtbetalingFom = dagpengerVedtak.utbetalinger().stream()
             .map(DpsakVedtak.DpsakUtbetaling::periode)
             .map(LocalDateInterval::getFomDato)
