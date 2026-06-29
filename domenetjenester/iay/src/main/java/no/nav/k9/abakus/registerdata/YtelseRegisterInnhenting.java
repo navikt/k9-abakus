@@ -64,7 +64,7 @@ public class YtelseRegisterInnhenting {
         }
 
         var dagsaker = arena.stream().filter(s -> YtelseType.DAGPENGER.equals(s.getYtelseType())).toList();
-        var dagpenger = innhentingSamletTjeneste.innhentDagpengerDpsak(ident, opplysningsPeriode, behandling.getSaksnummer(), dagsaker);
+        var dagpenger = innhentingSamletTjeneste.innhentDagpengerDpSak(ident, opplysningsPeriode, behandling.getSaksnummer(), dagsaker);
 
         for (var dpsakvedtak : dagpenger.getOrDefault(Fagsystem.DPSAK, List.of())) {
             oversettDpsakTilYtelse(aktørYtelseBuilder, dpsakvedtak);

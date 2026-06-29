@@ -106,19 +106,15 @@ public class InnhentingSamletTjeneste {
         return innhentingInfotrygdTjeneste.getSPøkelseYtelser(ident, periode.getFomDato());
     }
 
-    public Map<Fagsystem, List<DpsakVedtak>> innhentDagpengerDpsak(PersonIdent ident,
+    public Map<Fagsystem, List<DpsakVedtak>> innhentDagpengerDpSak(PersonIdent ident,
                                                                    IntervallEntitet opplysningsPeriode,
                                                                    Saksnummer saksnummer,
                                                                    List<MeldekortUtbetalingsgrunnlagSak> grunnlagFraArena) {
         var antallVedtak = grunnlagFraArena.size();
         var antallMeldekort = grunnlagFraArena.stream()
-            .mapToInt(s -> Optional.ofNullable(s.getMeldekortene()).orElseGet(List::of).size())
+            .mapToInt(sak -> Optional.ofNullable(sak.getMeldekortene()).orElseGet(List::of).size())
             .sum();
-        var vedtak = dpsakRestKlient.hentDagpenger(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer, antallVedtak, antallMeldekort);
-        if (!vedtak.getOrDefault(Fagsystem.DPSAK, List.of()).isEmpty()) {
-            LOG.info("DP-DATADELING vedtak {}", vedtak);
-        }
-        return vedtak;
+        return dpsakRestKlient.hentDagpenger(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer, antallVedtak, antallMeldekort);
     }
 
     public List<MeldekortUtbetalingsgrunnlagSak> hentAapFraKelvin(

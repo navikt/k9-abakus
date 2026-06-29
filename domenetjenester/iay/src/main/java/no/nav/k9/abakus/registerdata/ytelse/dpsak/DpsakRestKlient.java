@@ -47,7 +47,10 @@ public class DpsakRestKlient {
             var perioder = hentRettighetsperioder(personIdent, fom, tom);
             var utbetalinger = hentUtbetalinger(personIdent, fom, tom);
             var perioderArena = perioder.stream()
-                .filter(p -> DagpengerRettighetsperioderDto.DagpengerKilde.ARENA.equals(p.kilde()))
+                .filter(periode -> DagpengerRettighetsperioderDto.DagpengerKilde.ARENA.equals(periode.kilde()))
+                .toList();
+            var utbetalingerArena = utbetalinger.stream()
+                .filter(u -> DagpengerKilde.ARENA.equals(u.kilde()))
                 .toList();
             var perioderDpsak = perioder.stream()
                 .filter(p -> DagpengerRettighetsperioderDto.DagpengerKilde.DP_SAK.equals(p.kilde()))
@@ -55,22 +58,18 @@ public class DpsakRestKlient {
             var utbetalingerDpsak = utbetalinger.stream()
                 .filter(u -> DagpengerKilde.DP_SAK.equals(u.kilde()))
                 .toList();
-            var utbetalingerArena = utbetalinger.stream()
-                .filter(u -> DagpengerKilde.ARENA.equals(u.kilde()))
-                .toList();
             if (!perioderArena.isEmpty() || !utbetalingerArena.isEmpty()) {
                 LOG.info("DP-DATADELING ARENA fant {} perioder og {} utbetalinger mot {} vedtak og {} MK fra Arena",
                     perioderArena.size(), utbetalingerArena.size(), antallArenaVedtak, antallArenaMeldekort);
             }
             if (!perioderDpsak.isEmpty() || !utbetalingerDpsak.isEmpty()) {
-                LOG.info("DP-DATADELING DPSAK fant {} perioder og {} utbetalinger. Perioder: {}. Utbetalinger {}",
-                    perioderDpsak.size(), utbetalingerDpsak.size(), perioderDpsak, utbetalingerDpsak);
-                LOG.warn("Merk Dem! Sak {} har nye dagpenger. Kontakt produkteier umiddelbart", sak.getVerdi());
+                LOG.info("DP-DATADELING DPSAK fant {} perioder og {} utbetalinger, ", perioderDpsak.size(), utbetalingerDpsak.size());
+                LOG.info("Sak {} har nye dagpenger.", sak.getVerdi());
             }
             var dpsakVedtak = DpsakMapper.fullMapping(perioderDpsak, utbetalingerDpsak);
             return Map.of(Fagsystem.DPSAK, dpsakVedtak);
         } catch (Exception e) {
-            LOG.info("DP-DATADELING feil ", e);
+            LOG.error("DP-DATADELING feil ", e);
             return Map.of();
         }
     }
@@ -78,20 +77,20 @@ public class DpsakRestKlient {
     public List<DagpengerRettighetsperioderDto.Rettighetsperiode> hentRettighetsperioder(PersonIdent personIdent, LocalDate fom, LocalDate tom) {
         var prequest = new PersonRequest(personIdent.getIdent(), fom, tom);
         try {
-            var result = restClient.post(rettighetsperioderEndpoint, prequest, DagpengerRettighetsperioderDto.class);
-            return result.perioder();
+            var rettighetsperioder = restClient.post(rettighetsperioderEndpoint, prequest, DagpengerRettighetsperioderDto.class);
+            return rettighetsperioder.perioder();
         } catch (UriBuilderException | IllegalArgumentException e) {
-            throw new IllegalArgumentException("Utviklerfeil syntax-exception for hentDagpenger fra dp-sak");
+            throw new IllegalArgumentException("Kall til dp-sak rettighetsperioder feilet", e);
         }
     }
 
     public List<DagpengerUtbetalingDto> hentUtbetalinger(PersonIdent personIdent, LocalDate fom, LocalDate tom) {
         var prequest = new PersonRequest(personIdent.getIdent(), fom, tom);
         try {
-            var result = restClient.post(beregningerEndpoint, prequest, DagpengerUtbetalingDto[].class);
-            return Arrays.stream(result).toList();
+            var utbetalinger = restClient.post(beregningerEndpoint, prequest, DagpengerUtbetalingDto[].class);
+            return Arrays.stream(utbetalinger).toList();
         } catch (UriBuilderException | IllegalArgumentException e) {
-            throw new IllegalArgumentException("Utviklerfeil syntax-exception for hentDagpenger fra dp-sak");
+            throw new IllegalArgumentException("Kall til dp-sak beregninger (utbetalinger) feilet", e);
         }
     }
 
