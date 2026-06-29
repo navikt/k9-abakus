@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 // https://navikt.github.io/dp-datadeling/openapi.html
 @ApplicationScoped
-@ScopedRestIntegration(scopeKey = "dagpenger.scope", defaultScope = "api://prod-gcp.teamdagpenger.dp-datadeling/.default/.default")
+@ScopedRestIntegration(scopeKey = "dagpengerdatadeling.scope", defaultScope = "api://prod-gcp.teamdagpenger.dp-datadeling/.default")
 public class DpsakRestKlient {
 
     private static final Logger LOG = LoggerFactory.getLogger(DpsakRestKlient.class);
@@ -63,7 +63,7 @@ public class DpsakRestKlient {
                     perioderArena.size(), utbetalingerArena.size(), antallArenaVedtak, antallArenaMeldekort);
             }
             if (!perioderDpsak.isEmpty() || !utbetalingerDpsak.isEmpty()) {
-                LOG.info("DP-DATADELING DPSAK fant {} perioder og {} utbetalinger, ", perioderDpsak.size(), utbetalingerDpsak.size());
+                LOG.info("DP-DATADELING DPSAK fant {} perioder og {} utbetalinger.", perioderDpsak.size(), utbetalingerDpsak.size());
                 LOG.info("Sak {} har nye dagpenger.", sak.getVerdi());
             }
             var dpsakVedtak = DpsakMapper.fullMapping(perioderDpsak, utbetalingerDpsak);

@@ -67,7 +67,7 @@
     "DEFAULTDS_URL": "jdbc:postgresql://b27dbvl028.preprod.local:5432/k9-abakus",
     "FPWSPROXY_OVERRIDE_URL": "http://fpwsproxy.teamforeldrepenger/fpwsproxy",
     "FPWSPROXY_SCOPE": "api://dev-fss.teamforeldrepenger.fpwsproxy/.default",
-    "DAGPENGER_SCOPE": "api://dev-gcp.teamdagpenger.dp-datadeling",
+    "DAGPENGERDATADELING_SCOPE":  "api://dev-gcp.teamdagpenger.dp-datadeling/.default",
     "DAGPENGERDATADELING_BASE_URL": "https://dp-datadeling.intern.dev.nav.no",
     "CLIENT_SCOPE": "api://dev-fss.k9saksbehandling.k9-abakus/.default",
 
