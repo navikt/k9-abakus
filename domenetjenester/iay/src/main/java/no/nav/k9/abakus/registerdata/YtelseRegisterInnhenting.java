@@ -32,7 +32,7 @@ public class YtelseRegisterInnhenting {
                      PersonIdent ident,
                      IntervallEntitet opplysningsPeriode,
                      InntektArbeidYtelseAggregatBuilder inntektArbeidYtelseAggregatBuilder,
-                     boolean medGrunnlag, LocalDate skjæringstidspunkt) {
+                     boolean medGrunnlag) {
 
         InntektArbeidYtelseAggregatBuilder.AktørYtelseBuilder aktørYtelseBuilder = inntektArbeidYtelseAggregatBuilder.getAktørYtelseBuilder(aktørId);
         aktørYtelseBuilder.tilbakestillYtelser();
@@ -51,12 +51,15 @@ public class YtelseRegisterInnhenting {
         List<InfotrygdYtelseGrunnlag> ghosts = innhentingSamletTjeneste.innhentSpokelseGrunnlag(ident, opplysningsPeriode);
         ghosts.forEach(grunnlag -> oversettSpokelseYtelseGrunnlagTilYtelse(aktørYtelseBuilder, grunnlag));
 
-        List<MeldekortUtbetalingsgrunnlagSak> arena = innhentingSamletTjeneste.hentDagpengerAAP(ident, opplysningsPeriode);
-
-        var aapsaker = arena.stream().filter(s -> YtelseType.ARBEIDSAVKLARINGSPENGER.equals(s.getYtelseType())).toList();
-        innhentingSamletTjeneste.innhentMaksimumAAP(ident, opplysningsPeriode, behandling.getSaksnummer(), aapsaker, skjæringstidspunkt);
-
+        List<MeldekortUtbetalingsgrunnlagSak> arena = innhentingSamletTjeneste.hentDagpengerAAPFraArena(ident, opplysningsPeriode);
         for (MeldekortUtbetalingsgrunnlagSak sak : arena) {
+            oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
+        }
+
+        var aapFraArena = arena.stream().filter(s -> YtelseType.ARBEIDSAVKLARINGSPENGER.equals(s.getYtelseType())).toList();
+        List<MeldekortUtbetalingsgrunnlagSak> aapFraKelvin = innhentingSamletTjeneste.hentAapFraKelvin(ident, opplysningsPeriode, behandling.getSaksnummer(), aapFraArena);
+
+        for (MeldekortUtbetalingsgrunnlagSak sak : aapFraKelvin) {
             oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
         }
 

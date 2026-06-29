@@ -4,13 +4,20 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseStatus;
+import no.nav.fpsak.tidsserie.LocalDateInterval;
+import no.nav.fpsak.tidsserie.LocalDateSegment;
+import no.nav.fpsak.tidsserie.LocalDateTimeline;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagMeldekort;
 import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSak;
 
 import no.nav.k9.abakus.typer.Saksnummer;
+
+import no.nav.k9.felles.konfigurasjon.konfig.Tid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,8 +27,9 @@ import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 
 import static no.nav.k9.felles.konfigurasjon.konfig.Tid.TIDENES_BEGYNNELSE;
 import static no.nav.k9.felles.konfigurasjon.konfig.Tid.TIDENES_ENDE;
+import static no.nav.k9.felles.sikkerhet.abac.PepImpl.ENV;
 
-
+// Fila er stort sett kopiert fra fp-abakus
 public class KelvinMapper {
     private static final Logger LOG = LoggerFactory.getLogger(KelvinMapper.class);
 
@@ -41,9 +49,10 @@ public class KelvinMapper {
 
     private static MeldekortUtbetalingsgrunnlagSak mapTilMeldekortSakAclKelvin(ArbeidsavklaringspengerResponse.AAPVedtak vedtak) {
         var aktuellDagsats = Optional.ofNullable(vedtak.dagsatsEtterUføreReduksjon()).orElseGet(vedtak::dagsats);
-        var vedtaksdagsatsMedBarnetillegg = aktuellDagsats + Optional.ofNullable(vedtak.barnetillegg()).orElse(0);
-        var mk = vedtak.utbetaling().stream()
-            .map(u -> KelvinMapper.mapTilMeldekortMKAclKelvin(u, aktuellDagsats, vedtak.dagsats()))
+        var aktuellDagsatsMedBarnetillegg = aktuellDagsats + Optional.ofNullable(vedtak.barnetillegg()).orElse(0);
+        var mappedUtbetaling = mapDatadelingDpsakUtbetaling(vedtak.utbetaling());
+        var mk = mappedUtbetaling.stream()
+            .map(u -> KelvinMapper.mapTilMeldekortMKAclKelvin(u, aktuellDagsats, vedtak.dagsats(), aktuellDagsatsMedBarnetillegg))
             .sorted(Comparator.comparing(MeldekortUtbetalingsgrunnlagMeldekort::getMeldekortFom))
             .toList();
         return MeldekortUtbetalingsgrunnlagSak.MeldekortSakBuilder.ny()
@@ -56,26 +65,78 @@ public class KelvinMapper {
             .medVedtattDato(vedtak.vedtaksdato())
             .medVedtaksPeriodeFom(vedtak.periode().fraOgMedDato() != null ? vedtak.periode().fraOgMedDato() : TIDENES_BEGYNNELSE)
             .medVedtaksPeriodeTom(vedtak.periode().tilOgMedDato() != null ? vedtak.periode().tilOgMedDato() : TIDENES_ENDE)
-            .medVedtaksDagsats(BigDecimal.valueOf(vedtaksdagsatsMedBarnetillegg))
+            .medVedtaksDagsats(BigDecimal.valueOf(aktuellDagsatsMedBarnetillegg))
             .build();
     }
 
-    private static MeldekortUtbetalingsgrunnlagMeldekort mapTilMeldekortMKAclKelvin(ArbeidsavklaringspengerResponse.AAPUtbetaling utbetaling,
-                                                                                    Integer aktuellDagsats, Integer vedtakDagsats) {
-        // Her vil tilfelle med uførereduksjon ha en ubetalingsgrad mellom 0 og 100 gitt av uførereduksjonen + aktivitet i perioden
-        // Gjør derfor en normalisering slik at bruker med 60% AAP får utbetalingsgrad 100% ved full AAP-utbetaling uten aktivitet
-        var utbetalingsgradFraUtbetaling = Optional.ofNullable(utbetaling.utbetalingsgrad()).map(BigDecimal::valueOf).orElse(BigDecimal.ZERO);
-        var brukUtbetalingsgrad = utbetalingsgradFraUtbetaling
-            .multiply(BigDecimal.valueOf(vedtakDagsats))
-            .divide(BigDecimal.valueOf(aktuellDagsats), 0, RoundingMode.HALF_EVEN);
-        var dagsats = Optional.ofNullable(utbetaling.dagsats()).map(BigDecimal::valueOf).orElse(BigDecimal.ZERO)
-            .add(Optional.ofNullable(utbetaling.barnetillegg()).map(BigDecimal::valueOf).orElse(BigDecimal.ZERO));
+    private static MeldekortUtbetalingsgrunnlagMeldekort mapTilMeldekortMKAclKelvin(LocalDateSegment<MappedUtbetaling> utbetaling,
+                                                                                    Integer aktuellDagsats, Integer vedtakDagsats,
+                                                                                    Integer nettoDagsatsMedTillegg) {
+        var utbetalingsgradFraUtbetaling = Optional.ofNullable(utbetaling.getValue().utbetalingProsent()).map(BigDecimal::valueOf).orElse(BigDecimal.ZERO);
+        var brukUtbetalingsgrad = justertUtbetalingsgrad(utbetalingsgradFraUtbetaling, aktuellDagsats, vedtakDagsats);
+        // Bruker denne fordi utbetaling.dagsats (og barnetillegg) er ferdig redusert med utbetalingsgrad fra kilden
+        var dagsats = Optional.ofNullable(nettoDagsatsMedTillegg).map(BigDecimal::valueOf).orElse(BigDecimal.ZERO);
         return MeldekortUtbetalingsgrunnlagMeldekort.MeldekortMeldekortBuilder.ny()
-            .medMeldekortFom(utbetaling.periode().fraOgMedDato() != null ? utbetaling.periode().fraOgMedDato() : TIDENES_BEGYNNELSE)
-            .medMeldekortTom(utbetaling.periode().tilOgMedDato() != null ? utbetaling.periode().tilOgMedDato() : TIDENES_ENDE)
-            .medBeløp(Optional.ofNullable(utbetaling.belop()).map(BigDecimal::valueOf).orElse(BigDecimal.ZERO))
+            .medMeldekortFom(utbetaling.getLocalDateInterval().getFomDato() != null ? utbetaling.getLocalDateInterval().getFomDato() : TIDENES_BEGYNNELSE)
+            .medMeldekortTom(utbetaling.getLocalDateInterval().getTomDato() != null ? utbetaling.getLocalDateInterval().getTomDato() : TIDENES_ENDE)
+            .medBeløp(Optional.ofNullable(utbetaling.getValue().sumUtbetalt()).map(BigDecimal::valueOf).orElse(BigDecimal.ZERO))
             .medDagsats(dagsats)
             .medUtbetalingsgrad(brukUtbetalingsgrad)
             .build();
+    }
+
+    private static BigDecimal justertUtbetalingsgrad(BigDecimal utbetalingsgrad, Integer aktuellDagsats, Integer vedtakDagsats) {
+        if (Objects.equals(aktuellDagsats, vedtakDagsats)) {
+            return utbetalingsgrad;
+        } else {
+            if (!ENV.isLocal())
+                LOG.warn("Merk Dem! Kelvin-tilfelle med uføresamordning. Si fra i daglig overvåkning for nærmere analyse");
+            // Her vil tilfelle med uførereduksjon ha en ubetalingsgrad mellom 0 og 100 gitt av uførereduksjonen + aktivitet i perioden
+            // Gjør derfor en normalisering slik at bruker med 60% AAP får utbetalingsgrad 100% ved full AAP-utbetaling uten aktivitet
+            var beregnetUtbetalingsgrad = utbetalingsgrad
+                .multiply(BigDecimal.valueOf(vedtakDagsats)).divide(BigDecimal.valueOf(aktuellDagsats), 0, RoundingMode.HALF_EVEN);
+            LOG.info("Kelvin-saker Kelvin UFO beregnet utbetgrad: Utbetalingsgrad {} beregnet {} redusertvedtaksats {} vedtaksats {}",
+                utbetalingsgrad, beregnetUtbetalingsgrad, aktuellDagsats, vedtakDagsats);
+            return beregnetUtbetalingsgrad;
+        }
+    }
+
+    private static LocalDateTimeline<MappedUtbetaling> mapDatadelingDpsakUtbetaling(List<ArbeidsavklaringspengerResponse.AAPUtbetaling> utbetalinger) {
+        var mapped = utbetalinger.stream()
+            .map(u -> new LocalDateSegment<>(new LocalDateInterval(u.periode().fraOgMedDato(), u.periode().tilOgMedDato()), new MappedUtbetaling(u)))
+            .collect(Collectors.collectingAndThen(Collectors.toList(), LocalDateTimeline::new));
+        // Slå sammen dager med lik sats og utbetalingsgrad. Utvide fredager til søndag pga filter over. Summer sumUtbetalt ved sammenslåing
+        return mapped.compress(LocalDateInterval::abutsWorkdays, MappedUtbetaling::equals, KelvinMapper::slåSammen);
+    }
+
+    private static LocalDateSegment<MappedUtbetaling> slåSammen(LocalDateInterval i,
+                                                                LocalDateSegment<MappedUtbetaling> lhs,
+                                                                LocalDateSegment<MappedUtbetaling> rhs) {
+        return new LocalDateSegment<>(i, new MappedUtbetaling(lhs.getValue().utbetalingProsent(), lhs.getValue().utbetaltForDag(),
+            lhs.getValue().sumUtbetalt() + rhs.getValue().sumUtbetalt()));
+    }
+
+    private record MappedUtbetaling(Integer utbetalingProsent, Integer utbetaltForDag, Integer sumUtbetalt) implements Comparable<MappedUtbetaling> {
+
+        MappedUtbetaling(ArbeidsavklaringspengerResponse.AAPUtbetaling utbetaling) {
+            this(utbetaling.utbetalingsgrad(), utbetaling.dagsats() + utbetaling.barnetillegg(), utbetaling.belop());
+        }
+
+        @Override
+        public int compareTo(MappedUtbetaling o) {
+            var utbetaltDiff = Integer.compare(this.utbetaltForDag, o.utbetaltForDag);
+            return utbetaltDiff == 0 ? Integer.compare(this.utbetalingProsent, o.utbetalingProsent) : utbetaltDiff;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            return o instanceof MappedUtbetaling that && utbetalingProsent.equals(that.utbetalingProsent) && utbetaltForDag.equals(that.utbetaltForDag);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(utbetalingProsent, utbetaltForDag);
+        }
     }
 }

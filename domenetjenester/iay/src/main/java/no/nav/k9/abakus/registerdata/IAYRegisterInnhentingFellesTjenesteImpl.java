@@ -145,7 +145,7 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
 
     private void innhentYtelser(Kobling kobling, InntektArbeidYtelseAggregatBuilder builder) {
         ytelseRegisterInnhenting.byggYtelser(kobling, kobling.getAktørId(), getFnrFraAktørId(kobling.getAktørId()), kobling.getOpplysningsperiode(),
-            builder, skalInnhenteYtelseGrunnlag(kobling), kobling.getSkjæringstidspunkt());
+            builder, skalInnhenteYtelseGrunnlag(kobling));
     }
 
     private Set<ArbeidsforholdIdentifikator> innhentArbeidsforhold(Kobling kobling,

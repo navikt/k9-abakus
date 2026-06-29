@@ -68,6 +68,7 @@ public class ArenaMapper {
 
     private static MeldekortUtbetalingsgrunnlagMeldekort mapTilMeldekortMKAclArena(ArbeidsavklaringspengerResponse.AAPUtbetaling utbetaling) {
         var beregnetUtbetalingsgrad = regnUtArenaUtbetalingsgrad(utbetaling);
+        // utbetalingsgrad fra AAPUtbetaling er alltid null for vedtak fra Arena, men vil være satt for vedtak fra Kelvin
         return MeldekortUtbetalingsgrunnlagMeldekort.MeldekortMeldekortBuilder.ny()
             .medMeldekortFom(utbetaling.periode().fraOgMedDato() != null ? utbetaling.periode().fraOgMedDato() : TIDENES_BEGYNNELSE)
             .medMeldekortTom(utbetaling.periode().tilOgMedDato() != null ? utbetaling.periode().tilOgMedDato() : TIDENES_ENDE)
