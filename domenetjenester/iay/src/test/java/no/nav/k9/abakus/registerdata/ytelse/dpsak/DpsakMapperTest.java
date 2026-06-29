@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import no.nav.fpsak.tidsserie.LocalDateInterval;
 
+// Kopiert fra fp-abakus
 class DpsakMapperTest {
 
     @Test

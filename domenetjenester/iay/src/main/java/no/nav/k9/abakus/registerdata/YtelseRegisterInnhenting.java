@@ -63,7 +63,7 @@ public class YtelseRegisterInnhenting {
             oversettMeldekortUtbetalingsgrunnlagTilYtelse(aktørYtelseBuilder, sak);
         }
 
-        var dagsaker = arena.stream().filter(s -> YtelseType.DAGPENGER.equals(s.getYtelseType())).toList();
+        var dagsaker = arena.stream().filter(sak -> YtelseType.DAGPENGER.equals(sak.getYtelseType())).toList();
         var dagpenger = innhentingSamletTjeneste.innhentDagpengerDpSak(ident, opplysningsPeriode, behandling.getSaksnummer(), dagsaker);
 
         for (var dpsakvedtak : dagpenger.getOrDefault(Fagsystem.DPSAK, List.of())) {
