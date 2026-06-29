@@ -37,7 +37,7 @@ class DpsakMapperTest {
         try (var resource = DpsakMapper.class.getResourceAsStream("/dpsak/testcase1.json")) {
             assertThat(resource).isNotNull();
             var listObjectMapper = DefaultJsonMapper.MAPPER.readerForListOf(DagpengerUtbetalingDto.class);
-            var utbetalinger = (List<DagpengerUtbetalingDto>) listObjectMapper.readValue(new String(resource.readAllBytes()));
+            var utbetalinger = (List<DagpengerUtbetalingDto>) listObjectMapper.readValue(new String(resource.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8));
             var vedtak = DpsakMapper.fullMapping(List.of(periode), utbetalinger);
             assertThat(vedtak).hasSize(2);
             var v1 = vedtak.getFirst();
@@ -63,7 +63,7 @@ class DpsakMapperTest {
         try (var resource = DpsakMapper.class.getResourceAsStream("/dpsak/testcase2.json")) {
             assertThat(resource).isNotNull();
             var listObjectMapper = DefaultJsonMapper.MAPPER.readerForListOf(DagpengerUtbetalingDto.class);
-            var utbetalinger = (List<DagpengerUtbetalingDto>) listObjectMapper.readValue(new String(resource.readAllBytes()));
+            var utbetalinger = (List<DagpengerUtbetalingDto>) listObjectMapper.readValue(new String(resource.readAllBytes(), java.nio.charset.StandardCharsets.UTF_8));
             var vedtak = DpsakMapper.fullMapping(List.of(periode), utbetalinger);
             assertThat(vedtak).hasSize(2);
             var v1 = vedtak.getFirst();
