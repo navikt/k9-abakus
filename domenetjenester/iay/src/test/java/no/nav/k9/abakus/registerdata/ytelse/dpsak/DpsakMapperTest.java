@@ -19,7 +19,7 @@ class DpsakMapperTest {
     void ingen_utbetalinger() {
         var startdato = LocalDate.of(2025, Month.SEPTEMBER,1);
         var periode = new DagpengerRettighetsperioderDto.Rettighetsperiode(startdato, null,
-            DagpengerRettighetsperioderDto.DagpengerKilde.DP_SAK);
+            DagpengerKilde.DP_SAK);
         var vedtak = DpsakMapper.fullMapping(List.of(periode), List.of());
         assertThat(vedtak).hasSize(1);
         var v1 = vedtak.getFirst();
@@ -34,7 +34,7 @@ class DpsakMapperTest {
         var startdato = LocalDate.of(2025, Month.SEPTEMBER,1);
         var nyttår = LocalDate.of(2026, Month.JANUARY,1);
         var periode = new DagpengerRettighetsperioderDto.Rettighetsperiode(startdato, null,
-            DagpengerRettighetsperioderDto.DagpengerKilde.DP_SAK);
+            DagpengerKilde.DP_SAK);
         try (var resource = DpsakMapper.class.getResourceAsStream("/dpsak/testcase1.json")) {
             assertThat(resource).isNotNull();
             var listObjectMapper = DefaultJsonMapper.MAPPER.readerForListOf(DagpengerUtbetalingDto.class);
@@ -60,7 +60,7 @@ class DpsakMapperTest {
         var sluttdato = LocalDate.of(2026, Month.FEBRUARY,4);
         var nyttår = LocalDate.of(2026, Month.JANUARY,1);
         var periode = new DagpengerRettighetsperioderDto.Rettighetsperiode(startdato, sluttdato,
-            DagpengerRettighetsperioderDto.DagpengerKilde.DP_SAK);
+            DagpengerKilde.DP_SAK);
         try (var resource = DpsakMapper.class.getResourceAsStream("/dpsak/testcase2.json")) {
             assertThat(resource).isNotNull();
             var listObjectMapper = DefaultJsonMapper.MAPPER.readerForListOf(DagpengerUtbetalingDto.class);

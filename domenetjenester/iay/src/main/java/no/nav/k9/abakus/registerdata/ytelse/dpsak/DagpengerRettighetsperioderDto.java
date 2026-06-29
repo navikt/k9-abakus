@@ -7,7 +7,5 @@ public record DagpengerRettighetsperioderDto(String personIdent, List<Rettighets
 
     public record Rettighetsperiode(LocalDate fraOgMedDato, LocalDate tilOgMedDato, DagpengerKilde kilde) {
     }
-
-    public enum DagpengerKilde { DP_SAK, ARENA }
 }
 

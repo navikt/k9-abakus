@@ -47,13 +47,13 @@ public class DpsakRestKlient {
             var perioder = hentRettighetsperioder(personIdent, fom, tom);
             var utbetalinger = hentUtbetalinger(personIdent, fom, tom);
             var perioderArena = perioder.stream()
-                .filter(periode -> DagpengerRettighetsperioderDto.DagpengerKilde.ARENA.equals(periode.kilde()))
+                .filter(periode -> DagpengerKilde.ARENA.equals(periode.kilde()))
                 .toList();
             var utbetalingerArena = utbetalinger.stream()
                 .filter(u -> DagpengerKilde.ARENA.equals(u.kilde()))
                 .toList();
             var perioderDpsak = perioder.stream()
-                .filter(p -> DagpengerRettighetsperioderDto.DagpengerKilde.DP_SAK.equals(p.kilde()))
+                .filter(p -> DagpengerKilde.DP_SAK.equals(p.kilde()))
                 .toList();
             var utbetalingerDpsak = utbetalinger.stream()
                 .filter(u -> DagpengerKilde.DP_SAK.equals(u.kilde()))
