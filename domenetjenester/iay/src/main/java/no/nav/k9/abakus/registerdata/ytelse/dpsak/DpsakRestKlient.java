@@ -23,22 +23,22 @@ import org.slf4j.LoggerFactory;
 // https://navikt.github.io/dp-datadeling/openapi.html
 @ApplicationScoped
 @ScopedRestIntegration(scopeKey = "dagpenger.scope", defaultScope = "api://prod-gcp.teamdagpenger.dp-datadeling/.default/.default")
-public class DpsakKlient {
+public class DpsakRestKlient {
 
-    private static final Logger LOG = LoggerFactory.getLogger(DpsakKlient.class);
+    private static final Logger LOG = LoggerFactory.getLogger(DpsakRestKlient.class);
 
     private URI beregningerEndpoint;
     private URI rettighetsperioderEndpoint;
     private SystemUserOidcRestClient restClient;
 
     @Inject
-    public DpsakKlient(SystemUserOidcRestClient restClient, @KonfigVerdi(value = "dagpengerdatadeling.base.url") URI dagpengerUrl) {
+    public DpsakRestKlient(SystemUserOidcRestClient restClient, @KonfigVerdi(value = "dagpengerdatadeling.base.url") URI dagpengerUrl) {
         beregningerEndpoint = UriBuilder.fromUri(dagpengerUrl).path("/dagpenger/datadeling/v1/beregninger").build();
         rettighetsperioderEndpoint = UriBuilder.fromUri(dagpengerUrl).path("/dagpenger/datadeling/v1/perioder").build();
         this.restClient = restClient;
     }
 
-    public DpsakKlient() {
+    public DpsakRestKlient() {
     }
 
     public Map<Fagsystem, List<DpsakVedtak>> hentDagpenger(PersonIdent personIdent, LocalDate fom, LocalDate tom, Saksnummer sak,

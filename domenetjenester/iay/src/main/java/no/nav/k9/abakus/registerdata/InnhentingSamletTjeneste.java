@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
 
-import no.nav.k9.abakus.registerdata.ytelse.dpsak.DpsakKlient;
+import no.nav.k9.abakus.registerdata.ytelse.dpsak.DpsakRestKlient;
 import no.nav.k9.abakus.registerdata.ytelse.dpsak.DpsakVedtak;
 
 import org.slf4j.Logger;
@@ -49,7 +49,7 @@ public class InnhentingSamletTjeneste {
     private FpwsproxyKlient fpwsproxyKlient;
     private InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste;
     private KelvinRestKlient kelvinRestKlient;
-    private DpsakKlient dpsakKlient;
+    private DpsakRestKlient dpsakRestKlient;
 
     InnhentingSamletTjeneste() {
         //CDI
@@ -61,7 +61,7 @@ public class InnhentingSamletTjeneste {
                                     InnhentingInfotrygdTjeneste innhentingInfotrygdTjeneste,
                                     FpwsproxyKlient fpwsproxyKlient,
                                     KelvinRestKlient kelvinRestKlient,
-                                    DpsakKlient dpsakKlient
+                                    DpsakRestKlient dpsakRestKlient
                                     ) {
 
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
@@ -69,7 +69,7 @@ public class InnhentingSamletTjeneste {
         this.fpwsproxyKlient = fpwsproxyKlient;
         this.innhentingInfotrygdTjeneste = innhentingInfotrygdTjeneste;
         this.kelvinRestKlient = kelvinRestKlient;
-        this.dpsakKlient = dpsakKlient;
+        this.dpsakRestKlient = dpsakRestKlient;
     }
 
 
@@ -114,7 +114,7 @@ public class InnhentingSamletTjeneste {
         var antallMeldekort = grunnlagFraArena.stream()
             .mapToInt(s -> Optional.ofNullable(s.getMeldekortene()).orElseGet(List::of).size())
             .sum();
-        var vedtak = dpsakKlient.hentDagpenger(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer, antallVedtak, antallMeldekort);
+        var vedtak = dpsakRestKlient.hentDagpenger(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer, antallVedtak, antallMeldekort);
         if (!vedtak.getOrDefault(Fagsystem.DPSAK, List.of()).isEmpty()) {
             LOG.info("DP-DATADELING vedtak {}", vedtak);
         }
