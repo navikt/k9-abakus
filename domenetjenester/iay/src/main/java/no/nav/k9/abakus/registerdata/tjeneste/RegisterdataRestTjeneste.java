@@ -137,7 +137,7 @@ public class RegisterdataRestTjeneste {
                                           @JsonProperty(value = "ytelseType", required = true) @Valid @NotNull YtelseType ytelseType,
                                           @JsonProperty(value = "opplysningsperiode", required = true) @NotNull @Valid Periode opplysningsperiode,
                                           @JsonProperty(value = "aktør", required = true) @NotNull @Valid PersonIdent aktør,
-                                          @JsonProperty(value = "elementer", required = true) @NotNull @Valid Set<RegisterdataType> elementer) {
+                                          @JsonProperty(value = "elementer", required = true) @NotNull Set<@Valid RegisterdataType> elementer) {
             super(saksnummer, referanse, ytelseType, opplysningsperiode, aktør, elementer);
         }
 

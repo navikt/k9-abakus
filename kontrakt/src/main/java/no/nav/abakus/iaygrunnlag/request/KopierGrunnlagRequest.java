@@ -73,7 +73,7 @@ public class KopierGrunnlagRequest {
                                  @JsonProperty(value = "gammelReferanse", required = true) @Valid @NotNull UUID gammelReferanse,
                                  @JsonProperty(value = "ytelseType", required = true) @NotNull YtelseType ytelseType,
                                  @JsonProperty(value = "aktør", required = true) @NotNull @Valid PersonIdent aktør,
-                                 @JsonProperty(value = "dataset", required = true) @NotNull @Valid Set<Dataset> dataset) {
+                                 @JsonProperty(value = "dataset", required = true) @NotNull Set<@Valid Dataset> dataset) {
         this.saksnummer = saksnummer;
         this.nyReferanse = nyReferanse;
         this.gammelReferanse = gammelReferanse;
