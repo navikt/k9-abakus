@@ -59,8 +59,7 @@ public class InntektArbeidYtelseGrunnlagSakSnapshotDto {
      * </ul>
      */
     @JsonProperty(value = "grunnlag", required = true)
-    @Valid
-    private List<Konvolutt> grunnlag = new ArrayList<>();
+    private List<@Valid Konvolutt> grunnlag = new ArrayList<>();
 
     @JsonProperty(value = "snapshotTidspunkt", required = true)
     @Valid

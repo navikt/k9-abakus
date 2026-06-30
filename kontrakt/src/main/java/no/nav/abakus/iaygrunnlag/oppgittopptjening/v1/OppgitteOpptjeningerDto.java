@@ -19,8 +19,7 @@ public class OppgitteOpptjeningerDto {
 
     @JsonProperty(value = "oppgitteOpptjeninger", required = true)
     @NotNull
-    @Valid
-    private List<OppgittOpptjeningDto> oppgitteOpptjeninger;
+    private List<@Valid OppgittOpptjeningDto> oppgitteOpptjeninger;
 
     public OppgitteOpptjeningerDto() {
         // default ctor

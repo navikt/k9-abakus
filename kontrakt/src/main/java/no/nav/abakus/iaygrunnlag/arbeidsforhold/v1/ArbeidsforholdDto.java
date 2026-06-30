@@ -35,8 +35,7 @@ public class ArbeidsforholdDto {
     private ArbeidsforholdRefDto arbeidsforholdId;
 
     @JsonProperty("ansettelsePerioder")
-    @Valid
-    private List<Periode> ansettelsesperiode;
+    private List<@Valid Periode> ansettelsesperiode;
 
     protected ArbeidsforholdDto() {
     }
