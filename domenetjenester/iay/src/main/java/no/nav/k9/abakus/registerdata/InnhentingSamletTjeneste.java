@@ -62,7 +62,7 @@ public class InnhentingSamletTjeneste {
                                     FpwsproxyKlient fpwsproxyKlient,
                                     KelvinRestKlient kelvinRestKlient,
                                     DpsakRestKlient dpsakRestKlient
-                                    ) {
+    ) {
 
         this.arbeidsforholdTjeneste = arbeidsforholdTjeneste;
         this.inntektTjeneste = inntektTjeneste;
@@ -166,23 +166,19 @@ public class InnhentingSamletTjeneste {
             var kelvinMK = kelvin.stream().map(MeldekortUtbetalingsgrunnlagSak::getMeldekortene).flatMap(Collection::stream).collect(Collectors.toSet());
             var vAIkkeK = arena.stream().filter(a -> kelvin.stream().noneMatch(a::likeNokVedtak))
                 .map(MeldekortUtbetalingsgrunnlagSak::utskriftUtenMK).collect(Collectors.joining(", "));
-            var vKIkkeA = kelvin.stream().filter(a -> arena.stream().noneMatch(a::likeNokVedtak))
-                .map(MeldekortUtbetalingsgrunnlagSak::utskriftUtenMK).collect(Collectors.joining(", "));
-            var mAIkkeK = arenaMK.stream().filter(a -> kelvinMK.stream().noneMatch(a::equals)).collect(Collectors.toSet());
-            var mKIkkeA = kelvinMK.stream().filter(a -> arenaMK.stream().noneMatch(a::equals)).collect(Collectors.toSet());
             if (arena.size() > kelvin.size()) {
-                LOG.info("Maksimum AAP; fikk meldekort fra Arena som ikke er i Kelvin: {}",  vAIkkeK);
+                LOG.info("Maksimum AAP; fikk meldekort fra Arena som ikke er i Kelvin: {}, saksnummer: {}",  vAIkkeK, saksnummer);
             } else if (!arena.isEmpty()) {
                 var likeNokVedtak = arena.stream().allMatch(a -> kelvin.stream().anyMatch(a::likeNokVedtak));
                 var likeMk = kelvinMK.containsAll(arenaMK);
                 if (likeNokVedtak && likeMk) {
                     LOG.info("Maksimum AAP sammenligning likt svar fra arena og AAP-api");
                 } else {
-                    LOG.info("Maksimum AAP sammenligning lik størrelse ulikt innhold: arena: {} mk {} kelvin: {} mk {}", vAIkkeK, mAIkkeK, vKIkkeA, mKIkkeA);
+                    LOG.info("Maksimum AAP sammenligning lik størrelse ulikt innhold, saksnummer: {}", saksnummer);
                 }
             }
         } catch (Exception e) {
-            LOG.info("Maksimum AAP sammenligning av Arenadata for sak {} feilet med {}, {}", saksnummer.getVerdi(), e.getMessage(), e.getStackTrace());
+            LOG.info("Maksimum AAP sammenligning av Arenadata for sak " + saksnummer + "feilet.", e);
         }
     }
 
