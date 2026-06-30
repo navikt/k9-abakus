@@ -182,7 +182,7 @@ public class InnhentingSamletTjeneste {
                 }
             }
         } catch (Exception e) {
-            LOG.info("Maksimum AAP sammenligning av Arenadata for sak " + saksnummer + "feilet.", e);
+            LOG.info("Maksimum AAP sammenligning av Arenadata for sak {} feilet med {}, {}", saksnummer.getVerdi(), e.getMessage(), e.getStackTrace());
         }
     }
 
