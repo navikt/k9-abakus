@@ -32,7 +32,7 @@
 
         <felles.version>11.2.2</felles.version>
         <fp-kontrakter.version>9.4.37</fp-kontrakter.version>
-        <tidsserie.version>2.7.5</tidsserie.version>
+        <tidsserie.version>2.7.6</tidsserie.version>
         <flyway.version>12.10.0</flyway.version>
         <jetty.version>12.1.11</jetty.version>
         <jandex.version>3.6.0</jandex.version>
@@ -86,7 +86,7 @@
             <dependency>
                 <groupId>no.nav.k9.prosesstask</groupId>
                 <artifactId>prosesstask-root</artifactId>
-                <version>6.0.13</version>
+                <version>6.0.14</version>
                 <scope>import</scope>
                 <type>pom</type>
             </dependency>
@@ -210,7 +210,7 @@
             <dependency>
                 <groupId>no.nav.sif.abac</groupId>
                 <artifactId>kontrakt</artifactId>
-                <version>1.12.0</version>
+                <version>1.14.0</version>
             </dependency>
 
             <!-- obeservability -->
