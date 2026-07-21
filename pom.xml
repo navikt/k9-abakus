@@ -33,12 +33,12 @@
         <felles.version>11.2.2</felles.version>
         <fp-kontrakter.version>9.4.37</fp-kontrakter.version>
         <tidsserie.version>2.7.6</tidsserie.version>
-        <flyway.version>12.10.0</flyway.version>
+        <flyway.version>12.11.0</flyway.version>
         <jetty.version>12.1.11</jetty.version>
         <jandex.version>3.6.0</jandex.version>
 
         <!-- JUnit versjoner, desse må vere i sync -->
-        <junit.version>6.1.1</junit.version>
+        <junit.version>6.1.2</junit.version>
 
         <!-- Forteller til maven-deploy-plugin at artefaktet ikke skal deployes.
         Arves og overstyrres i de enkelte artefakter. -->
@@ -222,7 +222,7 @@
             <dependency>
                 <groupId>io.opentelemetry</groupId>
                 <artifactId>opentelemetry-api</artifactId>
-                <version>1.63.0</version>
+                <version>1.64.0</version>
             </dependency>
 
             <!-- NAV tjenestespesifikasjoner -->
@@ -262,7 +262,7 @@
             <dependency>
                 <groupId>org.postgresql</groupId>
                 <artifactId>postgresql</artifactId>
-                <version>42.7.12</version>
+                <version>42.7.13</version>
             </dependency>
             <dependency>
                 <groupId>com.zaxxer</groupId>
@@ -292,12 +292,12 @@
             <dependency>
                 <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-micrometer</artifactId>
-                <version>7.4.3.Final</version>
+                <version>7.4.5.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
                 <artifactId>hibernate-validator</artifactId>
-                <version>9.1.1.Final</version>
+                <version>9.1.2.Final</version>
             </dependency>
             <dependency>
                 <groupId>net.logstash.logback</groupId>
