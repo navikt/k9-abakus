@@ -43,36 +43,32 @@ public class DpsakRestKlient {
 
     public Map<Fagsystem, List<DpsakVedtak>> hentDagpenger(PersonIdent personIdent, LocalDate fom, LocalDate tom, Saksnummer sak,
                                                            int antallArenaVedtak, int antallArenaMeldekort) {
-        try {
-            var perioder = hentRettighetsperioder(personIdent, fom, tom);
-            var utbetalinger = hentUtbetalinger(personIdent, fom, tom);
-            var perioderArena = perioder.stream()
-                .filter(periode -> DagpengerKilde.ARENA.equals(periode.kilde()))
-                .toList();
-            var utbetalingerArena = utbetalinger.stream()
-                .filter(u -> DagpengerKilde.ARENA.equals(u.kilde()))
-                .toList();
-            var perioderDpsak = perioder.stream()
-                .filter(p -> DagpengerKilde.DP_SAK.equals(p.kilde()))
-                .toList();
-            var utbetalingerDpsak = utbetalinger.stream()
-                .filter(u -> DagpengerKilde.DP_SAK.equals(u.kilde()))
-                .toList();
-            if (!perioderArena.isEmpty() || !utbetalingerArena.isEmpty()) {
-                LOG.info("DP-DATADELING ARENA fant {} perioder og {} utbetalinger mot {} vedtak og {} MK fra Arena",
-                    perioderArena.size(), utbetalingerArena.size(), antallArenaVedtak, antallArenaMeldekort);
-            }
-            if (!perioderDpsak.isEmpty() || !utbetalingerDpsak.isEmpty()) {
-                LOG.info("DP-DATADELING DPSAK fant {} perioder og {} utbetalinger.", perioderDpsak.size(), utbetalingerDpsak.size());
-                LOG.info("Sak {} har nye dagpenger.", sak.getVerdi());
-            }
-            var dpsakVedtak = DpsakMapper.fullMapping(perioderDpsak, utbetalingerDpsak);
-            return Map.of(Fagsystem.DPSAK, dpsakVedtak);
-        } catch (Exception e) {
-            LOG.error("DP-DATADELING feil ", e);
-            return Map.of();
+        var perioder = hentRettighetsperioder(personIdent, fom, tom);
+        var utbetalinger = hentUtbetalinger(personIdent, fom, tom);
+        var perioderArena = perioder.stream()
+            .filter(periode -> DagpengerKilde.ARENA.equals(periode.kilde()))
+            .toList();
+        var utbetalingerArena = utbetalinger.stream()
+            .filter(u -> DagpengerKilde.ARENA.equals(u.kilde()))
+            .toList();
+        var perioderDpsak = perioder.stream()
+            .filter(p -> DagpengerKilde.DP_SAK.equals(p.kilde()))
+            .toList();
+        var utbetalingerDpsak = utbetalinger.stream()
+            .filter(u -> DagpengerKilde.DP_SAK.equals(u.kilde()))
+            .toList();
+        if (!perioderArena.isEmpty() || !utbetalingerArena.isEmpty()) {
+            LOG.info("DP-DATADELING ARENA fant {} perioder og {} utbetalinger mot {} vedtak og {} MK fra Arena",
+                perioderArena.size(), utbetalingerArena.size(), antallArenaVedtak, antallArenaMeldekort);
         }
+        if (!perioderDpsak.isEmpty() || !utbetalingerDpsak.isEmpty()) {
+            LOG.info("DP-DATADELING DPSAK fant {} perioder og {} utbetalinger.", perioderDpsak.size(), utbetalingerDpsak.size());
+            LOG.info("Sak {} har nye dagpenger.", sak.getVerdi());
+        }
+        var dpsakVedtak = DpsakMapper.fullMapping(perioderDpsak, utbetalingerDpsak);
+        return Map.of(Fagsystem.DPSAK, dpsakVedtak);
     }
+
 
     public List<DagpengerRettighetsperioderDto.Rettighetsperiode> hentRettighetsperioder(PersonIdent personIdent, LocalDate fom, LocalDate tom) {
         var prequest = new PersonRequest(personIdent.getIdent(), fom, tom);
