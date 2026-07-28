@@ -41,9 +41,6 @@ public class KelvinMapper {
             .map(KelvinMapper::mapTilMeldekortSakAclKelvin)
             .sorted(Comparator.comparing(MeldekortUtbetalingsgrunnlagSak::getVedtaksPeriodeFom))
             .toList();
-        if (!mapped.isEmpty()) {
-            LOG.info("Kelvin-saker Kelvin for sak {} kilde {} mapped {}.", saksnummer.getVerdi(), vedtak, mapped);
-        }
         return mapped;
     }
 
