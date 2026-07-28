@@ -17,8 +17,6 @@ import no.nav.k9.abakus.registerdata.ytelse.arena.MeldekortUtbetalingsgrunnlagSa
 
 import no.nav.k9.abakus.typer.Saksnummer;
 
-import no.nav.k9.felles.konfigurasjon.konfig.Tid;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,12 +34,11 @@ public class KelvinMapper {
     private KelvinMapper() {
     }
 
-    static List<MeldekortUtbetalingsgrunnlagSak> mapTilMeldekortAclKelvin(List<ArbeidsavklaringspengerResponse.AAPVedtak> vedtak, Saksnummer saksnummer) {
-        var mapped = vedtak.stream()
+    static List<MeldekortUtbetalingsgrunnlagSak> mapTilMeldekortAclKelvin(List<ArbeidsavklaringspengerResponse.AAPVedtak> vedtak) {
+        return vedtak.stream()
             .map(KelvinMapper::mapTilMeldekortSakAclKelvin)
             .sorted(Comparator.comparing(MeldekortUtbetalingsgrunnlagSak::getVedtaksPeriodeFom))
             .toList();
-        return mapped;
     }
 
     private static MeldekortUtbetalingsgrunnlagSak mapTilMeldekortSakAclKelvin(ArbeidsavklaringspengerResponse.AAPVedtak vedtak) {
