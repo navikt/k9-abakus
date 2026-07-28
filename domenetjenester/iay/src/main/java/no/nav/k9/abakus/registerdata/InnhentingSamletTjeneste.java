@@ -123,7 +123,7 @@ public class InnhentingSamletTjeneste {
         Saksnummer saksnummer,
         List<MeldekortUtbetalingsgrunnlagSak> aapFraArena) {
 
-        var aapGrunnlag = kelvinRestKlient.hentAAP(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer);
+        var aapGrunnlag = kelvinRestKlient.hentAAP(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato());
         if (Environment.current().isProd()) {
             sammenligneArenaDirekteVsKelvin(aapFraArena, aapGrunnlag.get(Fagsystem.ARENA), saksnummer);
         }

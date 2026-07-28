@@ -12,8 +12,6 @@ import no.nav.k9.felles.integrasjon.rest.DefaultJsonMapper;
 
 import org.junit.jupiter.api.Test;
 
-import no.nav.k9.abakus.typer.Saksnummer;
-
 // Kopiert fra fp-abakus
 class KelvinMapperTest {
 
@@ -24,7 +22,7 @@ class KelvinMapperTest {
             1000, 1000, ArbeidsavklaringspengerResponse.Kildesystem.KELVIN,
             new ArbeidsavklaringspengerResponse.AAPPeriode(startdato, startdato.plusYears(1)),
             "ABCDE", "LØPENDE", "vedtakid", startdato, List.of());
-        var vedtak = KelvinMapper.mapTilMeldekortAclKelvin(List.of(periode), new Saksnummer("VAARSAK"));
+        var vedtak = KelvinMapper.mapTilMeldekortAclKelvin(List.of(periode));
         assertThat(vedtak).hasSize(1);
         var v1 = vedtak.getFirst();
         assertThat(v1.getVedtaksPeriodeFom()).isEqualTo(startdato);
@@ -42,7 +40,7 @@ class KelvinMapperTest {
             assertThat(resource).isNotNull();
             var mapper = DefaultJsonMapper.getObjectMapper();
             var aaprespons = mapper.readValue(resource, ArbeidsavklaringspengerResponse.class);
-            var vedtak = KelvinMapper.mapTilMeldekortAclKelvin(aaprespons.vedtak(), new Saksnummer("VAARSAK"));
+            var vedtak = KelvinMapper.mapTilMeldekortAclKelvin(aaprespons.vedtak());
             assertThat(vedtak).hasSize(2);
             // Første del med barnetillegg til barn blir 18
             var v1 = vedtak.getFirst();
@@ -88,7 +86,7 @@ class KelvinMapperTest {
             assertThat(resource).isNotNull();
             var mapper = DefaultJsonMapper.getObjectMapper();
             var aaprespons = mapper.readValue(resource, ArbeidsavklaringspengerResponse.class);
-            var vedtak = KelvinMapper.mapTilMeldekortAclKelvin(aaprespons.vedtak(), new Saksnummer("VAARSAK"));
+            var vedtak = KelvinMapper.mapTilMeldekortAclKelvin(aaprespons.vedtak());
             assertThat(vedtak).hasSize(1);
             // Skal bruke dagsatsen som gjelder AAP etter samordning med uføre og utbetaling relativt til den. 1031 = 60% av 1719
             var v1 = vedtak.getFirst();
