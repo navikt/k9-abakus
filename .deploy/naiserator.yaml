@@ -58,9 +58,6 @@ spec:
     pool: {{kafkaPool}}
   vault:
     enabled: true
-    paths:
-      - mountPath: /var/run/secrets/nais.io/serviceuser
-        kvPath: {{serviceuserkv}}
   env:
   {{#each env}}
    - name: {{@key}}
