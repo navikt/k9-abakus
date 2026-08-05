@@ -8,8 +8,6 @@ import jakarta.enterprise.inject.Any;
 import jakarta.enterprise.inject.Instance;
 import jakarta.inject.Inject;
 
-import no.nav.k9.felles.konfigurasjon.env.Environment;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,9 +59,6 @@ public class RegisterdataInnhentingTask extends KoblingTask {
     @WithSpan("TASK registerdata.innhent")
     @Override
     protected void prosesser(ProsessTaskData prosessTaskData) {
-        if (Environment.current().isDev()){
-            throw new IllegalStateException("Simulerert nedetid for registerinnhenting i abakus, gjøres for å teste feilhåndtering/workaround");
-        }
         String nyKoblingId = prosessTaskData.getPropertyValue(TaskConstants.NY_KOBLING_ID);
         Long koblingId = nyKoblingId != null ? Long.valueOf(nyKoblingId) : Long.valueOf(prosessTaskData.getBehandlingId());
         Kobling kobling = koblingTjeneste.hent(koblingId);
