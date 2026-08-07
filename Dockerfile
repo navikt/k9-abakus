@@ -18,7 +18,6 @@ USER root
 RUN ["java", "scripts/RyddBiblioteker", "UBRUKT", "/app/lib"]
 USER apprunner
 
-COPY --link build/init-app.sh /init-scripts/init-app.sh
 COPY --link web/target/classes/logback*.xml /app/conf/
 ##kopier prosjektets moduler
 COPY --link web/target/lib/no.nav.k9.abakus* /app/lib/
