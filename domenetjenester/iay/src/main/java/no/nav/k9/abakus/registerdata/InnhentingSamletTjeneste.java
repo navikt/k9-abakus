@@ -1,5 +1,6 @@
 package no.nav.k9.abakus.registerdata;
 
+import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -124,9 +125,6 @@ public class InnhentingSamletTjeneste {
             var aapGrunnlag = kelvinRestKlient.hentAAP(ident, opplysningsPeriode.getFomDato(), opplysningsPeriode.getTomDato(), saksnummer);
             var grunnlagFraKelvin = aapGrunnlag.get(Fagsystem.KELVIN);
             var arenaGrunnlagFraKelvin = aapGrunnlag.get(Fagsystem.ARENA);
-            if (Environment.current().isProd()) {
-                sammenligneArenaDirekteVsKelvin(aapFraArena, arenaGrunnlagFraKelvin, saksnummer);
-            }
 
             var overlappStp = grunnlagFraKelvin.stream().anyMatch(v -> v.getVedtaksPeriodeFom().isBefore(skjæringstidspunkt) && v.getVedtaksPeriodeTom().isAfter(skjæringstidspunkt));
             if (overlappStp) {
@@ -194,33 +192,7 @@ public class InnhentingSamletTjeneste {
         return filtrert;
     }
 
-    private void sammenligneArenaDirekteVsKelvin(List<MeldekortUtbetalingsgrunnlagSak> arena, List<MeldekortUtbetalingsgrunnlagSak> kelvin, Saksnummer saksnummer) {
-        try {
-            var arenaMK = arena.stream().map(MeldekortUtbetalingsgrunnlagSak::getMeldekortene).flatMap(Collection::stream).collect(Collectors.toSet());
-            var kelvinMK = kelvin.stream().map(MeldekortUtbetalingsgrunnlagSak::getMeldekortene).flatMap(Collection::stream).collect(Collectors.toSet());
-            var vAIkkeK = arena.stream().filter(a -> kelvin.stream().noneMatch(a::likeNokVedtak))
-                .map(MeldekortUtbetalingsgrunnlagSak::utskriftUtenMK).collect(Collectors.joining(", "));
-            var vKIkkeA = kelvin.stream().filter(a -> arena.stream().noneMatch(a::likeNokVedtak))
-                .map(MeldekortUtbetalingsgrunnlagSak::utskriftUtenMK).collect(Collectors.joining(", "));
-            var mAIkkeK = arenaMK.stream().filter(a -> kelvinMK.stream().noneMatch(a::equals)).collect(Collectors.toSet());
-            var mKIkkeA = kelvinMK.stream().filter(a -> arenaMK.stream().noneMatch(a::equals)).collect(Collectors.toSet());
-            if (arena.isEmpty() ^ kelvin.isEmpty()) {
-                LOG.info("Maksimum AAP sammenligning ene er tom:  arena: {} mk {} kelvin: {} mk {}", vAIkkeK, mAIkkeK, vKIkkeA, mKIkkeA);
-            } else if (arena.size() != kelvin.size() || arenaMK.size() != kelvinMK.size()) {
-                LOG.info("Maksimum AAP sammenligning ulik størrelse:  arena: {} mk {} kelvin: {} mk {}", vAIkkeK, mAIkkeK, vKIkkeA, mKIkkeA);
-            } else if (!arena.isEmpty()) {
-                var likeNokVedtak = arena.stream().allMatch(a -> kelvin.stream().anyMatch(a::likeNokVedtak));
-                var likeMk = kelvinMK.containsAll(arenaMK);
-                if (likeNokVedtak && likeMk) {
-                    LOG.info("Maksimum AAP sammenligning likt svar fra arena og AAP-api");
-                } else {
-                    LOG.info("Maksimum AAP sammenligning lik størrelse ulikt innhold: arena: {} mk {} kelvin: {} mk {}", vAIkkeK, mAIkkeK, vKIkkeA, mKIkkeA);
-                }
-            }
-        } catch (Exception e) {
-            LOG.info("Maksimum AAP sammenligning av Arenadata for sak {} feilet med {}, {}", saksnummer.getVerdi(), e.getMessage(), e.getStackTrace());
-        }
-    }
+
 
     private void loggArenaIgnorert(String ignorert, Saksnummer saksnummer) {
         LOG.info("FP-112843 Ignorerer Arena-sak uten {}, saksnummer: {}", ignorert, saksnummer);
@@ -245,7 +217,7 @@ public class InnhentingSamletTjeneste {
         };
     }
 
-    private static BiPredicate<DagpengerBruttoUtbetaling, DagpengerBruttoUtbetaling> getBruttoUtbetalingSammenligner() {
+    private static BiPredicate<DagpengerBruttoUtbetaling, DagpengerBruttoUtbetaling>    getBruttoUtbetalingSammenligner() {
         // "Perioder" fra dp-sak består av bare 1 dag, så vi slår de sammen, det er opphold for helg, så periodene blir stort
         // sett fem dager lange. Arenadataene er allerede 14 dager, så de trengs ikke å slås mer sammen.
         return (lhs, rhs) ->

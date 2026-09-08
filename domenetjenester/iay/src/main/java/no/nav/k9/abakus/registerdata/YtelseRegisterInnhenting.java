@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Optional;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.Fagsystem;
+import no.nav.abakus.iaygrunnlag.kodeverk.YtelseStatus;
+import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseAggregatBuilder;
 import no.nav.k9.abakus.domene.iay.YtelseBuilder;
 import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
@@ -56,7 +58,7 @@ public class YtelseRegisterInnhenting {
 
         List<MeldekortUtbetalingsgrunnlagSak> aap = innhentingSamletTjeneste.hentAAP(ident, opplysningsPeriode);
 
-        var aapsaker = arena.stream().filter(s -> YtelseType.ARBEIDSAVKLARINGSPENGER.equals(s.getYtelseType())).toList();
+        var aapsaker = aap.stream().filter(s -> YtelseType.ARBEIDSAVKLARINGSPENGER.equals(s.getYtelseType())).toList();
         innhentingSamletTjeneste.innhentMaksimumAAP(ident, opplysningsPeriode, behandling.getSaksnummer(), aapsaker, skjæringstidspunkt);
 
         for (MeldekortUtbetalingsgrunnlagSak sak : aap) {

@@ -32,7 +32,7 @@ class InnhentingSamletTjenesteTest {
     @BeforeEach
     void setUp() {
         tjeneste = new InnhentingSamletTjeneste(
-            null, null, null, null, klient, true);
+            null, null, null, null, null, klient, true);
     }
 
     @Test
