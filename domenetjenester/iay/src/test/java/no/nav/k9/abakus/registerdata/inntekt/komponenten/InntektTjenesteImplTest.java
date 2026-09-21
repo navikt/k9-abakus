@@ -1,4 +1,4 @@
-package no.nav.k9.abakus.registerdata.inntekt.komponenten.impl;
+package no.nav.k9.abakus.registerdata.inntekt.komponenten;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -21,8 +22,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import no.nav.abakus.iaygrunnlag.kodeverk.InntektskildeType;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
-import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektTjeneste;
-import no.nav.k9.abakus.registerdata.inntekt.komponenten.InntektsFilter;
 import no.nav.k9.abakus.typer.AktørId;
 import no.nav.k9.felles.integrasjon.rest.SystemUserOidcRestClient;
 
@@ -36,6 +35,20 @@ class InntektTjenesteImplTest {
     private SystemUserOidcRestClient restKlient = Mockito.mock(SystemUserOidcRestClient.class);
     private InntektTjeneste inntektTjeneste = new InntektTjeneste(restKlient, "dummyUrl");
 
+    @Test
+    void skal_ha_filtre_for_bruk_fra_ung_sak() {
+        Map<InntektskildeType, InntektsFilter> filtre = inntektTjeneste.getKildeTilFilter();
+        assertThat(filtre.get(InntektskildeType.INNTEKT_UNGDOMSYTELSE)).isEqualTo(InntektsFilter.UNGDOMSYTELSEGRUNNLAG);
+        assertThat(filtre.get(InntektskildeType.INNTEKT_AKTIVITETSPENGER)).isEqualTo(InntektsFilter.AKTIVITETSPENGERGRUNNLAG);
+    }
+
+    @Test
+    void skal_ha_filtre_for_bruk_fra_k9_sak() {
+        Map<InntektskildeType, InntektsFilter> filtre = inntektTjeneste.getKildeTilFilter();
+        assertThat(filtre.get(InntektskildeType.INNTEKT_BEREGNING)).isEqualTo(InntektsFilter.BEREGNINGSGRUNNLAG);
+        assertThat(filtre.get(InntektskildeType.INNTEKT_SAMMENLIGNING)).isEqualTo(InntektsFilter.SAMMENLIGNINGSGRUNNLAG);
+        assertThat(filtre.get(InntektskildeType.INNTEKT_OPPTJENING)).isEqualTo(InntektsFilter.OPPTJENINGSGRUNNLAG);
+    }
 
     @Test
     void skal_kalle_consumer_og_oversette_response() {

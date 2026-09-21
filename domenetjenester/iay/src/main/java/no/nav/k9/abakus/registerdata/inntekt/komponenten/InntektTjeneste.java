@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -165,6 +166,10 @@ public class InntektTjeneste {
             .filter(f -> f.getKode().equals(bulk.filter()))
             .findFirst()
             .orElseThrow(() -> new IllegalStateException(String.format("Ugyldig filter i ikomp-respons %s ", bulk.filter())));
+    }
+
+    Map<InntektskildeType, InntektsFilter> getKildeTilFilter() {
+        return Collections.unmodifiableMap(kildeTilFilter);
     }
 
     public record InntektBulkApiInn(String personident, List<String> filter, String formaal, YearMonth maanedFom,
