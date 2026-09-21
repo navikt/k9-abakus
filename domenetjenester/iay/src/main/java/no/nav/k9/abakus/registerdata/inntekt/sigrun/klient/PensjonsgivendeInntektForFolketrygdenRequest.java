@@ -5,7 +5,7 @@ public record PensjonsgivendeInntektForFolketrygdenRequest(
     String inntektsaar,
     String rettighetspakke) {
 
-    public PensjonsgivendeInntektForFolketrygdenRequest(String personident, String inntektsaar) {
-        this(personident, inntektsaar, "navpleieogomsorgspenger");
+    public PensjonsgivendeInntektForFolketrygdenRequest(String personident, String inntektsaar, Rettighetspakke rettighetspakke) {
+        this(personident, inntektsaar, rettighetspakke.getEksternkode());
     }
 }

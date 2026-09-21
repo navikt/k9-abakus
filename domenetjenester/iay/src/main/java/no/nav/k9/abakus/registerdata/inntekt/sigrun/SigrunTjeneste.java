@@ -23,6 +23,7 @@ import no.nav.k9.abakus.felles.jpa.IntervallEntitet;
 import no.nav.k9.abakus.felles.samtidighet.SystemuserThreadLogin;
 import no.nav.k9.abakus.felles.samtidighet.UncheckedInterruptException;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.PgiFolketrygdenResponse;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.Rettighetspakke;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.SigrunPgiFolketrygdenMapper;
 import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.SigrunRestClient;
 import no.nav.k9.abakus.typer.PersonIdent;
@@ -49,8 +50,9 @@ public class SigrunTjeneste {
 
     public Map<IntervallEntitet, Map<InntektspostType, BigDecimal>> hentPensjonsgivende(PersonIdent fnr,
                                                                                         IntervallEntitet opplysningsperiodeSkattegrunnlag,
-                                                                                        LocalDate skattegrunnlagFastsattFrist) {
-        var svarene = pensjonsgivendeInntektForFolketrygden(fnr.getIdent(), opplysningsperiodeSkattegrunnlag, skattegrunnlagFastsattFrist);
+                                                                                        LocalDate skattegrunnlagFastsattFrist,
+                                                                                        Rettighetspakke rettighetspakke) {
+        var svarene = pensjonsgivendeInntektForFolketrygden(fnr.getIdent(), opplysningsperiodeSkattegrunnlag, skattegrunnlagFastsattFrist, rettighetspakke);
         return SigrunPgiFolketrygdenMapper.mapFraPgiResponseTilIntern(svarene)
             .entrySet()
             .stream()
@@ -58,17 +60,17 @@ public class SigrunTjeneste {
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     }
 
-    private List<PgiFolketrygdenResponse> pensjonsgivendeInntektForFolketrygden(String fnr, IntervallEntitet opplysningsperiode, LocalDate skattegrunnlagFastsattFrist) {
+    private List<PgiFolketrygdenResponse> pensjonsgivendeInntektForFolketrygden(String fnr, IntervallEntitet opplysningsperiode, LocalDate skattegrunnlagFastsattFrist, Rettighetspakke rettighetspakke) {
         var senesteÅr = utledSenesteÅr(opplysningsperiode);
         List<PgiFolketrygdenResponse> svarene = Collections.synchronizedList(new ArrayList<>());
 
-        var svarSenesteÅr = svarForSenesteÅr(fnr, senesteÅr, skattegrunnlagFastsattFrist);
+        var svarSenesteÅr = svarForSenesteÅr(fnr, senesteÅr, skattegrunnlagFastsattFrist, rettighetspakke);
         svarSenesteÅr.ifPresent(it -> svarene.add(svarSenesteÅr.get()));
 
         try (var scope = StructuredTaskScope.open() ) {
             utledTidligereÅr(opplysningsperiode, senesteÅr, svarSenesteÅr.isPresent())
                 .forEach(år -> systemuserThreadLogin.fork(scope,
-                    () -> hentPensjonsgivendeInntektForFolketrygden(fnr, år, skattegrunnlagFastsattFrist).ifPresent(svarene::add)));
+                    () -> hentPensjonsgivendeInntektForFolketrygden(fnr, år, skattegrunnlagFastsattFrist, rettighetspakke).ifPresent(svarene::add)));
             try {
                 scope.join();
             } catch (InterruptedException e) {
@@ -86,19 +88,19 @@ public class SigrunTjeneste {
         return oppgitt.isAfter(ifjor) ? ifjor : oppgitt;
     }
 
-    public Optional<PgiFolketrygdenResponse> svarForSenesteÅr(String fnr, Year senesteÅr, LocalDate skattegrunnlagFastsattFrist) {
+    public Optional<PgiFolketrygdenResponse> svarForSenesteÅr(String fnr, Year senesteÅr, LocalDate skattegrunnlagFastsattFrist, Rettighetspakke rettighetspakke) {
         if (Year.now().minusYears(1).equals(senesteÅr) && MonthDay.now().isBefore(TIDLIGSTE_SJEKK_FJOR)) {
             return Optional.empty();
         }
         try {
-            return hentPensjonsgivendeInntektForFolketrygden(fnr, senesteÅr, skattegrunnlagFastsattFrist);
+            return hentPensjonsgivendeInntektForFolketrygden(fnr, senesteÅr, skattegrunnlagFastsattFrist, rettighetspakke);
         } catch (Exception e) {
             return Optional.empty();
         }
     }
 
-    private Optional<PgiFolketrygdenResponse> hentPensjonsgivendeInntektForFolketrygden(String fnr, Year senesteÅr, LocalDate skattegrunnlagFastsattFrist) {
-        return sigrunConsumer.hentPensjonsgivendeInntektForFolketrygden(fnr, senesteÅr)
+    private Optional<PgiFolketrygdenResponse> hentPensjonsgivendeInntektForFolketrygden(String fnr, Year senesteÅr, LocalDate skattegrunnlagFastsattFrist, Rettighetspakke rettighetspakke) {
+        return sigrunConsumer.hentPensjonsgivendeInntektForFolketrygden(fnr, senesteÅr, rettighetspakke)
             .filter(it -> harKunPGIFastsattInnenFristen(skattegrunnlagFastsattFrist, it));
     }
 

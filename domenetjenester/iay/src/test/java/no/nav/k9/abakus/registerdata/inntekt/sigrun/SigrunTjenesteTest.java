@@ -13,6 +13,7 @@ import java.util.Optional;
 import jakarta.enterprise.inject.Alternative;
 import no.nav.k9.abakus.felles.samtidighet.SystemuserThreadLogin;
 
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.Rettighetspakke;
 import no.nav.k9.felles.exception.HttpStatuskodeException;
 
 import org.junit.jupiter.api.Assertions;
@@ -35,28 +36,29 @@ class SigrunTjenesteTest {
     private final SigrunRestClient CONSUMER = Mockito.mock(SigrunRestClient.class);
 
     private final SigrunTjeneste TJENESTE = new SigrunTjeneste(CONSUMER, new DummyThreadLogin());
+    private final Rettighetspakke rettighetspakke = Rettighetspakke.OMSORGSPENGER_PLEIEPENGER;
 
     @Test
     void skal_hente_og_mappe_om_data_fra_sigrun_opplysiningsperiode() {
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR)).thenReturn(lagResponsFor(IFJOR));
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(1))).thenReturn(lagResponsFor(IFJOR.minusYears(1)));
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(2))).thenReturn(lagResponsFor(IFJOR.minusYears(2)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR, rettighetspakke)).thenReturn(lagResponsFor(IFJOR));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(1), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(1)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(2), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(2)));
         var opplysningsperiode = IntervallEntitet.fraOgMedTilOgMed(intervallFor(IFJOR.minusYears(2)).getFomDato(), intervallFor(IFJOR).getTomDato());
 
-        var inntekter = TJENESTE.hentPensjonsgivende(PERSONIDENT, opplysningsperiode, getDatoForFastsetting(IFJOR).minusDays(1));
+        var inntekter = TJENESTE.hentPensjonsgivende(PERSONIDENT, opplysningsperiode, getDatoForFastsetting(IFJOR).minusDays(1), rettighetspakke);
         assertThat(inntekter.keySet()).hasSize(2);
         assertThat(inntekter.get(intervallFor(IFJOR.minusYears(1))).get(InntektspostType.LØNN).compareTo(new BigDecimal(1000L))).isZero();
         assertThat(inntekter.get(intervallFor(IFJOR.minusYears(2))).get(InntektspostType.LØNN).compareTo(new BigDecimal(1000L))).isZero();
     }
 
     @Test
-    void skal_ikke_hente_og_mappe_om_data_fra_sigrun_opplysningsperiode_dersom_fastsatt_før_oppgitt_frist() {
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR)).thenReturn(lagResponsFor(IFJOR));
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(1))).thenReturn(lagResponsFor(IFJOR.minusYears(1)));
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(2))).thenReturn(lagResponsFor(IFJOR.minusYears(2)));
+    void skal_ikke_hente_og_mappe_om_data_fra_sigrun_opplysiningsperiode_dersom_fastsatt_før_oppgitt_frist() {
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR, rettighetspakke)).thenReturn(lagResponsFor(IFJOR));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(1), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(1)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(2), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(2)));
         var opplysningsperiode = IntervallEntitet.fraOgMedTilOgMed(intervallFor(IFJOR.minusYears(2)).getFomDato(), intervallFor(IFJOR).getTomDato());
 
-        var inntekter = TJENESTE.hentPensjonsgivende(PERSONIDENT, opplysningsperiode, LocalDate.of(Year.now().getValue(), Month.JULY, 1));
+        var inntekter = TJENESTE.hentPensjonsgivende(PERSONIDENT, opplysningsperiode, LocalDate.of(Year.now().getValue(), Month.JULY, 1), rettighetspakke);
         assertThat(inntekter.keySet()).hasSize(3);
         assertThat(inntekter.get(intervallFor(IFJOR)).get(InntektspostType.LØNN).compareTo(new BigDecimal(1000L))).isZero();
         assertThat(inntekter.get(intervallFor(IFJOR.minusYears(2))).get(InntektspostType.LØNN).compareTo(new BigDecimal(1000L))).isZero();
@@ -64,13 +66,13 @@ class SigrunTjenesteTest {
 
     @Test
     void skal_hente_data_for_forifjor_når_skatteoppgjoer_mangler_for_ifjor_opplysiningsperiode() {
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR)).thenReturn(Optional.empty());
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(1))).thenReturn(lagResponsFor(IFJOR.minusYears(1)));
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(2))).thenReturn(lagResponsFor(IFJOR.minusYears(2)));
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(3))).thenReturn(lagResponsFor(IFJOR.minusYears(3)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR, rettighetspakke)).thenReturn(Optional.empty());
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(1), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(1)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(2), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(2)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(3), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(3)));
         var opplysningsperiode = IntervallEntitet.fraOgMedTilOgMed(intervallFor(IFJOR.minusYears(2)).getFomDato(), intervallFor(IFJOR).getTomDato());
 
-        var inntekter = TJENESTE.hentPensjonsgivende(PERSONIDENT, opplysningsperiode, LocalDate.now());
+        var inntekter = TJENESTE.hentPensjonsgivende(PERSONIDENT, opplysningsperiode, LocalDate.now(), rettighetspakke);
         assertThat(inntekter.keySet()).hasSize(3);
         assertThat(inntekter.get(intervallFor(IFJOR))).isNull();
         assertThat(inntekter.get(intervallFor(IFJOR.minusYears(3))).get(InntektspostType.LØNN).compareTo(new BigDecimal(1000L))).isZero();
@@ -78,14 +80,14 @@ class SigrunTjenesteTest {
 
     @Test
     void skal_hente_data_for_inntil_tre_år_når_skatteoppgjoer_mangler_for_ifjor_opplysiningsperiode() {
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR)).thenReturn(Optional.empty());
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(1))).thenReturn(lagResponsFor(IFJOR.minusYears(1)));
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(2))).thenReturn(lagResponsFor(IFJOR.minusYears(2)));
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(3))).thenReturn(lagResponsFor(IFJOR.minusYears(3)));
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(4))).thenReturn(lagResponsFor(IFJOR.minusYears(4)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR, rettighetspakke)).thenReturn(Optional.empty());
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(1), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(1)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(2), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(2)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(3), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(3)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(4), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(4)));
         var opplysningsperiode = IntervallEntitet.fraOgMedTilOgMed(intervallFor(IFJOR.minusYears(4)).getFomDato(), intervallFor(IFJOR).getTomDato());
 
-        var inntekter = TJENESTE.hentPensjonsgivende(PERSONIDENT, opplysningsperiode, LocalDate.now());
+        var inntekter = TJENESTE.hentPensjonsgivende(PERSONIDENT, opplysningsperiode, LocalDate.now(), rettighetspakke);
         assertThat(inntekter.keySet()).hasSize(4);
         assertThat(inntekter.get(intervallFor(IFJOR))).isNull();
         assertThat(inntekter.get(intervallFor(IFJOR.minusYears(3))).get(InntektspostType.LØNN).compareTo(new BigDecimal(1000L))).isZero();
@@ -94,15 +96,15 @@ class SigrunTjenesteTest {
 
     @Test
     void skal_feile_hele_operasjonen_dersom_ett_av_kallene_feiler() {
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR)).thenReturn(Optional.empty());
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(1))).thenReturn(lagResponsFor(IFJOR.minusYears(1)));
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(2)))
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR, rettighetspakke)).thenReturn(Optional.empty());
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(1), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(1)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(2), rettighetspakke))
             .thenThrow(new HttpStatuskodeException("500", "noe gikk galt", 500));
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(3))).thenReturn(lagResponsFor(IFJOR.minusYears(3)));
-        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(4))).thenReturn(lagResponsFor(IFJOR.minusYears(4)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(3), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(3)));
+        Mockito.when(CONSUMER.hentPensjonsgivendeInntektForFolketrygden(FNR, IFJOR.minusYears(4), rettighetspakke)).thenReturn(lagResponsFor(IFJOR.minusYears(4)));
         var opplysningsperiode = IntervallEntitet.fraOgMedTilOgMed(intervallFor(IFJOR.minusYears(4)).getFomDato(), intervallFor(IFJOR).getTomDato());
 
-        Assertions.assertThrows(Exception.class, () -> TJENESTE.hentPensjonsgivende(PERSONIDENT, opplysningsperiode, LocalDate.now()));
+        Assertions.assertThrows(Exception.class, () -> TJENESTE.hentPensjonsgivende(PERSONIDENT, opplysningsperiode, LocalDate.now(), rettighetspakke));
     }
 
     private Optional<PgiFolketrygdenResponse> lagResponsFor(Year år) {
