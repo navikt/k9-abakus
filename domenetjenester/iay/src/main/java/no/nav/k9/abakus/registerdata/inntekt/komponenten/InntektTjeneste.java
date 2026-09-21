@@ -36,14 +36,12 @@ public class InntektTjeneste {
 
     // Dato for eldste request til inntk - det er av og til noen ES saker som spør lenger tilbake i tid
     private static final YearMonth INNTK_TIDLIGSTE_DATO = YearMonth.of(2015, 7);
-    private static final Set<InntektskildeType> SKAL_PERIODISERE_INNTEKTSKILDE = Set.of(InntektskildeType.INNTEKT_SAMMENLIGNING,
+    private static final Set<InntektskildeType> SKAL_PERIODISERE_INNTEKTSKILDE = Set.of(
+        InntektskildeType.INNTEKT_SAMMENLIGNING,
         InntektskildeType.INNTEKT_BEREGNING);
-
-    private static final Logger LOG = LoggerFactory.getLogger(InntektTjeneste.class);
 
     private Map<InntektskildeType, InntektsFilter> kildeTilFilter;
     private Map<InntektsFilter, InntektskildeType> filterTilKilde;
-
 
     private SystemUserOidcRestClient oidcRestClient;
     private String url;
@@ -86,7 +84,6 @@ public class InntektTjeneste {
             }
         }
     }
-
 
     private static YearMonth brukDato(YearMonth dato) {
         return dato != null && dato.isAfter(INNTK_TIDLIGSTE_DATO) ? dato : INNTK_TIDLIGSTE_DATO;
