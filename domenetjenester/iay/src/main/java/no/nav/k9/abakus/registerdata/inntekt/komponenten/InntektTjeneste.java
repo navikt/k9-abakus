@@ -56,9 +56,12 @@ public class InntektTjeneste {
                            @KonfigVerdi(value = "inntektskomponenten.hentinntektbulk.url", defaultVerdi = "http://ikomp.team-inntekt/rest/v2/inntekt/bulk") String url) {
         this.oidcRestClient = oidcRestClient;
         this.url = url;
-        this.kildeTilFilter = Map.of(InntektskildeType.INNTEKT_OPPTJENING, InntektsFilter.OPPTJENINGSGRUNNLAG, InntektskildeType.INNTEKT_BEREGNING,
-            InntektsFilter.BEREGNINGSGRUNNLAG, InntektskildeType.INNTEKT_SAMMENLIGNING, InntektsFilter.SAMMENLIGNINGSGRUNNLAG,
-            InntektskildeType.INNTEKT_UNGDOMSYTELSE, InntektsFilter.UNGDOMSYTELSEGRUNNLAG);
+        this.kildeTilFilter = Map.of(
+            InntektskildeType.INNTEKT_OPPTJENING, InntektsFilter.OPPTJENINGSGRUNNLAG,
+            InntektskildeType.INNTEKT_BEREGNING, InntektsFilter.BEREGNINGSGRUNNLAG,
+            InntektskildeType.INNTEKT_SAMMENLIGNING, InntektsFilter.SAMMENLIGNINGSGRUNNLAG,
+            InntektskildeType.INNTEKT_UNGDOMSYTELSE, InntektsFilter.UNGDOMSYTELSEGRUNNLAG,
+            InntektskildeType.INNTEKT_AKTIVITETSPENGER, InntektsFilter.AKTIVITETSPENGERGRUNNLAG);
         this.filterTilKilde = kildeTilFilter.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
     }
 
@@ -77,7 +80,7 @@ public class InntektTjeneste {
 
     public record YearMonthPeriode(YearMonth fom, YearMonth tom) {
         public YearMonthPeriode {
-            if (tom.isBefore(fom)){
+            if (tom.isBefore(fom)) {
                 throw new IllegalArgumentException("Feil i periode, tom kan ikke være før fom");
             }
         }
@@ -164,7 +167,8 @@ public class InntektTjeneste {
             .orElseThrow(() -> new IllegalStateException(String.format("Ugyldig filter i ikomp-respons %s ", bulk.filter())));
     }
 
-    public record InntektBulkApiInn(String personident, List<String> filter, String formaal, YearMonth maanedFom, YearMonth maanedTom) {
+    public record InntektBulkApiInn(String personident, List<String> filter, String formaal, YearMonth maanedFom,
+                                    YearMonth maanedTom) {
     }
 
     public record InntektBulkApiUt(List<InntektBulk> bulk) {
@@ -173,10 +177,12 @@ public class InntektTjeneste {
     public record InntektBulk(String filter, List<Inntektsinformasjon> data) {
     }
 
-    public record Inntektsinformasjon(YearMonth maaned, String opplysningspliktig, String underenhet, List<Inntekt> inntektListe) {
+    public record Inntektsinformasjon(YearMonth maaned, String opplysningspliktig, String underenhet,
+                                      List<Inntekt> inntektListe) {
     }
 
-    public record Inntekt(String type, BigDecimal beloep, String beskrivelse, String skatteOgAvgiftsregel, Tilleggsinformasjon tilleggsinformasjon) {
+    public record Inntekt(String type, BigDecimal beloep, String beskrivelse, String skatteOgAvgiftsregel,
+                          Tilleggsinformasjon tilleggsinformasjon) {
     }
 
     public record Tilleggsinformasjon(String type, LocalDate startdato, LocalDate sluttdato) {
