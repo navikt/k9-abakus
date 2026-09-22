@@ -7,11 +7,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.inject.Inject;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import no.nav.abakus.iaygrunnlag.JsonObjectMapper;
 import no.nav.abakus.iaygrunnlag.Periode;
 import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
@@ -55,11 +54,16 @@ public class InnhentRegisterdataTjeneste {
     }
 
     private static Map<RegisterdataType, RegisterdataElement> initMapping() {
-        return Map.of(RegisterdataType.ARBEIDSFORHOLD, RegisterdataElement.ARBEIDSFORHOLD, RegisterdataType.YTELSE, RegisterdataElement.YTELSE,
-            RegisterdataType.LIGNET_NÆRING, RegisterdataElement.LIGNET_NÆRING, RegisterdataType.INNTEKT_PENSJONSGIVENDE,
-            RegisterdataElement.INNTEKT_PENSJONSGIVENDE, RegisterdataType.INNTEKT_BEREGNINGSGRUNNLAG, RegisterdataElement.INNTEKT_BEREGNINGSGRUNNLAG,
+        return Map.of(
+            RegisterdataType.ARBEIDSFORHOLD, RegisterdataElement.ARBEIDSFORHOLD,
+            RegisterdataType.YTELSE, RegisterdataElement.YTELSE,
+            RegisterdataType.LIGNET_NÆRING, RegisterdataElement.LIGNET_NÆRING,
+            RegisterdataType.INNTEKT_PENSJONSGIVENDE, RegisterdataElement.INNTEKT_PENSJONSGIVENDE,
+            RegisterdataType.INNTEKT_BEREGNINGSGRUNNLAG, RegisterdataElement.INNTEKT_BEREGNINGSGRUNNLAG,
             RegisterdataType.INNTEKT_SAMMENLIGNINGSGRUNNLAG, RegisterdataElement.INNTEKT_SAMMENLIGNINGSGRUNNLAG,
-            RegisterdataType.INNTEKT_UNGDOMSYTELSEGRUNNLAG, RegisterdataElement.INNTEKT_UNGDOMSYTELSEGRUNNLAG);
+            RegisterdataType.INNTEKT_UNGDOMSYTELSEGRUNNLAG, RegisterdataElement.INNTEKT_UNGDOMSYTELSEGRUNNLAG,
+            RegisterdataType.INNTEKT_AKTIVITETSPENGERGRUNNLAG, RegisterdataElement.INNTEKT_AKTIVITETSPENGERGRUNNLAG
+            );
     }
 
     public static Set<RegisterdataElement> hentUtInformasjonsElementer(InnhentRegisterdataRequest dto) {

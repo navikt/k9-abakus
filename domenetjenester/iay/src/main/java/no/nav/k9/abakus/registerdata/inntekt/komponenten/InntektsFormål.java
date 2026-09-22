@@ -7,7 +7,9 @@ public enum InntektsFormål {
     FORMAAL_PLEIEPENGER_NÆRSTÅENDE("PleiepengerNaerstaaende"),
     FORMAAL_OPPLÆRINGSPENGER("Opplaeringspenger"),
     FORMAAL_PGI("PensjonsgivendeA-inntekt"),
-    FORMAAL_UNGDOMSYTELSEN("Ung");
+    FORMAAL_UNGDOMSYTELSEN("Ung"),
+    FORMAAL_AKTIVITETSPENGER("Aktivitetspenger"),
+    ;
 
 
     private String kode;

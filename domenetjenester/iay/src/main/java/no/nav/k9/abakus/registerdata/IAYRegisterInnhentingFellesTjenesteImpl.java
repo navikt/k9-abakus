@@ -60,7 +60,10 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         RegisterdataElement.INNTEKT_PENSJONSGIVENDE, InntektskildeType.INNTEKT_OPPTJENING,
         RegisterdataElement.INNTEKT_BEREGNINGSGRUNNLAG, InntektskildeType.INNTEKT_BEREGNING,
         RegisterdataElement.INNTEKT_SAMMENLIGNINGSGRUNNLAG, InntektskildeType.INNTEKT_SAMMENLIGNING,
-        RegisterdataElement.INNTEKT_UNGDOMSYTELSEGRUNNLAG, InntektskildeType.INNTEKT_UNGDOMSYTELSE);
+        RegisterdataElement.INNTEKT_UNGDOMSYTELSEGRUNNLAG, InntektskildeType.INNTEKT_UNGDOMSYTELSE,
+        RegisterdataElement.INNTEKT_AKTIVITETSPENGERGRUNNLAG, InntektskildeType.INNTEKT_AKTIVITETSPENGER
+        )
+    ;
     private static final Logger LOG = LoggerFactory.getLogger(IAYRegisterInnhentingFellesTjenesteImpl.class);
 
     protected InntektArbeidYtelseTjeneste inntektArbeidYtelseTjeneste;
@@ -249,8 +252,12 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
                                                                          IntervallEntitet opplysningsPeriode,
                                                                          InntektArbeidYtelseAggregatBuilder builder,
                                                                          Set<RegisterdataElement> informasjonsElementer) {
-        var inntektselementer = Set.of(RegisterdataElement.INNTEKT_PENSJONSGIVENDE, RegisterdataElement.INNTEKT_BEREGNINGSGRUNNLAG,
-            RegisterdataElement.INNTEKT_SAMMENLIGNINGSGRUNNLAG, RegisterdataElement.INNTEKT_UNGDOMSYTELSEGRUNNLAG);
+        var inntektselementer = Set.of(
+            RegisterdataElement.INNTEKT_PENSJONSGIVENDE,
+            RegisterdataElement.INNTEKT_BEREGNINGSGRUNNLAG,
+            RegisterdataElement.INNTEKT_SAMMENLIGNINGSGRUNNLAG,
+            RegisterdataElement.INNTEKT_UNGDOMSYTELSEGRUNNLAG,
+            RegisterdataElement.INNTEKT_AKTIVITETSPENGERGRUNNLAG);
 
         if (informasjonsElementer.stream().noneMatch(inntektselementer::contains) && !informasjonsElementer.contains(
             RegisterdataElement.ARBEIDSFORHOLD)) {

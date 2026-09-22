@@ -14,6 +14,7 @@ public enum RegisterdataType implements Kodeverdi {
     INNTEKT_BEREGNINGSGRUNNLAG,
     INNTEKT_SAMMENLIGNINGSGRUNNLAG,
     INNTEKT_UNGDOMSYTELSEGRUNNLAG,
+    INNTEKT_AKTIVITETSPENGERGRUNNLAG,
     YTELSE;
 
     public static RegisterdataType fraKode(String kode) {

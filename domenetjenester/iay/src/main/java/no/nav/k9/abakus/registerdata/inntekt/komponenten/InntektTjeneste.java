@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -35,14 +36,12 @@ public class InntektTjeneste {
 
     // Dato for eldste request til inntk - det er av og til noen ES saker som spør lenger tilbake i tid
     private static final YearMonth INNTK_TIDLIGSTE_DATO = YearMonth.of(2015, 7);
-    private static final Set<InntektskildeType> SKAL_PERIODISERE_INNTEKTSKILDE = Set.of(InntektskildeType.INNTEKT_SAMMENLIGNING,
+    private static final Set<InntektskildeType> SKAL_PERIODISERE_INNTEKTSKILDE = Set.of(
+        InntektskildeType.INNTEKT_SAMMENLIGNING,
         InntektskildeType.INNTEKT_BEREGNING);
-
-    private static final Logger LOG = LoggerFactory.getLogger(InntektTjeneste.class);
 
     private Map<InntektskildeType, InntektsFilter> kildeTilFilter;
     private Map<InntektsFilter, InntektskildeType> filterTilKilde;
-
 
     private SystemUserOidcRestClient oidcRestClient;
     private String url;
@@ -56,9 +55,12 @@ public class InntektTjeneste {
                            @KonfigVerdi(value = "inntektskomponenten.hentinntektbulk.url", defaultVerdi = "http://ikomp.team-inntekt/rest/v2/inntekt/bulk") String url) {
         this.oidcRestClient = oidcRestClient;
         this.url = url;
-        this.kildeTilFilter = Map.of(InntektskildeType.INNTEKT_OPPTJENING, InntektsFilter.OPPTJENINGSGRUNNLAG, InntektskildeType.INNTEKT_BEREGNING,
-            InntektsFilter.BEREGNINGSGRUNNLAG, InntektskildeType.INNTEKT_SAMMENLIGNING, InntektsFilter.SAMMENLIGNINGSGRUNNLAG,
-            InntektskildeType.INNTEKT_UNGDOMSYTELSE, InntektsFilter.UNGDOMSYTELSEGRUNNLAG);
+        this.kildeTilFilter = Map.of(
+            InntektskildeType.INNTEKT_OPPTJENING, InntektsFilter.OPPTJENINGSGRUNNLAG,
+            InntektskildeType.INNTEKT_BEREGNING, InntektsFilter.BEREGNINGSGRUNNLAG,
+            InntektskildeType.INNTEKT_SAMMENLIGNING, InntektsFilter.SAMMENLIGNINGSGRUNNLAG,
+            InntektskildeType.INNTEKT_UNGDOMSYTELSE, InntektsFilter.UNGDOMSYTELSEGRUNNLAG,
+            InntektskildeType.INNTEKT_AKTIVITETSPENGER, InntektsFilter.AKTIVITETSPENGERGRUNNLAG);
         this.filterTilKilde = kildeTilFilter.entrySet().stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
     }
 
@@ -77,12 +79,11 @@ public class InntektTjeneste {
 
     public record YearMonthPeriode(YearMonth fom, YearMonth tom) {
         public YearMonthPeriode {
-            if (tom.isBefore(fom)){
+            if (tom.isBefore(fom)) {
                 throw new IllegalArgumentException("Feil i periode, tom kan ikke være før fom");
             }
         }
     }
-
 
     private static YearMonth brukDato(YearMonth dato) {
         return dato != null && dato.isAfter(INNTK_TIDLIGSTE_DATO) ? dato : INNTK_TIDLIGSTE_DATO;
@@ -164,7 +165,12 @@ public class InntektTjeneste {
             .orElseThrow(() -> new IllegalStateException(String.format("Ugyldig filter i ikomp-respons %s ", bulk.filter())));
     }
 
-    public record InntektBulkApiInn(String personident, List<String> filter, String formaal, YearMonth maanedFom, YearMonth maanedTom) {
+    Map<InntektskildeType, InntektsFilter> getKildeTilFilter() {
+        return Collections.unmodifiableMap(kildeTilFilter);
+    }
+
+    public record InntektBulkApiInn(String personident, List<String> filter, String formaal, YearMonth maanedFom,
+                                    YearMonth maanedTom) {
     }
 
     public record InntektBulkApiUt(List<InntektBulk> bulk) {
@@ -173,10 +179,12 @@ public class InntektTjeneste {
     public record InntektBulk(String filter, List<Inntektsinformasjon> data) {
     }
 
-    public record Inntektsinformasjon(YearMonth maaned, String opplysningspliktig, String underenhet, List<Inntekt> inntektListe) {
+    public record Inntektsinformasjon(YearMonth maaned, String opplysningspliktig, String underenhet,
+                                      List<Inntekt> inntektListe) {
     }
 
-    public record Inntekt(String type, BigDecimal beloep, String beskrivelse, String skatteOgAvgiftsregel, Tilleggsinformasjon tilleggsinformasjon) {
+    public record Inntekt(String type, BigDecimal beloep, String beskrivelse, String skatteOgAvgiftsregel,
+                          Tilleggsinformasjon tilleggsinformasjon) {
     }
 
     public record Tilleggsinformasjon(String type, LocalDate startdato, LocalDate sluttdato) {
