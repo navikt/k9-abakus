@@ -26,10 +26,6 @@ import no.nav.k9.felles.konfigurasjon.konfig.KonfigVerdi;
 @ScopedRestIntegration(scopeKey = "sigrunpgi.scope", defaultScope = "api://prod-fss.team-inntekt.sigrun/.default/.default")
 public class SigrunRestClient {
 
-    private static final String INNTEKTSAAR = "inntektsaar";
-    private static final String RETTIGHETSPAKKE = "rettighetspakke";
-    private static final String PLEIE_OG_OMSORGSPENGER = "navPleieOgOmsorgspenger";
-
     private static final Year FØRSTE_PGI = Year.of(2017);
     private static final Logger LOG = LoggerFactory.getLogger(SigrunRestClient.class);
 
@@ -68,6 +64,7 @@ public class SigrunRestClient {
         }
 
         try {
+            LOG.info("Henter PGI fra Sigrun for {} med rettighetspakke {}", år, rettighetspakke != null ? rettighetspakke.getEksternkode() : "<mangler>");
             var request = new PensjonsgivendeInntektForFolketrygdenRequest(fnr, år.toString(), rettighetspakke);
             return oidcRestClient.postReturnsOptional(URI.create(url), request, PgiFolketrygdenResponse.class);
         } catch (HttpStatuskodeException statuskodeException){
