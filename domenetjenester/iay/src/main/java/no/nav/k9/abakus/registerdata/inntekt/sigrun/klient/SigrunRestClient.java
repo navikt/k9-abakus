@@ -52,7 +52,7 @@ public class SigrunRestClient {
     }
 
     //api/v1/pensjonsgivendeinntektforfolketrygden
-    public Optional<PgiFolketrygdenResponse> hentPensjonsgivendeInntektForFolketrygden(String fnr, Year år) {
+    public Optional<PgiFolketrygdenResponse> hentPensjonsgivendeInntektForFolketrygden(String fnr, Year år, Rettighetspakke rettighetspakke) {
         if (år.isBefore(FØRSTE_PGI)) {
             return Optional.empty();
         }
@@ -68,7 +68,7 @@ public class SigrunRestClient {
         }
 
         try {
-            var request = new PensjonsgivendeInntektForFolketrygdenRequest(fnr, år.toString());
+            var request = new PensjonsgivendeInntektForFolketrygdenRequest(fnr, år.toString(), rettighetspakke);
             return oidcRestClient.postReturnsOptional(URI.create(url), request, PgiFolketrygdenResponse.class);
         } catch (HttpStatuskodeException statuskodeException){
             if (statuskodeException.getHttpStatuskode() == HttpURLConnection.HTTP_NOT_FOUND) {

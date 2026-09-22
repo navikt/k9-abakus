@@ -16,6 +16,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
+import no.nav.k9.abakus.registerdata.inntekt.sigrun.klient.Rettighetspakke;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,8 +93,8 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
             kobling.getKoblingReferanse());
 
         var personIdent = getFnrFraAktørId(kobling.getAktørId());
-
-        var map = sigrunTjeneste.hentPensjonsgivende(personIdent, Objects.requireNonNull(kobling.getOpplysningsperiodeSkattegrunnlag()), kobling.getSkattegrunnlagFastsattFrist().orElse(LocalDate.MAX));
+        Rettighetspakke rettighetspakke = utledRettighetspakke(kobling.getYtelseType());
+        var map = sigrunTjeneste.hentPensjonsgivende(personIdent, Objects.requireNonNull(kobling.getOpplysningsperiodeSkattegrunnlag()), kobling.getSkattegrunnlagFastsattFrist().orElse(LocalDate.MAX), rettighetspakke);
         var aktørInntektBuilder = inntektArbeidYtelseAggregatBuilder.getAktørInntektBuilder(kobling.getAktørId());
 
         var inntektBuilder = aktørInntektBuilder.getInntektBuilder(InntektskildeType.SIGRUN, null);
@@ -110,6 +113,14 @@ public abstract class IAYRegisterInnhentingFellesTjenesteImpl implements IAYRegi
         }
         aktørInntektBuilder.leggTilInntekt(inntektBuilder);
         inntektArbeidYtelseAggregatBuilder.leggTilAktørInntekt(aktørInntektBuilder);
+    }
+
+    private Rettighetspakke utledRettighetspakke(YtelseType ytelseType){
+        return switch (ytelseType){
+            case AKTIVITETSPENGER -> Rettighetspakke.AKTIVITETSPENGER;
+            case OMSORGSPENGER, PLEIEPENGER_SYKT_BARN, PLEIEPENGER_NÆRSTÅENDE, OPPLÆRINGSPENGER -> Rettighetspakke.OMSORGSPENGER_PLEIEPENGER;
+            default -> throw new IllegalArgumentException("Har ikke rettighetspakke for ytelsen " + ytelseType);
+        };
     }
 
     @Override
