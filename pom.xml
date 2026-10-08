@@ -202,12 +202,6 @@
             </dependency>
 
             <dependency>
-                <groupId>no.nav.foreldrepenger.felles.integrasjon</groupId>
-                <artifactId>kafka-properties</artifactId>
-                <version>${felles.version}</version>
-            </dependency>
-
-            <dependency>
                 <groupId>no.nav.sif.abac</groupId>
                 <artifactId>kontrakt</artifactId>
                 <version>1.14.0</version>
