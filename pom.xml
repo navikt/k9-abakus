@@ -216,7 +216,7 @@
             <dependency>
                 <groupId>io.opentelemetry</groupId>
                 <artifactId>opentelemetry-api</artifactId>
-                <version>1.66.0</version>
+                <version>1.67.0</version>
             </dependency>
 
             <!-- NAV tjenestespesifikasjoner -->
@@ -286,7 +286,7 @@
             <dependency>
                 <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-micrometer</artifactId>
-                <version>7.4.12.Final</version>
+                <version>7.4.13.Final</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate.validator</groupId>
