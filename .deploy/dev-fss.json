@@ -44,6 +44,11 @@
       "scopes": [
         "swagger"
       ]
+    },
+    {
+      "app": "azure-token-generator",
+      "namespace": "nais",
+      "cluster": "dev-gcp"
     }
   ],
   "env": {
