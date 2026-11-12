@@ -40,7 +40,6 @@ public class VedtaksHendelseHåndterer implements KafkaMessageHandler.KafkaStrin
 
     @Override
     public void handleRecord(String key, String value) {
-        LOG.debug("Mottatt ytelse-vedtatt hendelse med key='{}', payload={}", key, value);
         var data = ProsessTaskDataBuilder.forProsessTask(LagreVedtakTask.class).medProperty(LagreVedtakTask.KEY, key).medPayload(value);
         taskTjeneste.lagre(data.build());
     }

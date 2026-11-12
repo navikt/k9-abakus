@@ -58,7 +58,7 @@ public class LagreVedtakTask implements ProsessTaskHandler {
                 throw new IllegalArgumentException("Vedtatt-ytelse valideringsfeil :: \n " + allErrors);
             }
         } catch (IOException e) {
-            throw new TekniskException("FP-328773", String.format("Feil under parsing av vedtak. key={%s} payload={%s}", key, payload), e);
+            throw new TekniskException("FP-328773", String.format("Feil under parsing av vedtak. key={%s}", key), e);
         }
         if (mottattVedtak != null) {
             // TODO: Gjør generisk
