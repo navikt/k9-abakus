@@ -2,7 +2,6 @@ package no.nav.k9.abakus.iay.tjeneste;
 
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 
@@ -38,7 +37,6 @@ import no.nav.abakus.iaygrunnlag.kodeverk.YtelseType;
 import no.nav.abakus.iaygrunnlag.request.InntektsmeldingDiffRequest;
 import no.nav.abakus.iaygrunnlag.request.InntektsmeldingerMottattRequest;
 import no.nav.abakus.iaygrunnlag.request.InntektsmeldingerRequest;
-import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjon;
 import no.nav.k9.abakus.domene.iay.arbeidsforhold.ArbeidsforholdInformasjonBuilder;
 import no.nav.k9.abakus.domene.iay.inntektsmelding.Inntektsmelding;
 import no.nav.k9.abakus.felles.LoggUtil;
@@ -148,32 +146,6 @@ public class InntektsmeldingerRestTjeneste {
                     throw new IllegalArgumentException("Inntektsmelding mangler kanalreferanse: " + feil);
                 }
         }
-    }
-
-    @POST
-    @Path("/hentDiff")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Operation(description = "Hent inntektsmeldinger for angitt søke spesifikasjon", tags = "inntektsmelding")
-    @BeskyttetRessurs(action = BeskyttetRessursActionType.READ, resource = BeskyttetRessursResourceType.FAGSAK)
-    @SuppressWarnings("findsecbugs:JAXRS_ENDPOINT")
-    public Response hentDifferanseMellomToReferanserPåSak(@NotNull @Valid InntektsmeldingDiffRequestAbacDto spesifikasjon) {
-        LoggUtil.setupLogMdc(spesifikasjon.getYtelseType(), spesifikasjon.getSaksnummer(),
-            spesifikasjon.getEksternRefEn() + "/" + spesifikasjon.getEksternRefTo());
-
-        var aktørId = new AktørId(spesifikasjon.getPerson().getIdent());
-        var saksnummer = new Saksnummer(spesifikasjon.getSaksnummer());
-        var ytelseType = spesifikasjon.getYtelseType();
-        Map<Inntektsmelding, ArbeidsforholdInformasjon> førsteMap = iayTjeneste.hentAlleInntektsmeldingerForEksternRef(aktørId, saksnummer,
-            new KoblingReferanse(spesifikasjon.getEksternRefEn()), ytelseType);
-        Map<Inntektsmelding, ArbeidsforholdInformasjon> andreMap = iayTjeneste.hentAlleInntektsmeldingerForEksternRef(aktørId, saksnummer,
-            new KoblingReferanse(spesifikasjon.getEksternRefTo()), ytelseType);
-
-        var diffMap = iayTjeneste.utledInntektsmeldingDiff(førsteMap, andreMap);
-        InntektsmeldingerDto imDiffListe = MapInntektsmeldinger.mapUnikeInntektsmeldingerFraGrunnlag(diffMap);
-        final Response response = Response.ok(imDiffListe).build();
-
-        return response;
     }
 
     public static class AbacDataSupplier implements Function<Object, AbacDataAttributter> {

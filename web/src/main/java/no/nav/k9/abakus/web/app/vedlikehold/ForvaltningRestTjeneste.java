@@ -29,15 +29,10 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.StreamingOutput;
 import no.nav.abakus.iaygrunnlag.UuidDto;
 import no.nav.abakus.iaygrunnlag.request.ByttAktørRequest;
-import no.nav.k9.abakus.domene.iay.InntektArbeidYtelseGrunnlagBuilder;
-import no.nav.k9.abakus.domene.iay.InntektsmeldingAggregat;
 import no.nav.k9.abakus.domene.iay.søknad.OppgittEgenNæring;
-import no.nav.k9.abakus.domene.iay.søknad.OppgittOpptjening;
 import no.nav.k9.abakus.iay.InntektArbeidYtelseTjeneste;
 import no.nav.k9.abakus.kobling.KoblingReferanse;
 import no.nav.k9.abakus.typer.Beløp;
-import no.nav.k9.abakus.typer.JournalpostId;
-import no.nav.k9.abakus.typer.OrgNummer;
 import no.nav.k9.abakus.vedtak.domene.VedtakYtelse;
 import no.nav.k9.abakus.vedtak.domene.feil.VedtakYtelseFeilRepository;
 import no.nav.k9.abakus.web.app.diagnostikk.CsvOutput;
@@ -183,62 +178,6 @@ public class ForvaltningRestTjeneste {
         }).reduce(Integer::sum).orElse(0);
         return Response.ok(antall).build();
     }
-
-    @POST
-    @Path("/settVarigEndring")
-    @Consumes(APPLICATION_JSON)
-    @Produces(APPLICATION_JSON)
-    @Operation(description = "Setter oppgitt opptjening til å være varig endring", tags = "FORVALTNING", responses = {@ApiResponse(responseCode = "200", description = "Forekomster av utgått aktørid erstattet.")})
-    @BeskyttetRessurs(action = BeskyttetRessursActionType.UPDATE, resource = BeskyttetRessursResourceType.FAGSAK)
-    public Response setVarigEndring(@TilpassetAbacAttributt(supplierClass = ForvaltningRestTjeneste.AbacDataSupplier.class) @NotNull @Valid VarigEndringRequest request) {
-        var oppgittOpptjeningEksternReferanse = request.getEksternReferanse().toUuidReferanse();
-        var org = new OrgNummer(request.getOrgnummer());
-        OppgittOpptjening oppgittOpptjening = iayTjeneste.hentOppgittOpptjeningFor(oppgittOpptjeningEksternReferanse).orElseThrow();
-        var næring = oppgittOpptjening.getEgenNæring().stream().filter(n -> n.getOrgnummer().equals(org)).findFirst().orElseThrow();
-        if (næring.getVarigEndring()) {
-            throw new IllegalArgumentException("Allerede varig endring");
-        }
-        int antall = entityManager.createNativeQuery(
-                "UPDATE iay_egen_naering SET varig_endring = 'J', endring_dato = :edato , brutto_inntekt = :belop, begrunnelse = :begr WHERE id = :enid")
-            .setParameter("edato", request.getEndringDato())
-            .setParameter("belop", request.getBruttoInntekt())
-            .setParameter("begr", request.getEndringBegrunnelse())
-            .setParameter("enid", næring.getId())
-            .executeUpdate();
-        return Response.ok(antall).build();
-    }
-
-    @POST
-    @Path("/eliminerInntektsmelding")
-    @Consumes(APPLICATION_JSON)
-    @Produces(APPLICATION_JSON)
-    @Operation(description = "Fjerner angitt inntektsmelding/journalpost fra grunnlag", tags = "FORVALTNING", responses = {@ApiResponse(responseCode = "200", description = "Inntektsmelding eliminert.")})
-    @BeskyttetRessurs(action = BeskyttetRessursActionType.UPDATE, resource = BeskyttetRessursResourceType.FAGSAK)
-    public Response eliminerInntektsmelding(@TilpassetAbacAttributt(supplierClass = ForvaltningRestTjeneste.AbacDataSupplier.class) @NotNull @Valid EliminerInntektsmeldingRequest request) {
-        var koblingReferanse = new KoblingReferanse(request.getEksternReferanse().toUuidReferanse());
-        var journalpost = request.getJournalpostId();
-        var eksisterende = iayTjeneste.hentGrunnlagFor(koblingReferanse).orElseThrow();
-        var grunnlagBuilder = InntektArbeidYtelseGrunnlagBuilder.oppdatere(eksisterende);
-        var sammeJpId = eksisterende.getInntektsmeldinger()
-            .map(InntektsmeldingAggregat::getInntektsmeldinger)
-            .orElse(List.of())
-            .stream()
-            .filter(im -> journalpost.equals(im.getJournalpostId()))
-            .findFirst();
-        if (sammeJpId.isEmpty()) {
-            throw new IllegalArgumentException("Fant ingen inntektsmelding med angitt journalpostID");
-        }
-        var beholdIM = eksisterende.getInntektsmeldinger()
-            .map(InntektsmeldingAggregat::getInntektsmeldinger)
-            .orElse(List.of())
-            .stream()
-            .filter(im -> !journalpost.equals(im.getJournalpostId()))
-            .toList();
-        grunnlagBuilder.setInntektsmeldinger(new InntektsmeldingAggregat(beholdIM));
-        iayTjeneste.lagre(koblingReferanse, grunnlagBuilder);
-        return Response.ok().build();
-    }
-
 
     @POST
     @Path("/oppdaterAktoerId")

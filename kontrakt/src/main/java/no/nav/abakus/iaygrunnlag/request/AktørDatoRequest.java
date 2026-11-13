@@ -36,13 +36,14 @@ public class AktørDatoRequest {
     @Valid
     private Periode periode;
 
-    @JsonProperty(value = "ytelse")
+    @JsonProperty(value = "ytelse", required = true)
+    @NotNull
     private YtelseType ytelse;
 
     @JsonCreator
     public AktørDatoRequest(@JsonProperty(value = "aktør", required = true) @NotNull @Valid PersonIdent aktør,
                             @JsonProperty(value = "periode", required = true) @NotNull @Valid Periode periode,
-                            @JsonProperty(value = "ytelse") YtelseType ytelse) {
+                            @JsonProperty(value = "ytelse", required = true) @NotNull @Valid YtelseType ytelse) {
         this.aktør = aktør;
         this.periode = periode;
         this.ytelse = ytelse;
