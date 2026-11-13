@@ -8,17 +8,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.UUID;
 
-import no.nav.k9.abakus.dbstoette.CdiDbAwareTest;
-
-import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursResourceType;
-
 import org.junit.jupiter.api.Test;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.core.Request;
+import no.nav.k9.abakus.dbstoette.CdiDbAwareTest;
 import no.nav.k9.felles.sikkerhet.abac.AbacDto;
 import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessurs;
 import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursActionType;
+import no.nav.k9.felles.sikkerhet.abac.BeskyttetRessursResourceType;
 import no.nav.k9.felles.sikkerhet.abac.TilpassetAbacAttributt;
 
 @CdiDbAwareTest
