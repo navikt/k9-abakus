@@ -38,7 +38,9 @@ public class InntektTjeneste {
     private static final YearMonth INNTK_TIDLIGSTE_DATO = YearMonth.of(2015, 7);
     private static final Set<InntektskildeType> SKAL_PERIODISERE_INNTEKTSKILDE = Set.of(
         InntektskildeType.INNTEKT_SAMMENLIGNING,
-        InntektskildeType.INNTEKT_BEREGNING);
+        InntektskildeType.INNTEKT_BEREGNING,
+        InntektskildeType.INNTEKT_UNGDOMSYTELSE,
+        InntektskildeType.INNTEKT_AKTIVITETSPENGER);
 
     private Map<InntektskildeType, InntektsFilter> kildeTilFilter;
     private Map<InntektsFilter, InntektskildeType> filterTilKilde;
