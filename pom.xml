@@ -22,11 +22,6 @@
     </modules>
 
     <properties>
-
-        <sonar.moduleKey>${project.artifactId}</sonar.moduleKey>
-        <sonar.projectName>k9-abakus</sonar.projectName>
-        <sonar.projectKey>navikt_k9-abakus</sonar.projectKey>
-
         <java.version>25</java.version>
         <kontrakt.java.version>21</kontrakt.java.version>
 
