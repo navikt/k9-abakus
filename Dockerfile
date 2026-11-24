@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1.7.0-labs
-FROM ghcr.io/navikt/k9-felles/felles-java-chainguard-25:12.2.10 AS duplikatfjerner
+FROM ghcr.io/navikt/k9-felles/felles-java-chainguard-25:12.3.0 AS duplikatfjerner
 
 COPY --link --exclude=no.nav.k9.abakus* web/target/lib/ /build/lib/
 USER root
@@ -7,7 +7,7 @@ RUN ["java", "scripts/RyddBiblioteker", "DUPLIKAT", "/app/lib", "/build/lib"]
 
 
 
-FROM ghcr.io/navikt/k9-felles/felles-java-chainguard-25:12.2.10
+FROM ghcr.io/navikt/k9-felles/felles-java-chainguard-25:12.3.0
 LABEL org.opencontainers.image.source=https://github.com/navikt/k9-abakus
 
 COPY --link --from=duplikatfjerner /build/lib/ /app/lib/
