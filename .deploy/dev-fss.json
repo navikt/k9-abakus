@@ -1,7 +1,6 @@
 {
   "environment": "dev",
   "kafkaPool": "nav-dev",
-  "serviceuserkv": "serviceuser/data/dev/srvk9-abakus",
   "minReplicas": "1",
   "maxReplicas": "2",
   "limits": {
